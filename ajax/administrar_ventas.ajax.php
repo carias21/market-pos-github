@@ -5,6 +5,7 @@ require_once "../modelos/administrar_ventas.modelo.php";
 
 class AjaxAdministrarVentas
 {
+    
 
 //pruebas
 public function ajaxListarVentas(){
