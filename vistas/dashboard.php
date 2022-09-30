@@ -123,6 +123,10 @@
 
          </div> <!-- ./row Tarjetas Informativas -->
 
+
+      <!-------------------------------------------------------------------------------------------
+        GRAFICO DE BARRAS VENTAS DEL MES
+        -------------------------------------------------------------------------------------------->
          <!-- row Grafico de barras -->
          <div class="row">
 
@@ -136,7 +140,7 @@
 
                          <div class="card-tools">
 
-                          <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
+                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
             con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
@@ -167,6 +171,57 @@
              </div>
 
          </div><!-- ./row Grafico de barras -->
+
+
+        <!-------------------------------------------------------------------------------------------
+        GRAFICO DE BARRAS PRODUCTOS VENDIDOS
+        -------------------------------------------------------------------------------------------->
+         <!-- row Grafico de barras -->
+         <div class="row">
+
+             <div class="col-12">
+
+                 <div class="card card-info">
+
+                     <div class="card-header">
+
+                         <h3 class="card-title" id="title-header_Productos_vendidos"></h3>
+
+                         <div class="card-tools">
+
+                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
+            con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+
+                         </div> <!-- ./ end card-tools -->
+
+                     </div> <!-- ./ end card-header -->
+
+
+                     <div class="card-body">
+
+                         <div class="chart">
+
+                             <canvas id="barChart_Productos_Vendidos" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
+
+                             </canvas>
+
+                         </div>
+
+                     </div> <!-- ./ end card-body -->
+
+                 </div>
+
+             </div>
+
+         </div><!-- ./row Grafico de barras -->
+
+
 
          <div class="row">
              <div class="col-lg-6">
@@ -239,56 +294,56 @@
 
  </div>
  <!-- /.content -->
- 
+
 
  <script>
-
-    
      /* solicitus ajax, tarjetas de informacion en el tablero
       princial */
      $(document).ready(function() {
 
-        function numberWithCommas(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+         function numberWithCommas(x) {
+             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+         }
 
          /* =======================================================
          SOLICITUD AJAX TARJETAS INFORMATIVAS
          =======================================================*/
          $.ajax({
-         url: "ajax/dashboard.ajax.php",
-         method: 'POST',
-         dataType: 'json',
-         success: function(respuesta) {
-           console.log("respuesta", respuesta);
-           $("#totalProductos").html(respuesta[0]['totalProductos']);
-           $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toFixed(2).toLocaleString('DE-de'))
-           //otras opciones de mostrar las cantidades: .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}))
-           $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toFixed(2).toLocaleString('de-DE'))
-           $("#totalGanancias").html('Q.' + respuesta[0]['ganancias'].toFixed(2).toLocaleString('de-DE'))
-           $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'].toLocaleString('de-DE'))
-           $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toFixed(2).toLocaleString('de-DE'))
-         }
-       });
-       /*SetInterval siver para que cada 10 segundos se actualicen las tarjetas
-       10000 = 10segundos */
-
-       setInterval(() => {
-         $.ajax({
-           url: "ajax/dashboard.ajax.php",
-           method: 'POST',
-           dataType: 'json',
-           success: function(respuesta) {
-            
-             $("#totalProductos").html(respuesta[0]['totalProductos']);
-             $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toFixed(2).toLocaleString('de-DE'))
-             $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toFixed(2).toLocaleString('de-DE'))
-             $("#totalGancias").html('Q.' + respuesta[0]['ganancias'].toFixed(2).toLocaleString('de-DE'))
-             $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'])
-             $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toFixed(2).toLocaleString('de-DE'))
-             console.log("respuesta", respuesta);
-           }
+             url: "ajax/dashboard.ajax.php",
+             method: 'POST',
+             dataType: 'json',
+             success: function(respuesta) {
+                 console.log("respuesta", respuesta);
+                 $("#totalProductos").html(respuesta[0]['totalProductos']);
+                 $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toFixed(2).toLocaleString('DE-de'))
+                 //otras opciones de mostrar las cantidades: .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}))
+                 $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toFixed(2).toLocaleString('de-DE'))
+                 $("#totalGanancias").html('Q.' + respuesta[0]['ganancias'].toFixed(2).toLocaleString('de-DE'))
+                 $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'].toLocaleString('de-DE'))
+                 $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toFixed(2).toLocaleString('de-DE'))
+             }
          });
-         /* 10000 = 10segundos */
-       }, 10000);
+         /*SetInterval siver para que cada 10 segundos se actualicen las tarjetas
+         10000 = 10segundos */
+
+         setInterval(() => {
+             $.ajax({
+                 url: "ajax/dashboard.ajax.php",
+                 method: 'POST',
+                 dataType: 'json',
+                 success: function(respuesta) {
+
+                     $("#totalProductos").html(respuesta[0]['totalProductos']);
+                     $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toFixed(2).toLocaleString('de-DE'))
+                     $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toFixed(2).toLocaleString('de-DE'))
+                     $("#totalGancias").html('Q.' + respuesta[0]['ganancias'].toFixed(2).toLocaleString('de-DE'))
+                     $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'])
+                     $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toFixed(2).toLocaleString('de-DE'))
+                     console.log("respuesta", respuesta);
+                 }
+             });
+             /* 10000 = 10segundos */
+         }, 10000);
 
 
          /* =======================================================
@@ -326,7 +381,7 @@
 
                  // console.log(total_ventas_mes);
 
-                   //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
+                 //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
                  $("#title-header").html('Ventas del Mes: Q. ' + total_ventas_mes.toFixed(2).toString().replace(
                      /\d(?=(\d{3})+\.)/g, "$&,"));
 
@@ -334,16 +389,136 @@
 
                  var areaChartData = {
                      labels: fecha_venta,
+                     datasets: [
+                         /*{
+                                                 label: 'Ventas del mes anterior',
+                                                    //color de las barras
+                                                 // backgroundColor: 'rgba(60,141,188,0.9)',
+                                                 /* data: total_venta_ant
+                                              },*/
+                         {
+                             label: 'Ventas del Mes Actual',
+                             //color de las barras'rgba(60,141,188,0.9)',
+                             backgroundColor: 'rgb(100, 255, 0)',
+                             data: total_venta
+                         }
+                     ]
+                 }
+
+                 var barChartData = $.extend(true, {}, areaChartData);
+
+                 var temp0 = areaChartData.datasets[0];
+
+                 barChartData.datasets[0] = temp0;
+
+                 var barChartOptions = {
+                     maintainAspectRatio: false,
+                     responsive: true,
+                     events: false,
+                     legend: {
+                         display: true
+                     },
+                     scales: {
+                         xAxes: [{
+                             stacked: true,
+                         }],
+                         yAxes: [{
+                             stacked: true
+                         }]
+                     },
+                     animation: {
+                         duration: 500,
+                         easing: "easeOutQuart",
+                         onComplete: function() {
+                             var ctx = this.chart.ctx;
+                             ctx.font = Chart.helpers.fontString(Chart.defaults.global
+                                 .defaultFontFamily, 'normal',
+                                 Chart.defaults.global.defaultFontFamily);
+                             ctx.textAlign = 'center';
+                             ctx.textBaseline = 'bottom';
+
+                             this.data.datasets.forEach(function(dataset) {
+                                 for (var i = 0; i < dataset.data.length; i++) {
+                                     var model = dataset._meta[Object.keys(dataset
+                                             ._meta)[0]].data[i]._model,
+                                         scale_max = dataset._meta[Object.keys(dataset
+                                             ._meta)[0]].data[i]._yScale.maxHeight;
+                                     ctx.fillStyle = '#444';
+                                     var y_pos = model.y - 5;
+                                     // Make sure data value does not get overflown and hidden
+                                     // when the bar's value is too close to max value of scale
+                                     // Note: The y value is reverse, it counts from top down
+                                     if ((scale_max - model.y) / scale_max >= 0.93)
+                                         y_pos = model.y + 20;
+                                     ctx.fillText(dataset.data[i], model.x, y_pos);
+                                 }
+                             });
+                         }
+                     }
+                 }
+
+                 new Chart(barChartCanvas, {
+                     type: 'bar',
+                     data: barChartData,
+                     options: barChartOptions
+                 })
+
+
+             }
+         });
+
+
+          /* =======================================================
+         SOLICITUD AJAX GRAFICO DE BARRAS PRODUCTOS VENDIDOS
+         =======================================================*/
+         $.ajax({
+             url: "ajax/dashboard.ajax.php",
+             method: 'POST',
+             data: {
+                 'accion': 4 //parametro para obtener los productos vendidos
+             },
+             dataType: 'json',
+             success: function(respuesta) {
+                 // console.log("respuesta", respuesta);
+
+                 var descripcion_producto = [];
+                 var cantidad = [];
+            
+
+                 for (let i = 0; i < respuesta.length; i++) {
+
+                    descripcion_producto.push(respuesta[i]['descripcion_producto']);
+                     cantidad.push(respuesta[i]['cantidad']);
+                  
+                 /*    total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i][
+                         'total_venta'
+                     ] ); */
+
+                 }
+
+                 cantidad.push(0);
+                 // total_venta.push(600);
+
+                 // console.log(total_ventas_mes);
+
+                   //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
+                 $("#title-header_Productos_vendidos").html('Cantidad Productos');
+
+                 var barChartCanvas = $("#barChart_Productos_Vendidos").get(0).getContext('2d');
+
+                 var areaChartData = {
+                     labels: descripcion_producto,
                      datasets: [/*{
                         label: 'Ventas del mes anterior',
                            //color de las barras
                         // backgroundColor: 'rgba(60,141,188,0.9)',
                         /* data: total_venta_ant
                      },*/ {
-                         label: 'Ventas del Mes Actual',
+                         label: 'Cantidad Productos vendidos',
                            //color de las barras'rgba(60,141,188,0.9)',
-                         backgroundColor: 'rgb(100, 255, 0)',
-                         data: total_venta
+                         backgroundColor: 'rgb(65, 0, 0)',
+                         
+                         data: cantidad
                      }]
                  }
 
@@ -409,8 +584,11 @@
              }
          });
 
-          //******************************************************************************************************************** */
-       //-------------AJAX PRODUCTOS POCO STOCK------------------------------
+
+
+
+         //******************************************************************************************************************** */
+         //-------------AJAX PRODUCTOS POCO STOCK------------------------------
 
 
          $.ajax({
@@ -419,8 +597,8 @@
              data: {
                  'accion': 2 // listar los 10 productos mas vendidos
              },
-             
-             
+
+
              dataType: 'json',
              success: function(respuesta) {
                  // console.log("respuesta",respuesta);
@@ -438,7 +616,7 @@
              }
          });
 
-            //-------------AJAX PRODUCTOS POCO STOCK------------------------------
+         //-------------AJAX PRODUCTOS POCO STOCK------------------------------
          $.ajax({
              url: "ajax/dashboard.ajax.php",
              type: "POST",

@@ -31,6 +31,14 @@ class AjaxDashboard{
         echo json_encode($productosPocoStock);
     
     }
+
+    public function getCantidadVentasProductos(){
+    
+        $CantidadventasProductos = DashboardControlador::ctrCantidadVentasProductos();
+    
+        echo json_encode($CantidadventasProductos);
+    }
+
     
   
 }
@@ -45,6 +53,12 @@ if(isset($_POST['accion']) && $_POST['accion'] == 1){ //Ejecutar function ventas
 
     $produtosMasVendidos = new AjaxDashboard();
     $produtosMasVendidos -> getProductosMasVendidos();
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 4){ //Ejecutar function  productos  vendidos (Grafico de Barras)
+
+
+    $CantidadventasProductos = new AjaxDashboard();
+    $CantidadventasProductos-> getCantidadVentasProductos();
 
 }else if(isset($_POST['accion']) && $_POST['accion'] == 3){ //Ejecutar function de productos poco stock
 

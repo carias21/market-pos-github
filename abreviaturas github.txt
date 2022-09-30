@@ -1,0 +1,5 @@
+- U significa archivo sin seguimiento (untracked file), lo que significa que es nuevo o se ha cambiado, pero aún no ha sido añadido al repositorio
+
+- A indica un nuevo archivo que se añadió al repositorio
+
+- M junto a él, que representa un archivo que se ha modificado.
