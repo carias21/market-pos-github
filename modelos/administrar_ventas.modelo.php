@@ -9,18 +9,18 @@ static public function mdlListarVentas(/*$fechaDesde,$fechaHasta*/){
 
 try {
 
-    $stmt = Conexion::conectar()->prepare("SELECT id_venta,
-                                                 codigo_producto, 
-                                                 categoria, 
-                                                 descripcion as producto, 
-                                                 cantidad, 
-                                                  CONCAT('Q. ',CONVERT(ROUND(precio_venta,2), CHAR)) as precio_venta,
-                                                  CONCAT('Q. ',CONVERT(ROUND(descuento_venta,2), CHAR)) as descuento_venta,
-                                                  CONCAT('Q. ',CONVERT(ROUND(total_venta,2), CHAR)) as total_venta,
+    $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
+                                                 v.codigo_producto, 
+                                                 v.categoria, 
+                                                 v.descripcion as producto, 
+                                                 v.cantidad, 
+                                                  CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
+                                                  CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
+                                                  CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
                                                 
-                                                 DATE(fecha_venta) as fecha_venta,
+                                                  TIMESTAMP(v.fecha_venta) as fecha_venta,
                                                  '' as opciones
-                                                 FROM ventas c order BY fecha_venta desc");
+                                                 FROM ventas v order BY fecha_venta desc");
 
     $stmt -> execute();
 

@@ -107,9 +107,7 @@
 
 
 
-                 <!--  CREACION DE LA TABLA Y CONEXION A LA BASE DE DATOS MEDIANTE
- AJAX, VIDEO EXPLICATIVO DE COMO MOSTRAR LA BASE DE DATOS EN LA TABLA: https://www.youtube.com/watch?v=K9g20dqM9N0&t=1391s -->
-
+<!--  GUIA VD 19 MIN 19:42 -->
                  <script>
                      var Toast = Swal.mixin({
                          toast: true,
@@ -130,9 +128,8 @@
                          $("#ventas_hasta").val(moment().format('DD/MM/YYYY'));
 
                          var tableVentas = $('#lstVentas').DataTable({
+                             //ajustable 
                              scrollX: true,
-
-
                              dom: 'Bfrtip',
                              buttons: [
                                  'excel', 'print', 'pageLength',
@@ -141,6 +138,7 @@
                                  url: 'ajax/administrar_ventas.ajax.php',
                                  dataSrc: ""
                              },
+                             
 
                              "columns": [{
                                  "data": "id_venta",

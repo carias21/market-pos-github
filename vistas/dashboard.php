@@ -502,7 +502,7 @@
                  // console.log(total_ventas_mes);
 
                    //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
-                 $("#title-header_Productos_vendidos").html('Cantidad Productos');
+                 $("#title-header_Productos_vendidos").html('Cantidad productos vendidos');
 
                  var barChartCanvas = $("#barChart_Productos_Vendidos").get(0).getContext('2d');
 
