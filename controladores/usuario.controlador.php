@@ -22,7 +22,7 @@ class UsuarioControlador{
 
                 echo ' 
                 <script>
-                window.location = "http://localhost/market-pos-github/"
+                window.location = "http://192.168.1.11/market-pos-github/"
                 </script>';
             }else{
                 echo '
@@ -30,7 +30,7 @@ class UsuarioControlador{
                 fncSweetAlert(
                     "error",
                     "Usuario y/o contraseña inválida",
-                    "http://localhost/market-pos-github/"
+                    "http://192.168.1.11/market-pos-github/"
                 );
                 </script>
                 ';
