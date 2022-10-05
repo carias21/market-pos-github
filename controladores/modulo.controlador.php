@@ -8,6 +8,7 @@ class ModuloControlador
         $modulos = ModuloModelo::mdlObtenerModulos();
         return $modulos;
     }
+    //VD 28 MIN 10:25
     static public function ctrObtenerModulosPorPerfil($id_perfil){
         $modulosPorPerfil = ModuloModelo::mdlObtenerModulosPorPerfil($id_perfil);
 

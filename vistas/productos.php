@@ -314,7 +314,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" id="btnCancelarRegistroStock">Cancelar</button>
-                <button type="button" class="btn btn-primary btn-sm" id="btnGuardarNuevorStock">Guardar</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnGuardarNuevoStock">Guardar</button>
             </div>
 
         </div>
@@ -709,7 +709,7 @@
         /* ======================================================================================
         EVENTO QUE REGISTRA EN BD EL AUMENTO O DISMINUCION DE STOCK
         =========================================================================================*/
-        $("#btnGuardarNuevorStock").on('click', function() {
+        $("#btnGuardarNuevoStock").on('click', function() {
 
             if ($("#iptStockSumar").val() != "" && $("#iptStockSumar").val() > 0) {
 
@@ -793,7 +793,7 @@
             var codigo_producto = data["codigo_producto"];
 
             Swal.fire({
-                title: 'Está seguro de eliminar el producto?',
+                title: 'Está seguro de eliminar el producto ' + data [5] + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

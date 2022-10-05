@@ -16,7 +16,7 @@ class ModuloModelo
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-    //VD 28 MIN 12.45
+    //VD 28 MIN 11.22
     static public function mdlObtenerModulosPorPerfil($id_perfil)
     {
         $stmt = Conexion::conectar()->prepare("select id,

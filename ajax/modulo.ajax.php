@@ -7,7 +7,7 @@ class AjaxModulos{
         $modulos = ModuloControlador::ctrObtenerModulos();
         echo json_encode($modulos);
     }
-
+    //VD 28 MIN 9:30
     public function ajaxObtenerModulosPorPerfil($id_perfil){
         $modulosPerfil = ModuloControlador::ctrObtenerModulosPorPerfil($id_perfil);
         echo json_encode($modulosPerfil);
@@ -27,7 +27,7 @@ class AjaxModulos{
 if(isset($_POST['accion']) && $_POST['accion']==1){
     $modulos = new AjaxModulos;
     $modulos->ajaxObtenerModulos();
-
+//VD 28 MIN 8:06
 }else if(isset($_POST['accion']) && $_POST['accion']==2){
     $modulosPerfil = new AjaxModulos();
     $modulosPerfil->ajaxObtenerModulosPorPerfil($_POST['id_perfil']);

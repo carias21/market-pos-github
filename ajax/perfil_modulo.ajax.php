@@ -14,5 +14,5 @@ class AjaxPerfilModulo{
 
 if(isset($_POST['accion'])&& $_POST['accion']==1){
     $registroPerfilModulo = new AjaxPerfilModulo;
-    $registroPerfilModulo-> ajaxRegistrarPerfilModulo($_POST['id_modulosSeleccionados'],$_POST['id_Perfil'],$_POST['id_modulo_inicio']);
+    $registroPerfilModulo->ajaxRegistrarPerfilModulo($_POST['id_modulosSeleccionados'],$_POST['id_Perfil'],$_POST['id_modulo_inicio']);
 }

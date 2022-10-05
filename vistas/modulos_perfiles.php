@@ -314,8 +314,8 @@
 
 <script>
     /* =============================================================
-               VARIABLES GLOBALES
-               ============================================================= */
+    VARIABLES GLOBALES
+    ============================================================= */
     var tbl_perfiles_asignar, tbl_modulos, modulos_usuario, modulos_sistema;
 
     $(document).ready(function() {
@@ -349,26 +349,27 @@
 
             if ($(this).parents('tr').hasClass('selected')) {
                 $(this).parents('tr').removeClass('selected');
-                //desmarcamos al dar clic en el check
-                $('#modulos').jstree("deselect_all", false);
-
+                //desmarcamos todos los checkbox del arbol
                 //VD 28 MIN 4
+                $('#modulos').jstree("deselect_all", false);
                 //Dejamos vacio el select de la opcion de pagina principal
                 $('#select_modulos option').remove();
 
                 idPerfil = 0;
                 //desmarcar el check y los datos
 
-             //   $("#card-modulos").css("display", "none");
+                //   $("#card-modulos").css("display", "none");
             } else {
 
                 tbl_perfiles_asignar.$('tr.selected').removeClass('selected');
 
                 $(this).parents('tr').addClass('selected');
-
+                
+                //VD 28 MIN 6:00
+                //obtenemos el id del perfil
                 idPerfil = data[0];
 
-               // $("#card-modulos").css("display", "block"); //MOSTRAMOS EL ALRBOL DE MODULOS DEL SISTEMA
+                // $("#card-modulos").css("display", "block"); //MOSTRAMOS EL ALRBOL DE MODULOS DEL SISTEMA
 
                 // alert(idPerfil);
 
@@ -378,13 +379,16 @@
                     url: "ajax/modulo.ajax.php",
                     method: 'POST',
                     data: {
+                        //mandamos la accion 2 y...
                         accion: 2,
+                        //mandamos el id del perfil 
                         id_perfil: idPerfil
                     },
                     dataType: 'json',
                     success: function(respuesta) {
-                        console.log(respuesta);
+                        console.log(respuesta, 'seleccionarModulosPerfil');
 
+                        //VD 28 MIN 20:35
                         modulos_usuario = respuesta;
 
                         //VD 28 MIN 28.24
@@ -398,16 +402,20 @@
         })
 
 
-        //EVENTO AL MOMENTO DE MARCAR O DESMARCAR EL CHECKBOX DE JSTREE
+        /* =============================================================
+        EVENTO QUE SE DISPARA CADA VEZ QUE HAY UN CAMBIO EN EL ARBOL DE MODULOS
+        EVENTO AL MOMENTO DE MARCAR O DESMARCAR EL CHECKBOX DE JSTREE
+        ============================================================= */
         //VD 28 MIN 27.15
         $("#modulos").on("changed.jstree", function(evt, data) {
             //alert("pruebas de check")
+            //primerdo desmarcamos todos los checkbox
             $("#select_modulos option").remove();
             //creamos un ARRAy
             //selectedElmsIds=[]
             //seleccione todos los elementos que estan seleccionados
             var selectedElms = $('#modulos').jstree("get_selected", true);
-            console.log(selectedElms);
+            console.log(selectedElms, 'mostrar todos los elementos que ESTOY seleccionando en el checkbox');
 
             $.each(selectedElms, function() {
                 for (let i = 0; i < modulos_sistema.length; i++) {
@@ -422,6 +430,7 @@
             })
 
             //VD 28 MIN 40.40
+            //OPCION CUANDO SE DESELECCIONE LOS CHECKBOX 1 POR 1 Y MUESTRE EL MENSAJE NO HYA MODULOS EN SELECT
             if ($("#select_modulos").has('option').length <= 0) {
                 $('#select_modulos').append($('<option>', {
                     value: 0,
@@ -454,27 +463,32 @@
         /*====================================================================
         EVENTO REGISTRO EN BASE DE DATOS DE LOS MODULOS ASOCIADOS O SELECCIONADOS AL PERFIL
         ====================================================================== */
-        //VD 28 MIN 42.25
+        //VD 28 MIN 42.15
         $("#asignar_modulos").on('click', function() {
             //pruebas para validar que si estan llegando los eventos
             //  alert("entro al evento")
+        
             selectedElmsIds = []
             var selectedElms = $('#modulos').jstree("get_selected", true);
 
             $.each(selectedElms, function() {
                 selectedElmsIds.push(this.id);
-
+                //VD 28 MIN 48:55
                 if (this.parent != "#") {
                     selectedElmsIds.push(this.parent);
                 }
             });
+            console.log(selectedElmsIds, 'id de los modulos Seleccionados duplicados')
+
             //quitamos valores duplicados
             let modulosSeleccionados = [...new Set(selectedElmsIds)];
 
+             //obtenemos el valor del modulo de inicio
             let modulo_inicio = $("#select_modulos").val();
+             console.log(modulosSeleccionados, "modulosSeleccionados no duplicados");
+          //  console.log(modulo_inicio, ' <- numero del modulo inicio')
 
-            console.log(modulosSeleccionados, "modulosSeleccionados");
-
+          //VD 28 MIN 52:36
             if (idPerfil != 0 && modulosSeleccionados.length > 0) {
                 registrarPerfilModulos(modulosSeleccionados, idPerfil, modulo_inicio);
             } else {
@@ -491,8 +505,10 @@
 
         })
 
-        /*====================================================================
+        /*======================================================================
+        ====================================================================
              MANTENIMIENTO DE MODULOS
+        ======================================================================
         ====================================================================== */
         //VD 30 MIN 27.00
         fnCargarArbolModulos();
@@ -657,7 +673,9 @@
             dataType: 'json',
             //OBTENEMOS LOS DATOS DE LA TABLA MODULOS CON "RESPUESTA"
             success: function(respuesta) {
+                //VD 28 MIN 21:16
                 modulos_sistema = respuesta;
+
                 console.log(respuesta);
 
 
@@ -690,15 +708,15 @@
         })
     }
 
-    //VD 28 MIN 23.15
+    //VD 28 MIN 22.50
     function seleccionarModulosPerfil(pin_idPerfil) {
         //desmarcar los checks de los modulos
         $('#modulos').jstree('deselect_all');
-        console.log("pin_idPerfil", pin_idPerfil);
+      //  console.log("pin_idPerfil", pin_idPerfil);
 
         for (let i = 0; i < modulos_sistema.length; i++) {
 
-            console.log("modulos_sistema[i]['id']", modulos_sistema[i]["id"]);
+          //  console.log("modulos_sistema[i]['id']", modulos_sistema[i]["id"]);
 
             if (parseInt(modulos_sistema[i]["id"]) == parseInt(modulos_usuario[i]["id"]) && parseInt(modulos_usuario[i]["sel"]) == 1) {
                 // if (modulos_sistema[i]["id"] == modulos_usuario[i]["id"] && modulos_usuario[i]["sel"] == 1) {
@@ -741,7 +759,7 @@
                     $("#select_modulos option").remove();
                     $('#modulos').jstree("deselect_all", false);
                     tbl_perfiles_asignar.ajax.reload();
-             //       $("#card-modulos").css("display", "none");
+                    //       $("#card-modulos").css("display", "none");
                 } else {
                     Swal.fire({
                         position: 'center',
@@ -918,73 +936,73 @@
 
     function fnRegistrarModulo() {
 
-var forms = document.getElementsByClassName('needs-validation-registro-modulo');
+        var forms = document.getElementsByClassName('needs-validation-registro-modulo');
 
-var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function(form) {
 
-    if (form.checkValidity() === true) {
+            if (form.checkValidity() === true) {
 
-        console.log("Listo para registrar el producto");
+                console.log("Listo para registrar el producto");
 
-        Swal.fire({
-            title: 'Está seguro de registrar el producto?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, deseo registrarlo!',
-            cancelButtonText: 'Cancelar',
-        }).then((result) => {
+                Swal.fire({
+                    title: 'Está seguro de registrar el producto?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, deseo registrarlo!',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
 
-            if (result.isConfirmed) {
+                    if (result.isConfirmed) {
 
-                $("#iptIconoModulo").val($('#spn_icono_modulo i').attr('class'));
+                        $("#iptIconoModulo").val($('#spn_icono_modulo i').attr('class'));
 
-                $.ajax({
-                    async: false,
-                    url: "ajax/modulo.ajax.php",
-                    method: 'POST',
-                    data: {
-                        accion: 5,
-                        datos: $('#frm_registro_modulo').serialize()
-                    },
-                    dataType: 'json',
-                    success: function(respuesta) {
+                        $.ajax({
+                            async: false,
+                            url: "ajax/modulo.ajax.php",
+                            method: 'POST',
+                            data: {
+                                accion: 5,
+                                datos: $('#frm_registro_modulo').serialize()
+                            },
+                            dataType: 'json',
+                            success: function(respuesta) {
 
-                        console.log("🚀 ~ file: modulos_perfiles.php ~ line 1240 ~ validation ~ respuesta", respuesta)
+                                console.log("🚀 ~ file: modulos_perfiles.php ~ line 1240 ~ validation ~ respuesta", respuesta)
 
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: respuesta,
-                            showConfirmButton: false,
-                            timer: 1500
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: respuesta,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+
+                                tbl_modulos.ajax.reload();
+
+                                //recargamos arbol de modulos - MANTENIMIENTO MODULOS
+                                actualizarArbolModulos();
+
+                                //recargamos arbol de modulos - MANTENIMIENTO MODULOS ASIGNADOS A PERFILES                                
+                                actualizarArbolModulosPerfiles();
+
+                                $("#iptModulo").val("");
+                                $("#iptVistaModulo").val("");
+                                $("#iptIconoModulo").val("");
+
+                                $(".needs-validation-registro-modulo").removeClass("was-validated");
+                            }
+
                         })
 
-                        tbl_modulos.ajax.reload();
-
-                        //recargamos arbol de modulos - MANTENIMIENTO MODULOS
-                        actualizarArbolModulos();
-
-                        //recargamos arbol de modulos - MANTENIMIENTO MODULOS ASIGNADOS A PERFILES                                
-                        actualizarArbolModulosPerfiles();
-
-                        $("#iptModulo").val("");
-                        $("#iptVistaModulo").val("");
-                        $("#iptIconoModulo").val("");
-
-                        $(".needs-validation-registro-modulo").removeClass("was-validated");
                     }
-
-                })
+                });
 
             }
-        });
+
+            form.classList.add('was-validated');
+        })
 
     }
-
-    form.classList.add('was-validated');
-})
-
-}
 </script>
