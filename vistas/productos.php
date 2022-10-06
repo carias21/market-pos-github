@@ -113,6 +113,7 @@
                 <!--*******************    //TIPOS DE TABLAS *******************-->
                 <!--  Tabla original:   <table id="tbl_productos" class="table table-striped w-100 shadow">-->
                 <table id="tbl_productos" class="table table-striped table-hover w-100 shadow">
+                     
                     <thead class="bg-info">
                         <tr style="font-size: 15px;">
                             <th></th>
@@ -595,6 +596,7 @@
         =========================================================================================*/
         $('#tbl_productos tbody').on('click', '.btnAumentarStock', function() {
 
+
             operacion_stock = 1; //sumar stock
             accion = 3;
 
@@ -987,4 +989,6 @@
     document.getElementById("btnCancelarRegistro").addEventListener("click", function() {
         $(".needs-validation").removeClass("was-validated");
     })
+
+
 </script>

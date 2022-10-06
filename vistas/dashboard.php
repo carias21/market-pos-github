@@ -45,7 +45,7 @@
                  <!-- small box -->
                  <div class="small-box bg-success">
                      <div class="inner">
-                         <h4 id="totalCompras">Q.2,500.00</h4>
+                         <h4 id="totalCompras">Q.0.00</h4>
 
                          <p>Total Compras</p>
                      </div>
@@ -61,7 +61,7 @@
                  <!-- small box -->
                  <div class="small-box bg-warning">
                      <div class="inner">
-                         <h4 id="totalVentas">Q.1,200.00</h4>
+                         <h4 id="totalVentas">Q.0.00</h4>
 
                          <p>Total Ventas</p>
                      </div>
@@ -77,7 +77,7 @@
                  <!-- small box -->
                  <div class="small-box bg-danger">
                      <div class="inner">
-                         <h4 id="totalGanancias">Q.470.00</h4>
+                         <h4 id="totalGanancias">Q.0.00</h4>
 
                          <p>Total Ganancias</p>
                      </div>
@@ -109,7 +109,7 @@
                  <!-- small box -->
                  <div class="small-box bg-secondary">
                      <div class="inner">
-                         <h4 id="totalVentasHoy">Q.250.00</h4>
+                         <h4 id="totalVentasHoy">Q.0.00</h4>
 
                          <p>Ventas del día</p>
                      </div>
