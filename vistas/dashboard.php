@@ -36,7 +36,7 @@
                      <div class="icon">
                          <i class="ion ion-clipboard"></i>
                      </div>
-                     <a style="cursor:pointer;" class="small-box-footer">Mas Info <i class="fas fa-arrow-circle-right"></i></a>
+                     <a style="cursor:pointer;"  onclick="CargarContenido('vistas/productos.php','content-wrapper')"  class="small-box-footer">Mas Info <i class="fas fa-arrow-circle-right" ></i></a>
                  </div>
              </div>
 
@@ -68,7 +68,7 @@
                      <div class="icon">
                          <i class="ion ion-ios-cart"></i>
                      </div>
-                     <a style="cursor:pointer;" class="small-box-footer">Mas Info <i class="fas fa-arrow-circle-right"></i></a>
+                     <a style="cursor:pointer;"   onclick="CargarContenido('vistas/administrar_ventas.php','content-wrapper')"  class="small-box-footer">Mas Info <i class="fas fa-arrow-circle-right"></i></a>
                  </div>
              </div>
 

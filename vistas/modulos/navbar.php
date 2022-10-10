@@ -5,7 +5,7 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
+      <!--  <li class="nav-item d-none d-sm-inline-block">
         <a style="cursor: pointer;" class="nav-link active" onclick="CargarContenido('vistas/dashboard.php','content-wrapper')">
                 Tablero
             </a>
@@ -39,7 +39,7 @@
         <li class="nav-item d-none d-sm-inline-block">
         <a style="cursor: pointer;" class="nav-link" onclick="CargarContenido('vistas/configuracion.php','content-wrapper')">
                 Configuración</a>
-        </li>
+        </li> -->
     </ul>
 
     
