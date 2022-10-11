@@ -107,7 +107,7 @@
 
 
 
-<!--  GUIA VD 19 MIN 19:42 -->
+                 <!--  GUIA VD 19 MIN 19:42 -->
                  <script>
                      var Toast = Swal.mixin({
                          toast: true,
@@ -138,7 +138,7 @@
                                  url: 'ajax/administrar_ventas.ajax.php',
                                  dataSrc: ""
                              },
-                             
+
 
                              "columns": [{
                                  "data": "id_venta",
@@ -184,6 +184,7 @@
                                  "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
                              }
                          });
+
 
 
                          /*===================================================================*/
@@ -242,6 +243,13 @@
                              })
                          })
 
+//ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
+         setInterval(() => {
+            
+            tableVentas.ajax.reload();
+          //  console.log("Actualizar 5 segundos");
+             /* 10000 = 10segundos */
+         }, 5000);
 
 
 

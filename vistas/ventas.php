@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    
+
 </div>
 
 
@@ -432,7 +432,7 @@
                         table.cell(idx, 8).data(NuevoPrecio).draw();
 
                         //al momento de realizar la acción de disminuir el stock y ya se habia agregado el descuento del producto. 
-            table.cell(idx, 7).data("0.00");
+                        table.cell(idx, 7).data("");
 
                         recalcularTotales();
                     }
@@ -461,13 +461,13 @@
                 NuevoPrecio = "Q. " + NuevoPrecio;
 
                 table.cell(idx, 8).data(NuevoPrecio).draw();
-                
-            //al momento de realizar la acción de disminuir el stock y ya se habia agregado el descuento del producto. 
-            table.cell(idx, 7).data("0.00");
+
+                //al momento de realizar la acción de disminuir el stock y ya se habia agregado el descuento del producto. 
+                table.cell(idx, 7).data("");
 
             }
-            
-            
+
+
             recalcularTotales();
         });
 
@@ -527,10 +527,10 @@
             realizarVenta();
         });
 
-          /* ======================================================================================
+        /* ======================================================================================
         EVENTO PARA COLOCAR DESCUENTO A UN PRODUCTO
         =========================================================================================*/
-      $("#lstProductosVenta tbody").on('click', '.btnIngresarDescuento', function() {
+        $("#lstProductosVenta tbody").on('click', '.btnIngresarDescuento', function() {
             var data = table.row($(this).parents('tr')).data();
 
             Swal.fire({
@@ -541,19 +541,19 @@
                 confirmButtonText: 'Aceptar',
                 showCancelButton: true,
             }).then((result) => {
-                if (result.value ){
+                if (result.value) {
                     descuento = result.value;
-                    
+
                     var idx = table.row($(this).parents('tr')).index();
                     table.cell(idx, 7).data('Q. ' + descuento).draw();
 
-                    NuevoPrecio = ((parseFloat(data['cantidad']) * data['precio_venta_producto'].replace("Q.","")).toFixed(2) - data['descuento'].replace("Q.",""));
-                    NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2) ;
+                    NuevoPrecio = ((parseFloat(data['cantidad']) * data['precio_venta_producto'].replace("Q.", "")).toFixed(2) - data['descuento'].replace("Q.", ""));
+                    NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
 
                     table.cell(idx, 8).data(NuevoPrecio).draw();
                     recalcularTotales();
-          
-                }   
+
+                }
             });
         });
 
@@ -752,6 +752,7 @@
                             //   $("#iptCodigoVenta").focus();
 
 
+
                         } else {
 
                             // AQUI AUMENTA LA CANTIDAD DEL STOCK A 1
@@ -761,6 +762,8 @@
                             NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
                             NuevoPrecio = "Q. " + NuevoPrecio;
                             table.cell(index, 8).data(NuevoPrecio).draw();
+                            //al momento de realizar la acción de AUMENTAR el stock y ya se habia agregado el descuento del producto. 
+                            table.cell(index, 7).data("");
 
                             // RECALCULAMOS TOTALES
                             recalcularTotales();
@@ -805,7 +808,7 @@
                             'descripcion_producto': respuesta['descripcion_producto'],
                             'cantidad': respuesta['cantidad'] + ' Kg(s)',
                             'precio_venta_producto': respuesta['precio_venta_producto'],
-                            'descuento' : respuesta['descuento'],
+                            'descuento': respuesta['descuento'],
                             'total': respuesta['total'],
                             'acciones': "<center>" +
                                 "<span class='btnIngresarPeso text-success px-1' style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Aumentar Stock'> " +
@@ -842,7 +845,7 @@
                             'descripcion_producto': respuesta['descripcion_producto'],
                             'cantidad': respuesta['cantidad'] + ' Und(s)',
                             'precio_venta_producto': respuesta['precio_venta_producto'],
-                            'descuento' : respuesta['descuento'],
+                            'descuento': respuesta['descuento'],
                             'total': respuesta['total'],
                             'acciones': "<center>" +
                                 "<span class='btnAumentarCantidad text-success px-1' style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Aumentar Stock'> " +
@@ -857,8 +860,8 @@
                                 "<span class='btnEliminarproducto text-danger px-1'style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Eliminar producto'> " +
                                 "<i class='fas fa-trash fs-5'> </i> " +
                                 "</span>" +
-                                
-                                
+
+
                                 /* "<div class='btn-group'>" +
                                      "<button type='button' class=' p-0 btn btn-primary transparentbar dropdown-toggle btn-sm' data-bs-toggle='dropdown' aria-expanded='false'>" +
                                      "<i class='fas fa-cog text-primary fs-5'></i> <i class='fas fa-chevron-down text-primary'></i>" +
@@ -951,20 +954,20 @@
 
                     var data = row.data();
                     //agregame a mi array 
-                    arr[index] =  data['codigo_producto'] + ","
-                    + data['nombre_categoria'] + "," 
-                    + data['descripcion_producto'] + ","
-                     + parseFloat(data['cantidad'])+ ","
-                     + data['precio_venta_producto'].replace("Q. ", "") + "," 
-                     + data['descuento'].replace("Q. ", "")+ ","
-                     + data['total'].replace("Q. ", "") ;
+                    arr[index] = data['codigo_producto'] + "," +
+                        data['nombre_categoria'] + "," +
+                        data['descripcion_producto'] + "," +
+                        parseFloat(data['cantidad']) + "," +
+                        data['precio_venta_producto'].replace("Q. ", "") + "," +
+                        data['descuento'].replace("Q. ", "") + "," +
+                        data['total'].replace("Q. ", "");
                     //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
 
                     formData.append('arr[]', arr[index]);
 
                 });
 
-      
+
                 $.ajax({
                     url: "ajax/ventas.ajax.php",
                     method: "POST",
@@ -973,7 +976,7 @@
                     contentType: false,
                     processData: false,
                     success: function(respuesta) {
-                    console.log("🚀 ~ file: ventas.php ~ line 973 ~ realizarVenta ~ respuesta", respuesta)
+                        console.log("🚀 ~ file: ventas.php ~ line 973 ~ realizarVenta ~ respuesta", respuesta)
 
                         Swal.fire({
                             position: 'center',
@@ -1001,7 +1004,7 @@
                     title: 'Ingrese el monto en efectivo'
                 });
 
-                
+
             }
 
         } else {
