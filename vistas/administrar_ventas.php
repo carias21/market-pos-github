@@ -17,22 +17,6 @@
  </div>
  <!-- /.content-header -->
 
- <div class="content-header">
-     <div class="container-fluid">
-         <div class="row mb-2">
-             <div class="col-md-6">
-                 <h4 class="m-0">Reportes</h4>
-             </div>
-             <div class="col-md-6">
-                 <ol class="breadcrumb float-md-right">
-                     <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
-                     <li class="breadcrumb-item">Ventas</li>
-                     <li class="breadcrumb-item active">Administrar Ventas</li>
-                 </ol>
-             </div>
-         </div>
-     </div>
- </div>
 
  <div class="content pb-2">
      <div class="container-fluid">
@@ -64,7 +48,8 @@
                                  </div>
                              </div>
                              <div class="col-md-8 d-flex flex-row align-items-center justify-content-end">
-                                 <div class="form-group m-0"><a href="" class="btn btn-primary" style="width:120px;" id="btnFiltrar">Buscar</a></div>
+                                 <!-- href="" se le coloca # para que no dirija a ningun lugar -->
+                                 <div class="form-group m-0"><a href="#" class="btn btn-primary" style="width:120px;" id="btnFiltrar">Buscar</a></div>
                              </div>
                          </div>
                      </div>
@@ -116,16 +101,33 @@
                          timer: 3000
                      });
 
+                     // VD 21 MIN 6:38
                      $(document).ready(function() {
-                         var table;
+                         var tableVentas, ventas_desde, ventas_hasta;
+                         //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLUMN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 8=fecha_venta
+                         var groupColumn = 8;
+
+                         // // VD 21 MIN 8:40
                          //CRITERIOS DE BUSQUEDA
                          $('#ventas_desde, #ventas_hasta').inputmask('dd/mm/yyyy', {
                              'placeholder': 'dd/mm/yyyy'
                          })
+                         /*FUNCION PARA COLOCAR CALENDARIO PENDIENTE
+                          $('#ventas_desde, #ventas_hasta').datepicker().format('DD/MM/YYYY');
+                          */
+
                          //INDICAMOS QUE POR DEFECTO NOS MUESTRE LA FECHA INICIANDO EL MES HASTA EL DIA DE HOY EN LOS INPUTS
                          $("#ventas_desde").val(moment().startOf('month').format('DD/MM/YYYY'));
                          //CAPUTAMOS EL DIA DE HOY       
                          $("#ventas_hasta").val(moment().format('DD/MM/YYYY'));
+
+                         //VD 21 MIN 16:40
+                         ventas_desde = $("#ventas_desde").val();
+                         ventas_hasta = $("#ventas_hasta").val();
+
+                         ventas_desde = ventas_desde.substr(6, 4) + '-' + ventas_desde.substr(3, 2) + '-' + ventas_desde.substr(0, 2);
+                         //  console.log(ventas_desde, "Ventas Desde")
+                         ventas_hasta = ventas_hasta.substr(6, 4) + '-' + ventas_hasta.substr(3, 2) + '-' + ventas_hasta.substr(0, 2);
 
                          var tableVentas = $('#lstVentas').DataTable({
                              //ajustable 
@@ -136,8 +138,29 @@
                              ],
                              ajax: {
                                  url: 'ajax/administrar_ventas.ajax.php',
-                                 dataSrc: ""
+                                 type: 'POST',
+                                 dataType: 'json',
+                                 "dataSrc": "",
+                                 data: {
+                                     'accion': 2,
+                                     'fechaDesde': ventas_desde,
+                                     'fechaHasta': ventas_hasta
+                                 }
                              },
+
+                             /* ==========================================PENDIENTE (AGRUPAR POR FECHAS)===========================     //  
+                                    //VD 21 MIN 21:5 FUNCTIO PARA BUSCAR EN LA TABLA DATOS REPETIDOS
+                                    //ME MUESTRA LA FECHA PERO DEBO CONVERTIRLA A FECHA SIN HORA
+                                     drawCallback: function(settings){
+                                // Se separa fecha y hora para tomar solo la fecha
+                                        var api = this.api();
+                                        var rows = api.rows({page: 'current'}).nodes();
+                                        var last=null;
+                                        
+                                        api.column(groupColumn, {page:'current'}).data().each(function(group,i){
+                                        console.log(group,'recorre valores de la columna asignada (8)')
+                                        })
+                                     }, */
 
 
                              "columns": [{
@@ -241,19 +264,126 @@
 
                                  }
                              })
+                         });
+
+                         /*===================================================================*/
+                         //EVENTO BUSCAR POR RANGO DE FECHAS
+                         /*===================================================================*/
+                         //VD 2:50
+
+                         $('#btnFiltrar').on('click', function() {
+
+                             tableVentas.destroy();
+
+                             if ($("#ventas_desde").val() == '') {
+                                 ventas_desde = '21/10/2001';
+                             } else {
+                                 ventas_desde = $("#ventas_desde").val()
+                             }
+
+                             if ($("#ventas_hasta").val() == '') {
+                                 ventas_hasta = '21/10/2099';
+                             } else {
+                                 ventas_hasta = $("#ventas_hasta").val()
+                             }
+                             //   console.log(ventas_hasta,"buscar por rango venta_hasta");
+                             //  console.log(ventas_desde,"buscar por rango venta_desde");
+
+                             ventas_desde = ventas_desde.substr(6, 4) + '-' + ventas_desde.substr(3, 2) + '-' + ventas_desde.substr(0, 2);
+                             //    console.log(ventas_desde, "Con formato 2022-12-01")
+                             ventas_hasta = ventas_hasta.substr(6, 4) + '-' + ventas_hasta.substr(3, 2) + '-' + ventas_hasta.substr(0, 2);
+
+                             var groupColumn = 0;
+
+                             tableVentas = $('#lstVentas').DataTable({
+                                 //ajustable 
+                                 scrollX: true,
+                                 dom: 'Bfrtip',
+                                 buttons: [
+                                     'excel', 'print', 'pageLength',
+                                 ],
+                                 ajax: {
+                                     url: 'ajax/administrar_ventas.ajax.php',
+                                     type: 'POST',
+                                     dataType: 'json',
+                                     "dataSrc": "",
+                                     data: {
+                                         'accion': 2,
+                                         'fechaDesde': ventas_desde,
+                                         'fechaHasta': ventas_hasta
+                                     }
+                                 },
+
+                                 /* ==========================================PENDIENTE (AGRUPAR POR FECHAS)===========================     //  
+                                        //VD 21 MIN 21:5 FUNCTIO PARA BUSCAR EN LA TABLA DATOS REPETIDOS
+                                        //ME MUESTRA LA FECHA PERO DEBO CONVERTIRLA A FECHA SIN HORA
+                                         drawCallback: function(settings){
+                                    // Se separa fecha y hora para tomar solo la fecha
+                                            var api = this.api();
+                                            var rows = api.rows({page: 'current'}).nodes();
+                                            var last=null;
+                                            
+                                            api.column(groupColumn, {page:'current'}).data().each(function(group,i){
+                                            console.log(group,'recorre valores de la columna asignada (8)')
+                                            })
+                                         }, */
+
+
+                                 "columns": [{
+                                     "data": "id_venta",
+                                     "data": "codigo_producto"
+                                 }],
+
+
+                                 "order": [
+                                     [8, 'desc']
+                                 ],
+
+                                 columnDefs: [{
+                                         //oculte las columnas
+                                         targets: 0,
+                                         visible: false
+                                     },
+
+                                     {
+                                         targets: 6,
+                                         orderable: false,
+
+
+                                     },
+                                     {
+                                         targets: 9,
+
+                                         render: function(data, type, full, meta) {
+                                             /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
+                                             icono aparezca en el puntero del mause una mano*/
+                                             return "<center>" +
+                                                 //opciones eliminar icono
+                                                 "<span class='btnEliminarVenta text-danger px-1' style='cursor:pointer;'>" +
+                                                 "<i class='fas fa-trash fs-5'></i>" +
+                                                 "</span>" +
+                                                 "</center>"
+                                         }
+                                     }
+                                 ],
+
+                                 lengthMenu: [0, 15, 50, 100, 500, 1000],
+                                 "pageLength": 15,
+                                 "language": {
+                                     "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+
+                                 }
+                             });
+
                          })
 
-//ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
-         setInterval(() => {
-            
-            tableVentas.ajax.reload();
-          //  console.log("Actualizar 5 segundos");
-             /* 10000 = 10segundos */
-         }, 5000);
+                         //ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
+                         setInterval(() => {
 
-
-
-
+                             tableVentas.ajax.reload();
+                             console.log("Actualizar 5 segundos");
+                             // 10000 = 10segundos 
+                         }, 5000);
 
                      })
                  </script>

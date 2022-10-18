@@ -1,9 +1,9 @@
 <?php
 class AdministrarVentasControlador{
 
-    static public function ctrListarVentas(/*$fechaDesde, $fechaHasta */) {
+    static public function ctrListarVentas($fechaDesde, $fechaHasta) {
 
-    $ventas = AdministrarVentasModelo::mdlListarVentas(/*$fechaDesde, $fechaHasta*/);
+    $ventas = AdministrarVentasModelo::mdlListarVentas($fechaDesde, $fechaHasta);
 
         return $ventas;
     }

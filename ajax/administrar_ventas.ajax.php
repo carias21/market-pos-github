@@ -7,10 +7,10 @@ class AjaxAdministrarVentas
 {
     
 
-//pruebas
-public function ajaxListarVentas(){
+ // VD 21 MIN 13:10
+public function ajaxListarVentas($fechaDesde,$fechaHasta){
 
-$ventas = AdministrarVentasControlador::ctrListarVentas();
+$ventas = AdministrarVentasControlador::ctrListarVentas($fechaDesde,$fechaHasta);
 
 echo json_encode($ventas, JSON_UNESCAPED_UNICODE);
     }
@@ -35,7 +35,7 @@ if (isset($_POST["accion"]) && $_POST["accion"] == 2) { // LISTADO DE VENTAS POR
     $eliminarVenta = new AjaxAdministrarVentas();
     $eliminarVenta -> ajaxEliminarVenta();
   
-}else{
+}/*else{
 $listarVentas = new AjaxAdministrarVentas();
-$listarVentas -> ajaxListarVentas();
-}
+$listarVentas -> ajaxListarVentas($fechaDesde,$fechaHasta);
+} */
