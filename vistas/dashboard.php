@@ -36,7 +36,7 @@
                      <div class="icon">
                          <i class="ion ion-clipboard"></i>
                      </div>
-                     <a style="cursor:pointer;"  onclick="CargarContenido('vistas/productos.php','content-wrapper')"  class="small-box-footer">Mas Info <i class="fas fa-arrow-circle-right" ></i></a>
+                     <a style="cursor:pointer;" onclick="CargarContenido('vistas/productos.php','content-wrapper')" class="small-box-footer">Mas Info <i class="fas fa-arrow-circle-right"></i></a>
                  </div>
              </div>
 
@@ -68,7 +68,7 @@
                      <div class="icon">
                          <i class="ion ion-ios-cart"></i>
                      </div>
-                     <a style="cursor:pointer;"   onclick="CargarContenido('vistas/administrar_ventas.php','content-wrapper')"  class="small-box-footer">Mas Info <i class="fas fa-arrow-circle-right"></i></a>
+                     <a style="cursor:pointer;" onclick="CargarContenido('vistas/administrar_ventas.php','content-wrapper')" class="small-box-footer">Mas Info <i class="fas fa-arrow-circle-right"></i></a>
                  </div>
              </div>
 
@@ -124,7 +124,7 @@
          </div> <!-- ./row Tarjetas Informativas -->
 
 
-      <!-------------------------------------------------------------------------------------------
+         <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS VENTAS DEL MES
         -------------------------------------------------------------------------------------------->
          <!-- row Grafico de barras -->
@@ -173,7 +173,7 @@
          </div><!-- ./row Grafico de barras -->
 
 
-        <!-------------------------------------------------------------------------------------------
+         <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS PRODUCTOS VENDIDOS
         -------------------------------------------------------------------------------------------->
          <!-- row Grafico de barras -->
@@ -315,12 +315,13 @@
              success: function(respuesta) {
                  console.log("respuesta", respuesta);
                  $("#totalProductos").html(respuesta[0]['totalProductos']);
-                 $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toFixed(2).toLocaleString('DE-de'))
+                 $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toLocaleString('en'))
                  //otras opciones de mostrar las cantidades: .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}))
-                 $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toFixed(2).toLocaleString('de-DE'))
-                 $("#totalGanancias").html('Q.' + respuesta[0]['ganancias'].toFixed(2).toLocaleString('de-DE'))
-                 $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'].toLocaleString('de-DE'))
-                 $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toFixed(2).toLocaleString('de-DE'))
+                 $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toLocaleString('en'))
+                 //  console.log(totalVentas);
+                 $("#totalGanancias").html('Q.' + respuesta[0]['ganancias'].toLocaleString('en'))
+                 $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'].toLocaleString('en'))
+                 $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toLocaleString('en'))
              }
          });
          /*SetInterval siver para que cada 10 segundos se actualicen las tarjetas
@@ -334,11 +335,11 @@
                  success: function(respuesta) {
 
                      $("#totalProductos").html(respuesta[0]['totalProductos']);
-                     $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toFixed(2).toLocaleString('de-DE'))
-                     $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toFixed(2).toLocaleString('de-DE'))
-                     $("#totalGancias").html('Q.' + respuesta[0]['ganancias'].toFixed(2).toLocaleString('de-DE'))
-                     $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'])
-                     $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toFixed(2).toLocaleString('de-DE'))
+                     $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toLocaleString('en'))
+                     $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toLocaleString('en'))
+                     $("#totalGancias").html('Q.' + respuesta[0]['ganancias'].toLocaleString('en'))
+                     $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'].toLocaleString('en'))
+                     $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toLocaleString('en'))
                      console.log("respuesta", respuesta);
                  }
              });
@@ -468,7 +469,7 @@
          });
 
 
-          /* =======================================================
+         /* =======================================================
          SOLICITUD AJAX GRAFICO DE BARRAS PRODUCTOS VENDIDOS
          =======================================================*/
          $.ajax({
@@ -483,16 +484,16 @@
 
                  var descripcion_producto = [];
                  var cantidad = [];
-            
+
 
                  for (let i = 0; i < respuesta.length; i++) {
 
-                    descripcion_producto.push(respuesta[i]['descripcion_producto']);
+                     descripcion_producto.push(respuesta[i]['descripcion_producto']);
                      cantidad.push(respuesta[i]['cantidad']);
-                  
-                 /*    total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i][
-                         'total_venta'
-                     ] ); */
+
+                     /*    total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i][
+                             'total_venta'
+                         ] ); */
 
                  }
 
@@ -501,25 +502,28 @@
 
                  // console.log(total_ventas_mes);
 
-                   //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
+                 //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
                  $("#title-header_Productos_vendidos").html('Cantidad productos vendidos');
 
                  var barChartCanvas = $("#barChart_Productos_Vendidos").get(0).getContext('2d');
 
                  var areaChartData = {
                      labels: descripcion_producto,
-                     datasets: [/*{
-                        label: 'Ventas del mes anterior',
-                           //color de las barras
-                        // backgroundColor: 'rgba(60,141,188,0.9)',
-                        /* data: total_venta_ant
-                     },*/ {
-                         label: 'Cantidad Productos vendidos',
-                           //color de las barras'rgba(60,141,188,0.9)',
-                         backgroundColor: 'rgb(65, 0, 0)',
-                         
-                         data: cantidad
-                     }]
+                     datasets: [
+                         /*{
+                                                 label: 'Ventas del mes anterior',
+                                                    //color de las barras
+                                                 // backgroundColor: 'rgba(60,141,188,0.9)',
+                                                 /* data: total_venta_ant
+                                              },*/
+                         {
+                             label: 'Cantidad Productos vendidos',
+                             //color de las barras'rgba(60,141,188,0.9)',
+                             backgroundColor: 'rgb(65, 0, 0)',
+
+                             data: cantidad
+                         }
+                     ]
                  }
 
                  var barChartData = $.extend(true, {}, areaChartData);

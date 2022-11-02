@@ -47,6 +47,9 @@
                                      </div>
                                  </div>
                              </div>
+
+
+
                              <div class="col-md-8 d-flex flex-row align-items-center justify-content-end">
                                  <!-- href="" se le coloca # para que no dirija a ningun lugar -->
                                  <div class="form-group m-0"><a href="#" class="btn btn-primary" style="width:120px;" id="btnFiltrar">Buscar</a></div>
@@ -57,6 +60,9 @@
              </div>
          </div>
 
+         <div class="col-md-4 mb-3">
+             <h4>Total Venta: Q. <span id="id_totalVenta">0.00</span></h4>
+         </div>
 
          <!-- Main content -->
          <div class="content pb-2">
@@ -103,6 +109,7 @@
 
                      // VD 21 MIN 6:38
                      $(document).ready(function() {
+                        
                          var tableVentas, ventas_desde, ventas_hasta;
                          //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLUMN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 8=fecha_venta
                          var groupColumn = 8;
@@ -140,13 +147,17 @@
                                  url: 'ajax/administrar_ventas.ajax.php',
                                  type: 'POST',
                                  dataType: 'json',
+                                 //VD 22 MIN 1:10
                                  "dataSrc": "",
                                  data: {
                                      'accion': 2,
                                      'fechaDesde': ventas_desde,
                                      'fechaHasta': ventas_hasta
                                  }
+                                
                              },
+
+
 
                              /* ==========================================PENDIENTE (AGRUPAR POR FECHAS)===========================     //  
                                     //VD 21 MIN 21:5 FUNCTIO PARA BUSCAR EN LA TABLA DATOS REPETIDOS
@@ -207,7 +218,6 @@
                                  "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
                              }
                          });
-
 
 
                          /*===================================================================*/
@@ -303,14 +313,26 @@
                                      'excel', 'print', 'pageLength',
                                  ],
                                  ajax: {
+                                    
                                      url: 'ajax/administrar_ventas.ajax.php',
                                      type: 'POST',
                                      dataType: 'json',
-                                     "dataSrc": "",
+                                     //VD 22 MIN 1.10
+                                   
                                      data: {
                                          'accion': 2,
                                          'fechaDesde': ventas_desde,
                                          'fechaHasta': ventas_hasta
+                                     },
+                                     "dataSrc": function(respuesta) {
+                                           console.log(respuesta, "Total Venta !");
+                                         var TotalVenta = 0.00;
+                                         for (let i = 0; i < respuesta.length; i++) {
+                                             TotalVenta = parseFloat(respuesta[i][7].replace('Q.', '')) + parseFloat(TotalVenta);
+                                         }
+                                         $("#id_totalVenta").html(TotalVenta.toFixed(2).toString().replace(
+                                             /\d(?=(\d{3})+\.)/g, "$&,"))
+                                         return respuesta;
                                      }
                                  },
 
@@ -376,15 +398,15 @@
                              });
 
                          })
+    //ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
+  /*  setInterval(() => {
 
-                         //ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
-                         setInterval(() => {
-
-                             tableVentas.ajax.reload();
-                             console.log("Actualizar 5 segundos");
-                             // 10000 = 10segundos 
-                         }, 5000);
-
+tableVentas.ajax.reload();
+console.log("Actualizar 7 segundos");
+// 10000 = 10segundos 
+}, 7000);
+                             
+                   */ 
                      })
                  </script>
 

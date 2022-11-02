@@ -51,7 +51,7 @@
                 <div class="row">
 
                     <!--LISTADO DE MODULOS -->
-                    <div class="col-md-6">
+                    <div class="col-md-8">
 
                         <div class="card card-info card-outline shadow">
 
@@ -91,7 +91,7 @@
                     <!--/. col-md-6 -->
 
                     <!--FORMULARIO PARA REGISTRO Y EDICION -->
-                    <div class="col-md-3">
+                 <!-- <div class="col-md-3">
 
                         <div class="card card-info card-outline shadow">
 
@@ -183,11 +183,13 @@
 
                         </div>
 
-                    </div>
+                    </div>   -->
                     <!--/. col-md-3 -->
+                    
+
 
                     <!--ARBOL DE MODULOS PARA REORGANIZAR -->
-                    <div class="col-md-3">
+                    <div class="col-md-4">
 
                         <div class="card card-info card-outline shadow">
 

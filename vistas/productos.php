@@ -114,7 +114,7 @@
                 <!--  Tabla original:   <table id="tbl_productos" class="table table-striped w-100 shadow">-->
                 <table id="tbl_productos" class="table table-striped table-hover w-100 shadow">
                      
-                    <thead class="bg-info">
+                <thead class="bg-info text-left">
                         <tr style="font-size: 15px;">
                             <th></th>
                             <th>id</th>
@@ -437,7 +437,7 @@
                     targets: 9,
                     createdCell: function(td, cellData, rowData, row, col) {
                         if (parseFloat(rowData[9]) <= parseFloat(rowData[10])) {
-                            $(td).parent().css('background', '#FA8072')
+                            $(td).parent().css('background', '#ffa500')
                         }
                     }
                 },
