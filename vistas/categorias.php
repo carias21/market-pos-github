@@ -42,6 +42,7 @@
                 </div>
             </div>
         </div>
+
         <!--FORMULARIO PARA EL REGISTRO Y EDIACION -->
         <div class="col-md-4">
             <div class="card card-info card-outline shadow">
@@ -79,7 +80,7 @@
                                 <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selMedida" required>
                                     <option value="">---Selecione una medida---</option>
                                     <option value="0">Unidades</option>
-                                 <!--   <option value="1">Kilogramos</option> -->
+                                    <option value="1">Kilogramos</option>
                                 </select>
                                 <div class="invalid-feedback">Seleccione una medida</div>
 
@@ -117,7 +118,12 @@
         var idCategoria = 0;
         var categoria = "";
         var medida = "";
-
+        
+        /*===================================================================
+        =====================================================================
+                                       CARGAR DATATABLES (3 TABLES)
+        =====================================================================
+        ====================================================================*/
         var tableCategorias = $('#lstCategorias').DataTable({
             dom: 'Bfrtip',
             buttons: [
@@ -125,8 +131,10 @@
             ],
             ajax: {
                 url: 'ajax/categorias.ajax.php',
-                dataSrc: ""
+                dataSrc: "",
+                
             },
+            scrollX: true,
             //INDICAMOS QUE EN LA COLUMNA 2, SI ES 0 QUE COLOQUE UNIDADES Y SI ES 1 COLOQUE KILOGRAMOS
             columnDefs: [{
                     targets: 2,
@@ -161,7 +169,6 @@
             "columns": [{
                 "data": "id_categoria"
             }],
-            scrollX: true,
 
             "order": [
                 [0, 'desc']
@@ -172,7 +179,18 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
             }
         });
-        //opcion al momento de dar clic en el icoono editar categoria, seleccione la fila y seguidamente al dar clic quite el selecionado
+
+
+        /*===================================================================
+        =====================================================================
+                                       EVENTOS
+        =====================================================================
+        ====================================================================*/
+
+
+        /*===========================================================================================
+           EVENTOS EDITAR CATEGORIA,  seleccione la fila y seguidamente al dar clic quite el selecionado
+        ============================================================================================*/
         $('#lstCategorias tbody').on('click', '.btnEditarCategoria', function() {
 
             var data = tableCategorias.row($(this).parents('tr')).data();
@@ -199,6 +217,9 @@
             }
         })
 
+        /*===========================================================================================
+        EVENTOS ELIMINAR CATEGORIA
+        ============================================================================================*/
         $('#lstCategorias tbody').on('click', '.btnEliminarCategoria', function() {
 
             accion = 5;
@@ -253,7 +274,10 @@
             })
         })
 
-        //Cuando detecte el evento click el boton procede a realizar lo siguiente
+
+        /*===========================================================================================
+         REGISTRAR CATEGORIA
+         ============================================================================================*/
         document.getElementById("btnRegistrarCategoria").addEventListener("click", function() {
 
             // Get the forms we want to add validation styles to
@@ -261,7 +285,6 @@
 
             // Loop over them and prevent submission
             var validation = Array.prototype.filter.call(forms, function(form) {
-
                 //si los datos son validados correctamente
                 if (form.checkValidity() === true) {
 
@@ -269,39 +292,26 @@
                     categoria = $("#iptCategoria").val();
                     medida = $("#selMedida").val();
 
-                    tableCategorias.rows().eq(0).each(function(index) {
-                        var row = tableCategorias.row(index);
-                        var data = row.data();
+                    var datos = new FormData();
 
-                        //SI LA CATEGORIA ESTA REPETIDA, SE PAUSA EL PROCESO. 
-                        //si el codigo del producto es igual a 1 de los codigos ingresados anteriormente en la data table realiza lo sifuiente
-                        if ((categoria) == data[1] && ((medida) == data[2])) {
-                            Toast.fire({
-                                    icon: 'error',
-                                    title: 'Categoría Repetida'
-                                });
-                              
-                            system("PAUSE");
-                            return 0;
-                        } else {
-                            var datos = new FormData();
+                    datos.append("idCategoria", idCategoria);
+                    datos.append("categoria", categoria);
+                    datos.append("medida", medida);
 
-                            datos.append("idCategoria", idCategoria);
-                            datos.append("categoria", categoria);
-                            datos.append("medida", medida);
+                    Swal.fire({
+                        title: 'Está seguro de guardar la categoría?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Aceptar!',
+                        cancelButtonText: 'Cancelar!',
+                    }).then((result) => {
 
-                            Swal.fire({
-                                title: 'Está seguro de guardar la categoría?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Aceptar!',
-                                cancelButtonText: 'Cancelar!',
-                            }).then((result)=>{
-                                if (result.isConfirmed) {
-                                    $.ajax({
-                                        url: "ajax/categorias.ajax.php",
+                        if (result.isConfirmed) {
+
+                            $.ajax({
+                                url: "ajax/categorias.ajax.php",
                                 type: "POST",
                                 //aqui es donde enviamos los datos capturados anteriormente
                                 data: datos,
@@ -310,39 +320,39 @@
                                 processData: false,
                                 dataType: 'json',
                                 success: function(respuesta) {
-                                    Toast.fire({
-                                        icon: 'success',
-                                        title: respuesta
-                                    });
-                                    idCategoria = 0;
-                                    categoria = "";
-                                    medida = "";
+                                    if (respuesta == "ok") {
 
-                                    $("#iptCategoria").val("");
-                                    $("#selMedida").val("");
+                                        Toast.fire({
+                                            icon: 'success',
+                                            title: 'Registrado, correctamente'
+                                        });
 
-                                    tableCategorias.ajax.reload();
-                                    $(".needs-validation").removeClass("was-validated");
+                                        idCategoria = 0;
+                                        categoria = "";
+                                        medida = "";
+
+                                        $("#iptCategoria").val("");
+                                        $("#selMedida").val("");
+
+                                        tableCategorias.ajax.reload();
+                                        $(".needs-validation").removeClass("was-validated");
+                                    } else {
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: 'La categoría no se pudo registrar'
+                                        });
+                                    }
                                 }
-
-                                    });
-                                }
-
-                            })
+                            });
                         }
-                         //me solicita que tengo que ingresar los campos 
-                form.classList.add('was-validated');
-
-
                     })
-
-
                 }
+                //me solicita que tengo que ingresar los campos 
+                form.classList.add('was-validated');
 
             })
 
-        })
-
+        });
     })
 </script>
 

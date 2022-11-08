@@ -38,11 +38,11 @@ if(isset($_POST['idCategoria'])&& $_POST['idCategoria'] > 0){//Editar
     $editarCategoria->categoria = $_POST['categoria'];
     $editarCategoria->medida = $_POST['medida'];
     $editarCategoria->ajaxGuardarCategoria(0);
-//cuando el valor es igual a 0 registra
+//Accion 5, eliminacion
 }else if(isset($_POST['accion'])&& $_POST['accion']==5){
     $eliminarCategoria = new AjaxCategorias();
     $eliminarCategoria -> ajaxEliminarCategoria();
-
+//cuando el valor es igual a 0 registra
 }else if(isset($_POST['idCategoria'])&& $_POST['idCategoria']==0){//REGISTRAR
     $registrarCategoria = new AjaxCategorias();
     $registrarCategoria->idCategoria = $_POST['idCategoria'];

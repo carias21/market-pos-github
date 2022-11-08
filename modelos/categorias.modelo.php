@@ -4,6 +4,11 @@ require_once "conexion.php";
 
 class CategoriasModelo{
 
+
+    /*=========================================================================================================================
+    LISTAR LAS CATEGORIAS
+    ==========================================================================================================================*/
+
     static public function mdlListarCategorias(){
 
         $stmt = Conexion::conectar()->prepare("SELECT  id_categoria, nombre_categoria, aplica_peso as medida,
@@ -17,7 +22,12 @@ class CategoriasModelo{
         return $stmt->fetchAll();
     }
 
+    /*=========================================================================================================================
+    REGISTRO DE CATEGORIAS 
+    ==========================================================================================================================*/
+
     static public function mdlGuardarCategoria($accion, $idCategoria, $categoria, $medida){
+try{
         $date = null;
         if($accion > 0){//Registrar
             
@@ -29,13 +39,13 @@ class CategoriasModelo{
             $stmt -> bindParam(":categoria", $categoria, PDO::PARAM_STR);
             $stmt -> bindParam(":medida", $medida, PDO::PARAM_STR);
             $stmt -> bindParam(":fecha_actualizacion_categoria", $date, PDO::PARAM_STR);
-
             if($stmt -> execute()){
-                $resultado = "Se registro la categoría correctamente";
+                $resultado = "ok";
             }else{
-                $resultado = "Error al registrar la categoría";            
-        }
-    }else{//Editar
+                $resultado = "error";
+            }  
+
+    }else {//Editar
         $date = date("Y-m-d H:i:s");
 
         $stmt = Conexion::conectar()->prepare("UPDATE categorias
@@ -51,10 +61,14 @@ class CategoriasModelo{
     $stmt -> bindParam(":fecha_actualizacion_categoria", $date, PDO::PARAM_STR);
     
     if($stmt -> execute()){
-        $resultado = "Se Actualizó la categoria correctamente";
+        $resultado = "ok";
     }else{
-        $resultado = "Error al registrar la categoría";            
+        $resultado ="error";           
     }
+}
+
+}catch (Exception $e) {
+    $resultado = 'Excepción capturada: '.  $e->getMessage(). "\n";
 }
 return $resultado;
 //no dejar ninguna conexion abierta
@@ -62,6 +76,9 @@ $stmt = null;
 
 }
 
+/*=========================================================================================================================
+    ELIMINACION DE CATEGORIA
+    ==========================================================================================================================*/
 static public function mdlEliminarCategoria($tableCategorias, $id_categoria, $nameId){
 
     $stmt = Conexion::conectar()->prepare("DELETE FROM $tableCategorias WHERE $nameId = :$nameId");
