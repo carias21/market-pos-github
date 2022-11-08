@@ -34,12 +34,118 @@
             </li>
         </ul>
 
-        <!--------------------------------------------------------------------------------------------------------------------->
+
+        <!--============================================================================================================================================
+        CONTENIDO GENERAL
+        =============================================================================================================================================-->
         <div class="tab-content" id="tabsContent-asignar-modulos-perfil">
 
+            <!--============================================================================================================================================
+        CONTENIDO PARA ADMINISTRAR PERFILES
+        =============================================================================================================================================-->
+
             <div class="tab-pane fade mt-4 px-4" id="content-perfiles" role="tabpanel" aria-labelledby="content-perfiles-tab">
-                <h4>Admministrar Perfiles</h4>
+                <div class="row">
+
+                    <!--LISTADO DE MODULOS -->
+                    <div class="col-md-8">
+
+                        <div class="card card-info card-outline shadow">
+
+                            <div class="card-header">
+
+                                <h3 class="card-title"><i class="fas fa-list"></i> Listado de Perfiles</h3>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <table id="tblPerfiles" class="display nowrap table-striped shadow rounded" style="width:100%">
+
+                                    <thead class="bg-info text-left">
+
+                                        <th>id perfil</th>
+                                        <th>Descripción</th>
+                                        <th>Estado</th>
+                                        <th>F. Creación </th>
+                                        <th>F. Actualización </th>
+                                        <th class="text-center">Acciones</th>
+                                        <!--Se quitan las fechas ya que da un error y no son muy importantes-->
+                                        <!--  <th>F. Creación</th>
+                    <th>F. Actualización</th>  -->
+                                    </thead>
+                                    <tbody class="small text left">
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!--FORMULARIO PARA EL REGISTRO Y EDIACION -->
+                    <div class="col-md-4">
+                        <div class="card card-info card-outline shadow">
+                            <div class="card-header">
+                                <h3 class="card-title"><i class="fas fa-edit"></i> Registro de Perfiles </h3>
+                            </div>
+
+                            <div class="card-body">
+                                <form class="needs-validation" novalidate>
+                                    <div class="row">
+                                        <!--------------------------------------------------------------------------------------------------------------->
+                                        <div class="col-md-12">
+                                            <div class="form-group mb-2">
+                                                <label class="col-form-label" for="iptPerfil">
+
+                                                    <i class="fas fa-regular fa-users"></i>
+                                                    <span class="small">Perfil</span><span class="text-danger">*</span>
+                                                </label>
+
+                                                <input type="text" class="form-control form-control-sm" id="iptPerfil" name="iptPerfil" placeholder="Ingrese el perfil" required>
+
+                                                <div class="invalid-feedback">Debe ingresar el perfil</div>
+                                            </div>
+                                        </div>
+                                        <!--------------------------------------------------------------------------------------------------------------->
+                                        <div class="col-md-12">
+                                            <div class="form-group mb-2"></div>
+
+                                            <label class="col-form-label" for="selEstado">
+                                                <i class="fas fa-solid fa-user-check"></i>
+                                                <span class="small">Estado</span><span class="text-danger">*</span>
+                                            </label>
+
+                                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selEstado" required>
+                                                <option value="">---Selecione un estado---</option>
+                                                <option value="0"> 0 - Inactivo</option>
+                                                <option value="1"> 1 - Activo</option>
+                                            </select>
+                                            <div class="invalid-feedback">Seleccione un estado</div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group m-0 mt-3">
+                                            <a style="cursor:pointer;" class="btn btn-primary btn-sm w-100" id="btnRegistrarPerfil">Registrar Perfil
+                                            </a>
+
+                                        </div>
+                                    </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <!--/.row -->
             </div>
+
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
@@ -91,7 +197,7 @@
                     <!--/. col-md-6 -->
 
                     <!--FORMULARIO PARA REGISTRO Y EDICION -->
-                 <!-- <div class="col-md-3">
+                    <!-- <div class="col-md-3">
 
                         <div class="card card-info card-outline shadow">
 
@@ -185,7 +291,7 @@
 
                     </div>   -->
                     <!--/. col-md-3 -->
-                    
+
 
 
                     <!--ARBOL DE MODULOS PARA REORGANIZAR -->
@@ -238,8 +344,10 @@
                 <!--/.row -->
 
             </div><!-- /#content-modulos -->
-            <!------------------------------------------------------------------------------------------------------------------------------------>
 
+            <!--============================================================================================================================================
+            CONTENIDO PARA ASIGNACION DE PERFILES
+            =============================================================================================================================================-->
 
             <div class="tab-pane fade active show mt-4 px-4" id="content-modulo-perfil" role="tabpanel" aria-labelledby="content-modulo-perfil-tab">
                 <h4>Administrar Modulos y Perfiles</h4>
@@ -315,12 +423,25 @@
 <!-- /.content -->
 
 <script>
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000
+    });
+
+
     /* =============================================================
     VARIABLES GLOBALES
     ============================================================= */
-    var tbl_perfiles_asignar, tbl_modulos, modulos_usuario, modulos_sistema;
+    var tbl_perfiles_asignar, tbl_modulos, modulos_usuario, modulos_sistema, tbl_perfiles;
 
     $(document).ready(function() {
+
+        //variables para registrar o editar el perfil
+        var idPerfil = 0;
+        var perfil = "";
+        var estado = "";
 
 
 
@@ -330,6 +451,8 @@
         cargarDataTables();
         //VD 30 MIN 24.30
         ajustarHeadersDataTables($('#tblModulos'));
+        ajustarHeadersDataTables($('#tblPerfiles'));
+        ajustarHeadersDataTables($('#tbl_perfiles_asignar'));
         iniciarArbolModulos();
 
 
@@ -339,6 +462,12 @@
         var idPerfil = 0;
         var selectedElmsIds = [];
 
+
+        /*===================================================================
+        =====================================================================
+                                             EVENTOS
+        =====================================================================
+        ====================================================================*/
 
 
         /* =============================================================
@@ -366,7 +495,7 @@
                 tbl_perfiles_asignar.$('tr.selected').removeClass('selected');
 
                 $(this).parents('tr').addClass('selected');
-                
+
                 //VD 28 MIN 6:00
                 //obtenemos el id del perfil
                 idPerfil = data[0];
@@ -401,6 +530,185 @@
                 });
             }
 
+        })
+
+        /*========================================================================================================
+        EVENTO EDITAR PERFIL seleccione la fila y seguidamente al dar clic quite el selecionado
+        ==========================================================================================================*/
+        $('#tblPerfiles tbody').on('click', '.btnEditarPerfil', function() {
+
+            var data = tbl_Perfiles.row($(this).parents('tr')).data();
+
+            if ($(this).parents('tr').hasClass('selected')) {
+
+                $(this).parents('tr').removeClass('selected');
+
+                idPerfil = 0;
+                //al momento de selecionar para editar la categoria por 2da vez me borre los inputs de editar categoria
+                $("#iptPerfil").val("");
+                $("#selEstado").val("");
+
+            } else {
+
+                tbl_Perfiles.$('tr.selected').removeClass('selected');
+                $(this).parents('tr').addClass('selected');
+
+                idPerfil = data[0];
+                $("#iptPerfil").val(data[1]);
+                $("#selEstado").val(data[2]);
+
+
+            }
+        })
+
+        /*====================================================================
+        EVENTO REGISTRAR NUEVO PERFIL
+        ====================================================================== */
+        document.getElementById("btnRegistrarPerfil").addEventListener("click", function() {
+
+            // Get the forms we want to add validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                //si los datos son validados correctamente
+                if (form.checkValidity() === true) {
+
+                    //capturamos los valores para llevar a la base de datos
+                    perfil = $("#iptPerfil").val();
+                    estado = $("#selEstado").val();
+
+                    var datos = new FormData();
+
+                    datos.append("idPerfil", idPerfil);
+                    datos.append("perfil", perfil);
+                    datos.append("estado", estado);
+
+                    Swal.fire({
+                        title: 'Esta seguro de registrar el perfil?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Aceptar!',
+                        cancelButtonText: 'Cancelar!',
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+
+                            console.log(idPerfil, perfil, estado)
+
+                            $.ajax({
+                                url: "ajax/perfil.ajax.php",
+                                type: "POST",
+                                //aqui es donde enviamos los datos capturados anteriormente
+                                data: datos,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(respuesta) {
+                                    if (respuesta == "ok") {
+
+                                        Toast.fire({
+                                            icon: 'success',
+                                            title: 'Registrado, correctamente'
+                                        });
+
+                                        idPerfil = 0;
+                                        perfil = "";
+                                        estado = "";
+
+                                        $("#iptPerfil").val("");
+                                        $("#selEstado").val("");
+
+                                        tbl_Perfiles.ajax.reload();
+                                        tbl_perfiles_asignar.ajax.reload();
+                                        $(".needs-validation").removeClass("was-validated");
+                                    } else {
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: 'El perfil no se registro'
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    })
+                }
+                //me solicita que tengo que ingresar los campos 
+                form.classList.add('was-validated');
+
+            })
+
+        });
+
+        /*===========================================================================================
+        EVENTO ELIMINAR PERFIL
+        ============================================================================================*/
+        $('#tblPerfiles tbody').on('click', '.btnEliminarPerfil', function() {
+
+            accion = 2;
+            var data = tbl_Perfiles.row($(this).parents('tr')).data();
+
+            //     alert(data["id_categoria", idCategoria]);   
+            //     console.log(data);
+            var idPerfil = data["id_perfil"]
+            //   alert(idPerfil);
+
+            Swal.fire({
+                title: 'Está seguro el perfil' + data[1] + '?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar!',
+                cancelButtonText: 'Cancelar!',
+            }).then((result) => {
+                //SI ID PERFIL = 1 = ADMNISTRADOR, NO PROCEDE A LA ELIMINACION
+                if (result.isConfirmed) {
+                    if (idPerfil == 1) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'No se puede eliminar el Administrador'
+                        });
+
+                    } else {
+                        var datos = new FormData();
+
+                        datos.append("accion", accion);
+                        datos.append("id_perfil", idPerfil);
+
+                        $.ajax({
+                            url: "ajax/perfil.ajax.php",
+                            method: "POST",
+                            data: datos,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            success: function(respuesta) {
+                                if (respuesta == "ok") {
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: 'Se elimino el perfil correctamente'
+                                    });
+                                    tbl_Perfiles.ajax.reload();
+                                    tbl_perfiles_asignar.ajax.reload();
+                                } else {
+                                    Toast.fire({
+                                        icon: 'error',
+                                        title: 'El perfil no se pudo eliminar'
+                                    });
+                                }
+                            }
+                        });
+
+                    }
+
+
+
+                }
+            })
         })
 
 
@@ -440,6 +748,8 @@
                 }));
             }
         })
+
+
         /*====================================================================
         EVENTO PARA MARCAR TODOS LOS CHECKBOX DEL ARBOL DE MODULOS
         ====================================================================== */
@@ -462,6 +772,7 @@
             }));
         })
 
+
         /*====================================================================
         EVENTO REGISTRO EN BASE DE DATOS DE LOS MODULOS ASOCIADOS O SELECCIONADOS AL PERFIL
         ====================================================================== */
@@ -469,7 +780,7 @@
         $("#asignar_modulos").on('click', function() {
             //pruebas para validar que si estan llegando los eventos
             //  alert("entro al evento")
-        
+
             selectedElmsIds = []
             var selectedElms = $('#modulos').jstree("get_selected", true);
 
@@ -485,12 +796,12 @@
             //quitamos valores duplicados
             let modulosSeleccionados = [...new Set(selectedElmsIds)];
 
-             //obtenemos el valor del modulo de inicio
+            //obtenemos el valor del modulo de inicio
             let modulo_inicio = $("#select_modulos").val();
-             console.log(modulosSeleccionados, "modulosSeleccionados no duplicados");
-          //  console.log(modulo_inicio, ' <- numero del modulo inicio')
+            console.log(modulosSeleccionados, "modulosSeleccionados no duplicados");
+            //  console.log(modulo_inicio, ' <- numero del modulo inicio')
 
-          //VD 28 MIN 52:36
+            //VD 28 MIN 52:36
             if (idPerfil != 0 && modulosSeleccionados.length > 0) {
                 registrarPerfilModulos(modulosSeleccionados, idPerfil, modulo_inicio);
             } else {
@@ -509,7 +820,7 @@
 
         /*======================================================================
         ====================================================================
-             MANTENIMIENTO DE MODULOS
+           EVENTO  MANTENIMIENTO DE MODULOS
         ======================================================================
         ====================================================================== */
         //VD 30 MIN 27.00
@@ -517,7 +828,7 @@
 
 
         /*====================================================================
-           REORGANIZAR MODULOS DEL SISTEMA
+          EVENTO REORGANIZAR MODULOS DEL SISTEMA
            ====================================================================== */
         //VD 31 MIN 1:10
         $("#btnReordenarModulos").on('click', function() {
@@ -526,7 +837,7 @@
         })
 
         /*====================================================================
-           REORGANIZAR MODULOS DEL SISTEMA
+          EVENTO REORGANIZAR MODULOS DEL SISTEMA
            ====================================================================== */
         //VD 31 MIN 1:10
         $("#btnReiniciar").on('click', function() {
@@ -535,7 +846,7 @@
         })
 
         /*=============================================================
-        VISTA PREVIA DEL ICONO DE LA VISTA
+        EVENTO VISTA PREVIA DEL ICONO DE LA VISTA
         ==============================================================*/
         $("#iptIconoModulo").change(function() {
 
@@ -549,15 +860,87 @@
         /*===================================================================*/
         //EVENTO QUE GUARDA LOS DATOS DEL MODULO
         /*===================================================================*/
-        document.getElementById("btnRegistrarModulo").addEventListener("click", function() {
-            fnRegistrarModulo();
-        })
+        /*  document.getElementById("btnRegistrarModulo").addEventListener("click", function() {
+              fnRegistrarModulo();
+          })*/
+
+
 
 
     }) // FIN DOCUMENT READY
 
 
+
+    /*===================================================================
+    =====================================================================
+                                  FUNCTION
+    =====================================================================
+    ====================================================================*/
+
+
+    /*===================================================================
+    CARGAR DATATABLES (3 TABLES)
+    ===================================================================*/
     function cargarDataTables() {
+
+        //DATA TABLE PERFILES
+        tbl_Perfiles = $('#tblPerfiles').DataTable({
+            ajax: {
+                async: false,
+                url: 'ajax/perfil.ajax.php',
+                type: 'POST',
+                dataType: 'json',
+                dataSrc: "",
+                data: {
+                    accion: 1
+                }
+            },
+            scrollX: true,
+            order: [
+                [0, 'asc']
+            ],
+            columnDefs: [{
+                    targets: 2,
+                    sortable: false,
+                    createdCell: function(td, celldata, rowData, row, col) {
+                        //si el valor de la celda 3 es = a 1 entonces significa que esta activo
+                        if (parseInt(rowData[2]) == 1) {
+                            $(td).html("Activo")
+                        } else {
+                            $(td).html("Inactivo")
+                        }
+                    }
+                },
+                {
+                    //columna 5
+                    targets: 5,
+                    sortable: false,
+                    render: function(data, type, full, meta) {
+                        return "<center>" +
+                            "<span class='btnEditarPerfil text-primary px-1' style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Editar Perfil'> " +
+                            "<i class='fas fa-pencil-alt fs-5'></i> " +
+                            "</span> " +
+                            "<span class='btnEliminarPerfil text-danger px-1'style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Eliminar Perfil'> " +
+                            "<i class='fas fa-trash fs-5'> </i> " +
+                            "</span>" +
+                            "</center>";
+                        if (parseInt(rowData[0]) == 1) {
+
+                        }
+                    }
+
+                }
+            ],
+            "columns": [{
+                "data": "id_perfil"
+            }],
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+            }
+        });
+
+
+        //DATA TABLE ASIGNAR PERFILES
         tbl_perfiles_asignar = $('#tbl_perfiles_asignar').DataTable({
             ajax: {
                 async: false,
@@ -603,7 +986,7 @@
             }
         });
 
-
+        //DATA TABLE MODULOS
         //VD 30 MIN 15.25
         tbl_modulos = $('#tblModulos').DataTable({
             ajax: {
@@ -643,6 +1026,8 @@
 
         });
     }
+
+
     //FUNCION AJUSTAR LAS TABLAS POR DEFORMARCE O NO SE MIRAN BIEN
     //VD 30 MIN 25.10
     function ajustarHeadersDataTables(element) {
@@ -714,11 +1099,11 @@
     function seleccionarModulosPerfil(pin_idPerfil) {
         //desmarcar los checks de los modulos
         $('#modulos').jstree('deselect_all');
-      //  console.log("pin_idPerfil", pin_idPerfil);
+        //  console.log("pin_idPerfil", pin_idPerfil);
 
         for (let i = 0; i < modulos_sistema.length; i++) {
 
-          //  console.log("modulos_sistema[i]['id']", modulos_sistema[i]["id"]);
+            //  console.log("modulos_sistema[i]['id']", modulos_sistema[i]["id"]);
 
             if (parseInt(modulos_sistema[i]["id"]) == parseInt(modulos_usuario[i]["id"]) && parseInt(modulos_usuario[i]["sel"]) == 1) {
                 // if (modulos_sistema[i]["id"] == modulos_usuario[i]["id"] && modulos_usuario[i]["sel"] == 1) {

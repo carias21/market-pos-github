@@ -13,9 +13,9 @@ class UsuarioControlador{
 
             $usuario = $_POST["loginUsuario"];
                //password encriptada abc123....
-            $password = crypt($_POST["loginPassword"], '$2y$10$nsEzZoLm/iGBPK0LnWjN7uCkSAXlIQsVUHSGkaAJlOnPQn8dFEnM2');
-            /*password 123456 encrip
-               $password = crypt($_POST["loginPassword"], '$2a$07$azybxcags23425sdg23sdfhsd$');  */
+          //  $password = crypt($_POST["loginPassword"], '$2y$10$tPpAmr2RMlPrMJrcQZATIOw5SmFk2Op3rScHE1N.J4CJi5nUVS0Za');
+            //password 123456 encrip
+               $password = crypt($_POST["loginPassword"], '$2y$10$mhJ8K96kTn19ODyVSKr.mOV4JrDvhonQ6d6ex75yC3VRDMjSz5/j2');  
             $respuesta = UsuarioModelo::mdlIniciarSesion($usuario, $password);
 
 

@@ -5,4 +5,14 @@ class PerfilControlador{
         $modulos = PerfilModelo::mdlObtenerPerfiles();
         return $modulos;
     }
+  
+    static public function ctrGuardarPerfil($accion, $idPerfil, $perfil, $estado){
+        $guardarPerfil = PerfilModelo::mdlGuardarPerfil($accion, $idPerfil, $perfil, $estado);
+        return $guardarPerfil;
+    }
+
+    static public function ctrEliminarPerfil($tablePerfiles, $id_Perfil, $nameId){
+        $respuesta = PerfilModelo::mdlEliminarPerfil($tablePerfiles, $id_Perfil, $nameId);
+        return $respuesta;
+    }
 }
