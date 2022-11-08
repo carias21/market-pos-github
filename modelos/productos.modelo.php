@@ -191,6 +191,7 @@ class ProductosModelo{
             }else{
                 $resultado = "error";
             }  
+        
         }catch (Exception $e) {
             $resultado = 'Excepción capturada: '.  $e->getMessage(). "\n";
         }

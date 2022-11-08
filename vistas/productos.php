@@ -130,7 +130,7 @@
                             <th>Ventas</th>
                             <th>Fecha Creación</th>
                             <th>Fecha Actualización</th>
-                            <th class="text-cetner">Opciones</th>
+                            <th class="text-center">Opciones</th>
                         </tr>
                     </thead>
                     <tbody class="text-small">
@@ -147,7 +147,6 @@
 <!-- Ventana Modal para ingresar o modificar un Productos -->
 <!-- *************************** CABECERA ******************** -->
 <!-- Ingresar un producto, es la ventana para agregar el producto nuevo -->
-
 <div class="modal fade" id="mdlGestionarProducto" role="dialog">
 
     <div class="modal-dialog modal-lg">
@@ -168,8 +167,8 @@
 
             <!-- *************************** CUERPO DE LA VENTA ******************** -->
             <div class="modal-body">
-
-                <form class="needs-validation" novalidate>
+    
+                <form class="needs-validation" novalidate >
                     <!-- Abrimos una fila -->
                     <div class="row">
 
@@ -179,7 +178,8 @@
                                 <label class="" for="iptCodigoReg"><i class="fas fa-barcode fs-6"></i>
                                     <span class="small">CODIGO DEL PRODUCTO</span><span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
+                                <input type="text" class="form-control form-control-sm" id="iptCodigoReg"
+                                    name="iptCodigoReg" placeholder="Código de Barras" required>
                                 <div class="invalid-feedback">Debe ingresar el codigo de barras</div>
                             </div>
                         </div>
@@ -190,12 +190,11 @@
                                 <label class="" for="selCategoriaReg"><i class="fas fa-dumpster fs-6"></i>
                                     <span class="small">Categoría</span><span class="text-danger">*</span>
                                 </label>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selCategoriaReg" required>
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                                    id="selCategoriaReg" required>
                                 </select>
                                 <!--notificacion si no se ingresa la categoria -->
                                 <div class="invalid-feedback">Seleccione la categoría</div>
-                                <!--       <input type="text" class="form-control form-control-sm" id="selCategoriaReg" placeholder="Categoria">  -->
-
                             </div>
                         </div>
 
@@ -212,10 +211,11 @@
                         <!-- Columna para registro del Precio de Compra -->
                         <div class="col-12  col-lg-4">
                             <div class="form-group mb-2">
-                                <label class="" for="iptPrecioCompraReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
+                                <label class="" for="iptPrecioCompraReg"><i
+                                        class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
                                         Compra</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptPrecioCompraReg" placeholder="Precio de Compra" required>
-                                <!--notificacion si no se ingresa precio de compra -->
+                                <input type="number" min="0" class="form-control form-control-sm" step="0.01"
+                                    id="iptPrecioCompraReg" placeholder="Precio de Compra" required>
                                 <div class="invalid-feedback">Debe ingresar el Precio de compra</div>
                             </div>
                         </div>
@@ -223,10 +223,11 @@
                         <!-- Columna para registro del Precio de Venta -->
                         <div class="col-12 col-lg-4">
                             <div class="form-group mb-2">
-                                <label class="" for="iptPrecioVentaReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
+                                <label class="" for="iptPrecioVentaReg"><i
+                                        class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
                                         Venta</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptPrecioVentaReg" placeholder="Precio de Venta" required>
-                                <!--notificacion si no se ingresa precio de venta-->
+                                <input type="number" min="0" class="form-control form-control-sm" id="iptPrecioVentaReg"
+                                    placeholder="Precio de Venta" step="0.01" required>
                                 <div class="invalid-feedback">Debe ingresar el precio de venta</div>
                             </div>
                         </div>
@@ -234,8 +235,10 @@
                         <!-- Columna para registro de la Utilidad -->
                         <div class="col-12 col-lg-4">
                             <div class="form-group mb-2">
-                                <label class="" for="iptUtilidadReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Ganancia</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptUtilidadReg" placeholder="Ganancia" disable>
+                                <label class="" for="iptUtilidadReg"><i
+                                        class="fas fa-dollar-sign fs-6"></i> <span class="small">Ganancia</span></label>
+                                <input type="number" min="0" class="form-control form-control-sm" id="iptUtilidadReg"
+                                    placeholder="Ganancia" disabled>
                             </div>
                         </div>
 
@@ -244,7 +247,8 @@
                             <div class="form-group mb-2">
                                 <label class="" for="iptStockReg"><i class="fas fa-plus-circle fs-6"></i>
                                     <span class="small">Stock</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptStockReg" placeholder="Stock" required>
+                                <input type="number" min="0" class="form-control form-control-sm" id="iptStockReg"
+                                    placeholder="Stock" required>
                                 <div class="invalid-feedback">Debe ingresar el stock</div>
                             </div>
                         </div>
@@ -252,21 +256,25 @@
                         <!-- Columna para registro del Minimo de Stock -->
                         <div class="col-12 col-lg-6">
                             <div class="form-group mb-2">
-                                <label class="" for="iptMinimoStockReg"><i class="fas fa-minus-circle fs-6"></i> <span class="small">Mínimo
+                                <label class="" for="iptMinimoStockReg"><i
+                                        class="fas fa-minus-circle fs-6"></i> <span class="small">Mínimo
                                         Stock</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptMinimoStockReg" placeholder="Mínimo Stock" required>
+                                <input type="number" min="0" class="form-control form-control-sm" id="iptMinimoStockReg"
+                                    placeholder="Mínimo Stock" required>
                                 <div class="invalid-feedback">Debe ingresar el minimo stock</div>
                             </div>
                         </div>
 
                         <!-- creacion de botones para cancelar y guardar el producto -->
-                        <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
-                        <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2" id="btnGuardarProducto">Guardar Producto</button>
+                        <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;"
+                            data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
+                        <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2"
+                            id="btnGuardarProducto">Guardar Producto</button>
                         <!-- <button class="btn btn-default btn-success" type="submit" name="submit" value="Submit">Save</button> -->
 
                     </div>
                 </form>
-
+            
             </div>
 
         </div>
@@ -274,7 +282,7 @@
 
 
 </div>
-<!-- /. End VENTANA MODAL DE AGREGAR MAS STOCK  -->
+<!-- /. End Ventana Modal para ingreso de Productos -->
 
 <div class="modal fade" id="mdlGestionarStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -882,6 +890,7 @@
     /*===================================================================*/
     document.getElementById("btnGuardarProducto").addEventListener("click", function() {
 
+
         // Get the forms we want to add validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
@@ -958,7 +967,7 @@
                                         $(".needs-validation").removeClass("was-validated");
                                     })
 
-                                } else {
+                                 } else {
                                     Toast.fire({
                                         icon: 'error',
                                         title: 'El producto no se pudo registrar'
