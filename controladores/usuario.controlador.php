@@ -1,54 +1,75 @@
 <?php
 
-class UsuarioControlador{
- 
+class UsuarioControlador
+{
+
     /*---------------------------------------------------------------
     Login de usuario
     ----------------------------------------------------------------*/
-    public function login(){
-        if(isset($_POST["loginUsuario"])){
+    public function login()
+    {
+        //VD 25 min 22:05
+        if (isset($_POST["loginUsuario"])) {
             //---------------------------------------------------------------
             //Realizamos la consulta con los datos del usuario ala base de datos
             //---------------------------------------------------------------
-
+           // $contraseña = $_POST['contraseña'];
             $usuario = $_POST["loginUsuario"];
-               //password encriptada abc123....
-          //  $password = crypt($_POST["loginPassword"], '$2y$10$tPpAmr2RMlPrMJrcQZATIOw5SmFk2Op3rScHE1N.J4CJi5nUVS0Za');
+            //password encriptada abc123....
+            //  $password = crypt($_POST["loginPassword"], '$2y$10$tPpAmr2RMlPrMJrcQZATIOw5SmFk2Op3rScHE1N.J4CJi5nUVS0Za');
             //password 123456 encrip
-               $password = crypt($_POST["loginPassword"], '$2y$10$mhJ8K96kTn19ODyVSKr.mOV4JrDvhonQ6d6ex75yC3VRDMjSz5/j2');  
-            $respuesta = UsuarioModelo::mdlIniciarSesion($usuario, $password);
+            $contraseña = crypt($_POST["loginPassword"], 'contraseña');
+            $respuesta = UsuarioModelo::mdlIniciarSesion($usuario, $contraseña);
+            
 
 
-//VALIDACION DE LAS CREDENCIALES
-            if(count($respuesta)>0){
-                $_SESSION["usuario"]= $respuesta[0];
+            //VALIDACION DE LAS CREDENCIALES
+            if (count($respuesta) > 0) {
+                $_SESSION["usuario"] = $respuesta[0];
 
                 echo ' 
                 <script>
-                window.location = "http://192.168.1.11/market-pos-github/"
+                window.location = "http://localhost/market-pos-github/"
                 </script>';
-            }else{
+            } else {
                 echo '
                 <script>
                 fncSweetAlert(
                     "error",
                     "Usuario y/o contraseña inválida",
-                    "http://192.168.1.11/market-pos-github/"
+                    "http://localhost/market-pos-github/"
                 );
                 </script>
                 ';
-                
             }
         }
     }
 
-    static public function ctrObtenerMenuUsuario($id_usuario){
+    static public function ctrObtenerMenuUsuario($id_usuario)
+    {
         $menuUsuario = UsuarioModelo::mdlObtenerMenuUsuario($id_usuario);
         return $menuUsuario;
     }
 
-    static public function ctrObtenerSubMenuUsuario($idMenu){
+    static public function ctrObtenerSubMenuUsuario($idMenu)
+    {
         $subMenuUsuario = UsuarioModelo::mdlObtenerSubMenuUsuario($idMenu);
         return $subMenuUsuario;
+    }
+
+    static public function  ctrObtenerUsuarios()
+    {
+        $usuarios = UsuarioModelo::mdlObtenerUsuarios();
+
+        return $usuarios;
+    }
+    static public function ctrGuardarUsuario($accion, $id_Usuario, $nombre_Usuario, $apellido_Usuario, $usuario, $contraseña, $perfil, $estado_Usuario)
+    {
+        $guardarUsuario = UsuarioModelo::mdlGuardarUsuario($accion, $id_Usuario, $nombre_Usuario, $apellido_Usuario, $usuario, $contraseña, $perfil, $estado_Usuario);
+        return $guardarUsuario;
+    }
+    static public function ctrEliminarUsuario($tbl_Usuarios, $id_Usuario, $nameId){
+        $respuesta = UsuarioModelo::mdlEliminarUsuario($tbl_Usuarios, $id_Usuario, $nameId);
+        return $respuesta;
     }
 }
