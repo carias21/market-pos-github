@@ -544,7 +544,7 @@
                 $(this).parents('tr').removeClass('selected');
 
                 idPerfil = 0;
-                //al momento de selecionar para editar la categoria por 2da vez me borre los inputs de editar categoria
+                //al momento de selecionar para editar el modulo por 2da vez me borre los inputs de editar modulo
                 $("#iptPerfil").val("");
                 $("#selEstado").val("");
 
@@ -651,13 +651,13 @@
             accion = 2;
             var data = tbl_Perfiles.row($(this).parents('tr')).data();
 
-            //     alert(data["id_categoria", idCategoria]);   
+          
             //     console.log(data);
             var idPerfil = data["id_perfil"]
             //   alert(idPerfil);
 
             Swal.fire({
-                title: 'Está seguro el perfil' + data[1] + '?',
+                title: 'Está seguro el perfil ' + data[1] + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
