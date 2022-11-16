@@ -2,8 +2,8 @@
 
 class PerfilControlador{
     static public function ctrObtenerPerfiles(){
-        $modulos = PerfilModelo::mdlObtenerPerfiles();
-        return $modulos;
+        $perfiles = PerfilModelo::mdlObtenerPerfiles();
+        return $perfiles;
     }
   
     static public function ctrGuardarPerfil($accion, $idPerfil, $perfil, $estado){

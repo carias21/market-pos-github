@@ -50,6 +50,6 @@ if(isset($_POST['accion']) && $_POST['accion']==1){
     $eliminarPerfil -> ajaxEliminarPerfil();
 }else{
 
-    $perfiles = new AjaxCategorias();
-    $perfiles -> ajaxListarCategorias();
+    $perfiles = new AjaxPerfiles();
+    $perfiles -> ajaxObtenerPerfiles();
     }
