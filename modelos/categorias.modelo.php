@@ -89,9 +89,8 @@ static public function mdlEliminarCategoria($tableCategorias, $id_categoria, $na
         return "ok";;
     }else{
         return Conexion::conectar()->errorInfo();
+        }
     }
-
-}
 }
 
                                                 

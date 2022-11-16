@@ -39,7 +39,7 @@ if(isset($_POST['idCategoria'])&& $_POST['idCategoria'] > 0){//Editar
     $editarCategoria->medida = $_POST['medida'];
     $editarCategoria->ajaxGuardarCategoria(0);
 //Accion 5, eliminacion
-}else if(isset($_POST['accion'])&& $_POST['accion']==5){
+}else if(isset($_POST['accion'])&& $_POST['accion']==5){//ELIMINAR
     $eliminarCategoria = new AjaxCategorias();
     $eliminarCategoria -> ajaxEliminarCategoria();
 //cuando el valor es igual a 0 registra

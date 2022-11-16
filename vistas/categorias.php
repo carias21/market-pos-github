@@ -118,7 +118,7 @@
         var idCategoria = 0;
         var categoria = "";
         var medida = "";
-        
+
         /*===================================================================
         =====================================================================
                                        CARGAR DATATABLES (3 TABLES)
@@ -132,7 +132,7 @@
             ajax: {
                 url: 'ajax/categorias.ajax.php',
                 dataSrc: "",
-                
+
             },
             scrollX: true,
             //INDICAMOS QUE EN LA COLUMNA 2, SI ES 0 QUE COLOQUE UNIDADES Y SI ES 1 COLOQUE KILOGRAMOS
@@ -272,7 +272,7 @@
 
                 }
             })
-        })
+        });
 
 
         /*===========================================================================================
@@ -321,6 +321,7 @@
                                 dataType: 'json',
                                 success: function(respuesta) {
                                     if (respuesta == "ok") {
+
 
                                         Toast.fire({
                                             icon: 'success',
