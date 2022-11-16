@@ -161,7 +161,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario"]->i
                     ----------------------------------------------------------------------------------------------------------------------->
 
                     <li class="nav-item">
-                        <a href="http://192.168.1.11/market-pos-github?cerrar_sesion=1" class="nav-link">
+                        <a href="http://localhost/market-pos-github?cerrar_sesion=1" class="nav-link">
                             <i class="nav-icon fas fa-sign-out-alt"></i>
                             <p>Cerrar Sesión</p>
                         </a>

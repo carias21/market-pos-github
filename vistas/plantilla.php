@@ -8,7 +8,7 @@ $routesArray = array_filter($routesArray);
     if(count(array_filter($routesArray))>1){
         echo '
         <script>
-        window.location =  "http://192.168.1.11/market-pos-github/"
+        window.location =  "http://localhost/market-pos-github/"
         </script>';
     }
 
@@ -17,7 +17,7 @@ if(isset($_GET["cerrar_sesion"]) && $_GET["cerrar_sesion"]==1){
     session_destroy(); // cerrar la sesion
     echo '
     <script>
-    window.location = "http://192.168.1.11/market-pos-github/"
+    window.location = "http://localhost/market-pos-github/"
     </script>';
 }
 
