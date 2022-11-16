@@ -371,6 +371,7 @@
         //SOLICITUD AJAX PARA CARGAR SELECT DE CATEGORIAS
         /*===================================================================*/
         //Solicitud Ajax para Cargar los datos de la categorias en la ventana de agregar nuevo producto
+        //VD 11 MIN 46:00
         $.ajax({
             url: "ajax/categorias.ajax.php",
             cache: false,
