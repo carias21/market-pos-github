@@ -8,7 +8,7 @@ class AjaxCategorias{
     public $categoria;
     public $medida;
 
-
+    
 
     public function ajaxListarCategorias(){
 
