@@ -20,17 +20,8 @@ class ProductosControlador
         return $productos;
     }
 
-    static public function ctrRegistrarProducto(
-        $codigo_producto,
-        $id_categoria_producto,
-        $descripcion_producto,
-        $precio_compra_producto,
-        $precio_venta_producto,
-        $utilidad,
-        $stock_producto,
-        $minimo_stock_producto,
-        $ventas_producto
-    ) {
+    static public function ctrRegistrarProducto($codigo_producto,$id_categoria_producto,$descripcion_producto,$precio_compra_producto,
+$precio_venta_producto,$utilidad,$stock_producto,$minimo_stock_producto,$ventas_producto, $name, $img, $tmpname, $destino ) {
 
         $registroProducto = ProductosModelo::mdlRegistrarProducto(
             $codigo_producto,
@@ -41,7 +32,9 @@ class ProductosControlador
             $utilidad,
             $stock_producto,
             $minimo_stock_producto,
-            $ventas_producto
+            $ventas_producto,
+            $name,
+            $img, $tmpname, $destino 
         );
 
         return $registroProducto;

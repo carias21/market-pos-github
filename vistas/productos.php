@@ -113,12 +113,13 @@
                 <!--*******************    //TIPOS DE TABLAS *******************-->
                 <!--  Tabla original:   <table id="tbl_productos" class="table table-striped w-100 shadow">-->
                 <table id="tbl_productos" class="table table-striped table-hover w-100 shadow">
-                     
-                <thead class="bg-info text-left">
+
+                    <thead class="bg-info text-left">
                         <tr style="font-size: 15px;">
                             <th></th>
                             <th>id</th>
-                            <th>Codigo</th>
+                            <th>Código</th>
+                            <th>imagen</th>
                             <th>Id Categoria</th>
                             <th>Categoría</th>
                             <th>Producto</th>
@@ -164,13 +165,17 @@
                 </button>
 
             </div>
+            <!-- <form method="POST" enctype="multipart/form-data" id="form_cargar_imagen">
+                        <input type="submit">
+                        </form> -->
 
             <!-- *************************** CUERPO DE LA VENTA ******************** -->
             <div class="modal-body">
-    
-                <form class="needs-validation" novalidate >
+
+                <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate id="form_cargar_imagen">
                     <!-- Abrimos una fila -->
                     <div class="row">
+
 
                         <!-- Columna para registro del codigo de barras -->
                         <div class="col-12 col-lg-6">
@@ -178,8 +183,7 @@
                                 <label class="" for="iptCodigoReg"><i class="fas fa-barcode fs-6"></i>
                                     <span class="small">CODIGO DEL PRODUCTO</span><span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control form-control-sm" id="iptCodigoReg"
-                                    name="iptCodigoReg" placeholder="Código de Barras" required>
+                                <input type="text" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
                                 <div class="invalid-feedback">Debe ingresar el codigo de barras</div>
                             </div>
                         </div>
@@ -190,8 +194,7 @@
                                 <label class="" for="selCategoriaReg"><i class="fas fa-dumpster fs-6"></i>
                                     <span class="small">Categoría</span><span class="text-danger">*</span>
                                 </label>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                                    id="selCategoriaReg" required>
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selCategoriaReg" required>
                                 </select>
                                 <!--notificacion si no se ingresa la categoria -->
                                 <div class="invalid-feedback">Seleccione la categoría</div>
@@ -211,11 +214,9 @@
                         <!-- Columna para registro del Precio de Compra -->
                         <div class="col-12  col-lg-4">
                             <div class="form-group mb-2">
-                                <label class="" for="iptPrecioCompraReg"><i
-                                        class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
+                                <label class="" for="iptPrecioCompraReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
                                         Compra</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" step="0.01"
-                                    id="iptPrecioCompraReg" placeholder="Precio de Compra" required>
+                                <input type="number" min="0" class="form-control form-control-sm" step="0.01" id="iptPrecioCompraReg" placeholder="Precio de Compra" required>
                                 <div class="invalid-feedback">Debe ingresar el Precio de compra</div>
                             </div>
                         </div>
@@ -223,11 +224,9 @@
                         <!-- Columna para registro del Precio de Venta -->
                         <div class="col-12 col-lg-4">
                             <div class="form-group mb-2">
-                                <label class="" for="iptPrecioVentaReg"><i
-                                        class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
+                                <label class="" for="iptPrecioVentaReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
                                         Venta</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptPrecioVentaReg"
-                                    placeholder="Precio de Venta" step="0.01" required>
+                                <input type="number" min="0" class="form-control form-control-sm" id="iptPrecioVentaReg" placeholder="Precio de Venta" step="0.01" required>
                                 <div class="invalid-feedback">Debe ingresar el precio de venta</div>
                             </div>
                         </div>
@@ -235,10 +234,8 @@
                         <!-- Columna para registro de la Utilidad -->
                         <div class="col-12 col-lg-4">
                             <div class="form-group mb-2">
-                                <label class="" for="iptUtilidadReg"><i
-                                        class="fas fa-dollar-sign fs-6"></i> <span class="small">Ganancia</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptUtilidadReg"
-                                    placeholder="Ganancia" disabled>
+                                <label class="" for="iptUtilidadReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Ganancia</span></label>
+                                <input type="number" min="0" class="form-control form-control-sm" id="iptUtilidadReg" placeholder="Ganancia" disabled>
                             </div>
                         </div>
 
@@ -247,8 +244,7 @@
                             <div class="form-group mb-2">
                                 <label class="" for="iptStockReg"><i class="fas fa-plus-circle fs-6"></i>
                                     <span class="small">Stock</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptStockReg"
-                                    placeholder="Stock" required>
+                                <input type="number" min="0" class="form-control form-control-sm" id="iptStockReg" placeholder="Stock" required>
                                 <div class="invalid-feedback">Debe ingresar el stock</div>
                             </div>
                         </div>
@@ -256,25 +252,47 @@
                         <!-- Columna para registro del Minimo de Stock -->
                         <div class="col-12 col-lg-6">
                             <div class="form-group mb-2">
-                                <label class="" for="iptMinimoStockReg"><i
-                                        class="fas fa-minus-circle fs-6"></i> <span class="small">Mínimo
+                                <label class="" for="iptMinimoStockReg"><i class="fas fa-minus-circle fs-6"></i> <span class="small">Mínimo
                                         Stock</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptMinimoStockReg"
-                                    placeholder="Mínimo Stock" required>
+                                <input type="number" min="0" class="form-control form-control-sm" id="iptMinimoStockReg" placeholder="Mínimo Stock" required>
                                 <div class="invalid-feedback">Debe ingresar el minimo stock</div>
                             </div>
                         </div>
 
-                        <!-- creacion de botones para cancelar y guardar el producto -->
-                        <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;"
-                            data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
-                        <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2"
-                            id="btnGuardarProducto">Guardar Producto</button>
-                        <!-- <button class="btn btn-default btn-success" type="submit" name="submit" value="Submit">Save</button> -->
+                        <form method="POST">
+                            <!-- Colum agregar imagen -->
+                            <div class="col-md-12">
+
+                                <div class="form-group">
+                                    <label>Foto</label>
+                                    <div class="card border-primary">
+                                        <div class="card-body">
+                                            <label for="imagen" id="icon-image" class="btn btn-primary"><i class="fas fa-image"></i></label>
+                                            <span id="icon-cerrar"></span>
+                                            <input id="imagen" class="d-none" type="file" name="imagen" accept="image/*" onchange="preview(event)">
+                                          <!--colocamos dos inputos ocultos, al momento de editar, saber que se esta seleccionando otra imagen o se quito para reemplazarla. -->
+                                            <input type="hidden" id="foto_actual" name="foto_actual">
+                                           <input type="hidden" id="foto_delete" name="foto_delete">
+                                            <img class="img-thumbnail" id="img-preview">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+                            <!-- creacion de botones para cancelar y guardar el producto -->
+                            <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
+                            <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2" id="btnGuardarProducto">Guardar Producto</button>
+                            <!-- <button class="btn btn-default btn-success" type="submit" name="submit" value="Submit">Save</button> -->
+
+                        </form>
 
                     </div>
                 </form>
-            
+
             </div>
 
         </div>
@@ -349,23 +367,8 @@
 
     $(document).ready(function() {
 
+    
         ajustarHeadersDataTables($('#tbl_productos'));
-
-
-        /*===================================================================*/
-        //PRUEBAS AJAX
-        /*===================================================================*/
-        // $.ajax({
-        //     url: "ajax/productos.ajax.php",
-        //     type: "POST",
-        //     data: {
-        //         'accion': 1 //1: LISTAR PRODUCTOS
-        //     },
-        //     dataType: 'json',
-        //     success: function(respuesta) {
-        //         console.log("respuesta", respuesta);
-        //     }
-        // });
 
         /*===================================================================*/
         //SOLICITUD AJAX PARA CARGAR SELECT DE CATEGORIAS
@@ -434,40 +437,88 @@
                 },
                 {
                     targets: 1,
+                    'data': 'id',
                     visible: false
                 },
                 {
+                    targets: 2,
+                    'data': 'codigo_producto'
+                },
+                {
                     targets: 3,
+                    'data': 'foto',
+                    'render': function(foto) {
+                        /*  if (!foto) {
+                              return 'N/A';
+                          } else { */
+                        var img = foto;
+                        return '<img src="vistas/assets/imagenes/' + img + '" height="40px" width="50px" />';
+                    }
+                },
+                {
+                    targets: 4,
+                    'data': 'id_categoria',
                     visible: false
+
+                },
+                {
+                    targets: 5,
+                    'data': 'nombre_categoria',
+                },
+                {
+                    targets: 6,
+                    'data': 'descripcion_producto'
+                },
+                {
+                    targets: 7,
+                    'data': 'precio_compra'
+                },
+                {
+                    targets: 8,
+                    'data': 'precio_venta'
+                },
+                {
+                    targets: 9,
+                    'data': 'utilidad'
                 },
                 {
                     /*indicamos que en la columna 9 que seria Stock, que al momento de que 
           el minStock sea  igual o menor a la columna stock nos pinte de color rojo la fila */
-                    targets: 9,
+                    targets: 10,
+                    'data': 'stock',
                     createdCell: function(td, cellData, rowData, row, col) {
                         if (parseFloat(rowData[9]) <= parseFloat(rowData[10])) {
                             $(td).parent().css('background', '#ffa500')
                         }
                     }
                 },
+
                 {
-                    //colocamos no visible las columnas del....
                     targets: 11,
-                    visible: false
+                    'data': 'minimo_stock'
                 },
                 {
-                    //colocamos no visible las columnas del....
+
                     targets: 12,
+                    'data': 'ventas',
                     visible: false
                 },
                 {
                     //colocamos no visible las columnas del...
                     targets: 13,
+                    'data': 'fecha_creacion_producto',
                     visible: false
                 },
                 {
                     //colocamos no visible las columnas del...
                     targets: 14,
+                    'data': 'fecha_actualizacion_producto',
+                    visible: false
+                },
+                {
+                    //colocamos no visible las columnas del...
+                    targets: 15,
+                    'data': 'opciones',
                     orderable: false,
                     render: function(data, type, full, meta) {
                         /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
@@ -548,6 +599,8 @@
         )
         //console.log(precioDesde);
 
+
+
         /*===================================================================*/
         // EVENTO PARA LIMPIAR INPUTS DE CRITERIOS DE BUSQUEDA
         /*===================================================================*/
@@ -575,14 +628,18 @@
             $("#validate_stock").css("display", "none");
             $("#validate_min_stock").css("display", "none");
 
-            $("#iptCodigoReg").val("");
-            $("#selCategoriaReg").val(0);
-            $("#iptDescripcionReg").val("");
-            $("#iptPrecioCompraReg").val("");
-            $("#iptPrecioVentaReg").val("");
-            $("#iptUtilidadReg").val("");
-            $("#iptStockReg").val("");
-            $("#iptMinimoStockReg").val("");
+            LimpiarInputsVentanaModal();
+            //quita imagen
+            deleteImg();
+
+            /*  $("#iptCodigoReg").val("");
+              $("#selCategoriaReg").val(0);
+              $("#iptDescripcionReg").val("");
+              $("#iptPrecioCompraReg").val("");
+              $("#iptPrecioVentaReg").val("");
+              $("#iptUtilidadReg").val("");
+              $("#iptStockReg").val("");
+              $("#iptMinimoStockReg").val("");*/
 
         })
 
@@ -722,6 +779,7 @@
         =========================================================================================*/
         $("#btnGuardarNuevoStock").on('click', function() {
 
+
             if ($("#iptStockSumar").val() != "" && $("#iptStockSumar").val() > 0) {
 
                 var nuevoStock = parseFloat($("#stock_NuevoStock").html()),
@@ -789,6 +847,19 @@
             $("#iptUtilidadReg").val(data[8]);
             $("#iptStockReg").val(data[9]);
             $("#iptMinimoStockReg").val(data[10]);
+            //colocamos la imagen
+            document.getElementById("img-preview").src = 'vistas/assets/imagenes/' + data['foto'];
+            //agregamos el icono de quitar imagen
+            document.getElementById("icon-cerrar").innerHTML = `
+            <button class="btn btn-danger" onclick="deleteImg()">
+            <i class="fas fa-times"></i></button>`;
+            //quitamos el icono de agregar nueva imagen, y solo dejamos el de quitar
+            document.getElementById("icon-image").classList.add("d-none");
+            //almacenamos los valores de la foto
+            document.getElementById("foto_actual").value = data['foto'];
+            document.getElementById("foto_delete").value = data['foto'];
+          
+            // $("#imagen").val(data['foto']);
 
         })
 
@@ -804,7 +875,7 @@
             var codigo_producto = data["codigo_producto"];
 
             Swal.fire({
-                title: 'Está seguro de eliminar el producto ' + data [5] + '?',
+                title: 'Está seguro de eliminar el producto ' + data[5] + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -856,6 +927,25 @@
 
     }); //FIN DEL DOCUMENT READY
 
+
+    /*===================================================================*/
+    //FUNCION PARA LIMPIAR TODOS LOS INPUTS DE MI PAGINA VENTAS 
+    /*===================================================================*/
+
+    function LimpiarInputsVentanaModal() {
+
+        $("#iptCodigoReg").val("");
+        $("#selCategoriaReg").val(0);
+        $("#iptDescripcionReg").val("");
+        $("#iptPrecioCompraReg").val("");
+        $("#iptPrecioVentaReg").val("");
+        $("#iptUtilidadReg").val("");
+        $("#iptStockReg").val("");
+        $("#iptMinimoStockReg").val("");
+        //     $("#imagen").val("");
+
+    } /* FIN LimpiarInputs */
+
     // CALCULA LA GANANCIA 
     function calcularUtilidad() {
 
@@ -886,11 +976,46 @@
         resizeHandler(element);
     }
 
+
+    //FUNCION VER IMAGEN PRECARGADA, ANTES DE SER INSERTADA DESDE LA VENTANA MODAL
+    function preview(e) {
+        const url = e.target.files[0];
+        const urlTmp = URL.createObjectURL(url);
+        document.getElementById("img-preview").src = urlTmp;
+        //se oculte el icono de agregar imagen
+        document.getElementById("icon-image").classList.add("d-none");
+        document.getElementById("icon-cerrar").innerHTML =
+            //aqui llamamos nuestra funcion quitar imagen
+            `<button class="btn btn-danger" onclick="deleteImg(event)"><i class="fas fa-times"></i></button>
+        ${url['name']}`; //mostramos el nombre de la imagen previo
+
+    }
+
+    //FUNCION PARA QUITAR IMAGEN SELECCIONADA PARA INSERTAR
+    function deleteImg(e) {
+        //quitamos el icono cerrar
+        document.getElementById("icon-cerrar").innerHTML = '';
+        //removemos el icon de la imagen
+        document.getElementById("icon-image").classList.remove("d-none");
+        //quitamos imagen preview
+        document.getElementById("img-preview").src = '';
+        //quitamos la imagen que se habia seleccionados
+        document.getElementById("imagen").value = '';
+        document.getElementById("foto_delete").value ='';
+    }
+
+
+
     /*===================================================================*/
     //EVENTO QUE GUARDA LOS DATOS DEL PRODUCTO, PREVIA VALIDACION DEL INGRESO DE LOS DATOS OBLIGATORIOS
     /*===================================================================*/
     document.getElementById("btnGuardarProducto").addEventListener("click", function() {
+        $img = $("#imagen");
+        $name = $('name');
+        $tmpname = $img['tmp_name'];
+        $destino = "vistas/assets/imagenes/".$name;
 
+        console.log($name, "pruebas");
 
         // Get the forms we want to add validation styles to
         var forms = document.getElementsByClassName('needs-validation');
@@ -914,6 +1039,8 @@
                     if (result.isConfirmed) {
 
                         var datos = new FormData();
+                        var datos = new FormData($(form_cargar_imagen)[0]);
+
                         //explicacion del codigo: https://www.youtube.com/watch?v=k3Ho0BVDf98&list=PL9sacPy8nUhpP02ZXHy4e-kr9BgIm1TVf&index=12
                         datos.append("accion", accion);
                         datos.append("codigo_producto", $("#iptCodigoReg").val()); //codigo_producto
@@ -925,6 +1052,11 @@
                         datos.append("stock_producto", $("#iptStockReg").val()); //stock_producto
                         datos.append("minimo_stock_producto", $("#iptMinimoStockReg").val()); //minimo_stock_producto  
                         datos.append("ventas_producto", 0); //ventas_producto
+                        datos.append("name", $name);
+                        //   datos.append("imagen", $img);
+
+                        //  datos.append("name",  $("name").val());
+
 
                         if (accion == 2) {
                             var titulo_msj = "El producto se registró correctamente"
@@ -955,20 +1087,15 @@
 
                                     $("#mdlGestionarProducto").modal('hide');
 
-                                    $("#iptCodigoReg").val("");
-                                    $("#selCategoriaReg").val(0);
-                                    $("#iptDescripcionReg").val("");
-                                    $("#iptPrecioCompraReg").val("");
-                                    $("#iptPrecioVentaReg").val("");
-                                    $("#iptUtilidadReg").val("");
-                                    $("#iptStockReg").val("");
-                                    $("#iptMinimoStockReg").val("");
+                                    LimpiarInputsVentanaModal();
+                                    //limpia imagenes
+                                    deleteImg();
 
                                     document.getElementById("btnGuardarProducto").addEventListener("click", function() {
                                         $(".needs-validation").removeClass("was-validated");
                                     })
 
-                                 } else {
+                                } else {
                                     Toast.fire({
                                         icon: 'error',
                                         title: 'El producto no se pudo registrar'
@@ -999,6 +1126,4 @@
     document.getElementById("btnCancelarRegistro").addEventListener("click", function() {
         $(".needs-validation").removeClass("was-validated");
     })
-
-
 </script>

@@ -9,7 +9,8 @@ class ajaxProductos
 {
 
     public $fileProductos;
-
+    public $name;
+    public $img;
     public $codigo_producto;
     public $id_categoria_producto;
     public $descripcion_producto;
@@ -21,6 +22,7 @@ class ajaxProductos
     public $ventas_producto;
 
     public $cantidad_a_comprar;
+    
 
     public function ajaxCargaMasivaProductos()
     {
@@ -32,14 +34,28 @@ class ajaxProductos
 
     public function ajaxListarProductos()
     {
+        
 
         $productos = ProductosControlador::ctrListarProductos();
 
         echo json_encode($productos);
     }
 
-    public function ajaxRegistrarProducto()
-    {
+    public function ajaxRegistrarProducto(){
+
+        $img = $_FILES['imagen'];
+ 
+        $name = $img['name'];
+        $tmpname = $img['tmp_name'];
+
+        $destino = $_SERVER['DOCUMENT_ROOT'].'/market-pos-github/vistas/assets/imagenes/'.$name;
+        move_uploaded_file($_FILES['imagen'] ['tmp_name'], $destino);
+        if(empty($name)){
+           $name = "default.png";
+           // echo json_encode($destino);
+        
+        } 
+
 
         $producto = ProductosControlador::ctrRegistrarProducto(
             $this->codigo_producto,
@@ -50,7 +66,11 @@ class ajaxProductos
             $this->utilidad,
             $this->stock_producto,
             $this->minimo_stock_producto,
-            $this->ventas_producto
+            $this->ventas_producto,
+            $name,
+            $img, $tmpname, $destino 
+        
+
         );
 
         echo json_encode($producto);
@@ -113,12 +133,15 @@ class ajaxProductos
    }
 }
 
+
+
+
 if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar los productos
 
     $productos = new ajaxProductos();
     $productos->ajaxListarProductos();
 } else if (isset($_POST['accion']) && $_POST['accion'] == 2) { //parametro para registrar un nuevo producto
-
+    
     $registrarProducto = new AjaxProductos();
     $registrarProducto->codigo_producto = $_POST["codigo_producto"];
     $registrarProducto->id_categoria_producto = $_POST["id_categoria_producto"];
@@ -129,7 +152,11 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
     $registrarProducto->stock_producto = $_POST["stock_producto"];
     $registrarProducto->minimo_stock_producto = $_POST["minimo_stock_producto"];
     $registrarProducto->ventas_producto = $_POST["ventas_producto"];
+    $registrarProducto->img = $_FILES['imagen'];
+
+
     $registrarProducto->ajaxRegistrarProducto();
+
 } else if (isset($_POST['accion']) && $_POST['accion'] == 3) { // parametro para actualizar el stock del producto
 
     $actualizarStock = new ajaxProductos();
@@ -137,24 +164,24 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
     $data = array(
         "stock_producto" => $_POST["nuevoStock"]
     );
-
     $actualizarStock->ajaxActualizarStock($data);
-} else if (isset($_POST['accion']) && $_POST['accion'] == 4) { //ACCION ACTUALIZAR STOCK
+
+} else if (isset($_POST['accion']) && $_POST['accion'] == 4) { //ACCION ACTUALIZAR PRODUCTO GENERAL
 
     $actualizarProducto = new ajaxProductos();
 
     //obtenemos los valores para 
-    $data = array(
-        "id_categoria_producto" => $_POST["id_categoria_producto"],
-        "descripcion_producto" => $_POST["descripcion_producto"],
-        "precio_compra_producto" => $_POST["precio_compra_producto"],
-        "precio_venta_producto" => $_POST["precio_venta_producto"],
-        "utilidad" => $_POST["utilidad"],
-        "stock_producto" => $_POST["stock_producto"],
-        "minimo_stock_producto" => $_POST["minimo_stock_producto"],
-    );
-
-    $actualizarProducto->ajaxActualizarProducto($data);
+        $data = array(
+            "id_categoria_producto" => $_POST["id_categoria_producto"],
+            "descripcion_producto" => $_POST["descripcion_producto"],
+            "precio_compra_producto" => $_POST["precio_compra_producto"],
+            "precio_venta_producto" => $_POST["precio_venta_producto"],
+            "utilidad" => $_POST["utilidad"],
+            "stock_producto" => $_POST["stock_producto"],
+            "minimo_stock_producto" => $_POST["minimo_stock_producto"],
+        );
+    
+        $actualizarProducto->ajaxActualizarProducto($data);
 } else if (isset($_POST['accion']) && $_POST['accion'] == 5) { //ACCION ELIMINAR PRODUCTO
 
     $eliminarProducto = new ajaxProductos();
