@@ -90,14 +90,30 @@ class ajaxProductos
 
     public function ajaxActualizarProducto($data)
     {
-
+        //datos para la tabla
         $table = "productos";
         $id = $_POST["codigo_producto"];
         $nameId = "codigo_producto";
 
-        $respuesta = ProductosControlador::ctrActualizarProducto($table, $data, $id, $nameId);
+        //datos para cambiar nueva imagen al momento de editarla
+        $img = $_FILES['imagen'];
+        $name = $img['name'];
+        $destino = $_SERVER['DOCUMENT_ROOT'].'/market-pos-github/vistas/assets/imagenes/'.$name;
 
-        echo json_encode($respuesta);
+        //si el usuario quita la imagen, por defecto seria default.png
+        if(empty($name)){
+            $data['foto'] = "default.png";
+         } 
+
+        if($_POST['foto_actual']!= $_POST['foto_delete']){
+
+                $respuesta = ProductosControlador::ctrActualizarProducto($table, $data, $id, $nameId);
+                echo json_encode($respuesta);
+                move_uploaded_file($_FILES['imagen'] ['tmp_name'], $destino);
+               // echo json_encode("entro foto actual");
+        }else{
+            echo json_encode("no pasaron los datos");
+        }
     }
 
     public function ajaxEliminarProducto()
@@ -171,6 +187,8 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
     $actualizarProducto = new ajaxProductos();
 
     //obtenemos los valores para 
+    $img = $_FILES['imagen'];
+    
         $data = array(
             "id_categoria_producto" => $_POST["id_categoria_producto"],
             "descripcion_producto" => $_POST["descripcion_producto"],
@@ -179,9 +197,11 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
             "utilidad" => $_POST["utilidad"],
             "stock_producto" => $_POST["stock_producto"],
             "minimo_stock_producto" => $_POST["minimo_stock_producto"],
+            "foto" =>  $img['name'],
         );
     
         $actualizarProducto->ajaxActualizarProducto($data);
+
 } else if (isset($_POST['accion']) && $_POST['accion'] == 5) { //ACCION ELIMINAR PRODUCTO
 
     $eliminarProducto = new ajaxProductos();

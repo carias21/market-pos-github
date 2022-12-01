@@ -270,9 +270,9 @@
                                             <label for="imagen" id="icon-image" class="btn btn-primary"><i class="fas fa-image"></i></label>
                                             <span id="icon-cerrar"></span>
                                             <input id="imagen" class="d-none" type="file" name="imagen" accept="image/*" onchange="preview(event)">
-                                          <!--colocamos dos inputos ocultos, al momento de editar, saber que se esta seleccionando otra imagen o se quito para reemplazarla. -->
+                                            <!--colocamos dos inputos ocultos, al momento de editar, saber que se esta seleccionando otra imagen o se quito para reemplazarla. -->
                                             <input type="hidden" id="foto_actual" name="foto_actual">
-                                           <input type="hidden" id="foto_delete" name="foto_delete">
+                                            <input type="hidden" id="foto_delete" name="foto_delete">
                                             <img class="img-thumbnail" id="img-preview">
                                         </div>
                                     </div>
@@ -367,7 +367,7 @@
 
     $(document).ready(function() {
 
-    
+
         ajustarHeadersDataTables($('#tbl_productos'));
 
         /*===================================================================*/
@@ -452,7 +452,7 @@
                               return 'N/A';
                           } else { */
                         var img = foto;
-                        return '<img src="vistas/assets/imagenes/' + img + '" height="40px" width="50px" />';
+                        return '<img src="vistas/assets/imagenes/' + img + '" height="40px" width="45px" />';
                     }
                 },
                 {
@@ -832,12 +832,20 @@
         =========================================================================================*/
         $('#tbl_productos tbody').on('click', '.btnEditarProducto', function() {
 
+
             accion = 4; //seteamos la accion para editar
 
             $("#mdlGestionarProducto").modal('show');
 
+            var data = new FormData($(form_cargar_imagen)[0]);
             var data = table.row($(this).parents('tr')).data();
-            console.log("🚀 ~ file: productos.php ~ line 751 ~ $ ~ data", data)
+            var datos = new FormData();
+
+            /*se definen estas variables para enviar el parametro $name, para que en el llamado .ajax, 
+             se reconozca y se pueda realizar la condicion if si no se agrega imagen, igual al momento de editar */
+            $img = $("#imagen");
+            $name = $('name');
+
 
             $("#iptCodigoReg").val(data["codigo_producto"]);
             $("#selCategoriaReg").val(data[3]);
@@ -858,8 +866,7 @@
             //almacenamos los valores de la foto
             document.getElementById("foto_actual").value = data['foto'];
             document.getElementById("foto_delete").value = data['foto'];
-          
-            // $("#imagen").val(data['foto']);
+    
 
         })
 
@@ -1001,7 +1008,7 @@
         document.getElementById("img-preview").src = '';
         //quitamos la imagen que se habia seleccionados
         document.getElementById("imagen").value = '';
-        document.getElementById("foto_delete").value ='';
+        document.getElementById("foto_delete").value = '';
     }
 
 
@@ -1010,10 +1017,11 @@
     //EVENTO QUE GUARDA LOS DATOS DEL PRODUCTO, PREVIA VALIDACION DEL INGRESO DE LOS DATOS OBLIGATORIOS
     /*===================================================================*/
     document.getElementById("btnGuardarProducto").addEventListener("click", function() {
+
+        /*se definen estas variables para enviar el parametro $name, para que en el llamado .ajax, 
+        se reconozca y se pueda realizar la condicion if si no se agrega imagen, igual al momento de editar */
         $img = $("#imagen");
         $name = $('name');
-        $tmpname = $img['tmp_name'];
-        $destino = "vistas/assets/imagenes/".$name;
 
         console.log($name, "pruebas");
 
