@@ -31,17 +31,5 @@ class DashboardControlador{
         return $productosPocoStock;
     
     }
-
-    static public function ctrCantidadVentasProductos(){
-    
-        $CantidadVentasProductos = DashboardModelo::mdlCantidadVentasProductos();
-    
-        return $CantidadVentasProductos;
-    
-    }
-
-
-    
-
    
 }
