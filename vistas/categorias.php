@@ -309,7 +309,7 @@
                     }).then((result) => {
 
                         if (result.isConfirmed) {
-
+                            
                             $.ajax({
                                 url: "ajax/categorias.ajax.php",
                                 type: "POST",

@@ -51,9 +51,9 @@ class UsuarioControlador
         return $menuUsuario;
     }
 
-    static public function ctrObtenerSubMenuUsuario($idMenu)
+    static public function ctrObtenerSubMenuUsuario($idMenu,$id_perfil_usuario)
     {
-        $subMenuUsuario = UsuarioModelo::mdlObtenerSubMenuUsuario($idMenu);
+        $subMenuUsuario = UsuarioModelo::mdlObtenerSubMenuUsuario($idMenu,$id_perfil_usuario);
         return $subMenuUsuario;
     }
 
