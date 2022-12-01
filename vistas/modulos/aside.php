@@ -55,7 +55,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario"]->i
                             </a>
 
                             <?php if (empty($menu->vista)) : ?>
-                                <?php $subMenuUsuario = UsuarioControlador::ctrObtenerSubMenuUsuario($menu->id);
+                                <?php $subMenuUsuario = UsuarioControlador::ctrObtenerSubMenuUsuario($menu->id,$_SESSION["usuario"]->id_usuario);
                                 ?>
                                 <ul class="nav nav-treeview">
                                     <?php foreach ($subMenuUsuario as $subMenu) : ?>
