@@ -828,7 +828,8 @@
         })
 
         /* ======================================================================================
-        EVENTO AL DAR CLICK EN EL BOTON EDITAR PRODUCTO
+        EVENTO AL DAR CLICK EN EL BOTON EDITAR PRODUCTO 
+        VD 14 MIN 1:30
         =========================================================================================*/
         $('#tbl_productos tbody').on('click', '.btnEditarProducto', function() {
 

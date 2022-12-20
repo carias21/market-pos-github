@@ -182,6 +182,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
     );
     $actualizarStock->ajaxActualizarStock($data);
 
+    //VD 14 MIN 5:10
 } else if (isset($_POST['accion']) && $_POST['accion'] == 4) { //ACCION ACTUALIZAR PRODUCTO GENERAL
 
     $actualizarProducto = new ajaxProductos();

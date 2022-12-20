@@ -214,11 +214,11 @@
         EVENTO EDITAR PERFIL seleccione la fila y seguidamente al dar clic quite el selecionado
         ==========================================================================================================*/
         $('#tbl_Usuarios tbody').on('click', '.btnEditarUsuario', function() {
-
-
+            
 
             var data = tbl_Usuarios.row($(this).parents('tr')).data();
 
+            console.log(data);
             if ($(this).parents('tr').hasClass('selected')) {
 
                 $(this).parents('tr').removeClass('selected');

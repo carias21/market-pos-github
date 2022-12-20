@@ -79,8 +79,8 @@
 
                                 <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selMedida" required>
                                     <option value="">---Selecione una medida---</option>
-                                    <option value="0">Unidades</option>
-                                    <option value="1">Kilogramos</option>
+                                   <option value="0">Unidades</option>
+                                    <option value="1">Kilogramos</option> 
                                 </select>
                                 <div class="invalid-feedback">Seleccione una medida</div>
 
