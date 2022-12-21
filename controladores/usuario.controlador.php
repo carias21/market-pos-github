@@ -19,6 +19,7 @@ class UsuarioControlador
             //  $password = crypt($_POST["loginPassword"], '$2y$10$tPpAmr2RMlPrMJrcQZATIOw5SmFk2Op3rScHE1N.J4CJi5nUVS0Za');
             //password 123456 encrip
             $contraseña = crypt($_POST["loginPassword"], 'contraseña');
+            // $contraseña = password_hash($_POST["loginPassword"], algo:PASSWORD_DEFAULT);
             $respuesta = UsuarioModelo::mdlIniciarSesion($usuario, $contraseña);
             
 

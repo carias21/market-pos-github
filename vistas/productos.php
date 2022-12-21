@@ -50,12 +50,13 @@
                                 </div>
 
                                 <div style="width: 20%;" class="form-floating mx-1">
-                                    <input type="text" id="iptCategoria" class="form-control" data-index="4">
+                                    <input type="text" id="iptCategoria" class="form-control" data-index="5">
                                     <label for="iptCategoria">Categoría</label>
                                 </div>
 
                                 <div style="width: 20%;" class="form-floating mx-1">
-                                    <input type="text" id="iptProducto" class="form-control" data-index="5">
+                                    <!--data-index, indica el numero de columna que esta el valor -->
+                                    <input type="text" id="iptProducto" class="form-control" data-index="6">
                                     <label for="iptProducto">Producto</label>
                                 </div>
 

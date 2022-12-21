@@ -53,6 +53,7 @@
             <!-- BUTTON DE INGRESO -->
             <div class="row">
             <?php 
+            //VD 25 MIN 20:00
             $login = new UsuarioControlador();
             $login->login();
             ?>    
