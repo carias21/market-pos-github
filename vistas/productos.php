@@ -113,9 +113,8 @@
             <div class="col-lg-12">
                 <!--*******************    //TIPOS DE TABLAS *******************-->
                 <!--  Tabla original:   <table id="tbl_productos" class="table table-striped w-100 shadow">-->
-                <table id="tbl_productos" class="table table-striped table-hover w-100 shadow">
-
-                    <thead class="bg-info text-left">
+                <table id="tbl_productos" class="table table-bordered table-hover w-100 shadow">
+                     <thead class="bg-info">
                         <tr style="font-size: 15px;">
                             <th></th>
                             <th>id</th>
@@ -173,7 +172,7 @@
             <!-- *************************** CUERPO DE LA VENTA ******************** -->
             <div class="modal-body">
 
-                <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate id="form_cargar_imagen">
+                <form  class="needs-validation" novalidate method="POST" enctype="multipart/form-data" id="form_cargar_imagen">
                     <!-- Abrimos una fila -->
                     <div class="row">
 
@@ -426,6 +425,7 @@
                     'accion': 1 //1: LISTAR PRODUCTOS
                 },
             },
+            // tabla ajustable
             /* responsive: {
                  details: {
                      type: 'column'
@@ -434,7 +434,8 @@
             columnDefs: [{
                     targets: 0,
                     orderable: false,
-                    className: 'control'
+                    className: 'control',
+                    visible: false
                 },
                 {
                     targets: 1,
@@ -472,7 +473,9 @@
                 },
                 {
                     targets: 7,
+                  
                     'data': 'precio_compra'
+                    
                 },
                 {
                     targets: 8,
@@ -868,7 +871,7 @@
             //almacenamos los valores de la foto
             document.getElementById("foto_actual").value = data['foto'];
             document.getElementById("foto_delete").value = data['foto'];
-    
+
 
         })
 

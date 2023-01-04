@@ -264,8 +264,10 @@ class ProductosModelo{
 
     /*===================================================================
     LISTAR NOMBRE DE PRODUCTOS PARA INPUT DE AUTO COMPLETADO
+       //VD 15 MIN 27:50
     ====================================================================*/
     static public function mdlListarNombreProductos(){
+        //https://www.youtube.com/watch?v=IEdZlIpH81M
 
         $stmt = Conexion::conectar()->prepare("SELECT Concat(codigo_producto , ' - ' ,c.nombre_categoria,' - ',descripcion_producto, ' - Q. ' , p.precio_venta_producto)  as descripcion_producto
                                                 FROM productos p inner join categorias c on p.id_categoria_producto = c.id_categoria");

@@ -129,6 +129,7 @@ class ajaxProductos
     }
 
     /*LISTAR EL NOMBRE DE PRODUCTOS PARA EL INPUT DE AUTO COMPLETADO ----- */
+    //VD 15 MIN 26:35
     public function ajaxListarNombreProductos()
     {
         $NombreProductos = ProductosControlador::ctrListarNombreProductos();
@@ -156,6 +157,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
 
     $productos = new ajaxProductos();
     $productos->ajaxListarProductos();
+
 } else if (isset($_POST['accion']) && $_POST['accion'] == 2) { //parametro para registrar un nuevo producto
     
     $registrarProducto = new AjaxProductos();
@@ -207,7 +209,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
 
     $eliminarProducto = new ajaxProductos();
     $eliminarProducto->ajaxEliminarProducto();
-
+//VD 15 MIN 25:45
 } else if (isset($_POST["accion"]) && $_POST["accion"] == 6) { //traer listado de productos para el autocompletable del input
     $nombreProductos = new AjaxProductos();
     $nombreProductos->ajaxListarNombreProductos();
