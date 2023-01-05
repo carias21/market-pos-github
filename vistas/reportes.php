@@ -20,7 +20,7 @@
  <div class="content">
      <div class="container-fluid">
 
-     <!-------------------------------------------------------------------------------------------
+         <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS PRODUCTOS VENDIDOS
         -------------------------------------------------------------------------------------------->
          <!-- row Grafico de barras -->
@@ -68,7 +68,7 @@
 
          </div><!-- ./row Grafico de barras -->
 
-             <!-------------------------------------------------------------------------------------------
+         <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS TOTAL VENTAS POR MES DE AÑO ACTUAL
         -------------------------------------------------------------------------------------------->
          <!-- row Grafico de barras -->
@@ -116,19 +116,58 @@
 
          </div><!-- ./row Grafico de barras toal ventas mes por año-->
 
-      
+
+            <!-------------------------------------------------------------------------------------------
+        GRAFICO DE BARRAS TOP VENTAS POR CATEGORIA
+        -------------------------------------------------------------------------------------------->
+         <div class="col-12">
+
+             <div class="card card-gray shadow">
+
+                 <div class="card-header">
+
+                     <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
+
+                     <div class="card-tools">
+
+                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                             <i class="fas fa-minus"></i>
+                         </button>
+                         <button type="button" class="btn btn-tool" data-card-widget="remove">
+                             <i class="fas fa-times"></i>
+                         </button>
+
+                     </div> <!-- ./ end card-tools -->
+
+                 </div> <!-- ./ end card-header -->
+
+
+                 <div class="card-body">
+
+                     <div class="chart">
+
+                         <div id="chartContainer" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
+
+                     </div>
+
+                 </div> <!-- ./ end card-body -->
+
+             </div>
+
+         </div>
+
+
 
      </div><!-- /.container-fluid -->
  </div>
  <!-- /.content -->
 
  <script>
+     $(document).ready(function() {
 
-$(document).ready(function(){
-
-        /* =======================================================
-         SOLICITUD AJAX GRAFICO DE BARRAS PRODUCTOS VENDIDOS
-         =======================================================*/
+         /* =======================================================
+          SOLICITUD AJAX GRAFICO DE BARRAS PRODUCTOS VENDIDOS
+          =======================================================*/
          $.ajax({
              url: "ajax/reportes.ajax.php",
              method: 'POST',
@@ -246,7 +285,7 @@ $(document).ready(function(){
          });
 
 
-           /* =======================================================
+         /* =======================================================
          SOLICITUD AJAX GRAFICO DE BARRAS TOTAL VENTAS MES POR AÑO
          =======================================================*/
          $.ajax({
@@ -265,8 +304,8 @@ $(document).ready(function(){
 
                  for (let i = 0; i < respuesta.length; i++) {
 
-                    Mes.push(respuesta[i]['Mes']);
-                    Total_Venta.push(respuesta[i]['Total_Venta']);
+                     Mes.push(respuesta[i]['Mes']);
+                     Total_Venta.push(respuesta[i]['Total_Venta']);
 
                      /*    total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i][
                              'total_venta'
@@ -365,5 +404,5 @@ $(document).ready(function(){
              }
          });
 
-}) 
+     })
  </script>
