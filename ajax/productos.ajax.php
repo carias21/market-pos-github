@@ -100,12 +100,22 @@ class ajaxProductos
         $name = $img['name'];
         $destino = $_SERVER['DOCUMENT_ROOT'].'/market-pos-github/vistas/assets/imagenes/'.$name;
 
-        //si el usuario quita la imagen, por defecto seria default.png
-        if(empty($name)){
-            $data['foto'] = "default.png";
+            //si el usuario quita la imagen, por defecto seria default.png
+            if(empty($name)){
+                $data['foto'] = "default.png";
+             } 
+
+           if(!empty($_POST['foto_delete'])){
+            $data['foto'] =($_POST['foto_actual']);
+            $respuesta = ProductosControlador::ctrActualizarProducto($table, $data, $id, $nameId);
+            echo json_encode($respuesta);
+            move_uploaded_file($_FILES['imagen'] ['tmp_name'], $destino);
+          
          } 
 
-        if($_POST['foto_actual']!= $_POST['foto_delete']){
+     
+
+        else if($_POST['foto_actual']!= $_POST['foto_delete']){
 
                 $respuesta = ProductosControlador::ctrActualizarProducto($table, $data, $id, $nameId);
                 echo json_encode($respuesta);
