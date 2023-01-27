@@ -454,7 +454,7 @@
                               return 'N/A';
                           } else { */
                         var img = foto;
-                        return '<img src="vistas/assets/imagenes/' + img + '" height="50px" width="70px" />';
+                        return '<img src="vistas/assets/imagenes/' + img + '" height="70px" width="70px" />';
                     }
                 },
                 {

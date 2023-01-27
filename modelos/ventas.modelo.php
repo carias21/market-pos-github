@@ -6,37 +6,7 @@ class VentasModelo{
     public $resultado;
 
     static public function mdlRegistrarVenta($datos){
-/*
-        $stmt = Conexion::conectar()->prepare("INSERT INTO ventas(codigo_producto,
-                                                           nombre_categoria,
-                                                           descripcion_producto,
-                                                           cantidad,
-                                                           precio_venta_producto,
-                                                           descuento,
-                                                           total)         
-                                                VALUES(:codigo_producto,
-                                                :categoria, 
-                                                :desccripcion,
-                                                 :cantidad, 
-                                                 :precio_venta, 
-                                                 :descuento_venta, 
-                                                 :total_venta )");
 
-      //  $stmt -> bindParam(":nro_boleta", $nro_boleta , PDO::PARAM_STR);
-        $stmt -> bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
-        $stmt -> bindParam(":nombre_categoria", $nombre_categoria , PDO::PARAM_STR);
-        $stmt -> bindParam(":descripcion_producto", $descripcion_producto , PDO::PARAM_STR);
-        $stmt -> bindParam(":cantidad", $cantidad , PDO::PARAM_STR);
-        $stmt -> bindParam(":precio_venta_producto", $precio_venta_producto , PDO::PARAM_STR);
-        $stmt -> bindParam(":descuento", $descuento , PDO::PARAM_STR);
-        $stmt -> bindParam(":total_venta", $total , PDO::PARAM_STR);
-        
-        
-
-        if($stmt -> execute()){
-            
-            $stmt = null;
-*/
             $stmt = Conexion::conectar()->prepare("UPDATE empresa SET nro_correlativo_venta = LPAD(nro_correlativo_venta + 1,8,'0')");
 
             if($stmt -> execute()){

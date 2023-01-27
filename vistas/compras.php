@@ -340,8 +340,8 @@
             //obtenemos los valores del input al realizar change
             nuevo_precio = $(this)[0]['value'];
             cod_producto_actual = $(this)[0]['attributes'][2]['value'];
-            precio_actual =  parseFloat($.parseHTML(data['precio_compra_producto'])[0]['value'])
-            cantidad_actual =   parseFloat($.parseHTML(data['cantidad'])[0]['value']);
+            precio_actual = parseFloat($.parseHTML(data['precio_compra_producto'])[0]['value'])
+            cantidad_actual = parseFloat($.parseHTML(data['cantidad'])[0]['value']);
 
             //console.log("codigo Producto", $(this)[0]['attributes'][2]['value'])
 
@@ -362,7 +362,7 @@
 
             }
 
-        //    console.log(nuevo_precio, 'cantidad actual 2023');
+            //    console.log(nuevo_precio, 'cantidad actual 2023');
 
             table.rows().eq(0).each(function(index) {
                 var row = table.row(index);
@@ -425,7 +425,7 @@
                 if (data['codigo_producto'] == cod_producto_actual) {
 
                     //asignamos el valor a la celda (cantidad), en dado caso se agregan mas de dos productos a comprar. 
-                      // AUMENTAR EN 1 EL VALOR DE LA CANTIDAD
+                    // AUMENTAR EN 1 EL VALOR DE LA CANTIDAD
                     table.cell(index, 6).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptCantidad m-0 p-0" value="' + cantidad_actual + '">').draw();
                     // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE VENTA
                     NuevoPrecio = (parseFloat(cantidad_actual) * (precio_actual));
@@ -437,8 +437,6 @@
                 }
             });
         });
-
-
 
 
 
@@ -654,7 +652,7 @@
 
                         'total': respuesta['total'],
                         'acciones': "<center>" +
-                       
+
                             "<span class='btnEliminarProducto text-danger px-1'style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Eliminar producto'> " +
                             "<i class='fas fa-trash fs-5'> </i> " +
                             "</span>" +
@@ -740,7 +738,7 @@
                     parseFloat($.parseHTML(data['cantidad'])[0]['value']) + "," +
                     parseFloat($.parseHTML(data['precio_compra_producto'])[0]['value']) + "," +
                     data['total'].replace("Q. ", "") + "," +
-                    $.parseHTML(data['comentarios'])[0]['value'];
+                    ($.parseHTML(data['precio_compra_producto'])[0]['value']);
                 //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
 
                 formData.append('arr[]', arr[index]);

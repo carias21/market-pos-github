@@ -42,14 +42,14 @@ $stmt = null;
 }
 
 
-static public function mdlEliminarVenta($tableVentas, $id_venta, $nameId){
+static public function mdlEliminarCompra($tableVentas, $id_venta, $nameId){
 
     $stmt = Conexion::conectar()->prepare("DELETE FROM $tableVentas WHERE $nameId = :$nameId");
     
     $stmt -> bindParam(":".$nameId, $id_venta, PDO::PARAM_INT);
 
     if ($stmt -> execute()){
-        return "ok";;
+        return "ok";
     }else{
         return Conexion::conectar()->errorInfo();
     }

@@ -260,7 +260,7 @@ class ProductosModelo{
 
         }
 
-    }   
+    }  
 
     /*===================================================================
     LISTAR NOMBRE DE PRODUCTOS PARA INPUT DE AUTO COMPLETADO
@@ -304,8 +304,8 @@ class ProductosModelo{
   
         <img src="vistas/assets/imagenes/' . $producto['foto'] . '" width="70" height="70"/> 
         <div class="d-flex ml-4 flex-column">
-            <span class="text-sm">Codigo: ' . $codigo_producto . ' - Producto:' . $descripcion_producto . '</span>
-            <span class="text-sm">Precio: ' . round($precio_venta_producto, 2) . ' - Categoría: ' . $nombre_categoria . '</span>
+            <span class="text-sm">Codigo: ' . $codigo_producto . '  -  Producto: ' . $descripcion_producto . '</span>
+            <span class="text-sm">Precio: Q.' . round( $precio_venta_producto, 2) . '  -  Categoría: ' . $nombre_categoria . '</span>
             <span class="text-sm">' . 'Stock:' . $stock_producto . '</span>
             </div>
             </a>';
