@@ -19,8 +19,10 @@ echo json_encode($ventas, JSON_UNESCAPED_UNICODE);
     public function ajaxEliminarVenta(){
         $tableVentas = "ventas";
         $id_venta = $_POST["id_venta"];
+        $codigo_producto = $_POST["codigo_producto"];
+        $cantidad = $_POST["cantidad"];
         $nameId = "id_venta";
-        $respuesta = AdministrarVentasControlador::ctrEliminarVenta($tableVentas, $id_venta, $nameId);
+        $respuesta = AdministrarVentasControlador::ctrEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto);
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
 
     }

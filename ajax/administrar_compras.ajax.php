@@ -17,12 +17,14 @@ class AjaxAdministrarCompras
     }
 
 
-    public function ajaxEliminarVenta()
+    public function ajaxEliminarCompra()
     {
-        $tableVentas = "compras";
-        $id_venta = $_POST["id_venta"];
-        $nameId = "id_venta";
-        $respuesta = AdministrarVentasControlador::ctrEliminarVenta($tableVentas, $id_venta, $nameId);
+        $tableCompras = "compras";
+        $id_compra = $_POST["id_compra"];
+        $codigo_producto = $_POST["codigo_producto"];
+        $cantidad = $_POST["cantidad"];
+        $nameId = "id_compra";
+        $respuesta = AdministrarComprasControlador::ctrEliminarCompra($tableCompras, $id_compra, $nameId, $codigo_producto,   $cantidad);
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
     }
 }
@@ -33,7 +35,7 @@ if (isset($_POST["accion"]) && $_POST["accion"] == 2) { // LISTADO DE compras PO
     
 } else if (isset($_POST['accion']) && $_POST['accion'] == 3) {
     $eliminarCompra = new AjaxAdministrarCompras();
-    $eliminarCompra->ajaxEliminarVenta();
+    $eliminarCompra->ajaxEliminarCompra();
 }/*else{
 $listarVentas = new AjaxAdministrarVentas();
 $listarVentas -> ajaxListarVentas($fechaDesde,$fechaHasta);

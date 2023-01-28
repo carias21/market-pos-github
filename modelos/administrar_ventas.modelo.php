@@ -2,15 +2,17 @@
 
 require_once "conexion.php";
 
-class AdministrarVentasModelo{
+class AdministrarVentasModelo
+{
 
     public $resultado;
 
-static public function mdlListarVentas($fechaDesde,$fechaHasta){
+    static public function mdlListarVentas($fechaDesde, $fechaHasta)
+    {
 
-try {
+        try {
 
-    $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
+            $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
                                                  v.codigo_producto, 
                                                  v.categoria, 
                                                  v.descripcion as producto, 
@@ -24,38 +26,51 @@ try {
                                                  where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta)  
                                                  order BY v.fecha_venta desc");
 
-$stmt -> bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
-$stmt -> bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+            $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+            $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
 
-    $stmt -> execute();
+            $stmt->execute();
 
-    return $stmt->fetchAll();
+            return $stmt->fetchAll();
 
-    return ("Todo bien hasta aqui");
-
-} catch (Exception $e) {
-    return 'Excepción capturada: '.  $e->getMessage(). "\n";
-}
-
-
-$stmt = null;
-}
+            return ("Todo bien hasta aqui");
+        } catch (Exception $e) {
+            return 'Excepción capturada: ' .  $e->getMessage() . "\n";
+        }
 
 
-static public function mdlEliminarCompra($tableVentas, $id_venta, $nameId){
-
-    $stmt = Conexion::conectar()->prepare("DELETE FROM $tableVentas WHERE $nameId = :$nameId");
-    
-    $stmt -> bindParam(":".$nameId, $id_venta, PDO::PARAM_INT);
-
-    if ($stmt -> execute()){
-        return "ok";
-    }else{
-        return Conexion::conectar()->errorInfo();
+        $stmt = null;
     }
 
-    }
 
+    static public function mdlEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto)
+    {
+
+        $stmt = Conexion::conectar()->prepare("DELETE FROM $tableVentas WHERE $nameId = :$nameId");
+
+        $stmt->bindParam(":" . $nameId, $id_venta, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+
+            //   return "Todo ok hasta aqui";
+            $stmt = null;
+
+            //disminuimos el stock despues de la venta
+            $stmt = Conexion::conectar()->prepare("UPDATE PRODUCTOS SET stock_producto = stock_producto + :cantidad, ventas_producto = ventas_producto - :cantidad
+                                           WHERE codigo_producto = :codigo_producto");
+
+            $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
+            $stmt->bindParam(":cantidad", $cantidad, PDO::PARAM_STR);
+
+
+
+            if ($stmt->execute()) {
+                return "ok";
+            }
+        } else {
+            return Conexion::conectar()->errorInfo();
+        }
+    }
 }
 
 

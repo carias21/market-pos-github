@@ -176,7 +176,10 @@
 
                              "columns": [{
                                  "data": "id_venta",
-                                 "data": "codigo_producto"
+                                 "data": "codigo_producto",
+                                 "data": "categoria",
+                                 "data": "descripcion",
+                                 "data": "cantidad"
                              }],
 
 
@@ -227,8 +230,12 @@
                              accion = 3;
                              var data = tableVentas.row($(this).parents('tr')).data();
 
-                             var id_venta = data["id_venta"]
-                             //     alert(id_categoria);
+                             var id_venta = data["id_venta"];
+                             var codigo_producto = data["codigo_producto"];
+                             var cantidad = data["cantidad"];
+                             
+                            //alert(cantidad);
+                            //return;
                              //  alert(id_venta);
 
                              Swal.fire({
@@ -245,6 +252,8 @@
 
                                      datos.append("accion", accion);
                                      datos.append("id_venta", id_venta);
+                                     datos.append("codigo_producto", codigo_producto);
+                                     datos.append("cantidad", cantidad);
 
 
                                      $.ajax({

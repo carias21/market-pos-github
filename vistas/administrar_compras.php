@@ -232,8 +232,12 @@
                              accion = 3;
                              var data = tableCompras.row($(this).parents('tr')).data();
 
-                             var id_compra = data["id_compra"]
-                             //     alert(id_categoria);
+
+                             var id_compra = data["id_compra"];
+                             var codigo_producto = data["codigo_producto"];
+                             var cantidad = data["cantidad"];
+                             // alert(codigo_producto);
+                             // return;
                              //  alert(id_compra);
 
                              Swal.fire({
@@ -250,7 +254,8 @@
 
                                      datos.append("accion", accion);
                                      datos.append("id_compra", id_compra);
-
+                                     datos.append("codigo_producto", codigo_producto);
+                                     datos.append("cantidad", cantidad);
 
                                      $.ajax({
                                          url: "ajax/administrar_compras.ajax.php",
@@ -403,6 +408,11 @@
                              });
 
                          })
+
+
+
+
+
                          //ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
                          /*  setInterval(() => {
 

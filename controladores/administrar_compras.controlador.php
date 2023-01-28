@@ -8,8 +8,8 @@ class AdministrarComprasControlador{
         return $compras;
     }
 
-    static public function ctrEliminarCompra($tableCompras, $id_venta, $nameId){
-        $respuesta = AdministrarVentasModelo::mdlEliminarCompra($tableCompras, $id_venta, $nameId);
+    static public function ctrEliminarCompra($tableCompras, $id_compra, $nameId, $codigo_producto, $cantidad){
+        $respuesta = AdministrarComprasModelo::mdlEliminarCompra($tableCompras, $id_compra, $nameId, $codigo_producto, $cantidad);
         return $respuesta;
     }
     

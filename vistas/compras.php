@@ -53,7 +53,7 @@
                                     <label for="">DIRECCION</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text"><i class="IMAGEN"></i></span></div>
-                                        <input type="text" class="form-control" id="ventas_desde">
+                                        <input type="text" class="form-control" id="compras_desde">
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@
                         <h3 class="fw-bold m-0">Total Compra: Q. <span id="totalCompra">0.00</span></h3>
                     </div>
 
-                    <!-- BORONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
+                    <!-- BORONES PARA VACIAR LISTADO Y COMPLETAR LA COMPRA -->
                     <div class="col-md-6 text-right">
                         <button class="btn btn-primary" id="btnIniciarCompra">
                             <i class="fas fa-shopping-cart"></i>Realizar Compra
@@ -116,7 +116,7 @@
                         </button>
                     </div>
 
-                    <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA VENTA -->
+                    <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA COMPRA -->
                     <div class="col-md-12">
                         <table id="lstProductosCompra" class="display nowrap table-striped w-100 shadow">
                             <thead class="bg-info text-left fs-6">
@@ -277,13 +277,13 @@
                 for (let i = 0; i < respuesta.length; i++) {
                     items.push(respuesta[i]['descripcion_producto'])
                 }
-                //input iptCodigoVenta que lo autocomplete
+                //input iptCodigoCompra que lo autocomplete
                 $("#iptCodigoCompra").autocomplete({
 
                     source: items,
                     select: function(event, ui) {
 
-                        console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
+                        console.log("🚀 ~ file: compras.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
 
                         CargarProductos(ui.item.value);
 
@@ -316,19 +316,6 @@
             recalcularTotales();
         });
 
-
-
-        /* ======================================================================================
-        EVENTO PARA MODIFICAR EL PRECIO DE VENTA DEL PRODUCTO
-        ======================================================================================*/
-        $('#lstProductosVenta tbody').on('click', '.dropdown-item', function() {
-
-            codigo_producto = $(this).attr("codigo");
-            console.log("🚀 ~ file: ventas.php:527 ~ $ ~ codigo_producto", codigo_producto)
-            precio_venta = parseFloat($(this).attr("precio").replaceAll("S./ ", "")).toFixed(2);
-
-            recalcularMontos(codigo_producto, precio_venta);
-        });
 
 
         /* ======================================================================================
@@ -372,7 +359,7 @@
                 if (data['codigo_producto'] == cod_producto_actual) {
 
                     table.cell(index, 7).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptPrecioCompra m-0 p-0" value="' + nuevo_precio + '">').draw();
-                    // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE VENTA
+                    // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA 
                     NuevoPrecio = (parseFloat(cantidad_actual) * (nuevo_precio));
                     NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
                     table.cell(index, 8).data(NuevoPrecio).draw();
@@ -427,7 +414,7 @@
                     //asignamos el valor a la celda (cantidad), en dado caso se agregan mas de dos productos a comprar. 
                     // AUMENTAR EN 1 EL VALOR DE LA CANTIDAD
                     table.cell(index, 6).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptCantidad m-0 p-0" value="' + cantidad_actual + '">').draw();
-                    // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE VENTA
+                    // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA
                     NuevoPrecio = (parseFloat(cantidad_actual) * (precio_actual));
                     NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
                     table.cell(index, 8).data(NuevoPrecio).draw();
@@ -441,14 +428,14 @@
 
 
         /* ======================================================================================
-        EVENTO PARA MODIFICAR EL PRECIO DE VENTA DEL PRODUCTO
+        EVENTO PARA MODIFICAR EL PRECIO DE COMPRA DEL PRODUCTO
         ======================================================================================*/
         $('#lstProductosCompra tbody').on('click', '.dropdown-item', function() {
 
             codigo_producto = $(this).attr("codigo");
-            precio_venta = parseFloat($(this).attr("precio").replaceAll("Q. ", "")).toFixed(2);
+            precio_compra = parseFloat($(this).attr("precio").replaceAll("Q. ", "")).toFixed(2);
 
-            recalcularMontos(codigo_producto, precio_venta);
+            recalcularMontos(codigo_producto, precio_compra);
         });
 
 
@@ -456,7 +443,7 @@
 
 
         /* ======================================================================================
-        EVENTO PARA INICIAR EL REGISTRO DE LA VENTA
+        EVENTO PARA INICIAR EL REGISTRO DE LA COMPRA
         =========================================================================================*/
 
         $("#btnIniciarCompra").on('click', function() {
@@ -479,7 +466,7 @@
 
 
     /*===================================================================*/
-    //FUNCION PARA LIMPIAR TOTOTALMENTE LA TABLA DE VENTAS 
+    //FUNCION PARA LIMPIAR TOTOTALMENTE LA TABLA DE COMPRAS 
     /*===================================================================*/
     function vaciarListado() {
         table.clear().draw();
@@ -487,7 +474,7 @@
     }
 
     /*===================================================================*/
-    //FUNCION PARA LIMPIAR TODOS LOS INPUTS DE MI PAGINA VENTAS 
+    //FUNCION PARA LIMPIAR TODOS LOS INPUTS DE MI PAGINA COMPRAS 
     /*===================================================================*/
 
     function LimpiarInputs() {
@@ -508,10 +495,10 @@
             if (data['codigo_producto'] == codigo_producto) {
 
                 // cantidad_actual = 
-                console.log("🚀 ~ file: ventas.php:483 ~ table.rows ~ data", parseFloat($.parseHTML(data['cantidad'])[0]['value']))
+                console.log("🚀 ~ file: compras.php:483 ~ table.rows ~ data", parseFloat($.parseHTML(data['cantidad'])[0]['value']))
                 cantidad_actual = parseFloat($.parseHTML(data['cantidad'])[0]['value']);
 
-                // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE VENTA
+                // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA
                 NuevoPrecio = (parseFloat(cantidad_actual) * data['precio_compra_producto'].replaceAll("Q. ", "")).toFixed(2);
                 NuevoPrecio = "S./ " + NuevoPrecio;
                 table.cell(index, 8).data(NuevoPrecio).draw();
@@ -552,7 +539,7 @@
         var iva = parseFloat(totalCompra) * 0.12
         var subtotal = parseFloat(totalCompra) - parseFloat(iva);
 
-        $("#totalVentaRegistrar").html(totalCompra);
+        $("#totalCompraRegistrar").html(totalCompra);
 
         $("#boleta_subtotal").html(parseFloat(subtotal).toFixed(2));
         $("#boleta_iva").html(parseFloat(iva).toFixed(2));
@@ -584,7 +571,7 @@
         }
 
         codigo_producto = $.trim(codigo_producto.split('/')[0]);
-        // console.log("🚀 ~ file: ventas.php:844 ~ CargarProductos ~ codigo_producto", codigo_producto)
+        // console.log("🚀 ~ file: compras.php:844 ~ CargarProductos ~ codigo_producto", codigo_producto)
 
         // return;
 
@@ -597,7 +584,7 @@
 
             var row = table.row(index);
             var data = row.data();
-            console.log("🚀 ~ file: ventas.php:829 ~ table.rows ~ data", $.parseHTML(data['cantidad'])[0]['value'])
+            console.log("🚀 ~ file: compras.php:829 ~ table.rows ~ data", $.parseHTML(data['cantidad'])[0]['value'])
 
 
             if (codigo_producto == data['codigo_producto']) {
@@ -612,7 +599,7 @@
                 })
 
                 $("#iptCodigoCompra").val("");
-                $("#iptCodigoVenta").focus();
+                $("#iptCodigoCompra").focus();
             }
         });
 
@@ -658,7 +645,7 @@
                             "</span>" +
 
                             "</center>",
-                        'comentarios': '<input type="text" style="width:150px;" codigoProducto = "' + respuesta['codigo_producto'] + '" class="form-control text-center iptComentario p-0 m-0" value= ' + respuesta['comentarios'] + ' >',
+                        'comentarios': '<input type="text" style="width:150px;" codigoProducto = "' + respuesta['codigo_producto'] + '" class="form-control text-center iptComentarios p-0 m-0" value= ' + respuesta['comentarios'] + ' >',
 
                         /*  'precio_mayor_producto': respuesta['precio_mayor_producto'],
 		                    'precio_oferta_producto': respuesta['precio_oferta_producto'] */
@@ -666,7 +653,7 @@
 
                     itemProducto = itemProducto + 1;
 
-                    //  Recalculamos el total de la venta
+                    //  Recalculamos el total de la compra
                     recalcularTotales();
 
 
@@ -738,7 +725,7 @@
                     parseFloat($.parseHTML(data['cantidad'])[0]['value']) + "," +
                     parseFloat($.parseHTML(data['precio_compra_producto'])[0]['value']) + "," +
                     data['total'].replace("Q. ", "") + "," +
-                    ($.parseHTML(data['precio_compra_producto'])[0]['value']);
+                    parseFloat($.parseHTML(data['comentarios']));
                 //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
 
                 formData.append('arr[]', arr[index]);
