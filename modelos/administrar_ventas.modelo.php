@@ -43,7 +43,7 @@ class AdministrarVentasModelo
     }
 
 
-    static public function mdlEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto)
+    static public function mdlEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto, $fecha_venta)
     {
 
         $stmt = Conexion::conectar()->prepare("DELETE FROM $tableVentas WHERE $nameId = :$nameId");
@@ -63,9 +63,24 @@ class AdministrarVentasModelo
             $stmt->bindParam(":cantidad", $cantidad, PDO::PARAM_STR);
 
 
-
+            //ELIMINAMOS EN LA TABLA CAJA EL DATO OBTENIDO POR LA VENTA
             if ($stmt->execute()) {
-                return "ok";
+
+
+                //   return "Todo ok hasta aqui";
+                $stmt = null;
+
+                //disminuimos el stock del producto 
+                $stmt = Conexion::conectar()->prepare("DELETE FROM caja 
+                                           WHERE codigo_producto = :codigo_producto AND fecha = :fecha_venta");
+
+
+                $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
+                $stmt->bindParam(":fecha_venta", $fecha_venta, PDO::PARAM_STR);
+
+                if ($stmt->execute()) {
+                    return "ok";
+                }
             }
         } else {
             return Conexion::conectar()->errorInfo();

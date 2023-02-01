@@ -172,10 +172,9 @@
 
          </div><!-- ./row Grafico de barras -->
 
-
-
-
-
+   <!-------------------------------------------------------------------------------------------
+        GRAFICO DE BARRAS LOS 10 PRODUCTOS MAS VENDIDOS
+        -------------------------------------------------------------------------------------------->
          <div class="row">
              <div class="col-lg-6">
                  <div class="card card-info ">
@@ -266,7 +265,7 @@
              method: 'POST',
              dataType: 'json',
              success: function(respuesta) {
-                 console.log("respuesta", respuesta);
+            //     console.log("respuesta", respuesta);
                  $("#totalProductos").html(respuesta[0]['totalProductos']);
                  $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toLocaleString('en'))
                  //otras opciones de mostrar las cantidades: .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}))

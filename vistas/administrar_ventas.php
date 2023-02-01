@@ -179,7 +179,13 @@
                                  "data": "codigo_producto",
                                  "data": "categoria",
                                  "data": "descripcion",
-                                 "data": "cantidad"
+                                 "data": "cantidad",
+                                 "data": "precio_venta",
+                                 "data": "descuento_venta",
+                                 "data": "total_venta",
+                                 "data": "fecha_venta"
+                                
+
                              }],
 
 
@@ -233,6 +239,7 @@
                              var id_venta = data["id_venta"];
                              var codigo_producto = data["codigo_producto"];
                              var cantidad = data["cantidad"];
+                             var fecha_venta = data["fecha_venta"];
                              
                             //alert(cantidad);
                             //return;
@@ -254,6 +261,7 @@
                                      datos.append("id_venta", id_venta);
                                      datos.append("codigo_producto", codigo_producto);
                                      datos.append("cantidad", cantidad);
+                                     datos.append("fecha_venta", fecha_venta)
 
 
                                      $.ajax({

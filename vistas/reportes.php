@@ -157,6 +157,45 @@
          </div>
 
 
+         <!-------------------------------------------------------------------------------------------
+        REPORTE VENTAS, COMPRAS Y GANANCIAS
+        -------------------------------------------------------------------------------------------->
+         <div class="row">
+             <div class="col-lg-6">
+                 <div class="card card-info ">
+                     <div class="card-header">
+                         <h3 class="card-title">VENTAS COMPRAS CAJA, POR AÑO</h3>
+                         <div class="card-tools">
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                         </div> <!-- ./ end card-tools -->
+                     </div> <!-- ./ end card-header -->
+                     <div class="card-body">
+                         <div class="table-responsive">
+                             <table class="table table-bordered" id="tbl_Ventas_Compras_Ganancias">
+                                 <thead>
+                                     <tr class="text-nowrap">
+                                         <th>MES</th>
+                                         <th>VENTAS</th>
+                                         <th>COMPRAS</th>
+                                         <th>CAJA</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div> <!-- ./ end card-body -->
+                 </div>
+             </div>
+         </div>
+
+
 
      </div><!-- /.container-fluid -->
  </div>
@@ -165,10 +204,10 @@
  <script>
      $(document).ready(function() {
 
-        cargarGraficoDoughnut();
+         cargarGraficoDoughnut();
 
          /* =======================================================
-          SOLICITUD AJAX GRAFICO DE BARRAS PRODUCTOS VENDIDOS
+          SOLICITUD AJAX VENTAS, COMPRAS Y GANANCIAS
           =======================================================*/
          $.ajax({
              url: "ajax/reportes.ajax.php",
@@ -282,6 +321,33 @@
                      options: barChartOptions
                  })
 
+
+             }
+         });
+
+            //******************************************************************************************************************** */
+         //-------------AJAX PRODUCTOS POCO STOCK------------------------------
+         $.ajax({
+             url: "ajax/caja.ajax.php",
+             type: "POST",
+             data: {
+                 'accion': 1 // listado ventas, compras y ganancias
+             },
+
+
+             dataType: 'json',
+             success: function(respuesta) {
+                 // console.log("respuesta",respuesta);
+
+                 for (let i = 0; i < respuesta.length; i++) {
+                     filas = '<tr>' +
+                         '<td>' + respuesta[i]["fecha"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["ventas"].toFixed(2) + '</td>' +
+                         '<td> Q. ' + respuesta[i]["compras"].toFixed(2) + '</td>' +
+                         '<td> Q. ' + respuesta[i]["caja"].toFixed(2) + '</td>' +
+                         '</tr>'
+                     $("#tbl_Ventas_Compras_Ganancias tbody").append(filas);
+                 }
 
              }
          });
@@ -417,7 +483,7 @@
              url: "ajax/reportes.ajax.php",
              method: 'POST',
              data: {
-                 'accion': 3 
+                 'accion': 3
              },
              dataType: 'json',
              success: function(respuesta) {
@@ -446,4 +512,7 @@
 
 
      }
+
+         
+
  </script>

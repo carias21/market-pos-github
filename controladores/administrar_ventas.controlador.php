@@ -8,8 +8,8 @@ class AdministrarVentasControlador{
         return $ventas;
     }
 
-    static public function ctrEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto){
-        $respuesta = AdministrarVentasModelo::mdlEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto);
+    static public function ctrEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto, $fecha_venta){
+        $respuesta = AdministrarVentasModelo::mdlEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto, $fecha_venta);
         return $respuesta;
     }
     

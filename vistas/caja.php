@@ -1,69 +1,583 @@
- <!-- Content Header (Page header) -->
- <div class="content-header">
-     <div class="container-fluid">
-         <div class="row mb-2">
-             <div class="col-sm-6">
-                 <h1 class="m-0">Reportes</h1>
-             </div><!-- /.col -->
-             <div class="col-sm-6">
-                 <ol class="breadcrumb float-sm-right">
-                     <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                     <li class="breadcrumb-item active">Reportes</li>
-                 </ol>
-             </div><!-- /.col -->
-         </div><!-- /.row -->
-     </div><!-- /.container-fluid -->
- </div>
- <!-- /.content-header -->
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="m-0">CAJA</h4>
+            </div><!-- /.col -->
+            <div class="col-md-6">
+                <ol class="breadcrumb float-md-right">
+                    <li class="breadcrumb-item"><a href="index.php">INICIO</a></li>
 
- <!-- Main content -->
- <div class="content">
-     <div class="container-fluid">
-
-         <!-------------------------------------------------------------------------------------------
-        GRAFICO DE BARRAS PRODUCTOS VENDIDOS
-        -------------------------------------------------------------------------------------------->
-         <!-- row Grafico de barras -->
-         <div class="row">
-
-             <div class="col-12">
-
-                 <div class="card card-info">
-
-                     <div class="card-header">
-
-                         <h3 class="card-title" id="Productos_vendidos"></h3>
-
-                         <div class="card-tools">
-
-                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
-            con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
-                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                 <i class="fas fa-minus"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                 <i class="fas fa-times"></i>
-                             </button>
-
-                         </div> <!-- ./ end card-tools -->
-
-                     </div> <!-- ./ end card-header -->
+                    <li class="breadcrumb-item active">CAJA</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
 
 
-                     <div class="card-body">
 
-                         <div class="chart">
 
-                             <canvas id="barChart_Productos_Vendidos" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
+<div class="content">
+    <div class="container-fluid">
+        <!-- FILA PARA INPUT FILE -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">FLUJO DE CAJA</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div> <!-- ./ end card-tools -->
+                    </div> <!-- ./ end card-header -->
 
-                             </canvas>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- BORONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
+                            <div class="col-md-12 text-left">
+                                <button class="btn btn-success btn-lg" id="btnIngresoEfectivo">
+                                    <i class=" fas fa-plus"></i> ENTRADA
+                                </button>
 
-                         </div>
+                                <button class="btn btn-danger btn-lg " id="btnSalidaEfectivo">
+                                    <i class="fas fa-minus"></i> SALIDA
+                                </button>
 
-                     </div> <!-- ./ end card-body -->
+                            </div>
+                        </div>
+                    </div> <!-- ./ end card-body -->
 
-                 </div>
+                    <!--   <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-2 text-right">
+                                <input type="submit" value="DETALLES" class="btn btn-primary" id="btnVerDetalle" size="50">
+                            </div>
+                        </div>
+                    </div> --> <!-- ./ end card-body -->
+                </div>
+            </div>
+        </div>
 
-             </div>
+    </div><!-- /.container-fluid -->
+</div>
 
-         </div><!-- ./row Grafico de barras -->
+<div class="col-md-4 mb-3">
+    <h4>Total Caja: Q. <span id="total_Caja">0.00</span></h4>
+</div>
+
+<!-- Main content -->
+<div class="content pb-2">
+    <div class="row p-0 m-0">
+        <!-- Listado de categorias -->
+        <div class="col-md-12">
+            <div class="card card-info card-outline shadow">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="far fa-list-alt"></i> Listado flujo de caja</h3>
+                </div>
+                <div class="card-body">
+                    <table id="tbl_Caja" class="display nowrap table-striped w-100 shadow rounded">
+                        <thead class="bg-info text-left">
+                            <th>id</th>
+                            <th>Codigo</th>
+                            <th>Fecha</th>
+                            <th>Descripcion</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Saldo Actual</th>
+
+                        </thead>
+                        <tbody class="small text left"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- SE COLOCA SEPARACION DE DIV PORQUE EXISTE CONFLICTO AL ABRIR LA SEGUNDA VENTA MODAL
+YA QUE NO SE MUESTRA -->
+
+<!-- =============================================================
+    VENTANA MODAL SALIDA DE EFECTIVO
+    ============================================================= -->
+<div>
+
+    <div class="modal fade" id="mdlSalidaEfectivo" role="dialog">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <!-- contenido del modal -->
+            <div class="modal-content ">
+
+                <!-- cabecera del modal -->
+                <div class="modal-header bg-gray py-1">
+
+                    <h5 class="modal-title">Salida de Efectivo</h5>
+
+                    <button type="button" class="btn btn-outline-primary text-white border-0 fs-5" data-bs-dismiss="modal" id="btnCerrarModal">
+                        <i class="far fa-times-circle"></i>
+                    </button>
+
+                </div>
+
+
+                <!-- *************************** CUERPO DE LA VENTANA ******************** -->
+                <div class="modal-body">
+
+                    <form class="needs-validation" novalidate method="POST">
+                        <!-- Abrimos una fila -->
+                        <div class="row">
+
+                            <!-- Columna para registro SALIDA DE DINERO -->
+                            <div class="col-12  col-lg-4">
+                                <div class="form-group mb-2">
+                                    <label class="" for="iptSalidaEfect"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Salida de efectivo
+                                        </span><span class="text-danger">*</span></label>
+                                    <input type="number" min="0" class="form-control form-control-sm" step="0.01" id="iptSalidaEfectivo" placeholder="Efectivo" required>
+                                    <div class="invalid-feedback">Debe ingresar el efectivo</div>
+                                </div>
+                            </div>
+
+                            <!-- Columna para registro de la descripción del producto -->
+                            <div class="col-12">
+                                <div class="form-group mb-2">
+                                    <b-field expanded label class="" for="iptDescripcionSalida"><i class="fas fa-file-signature fs-6"></i> <span class="small">Descripción</span><span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm" id="iptDescripcionSalida" placeholder="Descripción" required>
+                                        <!--notificacion si no se ingresa la categoria -->
+                                        <div class="invalid-feedback">Debe ingresar la descripción</div>
+                                </div>
+                            </div>
+
+                            <!-- creacion de botones para cancelar y guardar el producto -->
+                            <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
+                            <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2" id="btnGuardarSalidaEfectivo">Aceptar</button>
+                            <!-- <button class="btn btn-default btn-success" type="submit" name="submit" value="Submit">Save</button> -->
+
+                    </form>
+
+                </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- =============================================================
+    VENTANA MODAL INGRESO DE EFECTIVO
+    ============================================================= -->
+<div>
+    <div class="modal fade" id="mdlIngresarEfectivo" role="dialog">
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+            <!-- contenido del modal -->
+            <div class="modal-content ">
+
+                <!-- cabecera del modal -->
+                <div class="modal-header bg-gray py-1">
+
+                    <h5 class="modal-title">Ingreso de Efectivo</h5>
+
+                    <button type="button" class="btn btn-outline-primary text-white border-0 fs-5" data-bs-dismiss="modal" id="btnCerrarModal">
+                        <i class="far fa-times-circle"></i>
+                    </button>
+
+                </div>
+
+
+                <!-- *************************** CUERPO DE LA VENTA ******************** -->
+                <div class="modal-body">
+
+                    <form class="needs-validation" novalidate method="POST">
+                        <!-- Abrimos una fila -->
+                        <div class="row">
+
+                            <!-- Columna para registro del Precio de Compra -->
+                            <div class="col-12  col-lg-4">
+                                <div class="form-group mb-2">
+                                    <label class="" for="iptIngresoEfect"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Ingreso de efectivo
+                                        </span><span class="text-danger">*</span></label>
+                                    <input type="number" min="0" class="form-control form-control-sm" step="0.01" id="iptIngresoEfectivo" placeholder="Efectivo" required>
+                                    <div class="invalid-feedback">Debe ingresar el efectivo</div>
+                                </div>
+                            </div>
+
+                            <!-- Columna para registro de la descripción del producto -->
+                            <div class="col-12">
+                                <div class="form-group mb-2">
+
+
+
+                                    <b-field expanded label class="" for="iptDescripcionIngreso"><i class="fas fa-file-signature fs-6"></i> <span class="small">Descripción</span><span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control form-control-sm" id="iptDescripcionIngreso" placeholder="Descripción" required>
+                                        <!--notificacion si no se ingresa la categoria -->
+                                        <div class="invalid-feedback">Debe ingresar la descripción</div>
+                                </div>
+                            </div>
+
+                            <!-- creacion de botones para cancelar y guardar el producto -->
+                            <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
+                            <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2" id="btnGuardarIngresoEfectivo">Aceptar</button>
+                            <!-- <button class="btn btn-default btn-success" type="submit" name="submit" value="Submit">Save</button> -->
+
+                    </form>
+
+                </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+<script>
+    var Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000
+    });
+
+    /* =============================================================
+    VARIABLES GLOBALES
+    ============================================================= */
+    var tbl_Caja;
+
+
+    $(document).ready(function() {
+
+        cargarDataTables();
+        ajustarHeadersDataTables($('#tbl_Caja'));
+
+
+        /*===================================================================
+        =====================================================================
+                                             EVENTOS
+        =====================================================================
+        ====================================================================*/
+
+        //Función para ver el detalle
+        $("#btnVerDetalle").on('click', function() {
+            //Capturas página actual
+            var pagina_actual = tbl_Caja.page();
+
+            //Guardamos la página actual en el local storage
+            localStorage.setItem("pagina_actual", pagina_actual);
+
+            //capturamos la página guardada anteriormente
+            var pagina = localStorage.getItem("pagina_actual");
+
+            // Pregutnamos si existe el item
+            if (pagina != undefined) {
+
+                //Decimos a la table que cargue la página requerida
+                tbl_Caja.page(pagina).draw('page');
+
+                //Eliminamos el item para que no genere conflicto a la hora de dar click en otro botón detalle
+                // localStorage.removeItem("pagina_actual");
+            }
+
+        });
+
+
+        /*===================================================================*/
+        //EVENTO ABRIR VENTANA MODAL INGRESO EFECTIVO
+        /*===================================================================*/
+        $('#btnIngresoEfectivo').on('click', function() {
+            $('#mdlIngresarEfectivo').modal('show');
+            LimpiarInputsVentanasModal();
+            $(".needs-validation").removeClass("was-validated");
+        });
+
+        /*===================================================================*/
+        //EVENTO ABRIR VENTANA MODAL SALIDA DE EFECTIVO
+        /*===================================================================*/
+        $('#btnSalidaEfectivo').on('click', function() {
+            $('#mdlSalidaEfectivo').modal('show');
+            LimpiarInputsVentanasModal();
+            $(".needs-validation").removeClass("was-validated");
+        });
+
+        /*===================================================================*/
+        //EVENTO QUE GUARDA LOS DATOS DEL INGRESO DE EFECTIVO, PREVIA VALIDACION DEL INGRESO DE LOS DATOS OBLIGATORIOS
+        /*===================================================================*/
+        document.getElementById("btnGuardarIngresoEfectivo").addEventListener("click", function() {
+
+            accion = 3;
+
+            // Get the forms we want to add validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+
+                if (form.checkValidity() === true) {
+
+
+                    //capturamos los valores para llevar a la base de datos
+                    entrada = $("#iptIngresoEfectivo").val();
+                    descripcion = $("#iptDescripcionIngreso").val();
+
+                    var datos = new FormData();
+
+
+                    datos.append("accion", accion);
+                    datos.append("entrada", entrada);
+                    datos.append("descripcion", descripcion);
+
+                    $.ajax({
+                        url: "ajax/caja.ajax.php",
+                        type: "POST",
+                        //aqui es donde enviamos los datos capturados anteriormente
+                        data: datos,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'json',
+                        success: function(respuesta) {
+                            if (respuesta == "ok") {
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'ENTRADA DE EFECTIVO CORRECTAMENTE'
+                                });
+                                LimpiarInputsVentanasModal();
+
+                                tbl_Caja.ajax.reload();
+
+                                $("#mdlIngresarEfectivo").modal('hide');
+
+
+                                document.getElementById("btnIngresoEfectivo").addEventListener("click", function() {
+                                    $(".needs-validation").removeClass("was-validated");
+                                })
+
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'No se logro el ingreso'
+                                });
+                            }
+
+                        }
+                    });
+
+
+                } else {
+                    console.log("No paso la validacion")
+                }
+
+                form.classList.add('was-validated');
+
+            });
+        });
+
+        /*===================================================================*/
+        //EVENTO QUE GUARDA LOS DATOS DEL SALIDA DE EFECTIVO, PREVIA VALIDACION DEL INGRESO DE LOS DATOS OBLIGATORIOS
+        /*===================================================================*/
+        document.getElementById("btnGuardarSalidaEfectivo").addEventListener("click", function() {
+            total_Caja = ("#total_Caja");
+            
+            total_Caja.reload
+
+            accion = 4;
+
+            // Get the forms we want to add validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+
+                if (form.checkValidity() === true) {
+
+
+                    //capturamos los valores para llevar a la base de datos
+                    salida = $("#iptSalidaEfectivo").val();
+                    descripcion = $("#iptDescripcionSalida").val();
+
+                    var datos = new FormData();
+
+
+                    datos.append("accion", accion);
+                    datos.append("salida", salida);
+                    datos.append("descripcion", descripcion);
+
+                    $.ajax({
+                        url: "ajax/caja.ajax.php",
+                        type: "POST",
+                        //aqui es donde enviamos los datos capturados anteriormente
+                        data: datos,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'json',
+                        success: function(respuesta) {
+                            if (respuesta == "ok") {
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'SALIDA DE EFECTIVO CORRECTAMENTE'
+                                });
+                                LimpiarInputsVentanasModal();
+
+                                tbl_Caja.ajax.reload();
+
+                                $("#mdlSalidaEfectivo").modal('hide');
+
+
+                                document.getElementById("btnSalidaEfectivo").addEventListener("click", function() {
+                                    $(".needs-validation").removeClass("was-validated");
+                                })
+
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'No se retiro el efectivo'
+                                });
+                            }
+
+                        }
+                    });
+
+
+                } else {
+                    console.log("No paso la validacion")
+                }
+
+                form.classList.add('was-validated');
+
+            });
+        });
+
+
+    })
+
+
+    /*===================================================================
+    =====================================================================
+     FUNCIONES
+    ===================================================================
+    ===================================================================*/
+
+      /* =======================================================
+         SOLICITUD AJAX TARJETAS INFORMATIVAS
+         =======================================================*/
+         $.ajax({
+             url: "ajax/caja.ajax.php",
+             method: 'POST',
+             dataType: 'json',
+             success: function(respuesta) {
+                 $("#total_Caja").html( respuesta[0]['total_Caja'].toLocaleString('en'))
+             }
+         });
+
+         
+        /* setInterval(() => {
+             $.ajax({
+                 url: "ajax/caja.ajax.php",
+                 method: 'POST',
+                 dataType: 'json',
+                 success: function(respuesta) {
+                    $("#total_Caja").html( respuesta[0]['total_Caja'].toLocaleString('en'))
+                 }
+             });
+             /* 10000 = 10segundos */
+       //  }, 300);
+
+    /*===================================================================
+    CARGAR DATATABLES 
+    ===================================================================*/
+    function cargarDataTables() {
+
+        //DATA TABLE CAJA
+        tbl_Caja = $('#tbl_Caja').DataTable({
+            ajax: {
+                async: false,
+                url: 'ajax/caja.ajax.php',
+                type: 'POST',
+                dataType: 'json',
+                dataSrc: "",
+                data: {
+                    accion: 2
+                }
+            },
+            scrollX: true,
+            order: [
+                [2, 'desc']
+            ],
+            columnDefs: [{
+                    targets: 0,
+                    'data': 'id_caja',
+                    orderable: false,
+                    className: 'control',
+                    visible: true
+                },
+                {
+                    targets: 1,
+                    'data': 'codigo_producto',
+                    visible: false
+                },
+            ],
+
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+            }
+        });
+    }
+
+    //FUNCION AJUSTAR LAS TABLAS POR DEFORMARCE O NO SE MIRAN BIEN
+    //VD 30 MIN 25.10
+    function ajustarHeadersDataTables(element) {
+
+        var observer = window.ResizeObserver ? new ResizeObserver(function(entries) {
+            entries.forEach(function(entry) {
+                $(entry.target).DataTable().columns.adjust();
+            });
+        }) : null;
+
+        // Function to add a datatable to the ResizeObserver entries array
+        resizeHandler = function($table) {
+            if (observer)
+                observer.observe($table[0]);
+        };
+
+        // Initiate additional resize handling on datatable
+        resizeHandler(element);
+    }
+
+    /*===================================================================
+      FUNCION LIMPIAR INPUTS DE LA VENTA MODAL
+      ===================================================================*/
+    function LimpiarInputsVentanasModal() {
+
+        $("#iptIngresoEfectivo").val("");
+
+        $("#iptDescripcionIngreso").val("");
+
+        $("#iptDescripcionSalida").val("");
+
+        $("#iptSalidaEfectivo").val("");
+
+    } /* FIN LimpiarInputs */
+</script>
+
+
+
+<!-- /.content -->

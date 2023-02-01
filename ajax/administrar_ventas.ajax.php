@@ -21,8 +21,9 @@ echo json_encode($ventas, JSON_UNESCAPED_UNICODE);
         $id_venta = $_POST["id_venta"];
         $codigo_producto = $_POST["codigo_producto"];
         $cantidad = $_POST["cantidad"];
+        $fecha_venta = $_POST["fecha_venta"];
         $nameId = "id_venta";
-        $respuesta = AdministrarVentasControlador::ctrEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto);
+        $respuesta = AdministrarVentasControlador::ctrEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto, $fecha_venta);
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
 
     }
