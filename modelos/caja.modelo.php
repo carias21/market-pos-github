@@ -16,7 +16,8 @@ class CajaModelo{
                                                          descripcion,
                                                          CONCAT('Q. ',CONVERT(ROUND(entrada,2), CHAR)) as entrada,
                                                          CONCAT('Q. ',CONVERT(ROUND(salida,2), CHAR)) as salida,
-                                                         CONCAT('Q. ',CONVERT(ROUND(saldo_actual,2), CHAR)) as saldo_actual
+                                                         CONCAT('Q. ',CONVERT(ROUND(saldo_actual,2), CHAR)) as saldo_actual,
+                                                         '' as opciones
              
          FROM caja");
 

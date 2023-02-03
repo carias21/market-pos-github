@@ -59,7 +59,7 @@ class AdministrarComprasModelo
             $stmt = null;
 
             //disminuimos el stock del producto 
-            $stmt = Conexion::conectar()->prepare("UPDATE PRODUCTOS SET stock_producto = stock_producto - :cantidad
+            $stmt = Conexion::conectar()->prepare("UPDATE productos SET stock_producto = stock_producto - :cantidad
                                            WHERE codigo_producto = :codigo_producto");
 
 

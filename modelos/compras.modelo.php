@@ -50,7 +50,7 @@ class ComprasModelo{
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    static public function mdlVerificaStockProducto($codigo_producto, $cantidad_a_comprar){
+ /*   static public function mdlVerificaStockProducto($codigo_producto, $cantidad_a_comprar){
 
         $stmt = Conexion::conectar()->prepare("SELECT   count(*) as existe
                                                     FROM productos p 
@@ -63,7 +63,7 @@ class ComprasModelo{
         $stmt -> execute();
     
         return $stmt->fetch(PDO::FETCH_OBJ);
-    }
+    } */
 
 
 

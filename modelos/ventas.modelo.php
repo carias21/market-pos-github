@@ -6,8 +6,7 @@ class VentasModelo
 
     public $resultado;
 
-    static public function mdlRegistrarVenta($datos)
-    {
+    static public function mdlRegistrarVenta($datos){
 
         $stmt = Conexion::conectar()->prepare("UPDATE empresa SET nro_correlativo_venta = LPAD(nro_correlativo_venta + 1,8,'0')");
 
@@ -55,7 +54,7 @@ class VentasModelo
                     $stmt = null;
 
                     //disminuimos el stock despues de la venta
-                    $stmt = Conexion::conectar()->prepare("UPDATE PRODUCTOS SET stock_producto = stock_producto - :cantidad, ventas_producto = ventas_producto + :cantidad
+                    $stmt = Conexion::conectar()->prepare("UPDATE productos SET stock_producto = stock_producto - :cantidad, ventas_producto = ventas_producto + :cantidad
                                                                 WHERE codigo_producto = :codigo_producto");
 
                     $stmt->bindParam(":codigo_producto", $listaProductos[0], PDO::PARAM_STR);

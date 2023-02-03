@@ -88,6 +88,7 @@
                             <th>Entrada</th>
                             <th>Salida</th>
                             <th>Saldo Actual</th>
+                            <th class="text-center">Opciones</th>
 
                         </thead>
                         <tbody class="small text left"></tbody>
@@ -360,9 +361,13 @@ YA QUE NO SE MUESTRA -->
                                 });
                                 LimpiarInputsVentanasModal();
 
+                                $("#mdlIngresarEfectivo").modal('hide');
+
                                 tbl_Caja.ajax.reload();
 
-                                $("#mdlIngresarEfectivo").modal('hide');
+
+
+
 
 
                                 document.getElementById("btnIngresoEfectivo").addEventListener("click", function() {
@@ -393,11 +398,10 @@ YA QUE NO SE MUESTRA -->
         //EVENTO QUE GUARDA LOS DATOS DEL SALIDA DE EFECTIVO, PREVIA VALIDACION DEL INGRESO DE LOS DATOS OBLIGATORIOS
         /*===================================================================*/
         document.getElementById("btnGuardarSalidaEfectivo").addEventListener("click", function() {
-            total_Caja = ("#total_Caja");
-            
-            total_Caja.reload
 
+            total_Caja = $("#total_Caja").html();
             accion = 4;
+
 
             // Get the forms we want to add validation styles to
             var forms = document.getElementsByClassName('needs-validation');
@@ -406,8 +410,6 @@ YA QUE NO SE MUESTRA -->
             var validation = Array.prototype.filter.call(forms, function(form) {
 
                 if (form.checkValidity() === true) {
-
-
                     //capturamos los valores para llevar a la base de datos
                     salida = $("#iptSalidaEfectivo").val();
                     descripcion = $("#iptDescripcionSalida").val();
@@ -418,6 +420,16 @@ YA QUE NO SE MUESTRA -->
                     datos.append("accion", accion);
                     datos.append("salida", salida);
                     datos.append("descripcion", descripcion);
+
+                  /*  if (salida < total_Caja) {
+                        console.log(salida);
+                        console.log(total_Caja);
+                        Toast.fire({
+                            icon: 'alert',
+                            title: 'NO PUEDES RETIRAR MAS DINERO'
+                        });
+                        return;
+                    } */
 
                     $.ajax({
                         url: "ajax/caja.ajax.php",
@@ -476,30 +488,32 @@ YA QUE NO SE MUESTRA -->
     ===================================================================
     ===================================================================*/
 
-      /* =======================================================
-         SOLICITUD AJAX TARJETAS INFORMATIVAS
-         =======================================================*/
-         $.ajax({
-             url: "ajax/caja.ajax.php",
-             method: 'POST',
-             dataType: 'json',
-             success: function(respuesta) {
-                 $("#total_Caja").html( respuesta[0]['total_Caja'].toLocaleString('en'))
-             }
-         });
+    /* =======================================================
+       SOLICITUD AJAX TOTAL_CAJA
+       =======================================================*/
+    $.ajax({
+        url: "ajax/caja.ajax.php",
+        method: 'POST',
+        dataType: 'json',
+        success: function(respuesta) {
+            $("#total_Caja").html(respuesta[0]['total_Caja'].toLocaleString('en'))
+        }
 
-         
-        /* setInterval(() => {
-             $.ajax({
-                 url: "ajax/caja.ajax.php",
-                 method: 'POST',
-                 dataType: 'json',
-                 success: function(respuesta) {
-                    $("#total_Caja").html( respuesta[0]['total_Caja'].toLocaleString('en'))
-                 }
-             });
-             /* 10000 = 10segundos */
-       //  }, 300);
+
+    });
+
+
+    setInterval(() => {
+        $.ajax({
+            url: "ajax/caja.ajax.php",
+            method: 'POST',
+            dataType: 'json',
+            success: function(respuesta) {
+                $("#total_Caja").html(respuesta[0]['total_Caja'].toLocaleString('en'))
+            }
+        });
+        /* 10000 = 10segundos */
+    }, 300);
 
     /*===================================================================
     CARGAR DATATABLES 

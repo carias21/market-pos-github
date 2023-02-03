@@ -56,7 +56,7 @@ class AdministrarVentasModelo
             $stmt = null;
 
             //disminuimos el stock despues de la venta
-            $stmt = Conexion::conectar()->prepare("UPDATE PRODUCTOS SET stock_producto = stock_producto + :cantidad, ventas_producto = ventas_producto - :cantidad
+            $stmt = Conexion::conectar()->prepare("UPDATE productos SET stock_producto = stock_producto + :cantidad, ventas_producto = ventas_producto - :cantidad
                                            WHERE codigo_producto = :codigo_producto");
 
             $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);

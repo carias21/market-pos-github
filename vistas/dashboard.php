@@ -446,7 +446,7 @@
                          '<td>' + respuesta[i]["codigo_producto"] + '</td>' +
                          '<td>' + respuesta[i]["descripcion_producto"] + '</td>' +
                          '<td>' + respuesta[i]["cantidad"] + '</td>' +
-                         '<td> Q. ' + respuesta[i]["total_venta"].toFixed(2) + '</td>' +
+                         '<td> Q. ' + respuesta[i]["total_venta"] + '</td>' +
                          '</tr>'
                      $("#tbl_productos_mas_vendidos tbody").append(filas);
                  }
