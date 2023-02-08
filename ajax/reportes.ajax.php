@@ -9,12 +9,12 @@ class AjaxReportes
     public function getCantidadVentasProductos()
     {
 
-        $CantidadventasProductos = ReportesControlador::ctrCantidadVentasProductos();
+        $CantidadventasProductos = ReportesControlador::ctrCantidadVentasProductos(); //prc_ListarProductosMasVendidos
 
         echo json_encode($CantidadventasProductos);
     }
 
-    public function getTotalVentasMesAño()
+    public function getTotalVentasMesAño() //prc_top_ventas_categorias
     {
 
         $TotalVentasMesAño = ReportesControlador::ctrTotalVentasMesAño();
@@ -23,24 +23,29 @@ class AjaxReportes
     }
     public function getVentasPorCategorias()
     {
-        $ventasPorCategorias = ReportesControlador::ctrVentasPorCategoria();
+        $ventasPorCategorias = ReportesControlador::ctrVentasPorCategoria(); //prc_ObtenerVentasMesesPorAño
 
         echo json_encode($ventasPorCategorias, JSON_NUMERIC_CHECK);
+    }
+    public function getVentasComprasGanancia()
+    {
+        $VentasComprasGanancia = ReportesControlador::ctrVentasComprasGanancia(); //prc_TotalVentasComprasGanancia
+
+        echo json_encode($VentasComprasGanancia, JSON_NUMERIC_CHECK);
     }
 }
 
 
-if (isset($_POST['accion']) && $_POST['accion'] == 4) { //Ejecutar function  productos  vendidos (Grafico de Barras)
-
-
+if (isset($_POST['accion']) && $_POST['accion'] == 4) { //Ejecutar function cantidad productos  vendidos prc_ListarProductosMasVendidos (Grafico de Barras)
     $CantidadventasProductos = new AjaxReportes();
     $CantidadventasProductos->getCantidadVentasProductos();
-} else if (isset($_POST['accion']) && $_POST['accion'] == 3) { //Ejecutar function de grafico de doughnut
+} else if (isset($_POST['accion']) && $_POST['accion'] == 3) { //Ejecutar function de grafico de doughnut prc_top_ventas_categorias	
     $ventasPorCategorias = new AjaxReportes();
     $ventasPorCategorias->getVentasPorCategorias();
-} else if (isset($_POST['accion']) && $_POST['accion'] == 1) { //Ejecutar function  productos  vendidos (Grafico de Barras)
-
-
+} else if (isset($_POST['accion']) && $_POST['accion'] == 1) { //Ejecutar function prc_ObtenerVentasMesesPorAño	(Grafico de Barras)
     $TotalVentasMesAño = new AjaxReportes();
     $TotalVentasMesAño->getTotalVentasMesAño();
+}else if (isset($_POST['accion']) && $_POST['accion'] == 5) { //Ejecutar function prc_TotalVentasComprasCaja VENTAS, COMPRAS, GANANCIA
+    $VentasComprasGanancia = new AjaxReportes();
+    $VentasComprasGanancia->getVentasComprasGanancia();
 }

@@ -27,6 +27,13 @@ class ReportesControlador{
         return $ventasPorCategorias;
     }
 
+    static public function ctrVentasComprasGanancia()
+    {
+        $VentasComprasGanancia = ReportesModelo::mdlVentasComprasGanancia();
+    
+        return $VentasComprasGanancia;
+    }
+
 
 
    

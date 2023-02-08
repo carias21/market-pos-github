@@ -164,7 +164,7 @@
              <div class="col-lg-6">
                  <div class="card card-info ">
                      <div class="card-header">
-                         <h3 class="card-title">VENTAS COMPRAS CAJA, POR AÑO</h3>
+                         <h3 class="card-title">VENTAS COMPRAS GANANCIA, POR AÑO</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
@@ -182,7 +182,7 @@
                                          <th>MES</th>
                                          <th>VENTAS</th>
                                          <th>COMPRAS</th>
-                                         <th>CAJA</th>
+                                         <th>GANANCIA</th>
                                      </tr>
                                  </thead>
                                  <tbody>
@@ -207,7 +207,7 @@
          cargarGraficoDoughnut();
 
          /* =======================================================
-          SOLICITUD AJAX VENTAS, COMPRAS Y GANANCIAS
+          SOLICITUD AJAX CANTIDAD PRODUCTOS VENDIDOS
           =======================================================*/
          $.ajax({
              url: "ajax/reportes.ajax.php",
@@ -325,13 +325,16 @@
              }
          });
 
-            //******************************************************************************************************************** */
-         //-------------AJAX PRODUCTOS POCO STOCK------------------------------
+
+
+           /* =======================================================
+          SOLICITUD AJAX VENTAS, COMPRAS Y GANANCIAS
+          =======================================================*/
          $.ajax({
-             url: "ajax/caja.ajax.php",
+             url: "ajax/reportes.ajax.php",
              type: "POST",
              data: {
-                 'accion': 1 // listado ventas, compras y ganancias
+                 'accion': 5 // listado ventas, compras y ganancias
              },
 
 
@@ -342,9 +345,9 @@
                  for (let i = 0; i < respuesta.length; i++) {
                      filas = '<tr>' +
                          '<td>' + respuesta[i]["fecha"] + '</td>' +
-                         '<td> Q. ' + respuesta[i]["ventas"].toFixed(2) + '</td>' +
-                         '<td> Q. ' + respuesta[i]["compras"].toFixed(2) + '</td>' +
-                         '<td> Q. ' + respuesta[i]["caja"].toFixed(2) + '</td>' +
+                         '<td> Q. ' + respuesta[i]["ventas"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["compras"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["ganancia"] + '</td>' +
                          '</tr>'
                      $("#tbl_Ventas_Compras_Ganancias tbody").append(filas);
                  }
