@@ -26,7 +26,7 @@ class CajaModelo{
         return $stmt->fetchAll();
     }
 
-        /*===================================================================
+    /*===================================================================
     REGISTRAR INGRESO DE CAJA
     ====================================================================*/
     static public function mdlIngresoCaja($descripcion, $entrada){        

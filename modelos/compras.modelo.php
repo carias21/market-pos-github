@@ -69,8 +69,13 @@ class ComprasModelo{
 
 
     public $resultado;
+    
 
     static public function mdlRegistrarCompra($datos){
+
+        date_default_timezone_set('America/Guatemala');
+        $fecha_compra = date("Y-m-d H:i:s");
+    
 
             $stmt = Conexion::conectar()->prepare("UPDATE empresa SET nro_correlativo_venta = LPAD(nro_correlativo_venta + 1,8,'0')");
 
@@ -93,6 +98,7 @@ class ComprasModelo{
                                                         cantidad,
                                                         precio_compra,
                                                         total_compra,
+                                                        fecha_compra,
                                                         comentarios)         
                                                         VALUES(:codigo_producto,
                                                         :categoria, 
@@ -100,6 +106,7 @@ class ComprasModelo{
                                                         :cantidad, 
                                                         :precio_compra, 
                                                         :total_compra, 
+                                                        :fecha_compra,
                                                         :comentarios)");
         
                
@@ -109,6 +116,7 @@ class ComprasModelo{
         $stmt -> bindParam(":cantidad",$listaProductos[3] , PDO::PARAM_STR);
         $stmt -> bindParam(":precio_compra", $listaProductos[4] , PDO::PARAM_STR);
         $stmt -> bindParam(":total_compra",$listaProductos[5] , PDO::PARAM_STR);
+        $stmt -> bindParam(":fecha_compra",$fecha_compra , PDO::PARAM_STR);
         $stmt -> bindParam(":comentarios", $listaProductos[6] , PDO::PARAM_STR);
 
       //  return $listaProductos;
