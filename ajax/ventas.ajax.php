@@ -11,7 +11,7 @@ class AjaxVentas
   {
     date_default_timezone_set('America/Guatemala');
     $fecha_venta = date("Y-m-d H:i:s");
-
+    
     $registroVenta = VentasControlador::ctrRegistrarVenta($datos,  $fecha_venta);
     echo json_encode($registroVenta, JSON_UNESCAPED_UNICODE);
   }

@@ -9,6 +9,7 @@ class AjaxCaja
     public $descripcion;
     public $entrada;
     public $salida;
+    public $id_caja;
 
 
     public function ajaxListarCaja()
@@ -38,6 +39,15 @@ class AjaxCaja
 
         echo json_encode($datos);
     }
+    public function ajaxEliminarCaja(){
+
+        $tbl_Caja = "caja";
+        $id_Caja = $_POST["id_caja"];
+         $nameId = "id_caja";
+        $respuesta = CajaControlador::ctrEliminarCaja($tbl_Caja, $id_Caja, $nameId );
+
+        echo json_encode($respuesta);
+    }
 }
 
 
@@ -62,6 +72,12 @@ if (isset($_POST['accion']) && $_POST['accion'] == 2) {
     $SalidaCaja->salida = $_POST["salida"];
 
     $SalidaCaja->ajaxSalidaCaja();
+}else if (isset($_POST['accion']) && $_POST['accion'] == 5) { //parametro para eliminar registro caja
+
+    $EliminarCaja = new AjaxCaja();
+    $EliminarCaja->id_caja = $_POST["id_caja"];
+    $EliminarCaja->ajaxEliminarCaja();
+
 } else {
     $datos = new AjaxCaja();
     $datos->getTotal_Caja();

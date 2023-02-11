@@ -22,4 +22,11 @@ class CajaControlador
 
         return $datos;
     }
+
+    static public function ctrEliminarCaja($tbl_Caja, $id_Caja, $nameId){
+
+        $respuesta = CajaModelo::mdlEliminarCaja($tbl_Caja, $id_Caja, $nameId );
+
+        return $respuesta;
+    }
 }

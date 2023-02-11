@@ -260,6 +260,7 @@ YA QUE NO SE MUESTRA -->
     VARIABLES GLOBALES
     ============================================================= */
     var tbl_Caja;
+    var total_Caja;
 
 
     $(document).ready(function() {
@@ -297,6 +298,66 @@ YA QUE NO SE MUESTRA -->
 
         });
 
+
+        /*===================================================================*/
+        //EVENTO ELIMINAR CAJA
+        /*===================================================================*/
+        $('#tbl_Caja tbody').on('click', '.btnEliminarCaja', function() {
+       
+            accion = 5;
+            var data = tbl_Caja.row($(this).parents('tr')).data();
+
+            var id_Caja = data["id_caja"];
+          
+
+            //alert(id_Caja);
+            //return;
+            //  alert(id_venta);
+
+            Swal.fire({
+                title: 'Está seguro de eliminar registro de caja' + id_Caja + '?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar!',
+                cancelButtonText: 'Cancelar!',
+                
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var datos = new FormData();
+
+                    datos.append("accion", accion);
+                    datos.append("id_caja", id_Caja);
+
+                    $.ajax({
+                        url: "ajax/caja.ajax.php",
+                        method: "POST",
+                        data: datos,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'json',
+                        success: function(respuesta) {
+                            if (respuesta == "ok") {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Se elimino registro de caja correctamente'
+                                });
+                                tbl_Caja.ajax.reload();
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'No se pudo eliminar el registro'
+                                });
+                            }
+                        }
+                    });
+
+
+
+                }
+            })
+        });
 
         /*===================================================================*/
         //EVENTO ABRIR VENTANA MODAL INGRESO EFECTIVO
@@ -364,10 +425,7 @@ YA QUE NO SE MUESTRA -->
                                 $("#mdlIngresarEfectivo").modal('hide');
 
                                 tbl_Caja.ajax.reload();
-
-
-
-
+                                //    total_Caja = $("#total_Caja").html();
 
 
                                 document.getElementById("btnIngresoEfectivo").addEventListener("click", function() {
@@ -398,8 +456,6 @@ YA QUE NO SE MUESTRA -->
         //EVENTO QUE GUARDA LOS DATOS DEL SALIDA DE EFECTIVO, PREVIA VALIDACION DEL INGRESO DE LOS DATOS OBLIGATORIOS
         /*===================================================================*/
         document.getElementById("btnGuardarSalidaEfectivo").addEventListener("click", function() {
-
-            total_Caja = $("#total_Caja").html();
             accion = 4;
 
 
@@ -421,15 +477,15 @@ YA QUE NO SE MUESTRA -->
                     datos.append("salida", salida);
                     datos.append("descripcion", descripcion);
 
-                  /*  if (salida < total_Caja) {
-                        console.log(salida);
-                        console.log(total_Caja);
-                        Toast.fire({
-                            icon: 'alert',
-                            title: 'NO PUEDES RETIRAR MAS DINERO'
-                        });
-                        return;
-                    } */
+                    /*  if (salida < total_Caja) {
+                          console.log(salida);
+                          console.log(total_Caja);
+                          Toast.fire({
+                              icon: 'alert',
+                              title: 'NO PUEDES RETIRAR MAS DINERO'
+                          });
+                          return;
+                      } */
 
                     $.ajax({
                         url: "ajax/caja.ajax.php",
@@ -503,17 +559,8 @@ YA QUE NO SE MUESTRA -->
     });
 
 
-    setInterval(() => {
-        $.ajax({
-            url: "ajax/caja.ajax.php",
-            method: 'POST',
-            dataType: 'json',
-            success: function(respuesta) {
-                $("#total_Caja").html(respuesta[0]['total_Caja'].toLocaleString('en'))
-            }
-        });
-        /* 10000 = 10segundos */
-    }, 300);
+
+
 
     /*===================================================================
     CARGAR DATATABLES 
@@ -548,6 +595,30 @@ YA QUE NO SE MUESTRA -->
                     'data': 'codigo_producto',
                     visible: false
                 },
+                {
+                    targets: 6,
+                    'data': 'saldo_actual',
+                    visible: false
+                },
+                {
+                    targets: 7,
+                    'data': 'opciones',
+                    render: function(td, cellData, rowData, row, col) {
+                        if (parseFloat(rowData[1]) == 0) {
+                            return "<center>" +
+                                //opciones eliminar icono
+                                "<span class='btnEliminarCaja text-danger px-1' style='cursor:pointer;'>" +
+                                "<i class='fas fa-trash fs-5'></i>" +
+                                "</span>" +
+                                "</center>"
+                        } else {
+                            return "<center>" + "-";
+                        }
+
+                    }
+                },
+
+
             ],
 
             language: {
