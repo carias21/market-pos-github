@@ -664,7 +664,7 @@
 
                     Toast.fire({
                         icon: 'error',
-                        title: ' El producto no existe o no tiene stock'
+                        title: ' El producto no existe, agregalo a tu inventario :)'
                         /* Toast.fire({
                              icon: 'error',
                              title: ' El producto sin stock o no existe' */
