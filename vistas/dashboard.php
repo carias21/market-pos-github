@@ -27,7 +27,7 @@
              <!-- productos registrados -->
              <div class="col-lg-2">
                  <!-- small box -->
-                 <div class="small-box bg-info">
+                 <div class="small-box border border-info" >
                      <div class="inner">
                          <h4 id="totalProductos"></h4>
 
@@ -43,7 +43,7 @@
              <!-- TARJETA TOTAL COMPRAS -->
              <div class="col-lg-2">
                  <!-- small box -->
-                 <div class="small-box bg-success">
+                 <div class="small-box border border-primary">
                      <div class="inner">
                          <h4 id="totalCompras">Q.0.00</h4>
 
@@ -59,7 +59,7 @@
              <!-- TARJETA TOTAL VENTAS -->
              <div class="col-lg-2">
                  <!-- small box -->
-                 <div class="small-box bg-warning">
+                 <div class="small-box border border-success">
                      <div class="inner">
                          <h4 id="totalVentas">Q.0.00</h4>
 
@@ -75,7 +75,7 @@
              <!-- TARJETA TOTAL GANANCIAS -->
              <div class="col-lg-2">
                  <!-- small box -->
-                 <div class="small-box bg-danger">
+                 <div class="small-box border border-warning">
                      <div class="inner">
                          <h4 id="totalGanancias">Q.0.00</h4>
 
@@ -91,7 +91,7 @@
              <!-- TARJETA PRODUCTOS POCO STOCK -->
              <div class="col-lg-2">
                  <!-- small box -->
-                 <div class="small-box bg-primary">
+                 <div class="small-box border border-danger">
                      <div class="inner">
                          <h4 id="totalProductosMinStock">2</h4>
 
@@ -107,7 +107,7 @@
              <!-- TARJETA TOTAL VENTAS DIA ACTUAL -->
              <div class="col-lg-2">
                  <!-- small box -->
-                 <div class="small-box bg-secondary">
+                 <div class="small-box border border-dark">
                      <div class="inner">
                          <h4 id="totalVentasHoy">Q.0.00</h4>
 

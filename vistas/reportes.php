@@ -117,50 +117,38 @@
          </div><!-- ./row Grafico de barras toal ventas mes por año-->
 
 
-         <!-------------------------------------------------------------------------------------------
+
+
+
+
+         <div class="row">
+             <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS TOP VENTAS POR CATEGORIA
         -------------------------------------------------------------------------------------------->
-         <div class="col-12">
-
-             <div class="card card-gray shadow">
-
-                 <div class="card-header">
-
-                     <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
-
-                     <div class="card-tools">
-
-                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                             <i class="fas fa-minus"></i>
-                         </button>
-                         <button type="button" class="btn btn-tool" data-card-widget="remove">
-                             <i class="fas fa-times"></i>
-                         </button>
-
-                     </div> <!-- ./ end card-tools -->
-
-                 </div> <!-- ./ end card-header -->
-
-
-                 <div class="card-body">
-
-                     <div class="chart">
-
-                         <div id="chartContainer" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
-
-                     </div>
-
-                 </div> <!-- ./ end card-body -->
-
+             <div class="col-lg-6">
+                 <div class="card card-gray shadow">
+                     <div class="card-header">
+                         <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
+                         <div class="card-tools">
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                         </div> <!-- ./ end card-tools -->
+                     </div> <!-- ./ end card-header -->
+                     <div class="card-body">
+                         <div class="chart">
+                             <div id="chartContainer" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
+                         </div>
+                     </div> <!-- ./ end card-body -->
+                 </div>
              </div>
 
-         </div>
-
-
-         <!-------------------------------------------------------------------------------------------
+             <!-------------------------------------------------------------------------------------------
         REPORTE VENTAS, COMPRAS Y GANANCIAS
         -------------------------------------------------------------------------------------------->
-         <div class="row">
              <div class="col-lg-6">
                  <div class="card card-info ">
                      <div class="card-header">
@@ -193,10 +181,8 @@
                      </div> <!-- ./ end card-body -->
                  </div>
              </div>
+
          </div>
-
-
-
      </div><!-- /.container-fluid -->
  </div>
  <!-- /.content -->
@@ -327,7 +313,7 @@
 
 
 
-           /* =======================================================
+         /* =======================================================
           SOLICITUD AJAX VENTAS, COMPRAS Y GANANCIAS
           =======================================================*/
          $.ajax({
@@ -515,7 +501,4 @@
 
 
      }
-
-         
-
  </script>
