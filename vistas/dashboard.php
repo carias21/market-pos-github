@@ -27,7 +27,7 @@
              <!-- productos registrados -->
              <div class="col-lg-2">
                  <!-- small box -->
-                 <div class="small-box border border-info" >
+                 <div class="small-box border border-info">
                      <div class="inner">
                          <h4 id="totalProductos"></h4>
 
@@ -172,14 +172,14 @@
 
          </div><!-- ./row Grafico de barras -->
 
-   <!-------------------------------------------------------------------------------------------
+         <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS LOS 10 PRODUCTOS MAS VENDIDOS
         -------------------------------------------------------------------------------------------->
          <div class="row">
              <div class="col-lg-6">
                  <div class="card card-info ">
                      <div class="card-header">
-                         <h3 class="card-title">Los 10 productos mas vendidos</h3>
+                         <h3 class="card-title">LOS 10 PRODUCTOS MAS VENDIDOS</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
@@ -191,13 +191,13 @@
                      </div> <!-- ./ end card-header -->
                      <div class="card-body">
                          <div class="table-responsive">
-                             <table class="table" id="tbl_productos_mas_vendidos">
+                             <table class="table table-bordered" id="tbl_productos_mas_vendidos">
                                  <thead>
-                                     <tr class="text-danger">
-                                         <th>Cod. producto</th>
-                                         <th>Producto</th>
-                                         <th>Cantidad</th>
-                                         <th>Ventas</th>
+                                     <tr class="text-nowrap">
+                                         <th>COD PRODUCTO</th>
+                                         <th>PRODUCTO</th>
+                                         <th>CANTIDAD</th>
+                                         <th>VENTAS</th>
                                      </tr>
                                  </thead>
                                  <tbody>
@@ -208,10 +208,11 @@
                      </div> <!-- ./ end card-body -->
                  </div>
              </div>
+
              <div class="col-lg-6">
-                 <div class="card card-info">
+                 <div class="card card-info ">
                      <div class="card-header">
-                         <h3 class="card-title">Listado de productos con poco stock</h3>
+                         <h3 class="card-title">LISTADO PRODUCTOS POCA EXITENCIA</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
@@ -223,16 +224,18 @@
                      </div> <!-- ./ end card-header -->
                      <div class="card-body">
                          <div class="table-responsive">
-                             <table class="table" id="tbl_productos_poco_stock">
+                             <table class="table table-bordered" id="tbl_productos_poco_stock">
                                  <thead>
-                                     <tr class="text-danger">
-                                         <th>Cod. producto</th>
-                                         <th>Producto</th>
-                                         <th>Stock Actual</th>
-                                         <th>Mín. Stock</th>
+                                     <tr class="text-nowrap">
+                                         <th>COD PRODUCTO</th>
+                                         <th>PRODUCTO</th>
+                                         <th>EXISTENCIA ACTUAL</th>
+                                         <th>MIN. EXISTENCIA</th>
                                      </tr>
                                  </thead>
-                                 <tbody></tbody>
+                                 <tbody>
+
+                                 </tbody>
                              </table>
                          </div>
                      </div> <!-- ./ end card-body -->
@@ -265,7 +268,7 @@
              method: 'POST',
              dataType: 'json',
              success: function(respuesta) {
-            //     console.log("respuesta", respuesta);
+                 //     console.log("respuesta", respuesta);
                  $("#totalProductos").html(respuesta[0]['totalProductos']);
                  $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toLocaleString('en'))
                  //otras opciones de mostrar las cantidades: .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}))
@@ -277,7 +280,7 @@
              }
          });
 
-         
+
          /*SetInterval siver para que cada 10 segundos se actualicen las tarjetas
          10000 = 10segundos */
 
@@ -298,7 +301,7 @@
                  }
              });
              /* 10000 = 10segundos */
-         }, 10000);
+         }, 15000);
 
 
          /* =======================================================
@@ -423,60 +426,69 @@
          });
 
 
-        
+
 
 
 
          //******************************************************************************************************************** */
-         //-------------AJAX PRODUCTOS POCO STOCK------------------------------
-         $.ajax({
-             url: "ajax/dashboard.ajax.php",
-             type: "POST",
-             data: {
-                 'accion': 2 // listar los 10 productos mas vendidos
+         //-------------AJAX LOS 10 PRODUCTOS MAS VENDIDOS------------------------------
+
+         table = $("#tbl_productos_mas_vendidos").DataTable({
+            searching: false,
+             dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
+             scrollX: true,
+             buttons: [
+                 'copy', 'excel', 'print', 'pdfHtml5',
+             ],
+             "order": [
+                 [2, 'desc']
+             ],
+             ajax: {
+                 url: "ajax/dashboard.ajax.php",
+                 dataSrc: '',
+                 type: "POST",
+                 data: {
+                     'accion': 2 // listar LOS 10 PRODUCTOS MAS VENDIDOS
+                 },
+
+
              },
 
 
-             dataType: 'json',
-             success: function(respuesta) {
-                 // console.log("respuesta",respuesta);
-
-                 for (let i = 0; i < respuesta.length; i++) {
-                     filas = '<tr>' +
-                         '<td>' + respuesta[i]["codigo_producto"] + '</td>' +
-                         '<td>' + respuesta[i]["descripcion_producto"] + '</td>' +
-                         '<td>' + respuesta[i]["cantidad"] + '</td>' +
-                         '<td> Q. ' + respuesta[i]["total_venta"] + '</td>' +
-                         '</tr>'
-                     $("#tbl_productos_mas_vendidos tbody").append(filas);
-                 }
-
+             language: {
+                 url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
              }
          });
 
-         //-------------AJAX PRODUCTOS POCO STOCK------------------------------
-         $.ajax({
-             url: "ajax/dashboard.ajax.php",
-             type: "POST",
-             data: {
-                 'accion': 3 // listar los  productos con poco stock
+         /*===================================================================*/
+         // LISTADO PRODUCTOS POCO STOCK 
+         /*===================================================================*/
+         table = $("#tbl_productos_poco_stock").DataTable({
+            searching: false,
+             dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
+             scrollX: true,
+             buttons: [
+                 'copy', 'excel', 'print',
+                 
+             ],
+             "order": [
+                 [2, 'desc']
+             ],
+             ajax: {
+                 url: "ajax/dashboard.ajax.php",
+                 dataSrc: '',
+                 type: "POST",
+                 data: {
+                     'accion': 3 // listar los  productos con poco stock
+                 },
              },
-             dataType: 'json',
-             success: function(respuesta) {
-                 // console.log("respuesta",respuesta);
 
-                 for (let i = 0; i < respuesta.length; i++) {
-                     filas = '<tr>' +
-                         '<td>' + respuesta[i]["codigo_producto"] + '</td>' +
-                         '<td>' + respuesta[i]["descripcion_producto"] + '</td>' +
-                         '<td>' + respuesta[i]["stock_producto"] + '</td>' +
-                         '<td>' + respuesta[i]["minimo_stock_producto"] + '</td>' +
-                         '</tr>'
-                     $("#tbl_productos_poco_stock tbody").append(filas);
-                 }
 
+             language: {
+                 url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
              }
          });
+
 
      })
  </script>

@@ -20,7 +20,7 @@ class DashboardModelo{
         $stmt = Conexion::conectar()->prepare('call prc_ObtenerVentasMesActual');
 
         $stmt->execute();
-
+                                //pdo:fetch_obj devuelve un onjeto, com propiedades coincidan con las columnas
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -30,7 +30,7 @@ class DashboardModelo{
     
         $stmt->execute();
     
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll();
     }
 
     static public function mdlProductosPocoStock(){
@@ -39,7 +39,7 @@ class DashboardModelo{
     
         $stmt->execute();
     
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll();
     }
 
 }
