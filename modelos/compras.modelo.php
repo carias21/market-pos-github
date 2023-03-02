@@ -137,14 +137,14 @@ class ComprasModelo{
                         $stmt -> bindParam(":precio_compra", $listaProductos[4] , PDO::PARAM_STR);
         
                         if($stmt -> execute()){
-                            $resultado = "Se registró la compra correctamente.";
+                            $resultado = "ok";
                             
                         }else{
-                            $resultado = "Error al actualizar el stock";
+                            $resultado = "error_stock";
                         }
                         
                     }else{
-                        $resultado = "Error al registrar la compra";
+                        $resultado = "error";
                     }   
                 }
         

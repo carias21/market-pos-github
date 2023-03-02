@@ -733,7 +733,7 @@
 
 
             });
-            console.log(arr, "data realizar");
+           // console.log(arr, "data realizar");
             formData.append('total_compra', parseFloat(totalCompra));
 
 
@@ -745,24 +745,35 @@
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(respuesta) {
+                dataType: 'json',
+                success: function(respuesta)  {
+                        if (respuesta == "ok") {
+                            mensajeToast('success', 'COMPRA REGISTRADA CORRECTAMENTE');
+                        } else if (respuesta == "error_stock") {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'ERROR AL ACTUALIZAR STOCK',
+                                showConfirmButton: false,
+                                timer: 2500
+                            })
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'EEROR AL REGISTRAR COMPRA',
+                                showConfirmButton: false,
+                                timer: 2500
+                            })
+                        }
 
+                        table.clear().draw();
 
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: respuesta,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                        LimpiarInputs();
 
-                    table.clear().draw();
+                        //   CargarNroBoleta();
 
-                    LimpiarInputs();
-
-                    //   CargarNroBoleta();
-
-                }
+                    }
             });
 
         } else {
