@@ -38,7 +38,7 @@ class ReportesModelo{
     
         $stmt->execute();
     
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll();
     }
 
 }

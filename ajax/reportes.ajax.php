@@ -31,7 +31,9 @@ class AjaxReportes
     {
         $VentasComprasGanancia = ReportesControlador::ctrVentasComprasGanancia(); //prc_TotalVentasComprasGanancia
 
-        echo json_encode($VentasComprasGanancia, JSON_NUMERIC_CHECK);
+
+        echo json_encode($VentasComprasGanancia);
+        
     }
 }
 
