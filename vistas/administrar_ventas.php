@@ -86,7 +86,9 @@
                                      <th>Total</th>
                                      <!--   <th>Observaciones</th>   -->
                                      <th>Fecha de Venta</th>
+                                     <th>Usuario</th>
                                      <th class="text-center">Opciones</th>
+                                   
 
                                  </thead>
                                  <tbody class="small text left"></tbody>
@@ -183,7 +185,8 @@
                                  "data": "precio_venta",
                                  "data": "descuento_venta",
                                  "data": "total_venta",
-                                 "data": "fecha_venta"
+                                 "data": "fecha_venta", 
+                                 "data": "usuario"
                                 
 
                              }],
@@ -206,7 +209,7 @@
 
                                  },
                                  {
-                                     targets: 9,
+                                     targets: 10,
 
                                      render: function(data, type, full, meta) {
                                          /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
@@ -391,7 +394,7 @@
 
                                      },
                                      {
-                                         targets: 9,
+                                         targets: 10,
 
                                          render: function(data, type, full, meta) {
                                              /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 

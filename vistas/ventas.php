@@ -54,7 +54,7 @@
                             <i class="far fa-trash-alt"></i> Vaciar Listado
                         </button>
                     </div>
-                    
+
                     <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA VENTA -->
                     <div class="col-md-12">
                         <table id="lstProductosVenta" class="display nowrap table-striped w-100 shadow">
@@ -72,7 +72,7 @@
                                     <th>Total</th>
                                     <th class="text-center">Opciones</th>
                                     <th>Aplica Peso</th>
-                               
+
                                 </tr>
                             </thead>
                             <tbody class="small text-left fs-6">
@@ -138,28 +138,7 @@
                             </span>
 
                         </div>
-                        <!-- SERIE Y NRO DE BOLETA -->
-                        <!--    <div class="form-group">
-
-                            <div class="row">
-
-                                <div class="col-md-4">
-
-                                    <label for="iptNroSerie">Serie</label>
-
-                                    <input type="text" min="0" name="iptEfectivo" id="iptNroSerie" class="form-control form-control-sm" placeholder="nro Serie" disabled>
-                                </div>
-
-                                <div class="col-md-8">
-
-                                    <label for="iptNroVenta">No. Venta</label>
-
-                                    <input type="text" min="0" name="iptEfectivo" id="iptNroVenta" class="form-control form-control-sm" placeholder="Nro Venta" disabled>
-
-                                </div>
-                            </div>
-                        </div>
--->
+                      
                         <!-- INPUT DE EFECTIVO ENTREGADO -->
                         <div class="form-group">
                             <label for="iptEfectivoRecibido">Efectivo recibido</label>
@@ -287,7 +266,7 @@
                 {
                     "data": "aplica_peso"
                 },
-               
+
                 // { "data": "precio_mayor_producto" },
                 //{ "data": "precio_oferta_producto" }
             ],
@@ -308,7 +287,7 @@
                         return '<img src="vistas/assets/imagenes/' + img + '" height="40px" width="45px" />';
                     }
                 },
-              
+
                 {
                     targets: 3,
                     visible: false
@@ -325,9 +304,9 @@
                     targets: 11,
                     visible: false
                 }
-             
 
-                
+
+
             ],
             "order": [
                 [0, 'desc']
@@ -353,11 +332,11 @@
             //una vez que tengamos la "respuesta" de la base de datos
             success: function(respuesta) {
                 //recorre el aray
-               
-               /* for (let i = 0; i < respuesta.length; i++) {
-                    items.push(respuesta[i]['descripcion_producto'])
-                } 
-                */
+
+                /* for (let i = 0; i < respuesta.length; i++) {
+                     items.push(respuesta[i]['descripcion_producto'])
+                 } 
+                 */
                 //input iptCodigoVenta que lo autocomplete
                 $("#iptCodigoVenta").autocomplete({
 
@@ -375,11 +354,11 @@
 
                         return false;
                     }
-                }).data("ui-autocomplete")._renderItem = function(ul, item){
+                }).data("ui-autocomplete")._renderItem = function(ul, item) {
                     return $("<li class ='ui-autocomplete-row'></li>")
-                    .data("item.autocomplete", item)
-                    .append(item.label)
-                    .appendTo(ul);
+                        .data("item.autocomplete", item)
+                        .append(item.label)
+                        .appendTo(ul);
                 }
 
 
@@ -431,10 +410,8 @@
 
                     if (parseInt(respuesta['existe']) == 0) {
 
-                        Toast.fire({
-                            icon: 'error',
-                            title: ' El producto ' + data['descripcion_producto'] + ' ya no tiene stock'
-                        })
+                        mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA NO TIENE EXISTENCIA');
+
 
                         /*Toast.fire({
                             icon: 'error',
@@ -771,10 +748,7 @@
                         //si la respuesta del stock es 0 es porque ya no hay productos en existencia
                         if (parseInt(respuesta['existe']) == 0) {
 
-                            Toast.fire({
-                                icon: 'error',
-                                title: ' El producto ' + data['descripcion_producto'] + ' ya no tiene stock'
-                            })
+                            mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA NO TIENE EXISTENCIA');
 
                             $("#iptCodigoVenta").val("");
                             //   $("#iptCodigoVenta").focus();
@@ -859,7 +833,7 @@
                                    "</div>" + */
                                 "</center>",
                             'aplica_peso': respuesta['aplica_peso'],
-                            
+
                         }).draw();
 
                         itemProducto = itemProducto + 1;
@@ -906,7 +880,7 @@
                                  "</div>" +  */
                                 "</center>",
                             'aplica_peso': respuesta['aplica_peso'],
-                            
+
                             /*  'precio_mayor_producto': respuesta['precio_mayor_producto'],
 		                    'precio_oferta_producto': respuesta['precio_oferta_producto'] */
                         }).draw();
@@ -922,13 +896,7 @@
                     /*===================================================================*/
                 } else {
 
-                    Toast.fire({
-                        icon: 'error',
-                        title: ' El producto no existe o no tiene stock'
-                        /* Toast.fire({
-                             icon: 'error',
-                             title: ' El producto sin stock o no existe' */
-                    });
+                    mensajeToast('warning', 'EL PRODUCTO NO EXISTE O YA NO TIENE EXISTENCIA');
 
                     $("#iptCodigoVenta").val("");
                     //     $("#iptCodigoVenta").focus();
@@ -960,17 +928,10 @@
                 //si es menor la cantidad del efectivo a la venta total no se puede realizar la venta
                 if ($("#iptEfectivoRecibido").val() < parseFloat(totalVenta)) {
 
-                    console.log("PROBLEMA CON EL EFECTIVO RECIBIDO 'CARLOS'")
+                    //console.log("PROBLEMA CON EL EFECTIVO RECIBIDO 'CARLOS'")
 
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'El efectivo es menor al costo total de la venta'
+                    mensajeToast('warning', 'EL EFECTIVO ES MENOR AL COSTO TOTAL DE LA VENTA');
 
-                        /*  Toast.fire({
-                              icon: 'warning',
-                              title: 'Hay un problema con el Efectivo Recibido ', */
-
-                    });
 
                     return false;
                 }
@@ -1007,16 +968,27 @@
                     cache: false,
                     contentType: false,
                     processData: false,
+                    dataType: 'json',
                     success: function(respuesta) {
-                        console.log("🚀 ~ file: ventas.php ~ line 973 ~ realizarVenta ~ respuesta", respuesta)
-
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: respuesta,
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        if (respuesta == "ok") {
+                            mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
+                        } else if (respuesta == "error_stock") {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'ERROR AL ACTUALIZAR STOCK',
+                                showConfirmButton: false,
+                                timer: 2500
+                            })
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'EEROR AL REGISTRAR LA VENTA',
+                                showConfirmButton: false,
+                                timer: 2500
+                            })
+                        }
 
                         table.clear().draw();
 
@@ -1031,23 +1003,12 @@
 
             } else {
 
-                Toast.fire({
-                    icon: 'warning',
-                    title: 'Ingrese el monto en efectivo'
-                });
-
-
+                mensajeToast('warning', 'INGRESE EL MONTO EN EFECTIVO');
             }
 
         } else {
-
-            Toast.fire({
-                icon: 'warning',
-                title: 'No hay productos en el listado.'
-            });
-
+            mensajeToast('warning', 'NO HAY PRODUCTOS EN EL LISTADO');
         }
-
         //    $("#iptCodigoVenta").focus();
 
     } /* FIN realizarVenta */
