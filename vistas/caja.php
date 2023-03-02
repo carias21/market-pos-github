@@ -260,7 +260,7 @@ YA QUE NO SE MUESTRA -->
     VARIABLES GLOBALES
     ============================================================= */
     var tbl_Caja;
-    var total_Caja;
+
 
 
     $(document).ready(function() {
@@ -315,7 +315,7 @@ YA QUE NO SE MUESTRA -->
             //  alert(id_venta);
 
             Swal.fire({
-                title: 'Está seguro de eliminar registro de caja' + id_Caja + '?',
+                title: 'Está seguro de eliminar registro de caja ' + id_Caja + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -337,18 +337,25 @@ YA QUE NO SE MUESTRA -->
                         contentType: false,
                         processData: false,
                         dataType: 'json',
-                        success: function(respuesta) {
+                        success: function(respuesta, error) {
+                          
+
                             if (respuesta == "ok") {
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'Se elimino registro de caja correctamente'
-                                });
+                                mensajeToast('success', 'SE ELIMINÓ EL REGISTRO CORRECTAMENTE');
                                 tbl_Caja.ajax.reload();
+                            }else if(respuesta == 0){
+                                 mensajeToast('warning', 'SOLO EL ADMIN PUEDE REALIZAR ESTA ACCION');
+
                             } else {
-                                Toast.fire({
-                                    icon: 'error',
-                                    title: 'No se pudo eliminar el registro'
-                                });
+                                Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'NO SE PUDO ELIMINAR EL REGISTRO' + 
+                                ' comunicate con tu administrador',
+                                showConfirmButton: false,
+                                timer: 3500
+                            })
+                              
                             }
                         }
                     });
@@ -415,11 +422,7 @@ YA QUE NO SE MUESTRA -->
                         dataType: 'json',
                         success: function(respuesta) {
                             if (respuesta == "ok") {
-
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'ENTRADA DE EFECTIVO CORRECTAMENTE'
-                                });
+                                mensajeToast('success', 'ENTRADA DE EFECTIVO CORRECTAMENTE');
                                 LimpiarInputsVentanasModal();
 
                                 $("#mdlIngresarEfectivo").modal('hide');
@@ -457,6 +460,7 @@ YA QUE NO SE MUESTRA -->
         /*===================================================================*/
         document.getElementById("btnGuardarSalidaEfectivo").addEventListener("click", function() {
             accion = 4;
+            total_Caja = $("#total_Caja").html();
 
 
             // Get the forms we want to add validation styles to
@@ -477,13 +481,12 @@ YA QUE NO SE MUESTRA -->
                     datos.append("salida", salida);
                     datos.append("descripcion", descripcion);
 
-                    /*  if (salida < total_Caja) {
-                          console.log(salida);
-                          console.log(total_Caja);
-                          Toast.fire({
-                              icon: 'alert',
-                              title: 'NO PUEDES RETIRAR MAS DINERO'
-                          });
+                  /* HAY ERROR AL MOMENTO QUE TOTAL_CAJA TENGA 1,000 NO VALIDA LA ACCION 
+                    if (total_Caja < salida) {
+                        //console.log(salida);
+                        console.log(total_Caja)
+            
+                        mensajeToast('warning', 'NO PUEDES RETIRAR MAS DINERO');
                           return;
                       } */
 
@@ -499,10 +502,8 @@ YA QUE NO SE MUESTRA -->
                         success: function(respuesta) {
                             if (respuesta == "ok") {
 
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'SALIDA DE EFECTIVO CORRECTAMENTE'
-                                });
+                                mensajeToast('success', 'SALIDA DE EFECTIVO CORRECTAMENTE');
+                           
                                 LimpiarInputsVentanasModal();
 
                                 tbl_Caja.ajax.reload();
@@ -579,6 +580,11 @@ YA QUE NO SE MUESTRA -->
                     accion: 2
                 }
             },
+            dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
+             buttons: [
+                 'copy', 'excel', 'print',,
+                 
+             ],
             scrollX: true,
             order: [
                 [2, 'desc']
