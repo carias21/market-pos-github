@@ -44,6 +44,9 @@
                              <button type="button" class="btn btn-tool" data-card-widget="remove">
                                  <i class="fas fa-times"></i>
                              </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
 
                          </div> <!-- ./ end card-tools -->
 
@@ -92,6 +95,9 @@
                              <button type="button" class="btn btn-tool" data-card-widget="remove">
                                  <i class="fas fa-times"></i>
                              </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
 
                          </div> <!-- ./ end card-tools -->
 
@@ -136,6 +142,9 @@
                          <button type="button" class="btn btn-tool" data-card-widget="remove">
                              <i class="fas fa-times"></i>
                          </button>
+                         <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                             <i class="fas fa-expand"></i>
+                         </button>
 
                      </div> <!-- ./ end card-tools -->
 
@@ -172,6 +181,9 @@
                              <button type="button" class="btn btn-tool" data-card-widget="remove">
                                  <i class="fas fa-times"></i>
                              </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
                          </div> <!-- ./ end card-tools -->
                      </div> <!-- ./ end card-header -->
                      <div class="card-body">
@@ -205,7 +217,55 @@
      $(document).ready(function() {
 
          cargarGraficoDoughnut();
+         cargarGraficoProductosVendidos();
+         cargarGraficoVentasPorMes();
+         cargarListadoVentasComprasGanancia();
 
+
+
+     })
+
+     /* =======================================================
+     SOLICITUD AJAX GRAFICO DE DOUGHNUT
+     =======================================================*/
+     function cargarGraficoDoughnut() {
+
+         $.ajax({
+             url: "ajax/reportes.ajax.php",
+             method: 'POST',
+             data: {
+                 'accion': 3
+             },
+             dataType: 'json',
+             success: function(respuesta) {
+
+                 var chart = new CanvasJS.Chart("chartContainer", {
+                     animationEnabled: true,
+                     // title:{
+                     //     text: "Email Categories",
+                     //     horizontalAlign: "left"
+                     // },
+                     data: [{
+                         type: "doughnut",
+                         startAngle: 60,
+                         //innerRadius: 60,
+                         indexLabelFontSize: 17,
+                         indexLabel: "{label} - #percent%",
+                         toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                         dataPoints: respuesta
+                     }]
+                 });
+                 chart.render();
+
+             }
+         });
+
+
+
+     }
+
+
+     function cargarGraficoProductosVendidos() {
          /* =======================================================
           SOLICITUD AJAX CANTIDAD PRODUCTOS VENDIDOS
           =======================================================*/
@@ -240,7 +300,7 @@
                  // console.log(total_ventas_mes);
 
                  //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
-                 $("#Productos_vendidos").html('Cantidad productos vendidos');
+                 $("#Productos_vendidos").html('CANTIDAD PRODUCTOS VENDIDOS');
 
                  var barChartCanvas = $("#barChart_Productos_Vendidos").get(0).getContext('2d');
 
@@ -326,35 +386,9 @@
          });
 
 
+     }
 
-           /* =======================================================
-          SOLICITUD AJAX VENTAS, COMPRAS Y GANANCIAS
-          =======================================================*/
-         $.ajax({
-             url: "ajax/reportes.ajax.php",
-             type: "POST",
-             data: {
-                 'accion': 5 // listado ventas, compras y ganancias
-             },
-
-
-             dataType: 'json',
-             success: function(respuesta) {
-                 // console.log("respuesta",respuesta);
-
-                 for (let i = 0; i < respuesta.length; i++) {
-                     filas = '<tr>' +
-                         '<td>' + respuesta[i]["fecha"] + '</td>' +
-                         '<td> Q. ' + respuesta[i]["ventas"] + '</td>' +
-                         '<td> Q. ' + respuesta[i]["compras"] + '</td>' +
-                         '<td> Q. ' + respuesta[i]["ganancia"] + '</td>' +
-                         '</tr>'
-                     $("#tbl_Ventas_Compras_Ganancias tbody").append(filas);
-                 }
-
-             }
-         });
-
+     function cargarGraficoVentasPorMes() {
 
          /* =======================================================
          SOLICITUD AJAX GRAFICO DE BARRAS TOTAL VENTAS MES POR AÑO
@@ -390,7 +424,7 @@
                  // console.log(total_ventas_mes);
 
                  //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
-                 $("#Total_Ventas_Mes_Año").html('Total ventas * Mes');
+                 $("#Total_Ventas_Mes_Año").html('TOTAL VENTAS POR MES');
 
                  var barChartCanvas = $("#barChart_Total_Ventas_Mes_Año").get(0).getContext('2d');
 
@@ -474,48 +508,38 @@
 
              }
          });
+     }
 
-     })
+     function cargarListadoVentasComprasGanancia(){
 
-     /* =======================================================
-     SOLICITUD AJAX GRAFICO DE DOUGHNUT
-     =======================================================*/
-     function cargarGraficoDoughnut() {
-
-         $.ajax({
+         /* =======================================================
+          SOLICITUD AJAX VENTAS, COMPRAS Y GANANCIAS
+          =======================================================*/
+          $.ajax({
              url: "ajax/reportes.ajax.php",
-             method: 'POST',
+             type: "POST",
              data: {
-                 'accion': 3
+                 'accion': 5 // listado ventas, compras y ganancias
              },
+
+
              dataType: 'json',
              success: function(respuesta) {
+                 // console.log("respuesta",respuesta);
 
-                 var chart = new CanvasJS.Chart("chartContainer", {
-                     animationEnabled: true,
-                     // title:{
-                     //     text: "Email Categories",
-                     //     horizontalAlign: "left"
-                     // },
-                     data: [{
-                         type: "doughnut",
-                         startAngle: 60,
-                         //innerRadius: 60,
-                         indexLabelFontSize: 17,
-                         indexLabel: "{label} - #percent%",
-                         toolTipContent: "<b>{label}:</b> {y} (#percent%)",
-                         dataPoints: respuesta
-                     }]
-                 });
-                 chart.render();
+                 for (let i = 0; i < respuesta.length; i++) {
+                     filas = '<tr>' +
+                         '<td>' + respuesta[i]["fecha"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["ventas"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["compras"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["ganancia"] + '</td>' +
+                         '</tr>'
+                     $("#tbl_Ventas_Compras_Ganancias tbody").append(filas);
+                 }
 
              }
          });
 
 
-
      }
-
-         
-
  </script>

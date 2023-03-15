@@ -26,13 +26,6 @@ class AjaxCompras
         echo json_encode($producto);
     }
 
-    public function ajaxVerificaStockProducto()
-    {
-
-        $respuesta = ComprasControlador::ctrVerificaStockProducto($this->codigo_producto, $this->cantidad_a_comprar);
-
-        echo json_encode($respuesta);
-    }
 
     public function ajaxRegistrarCompra($datos)//REGISTRAR COMPRA
     {
@@ -49,14 +42,6 @@ if (isset($_POST["accion"]) && $_POST["accion"] == 6) { //traer listado de produ
     $listaProducto = new AjaxCompras();
     $listaProducto->codigo_producto = $_POST["codigo_producto"];
     $listaProducto->ajaxGetDatosProducto();
-} else if (isset($_POST["accion"]) && $_POST["accion"] == 8) { // VERIFICAR STOCK DEL PRODUCTO
-
-    $verificaStock = new AjaxCompras();
-
-    $verificaStock->codigo_producto = $_POST["codigo_producto"];
-    $verificaStock->cantidad_a_comprar = $_POST["cantidad_a_comprar"];
-
-    $verificaStock->ajaxVerificaStockProducto();
 } else { //REGISTRAR COMPRA
 
     if ((isset($_POST["arr"]))) {

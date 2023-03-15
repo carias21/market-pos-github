@@ -25,9 +25,9 @@
                 <a class="nav-link" id="content-perfiles-tab" data-toggle="pill" href="#content-perfiles" role="tab" aria-controls="content-perfiles" aria-selected="false">Perfiles</a>
             </li>
 
-            <li class="nav-item">
+           <!-- <li class="nav-item">
                 <a class="nav-link" id="content-modulos-tab" data-toggle="pill" href="#content-modulos" role="tab" aria-controls="content-modulos" aria-selected="false">Modulos</a>
-            </li>
+            </li> -->
 
             <li class="nav-item">
                 <a class="nav-link active" id="content-modulo-perfil-tab" data-toggle="pill" href="#content-modulo-perfil" role="tab" aria-controls="content-modulo-perfil" aria-selected="false">Asignar Modulo a Perfil</a>
@@ -585,7 +585,7 @@
                     datos.append("estado", estado);
 
                     Swal.fire({
-                        title: 'Esta seguro de registrar el perfil?',
+                        title: 'ESTÁ SEGURO DE REGISTRAR EL PERFIL?',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -610,10 +610,7 @@
                                 success: function(respuesta) {
                                     if (respuesta == "ok") {
 
-                                        Toast.fire({
-                                            icon: 'success',
-                                            title: 'Registrado, correctamente'
-                                        });
+                                        mensajeToast('success', 'REGISTRADO CORRECTAMENTE');
 
                                         idPerfil = 0;
                                         perfil = "";
@@ -626,9 +623,13 @@
                                         tbl_perfiles_asignar.ajax.reload();
                                         $(".needs-validation").removeClass("was-validated");
                                     } else {
-                                        Toast.fire({
+                                        Swal.fire({
+                                            position: 'center',
                                             icon: 'error',
-                                            title: 'El perfil no se registro'
+                                            title: 'NO SE PUDO REGISTRAR EL PERFIL ' +
+                                                'comunicate con tu administrador',
+                                            showConfirmButton: false,
+                                            timer: 3500
                                         });
                                     }
                                 }
@@ -651,13 +652,13 @@
             accion = 2;
             var data = tbl_Perfiles.row($(this).parents('tr')).data();
 
-          
+
             //     console.log(data);
             var idPerfil = data["id_perfil"]
             //   alert(idPerfil);
 
             Swal.fire({
-                title: 'Está seguro el perfil ' + data[1] + '?',
+                title: 'ESTÁ SEGURO DE ELIMINAR AL PERFIL: ' + data[1] + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -668,10 +669,7 @@
                 //SI ID PERFIL = 1 = ADMNISTRADOR, NO PROCEDE A LA ELIMINACION
                 if (result.isConfirmed) {
                     if (idPerfil == 1) {
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'No se puede eliminar el Administrador'
-                        });
+                        mensajeToast('error', 'NO SE PUEDE ELIMINAR AL ADMINISTRADOR');
 
                     } else {
                         var datos = new FormData();
@@ -688,16 +686,17 @@
                             dataType: 'json',
                             success: function(respuesta) {
                                 if (respuesta == "ok") {
-                                    Toast.fire({
-                                        icon: 'success',
-                                        title: 'Se elimino el perfil correctamente'
-                                    });
+                                    mensajeToast('success', 'SE ELIMINÓ EL PERFIL CORRECTAMENTE');
                                     tbl_Perfiles.ajax.reload();
                                     tbl_perfiles_asignar.ajax.reload();
                                 } else {
-                                    Toast.fire({
+                                    Swal.fire({
+                                        position: 'center',
                                         icon: 'error',
-                                        title: 'El perfil no se pudo eliminar'
+                                        title: 'NO SE PUDO ELIMINAR EL PERFIL ' +
+                                            'comunicate con tu administrador',
+                                        showConfirmButton: false,
+                                        timer: 3500
                                     });
                                 }
                             }
@@ -725,7 +724,7 @@
             //selectedElmsIds=[]
             //seleccione todos los elementos que estan seleccionados
             var selectedElms = $('#modulos').jstree("get_selected", true);
-            console.log(selectedElms, 'mostrar todos los elementos que ESTOY seleccionando en el checkbox');
+            //console.log(selectedElms, 'mostrar todos los elementos que ESTOY seleccionando en el checkbox');
 
             $.each(selectedElms, function() {
                 for (let i = 0; i < modulos_sistema.length; i++) {
@@ -1136,13 +1135,8 @@
             dataType: 'json',
             success: function(respuesta) {
                 if (respuesta > 0) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Se registró correctamente ',
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
+                    mensajeToast('success', 'SE REGISTRÓ CORRECTAMENTE');
+
                     $("#select_modulos option").remove();
                     $('#modulos').jstree("deselect_all", false);
                     tbl_perfiles_asignar.ajax.reload();
@@ -1151,10 +1145,11 @@
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Error al registrar :(',
+                        title: 'ERROR AL REGISTRAR ' +
+                            'comunicate con tu administrador',
                         showConfirmButton: false,
-                        timer: 3000
-                    })
+                        timer: 3500
+                    });
 
                 }
 

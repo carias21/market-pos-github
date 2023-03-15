@@ -1,5 +1,5 @@
 <?php
-$menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario"]->id_usuario);
+$menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario1"]->id_usuario);
 //var_dump($menuUsuario);
 ?>
 
@@ -17,7 +17,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario"]->i
             <img src="vistas/assets/dist/img/Carlos_Arias.jpeg" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="User Image">
         </div>
         <div class="info">
-        <h6 class="text-warning"><?php echo $_SESSION["usuario"]->nombre_usuario. ' ' . $_SESSION["usuario"]->apellido_usuario ?></h6>
+        <h6 class="text-warning"><?php echo $_SESSION["usuario1"]->nombre_usuario. ' ' . $_SESSION["usuario1"]->apellido_usuario ?></h6>
      </div>
     </div>
 
@@ -55,7 +55,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario"]->i
                             </a>
 
                             <?php if (empty($menu->vista)) : ?>
-                                <?php $subMenuUsuario = UsuarioControlador::ctrObtenerSubMenuUsuario($menu->id,$_SESSION["usuario"]->id_usuario);
+                                <?php $subMenuUsuario = UsuarioControlador::ctrObtenerSubMenuUsuario($menu->id,$_SESSION["usuario1"]->id_usuario);
                                 ?>
                                 <ul class="nav nav-treeview">
                                     <?php foreach ($subMenuUsuario as $subMenu) : ?>

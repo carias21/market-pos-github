@@ -18,13 +18,7 @@ class ComprasControlador
         return $producto;
     }
 
-    
-    static public function ctrVerificaStockProducto($codigo_producto,$cantidad_a_comprar){
 
-        $respuesta = ComprasModelo::mdlVerificaStockProducto($codigo_producto, $cantidad_a_comprar);
-    
-        return $respuesta;
-    }
 
     static public function ctrRegistrarCompra($datos) //REGISTRAR COMPRA
     {

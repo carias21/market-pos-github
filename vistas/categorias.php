@@ -79,8 +79,8 @@
 
                                 <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selMedida" required>
                                     <option value="">---Selecione una medida---</option>
-                                   <option value="0">Unidades</option>
-                                    <option value="1">Kilogramos</option> 
+                                    <option value="0">Unidades</option>
+                                    <option value="1">Kilogramos</option>
                                 </select>
                                 <div class="invalid-feedback">Seleccione una medida</div>
 
@@ -137,7 +137,16 @@
             scrollX: true,
             //INDICAMOS QUE EN LA COLUMNA 2, SI ES 0 QUE COLOQUE UNIDADES Y SI ES 1 COLOQUE KILOGRAMOS
             columnDefs: [{
+                    targets: 0,
+                    "data": "id_categoria",
+                },
+                {
+                    targets: 1,
+                    "data": "nombre_categoria",
+                },
+                {
                     targets: 2,
+                    "data": "medida",
                     sortable: false,
                     //con el RowData obtenemos la informacion de la columna
                     createdCell: function(td, cellData, rowData, row, col) {
@@ -149,6 +158,10 @@
                         }
 
                     }
+                },
+                {
+                    targets: 3,
+                    "data": "fecha_creacion_categoria",
                 },
                 {
                     targets: 5,
@@ -165,13 +178,8 @@
                     }
                 }
             ],
-
-            "columns": [{
-                "data": "id_categoria"
-            }],
-
             "order": [
-                [0, 'desc']
+                [1, 'asc']
             ],
             lengthMenu: [0, 5, 10, 15, 20, 50],
             "pageLength": 15,
@@ -231,7 +239,7 @@
             //     alert(id_categoria);
 
             Swal.fire({
-                title: 'Está seguro de eliminar la categoría ' + data[1] + '?',
+                title: 'ESTÁ SEGURO DE ELIMINAR LA CATEGORÍA: ' + data[1] + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -254,21 +262,19 @@
                         dataType: 'json',
                         success: function(respuesta) {
                             if (respuesta == "ok") {
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'Se elimino la categoría correctamente!'
-                                });
+                                mensajeToast('success', 'SE ELIMINÓ LA CATEGORÍA CORRECTAMENTE');
                                 tableCategorias.ajax.reload();
                             } else {
-                                Toast.fire({
+                                Swal.fire({
+                                    position: 'center',
                                     icon: 'error',
-                                    title: 'El producto no se pudo eliminar'
-                                });
+                                    title: 'NO SE PUDO ELIMINAR LA CATEGORÍA',
+                                    showConfirmButton: false,
+                                    timer: 2500
+                                })
                             }
                         }
                     });
-
-
 
                 }
             })
@@ -299,7 +305,7 @@
                     datos.append("medida", medida);
 
                     Swal.fire({
-                        title: 'Está seguro de guardar la categoría?',
+                        title: 'ESTÁ SEGURO DE ELIMINAR LA CATEGORÍA?',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -309,7 +315,7 @@
                     }).then((result) => {
 
                         if (result.isConfirmed) {
-                            
+
                             $.ajax({
                                 url: "ajax/categorias.ajax.php",
                                 type: "POST",
@@ -321,12 +327,7 @@
                                 dataType: 'json',
                                 success: function(respuesta) {
                                     if (respuesta == "ok") {
-
-
-                                        Toast.fire({
-                                            icon: 'success',
-                                            title: 'Registrado, correctamente'
-                                        });
+                                        mensajeToast('success', 'REGISTRADO CORRECTAMENTE');
 
                                         idCategoria = 0;
                                         categoria = "";
@@ -338,9 +339,13 @@
                                         tableCategorias.ajax.reload();
                                         $(".needs-validation").removeClass("was-validated");
                                     } else {
-                                        Toast.fire({
+                                        Swal.fire({
+                                            position: 'center',
                                             icon: 'error',
-                                            title: 'La categoría no se pudo registrar'
+                                            title: 'NO SE PUEDO REGISTRAR LA CATEGORIA ' +
+                                            'verifica si ya existe',
+                                            showConfirmButton: false,
+                                            timer: 2500
                                         });
                                     }
                                 }

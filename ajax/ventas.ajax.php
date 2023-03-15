@@ -12,7 +12,7 @@ class AjaxVentas
   public function ajaxRegistrarVenta($datos)
   {
     //obtener usuario que realizo venta
-    $usuario = $_SESSION["usuario"]->usuario;
+    $usuario = $_SESSION["usuario1"]->usuario;
  
     date_default_timezone_set('America/Guatemala');
     $fecha_venta = date("Y-m-d H:i:s");

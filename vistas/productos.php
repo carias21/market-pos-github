@@ -114,7 +114,7 @@
                 <!--*******************    //TIPOS DE TABLAS *******************-->
                 <!--  Tabla original:   <table id="tbl_productos" class="table table-striped w-100 shadow">-->
                 <table id="tbl_productos" class="table table-bordered table-hover w-100 shadow">
-                     <thead class="bg-info">
+                    <thead class="bg-info">
                         <tr style="font-size: 15px;">
                             <th></th>
                             <th>id</th>
@@ -172,7 +172,7 @@
             <!-- *************************** CUERPO DE LA VENTA ******************** -->
             <div class="modal-body">
 
-                <form  class="needs-validation" novalidate method="POST" enctype="multipart/form-data" id="form_cargar_imagen">
+                <form class="needs-validation" novalidate method="POST" enctype="multipart/form-data" id="form_cargar_imagen">
                     <!-- Abrimos una fila -->
                     <div class="row">
 
@@ -473,9 +473,9 @@
                 },
                 {
                     targets: 7,
-                  
+
                     'data': 'precio_compra'
-                    
+
                 },
                 {
                     targets: 8,
@@ -887,7 +887,7 @@
             var codigo_producto = data["codigo_producto"];
 
             Swal.fire({
-                title: 'Está seguro de eliminar el producto ' + data[5] + '?',
+                title: 'ESTÁ SEGURO DE ELIMINAR EL PRODUCTO ' + data[5] + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -914,19 +914,18 @@
                         success: function(respuesta) {
 
                             if (respuesta == "ok") {
-
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'El producto se eliminó correctamente'
-                                });
-
+                                mensajeToast('success', 'EL PRODUCTO SE ELIMINÓ CORRECTAMENTE');
                                 table.ajax.reload();
 
                             } else {
-                                Toast.fire({
+                                Swal.fire({
+                                    position: 'center',
                                     icon: 'error',
-                                    title: 'El producto no se pudo eliminar'
-                                });
+                                    title: 'NO SE PUDO ELIMINAR EL PRODUCTO' +
+                                        ' comunicate con tu administrador',
+                                    showConfirmButton: false,
+                                    timer: 3500
+                                })
                             }
 
                         }
@@ -1036,11 +1035,9 @@
         var validation = Array.prototype.filter.call(forms, function(form) {
 
             if (form.checkValidity() === true) {
-
-                console.log("Listo para registrar el producto")
-
+                //console.log("Listo para registrar el producto")
                 Swal.fire({
-                    title: 'Está seguro de registrar el producto?',
+                    title: '¿ESTÁ SEGURO DE REGISTRAR EL PRODUCTO?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -1066,17 +1063,13 @@
                         datos.append("minimo_stock_producto", $("#iptMinimoStockReg").val()); //minimo_stock_producto  
                         datos.append("ventas_producto", 0); //ventas_producto
                         datos.append("name", $name);
-                        //   datos.append("imagen", $img);
-
-                        //  datos.append("name",  $("name").val());
-
 
                         if (accion == 2) {
-                            var titulo_msj = "El producto se registró correctamente"
+                            var titulo_msj = "EL PRODUCTO SE REGISTRÓ CORRECTAMENTE"
                         }
 
                         if (accion == 4) {
-                            var titulo_msj = "El producto se actualizó correctamente"
+                            var titulo_msj = "EL PRODUCTO SE ACTUALIZÓ CORRECTAMENTE"
                         }
 
                         $.ajax({
@@ -1088,31 +1081,28 @@
                             processData: false,
                             dataType: 'json',
                             success: function(respuesta) {
-
                                 if (respuesta == "ok") {
 
-                                    Toast.fire({
-                                        icon: 'success',
-                                        title: titulo_msj
-                                    });
-
-                                    table.ajax.reload();
-
-                                    $("#mdlGestionarProducto").modal('hide');
+                                    mensajeToast('success', titulo_msj);
 
                                     LimpiarInputsVentanaModal();
                                     //limpia imagenes
                                     deleteImg();
 
-                                    document.getElementById("btnGuardarProducto").addEventListener("click", function() {
-                                        $(".needs-validation").removeClass("was-validated");
-                                    })
+                                    table.ajax.reload();
+
+                                    $("#mdlGestionarProducto").modal('hide');
+                                    $(".needs-validation").removeClass("was-validated");
+
 
                                 } else {
-                                    Toast.fire({
+                                    Swal.fire({
+                                        position: 'center',
                                         icon: 'error',
-                                        title: 'El producto no se pudo registrar'
-                                    });
+                                        title: 'ERROR' + ' valida el codigo del producto',
+                                        showConfirmButton: false,
+                                        timer: 3500
+                                    })
                                 }
 
                             }
@@ -1121,7 +1111,7 @@
                     }
                 })
             } else {
-                console.log("No paso la validacion")
+                mensajeToast('warning', 'INGRESA TODOS LOS CAMPOS');
             }
 
             form.classList.add('was-validated');

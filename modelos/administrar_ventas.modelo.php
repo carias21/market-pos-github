@@ -22,6 +22,7 @@ class AdministrarVentasModelo
                                                   CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
                                                   v.fecha_venta,
                                                   usuario,
+                                                  precio_compra,
                                                  '' as opciones
                                                  from ventas v
                                                  where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta)  

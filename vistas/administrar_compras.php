@@ -155,36 +155,6 @@
                              },
 
 
-
-                             /* ==========================================PENDIENTE (AGRUPAR POR FECHAS)===========================     //  
-                                    //VD 21 MIN 21:5 FUNCTIO PARA BUSCAR EN LA TABLA DATOS REPETIDOS
-                                    //ME MUESTRA LA FECHA PERO DEBO CONVERTIRLA A FECHA SIN HORA
-                                     drawCallback: function(settings){
-                                // Se separa fecha y hora para tomar solo la fecha
-                                        var api = this.api();
-                                        var rows = api.rows({page: 'current'}).nodes();
-                                        var last=null;
-                                        
-                                        api.column(groupColumn, {page:'current'}).data().each(function(group,i){
-                                        console.log(group,'recorre valores de la columna asignada (8)')
-                                        })
-                                     }, */
-
-
-                             "columns": [{
-                                 "data": "id_compra",
-                                 "data": "codigo_producto",
-                                 "data": "categoria",
-                                 "data": "descripcion",
-                                 "data": "cantidad",
-                                 "data": "precio_compra",
-                                 "data": "total_compra",
-                                 "data": "fecha_compra",
-                                 "data": "comentarios"
-
-                             }],
-
-
                              "order": [
                                  [7, 'desc']
                              ],
@@ -192,14 +162,43 @@
                              columnDefs: [{
                                      //oculte las columnas
                                      targets: 0,
+                                     "data": "id_compra",
                                      visible: false
                                  },
+                                 {
+                                     targets: 1,
+                                     "data": "codigo_producto",
+                                 },
+                                 {
+                                     targets: 2,
+                                     "data": "categoria",
+                                 },
+                                 {
+                                     targets: 3,
+                                     "data": "producto",
+                                 },
+                                 {
+                                     targets: 4,
+                                     "data": "cantidad",
 
+                                 },
+                                 {
+                                     targets: 5,
+                                     "data": "precio_compra",
+
+                                 },
                                  {
                                      targets: 6,
-                                     orderable: false,
-
-
+                                     "data": "total_compra",
+                                 },
+                                 {
+                                     targets: 7,
+                                     "data": "fecha_compra",
+                                 },
+                                 {
+                                     targets: 8,
+                                     "data": "comentarios",
+                                     visible: false
                                  },
                                  {
                                      targets: 9,
@@ -241,7 +240,7 @@
                              //  alert(id_compra);
 
                              Swal.fire({
-                                 title: 'Está seguro de eliminar la compra con el id' + id_compra + '?',
+                                 title: 'ESTA SEGURO DE ELIMINAR LA COMPRA ?',
                                  icon: 'warning',
                                  showCancelButton: true,
                                  confirmButtonColor: '#3085d6',
@@ -266,22 +265,20 @@
                                          dataType: 'json',
                                          success: function(respuesta) {
                                              if (respuesta == "ok") {
-                                                 Toast.fire({
-                                                     icon: 'success',
-                                                     title: 'Se elimino la compra correctamente!'
-                                                 });
+                                                 mensajeToast('success', 'SE ELIMINÓ LA COMPRA CORRECTAMENTE');
                                                  tableCompras.ajax.reload();
                                              } else {
-                                                 Toast.fire({
+                                                 Swal.fire({
+                                                     position: 'center',
                                                      icon: 'error',
-                                                     title: 'La compra, no se pudo eliminar'
+                                                     title: 'NO SE PUDO ELIMINAR LA COMPRA ' +
+                                                         'comunicate con tu administrador',
+                                                     showConfirmButton: false,
+                                                     timer: 3500
                                                  });
                                              }
                                          }
                                      });
-
-
-
                                  }
                              })
                          });
@@ -346,27 +343,6 @@
                                      }
                                  },
 
-                                 /* ==========================================PENDIENTE (AGRUPAR POR FECHAS)===========================     //  
-                                        //VD 21 MIN 21:5 FUNCTIO PARA BUSCAR EN LA TABLA DATOS REPETIDOS
-                                        //ME MUESTRA LA FECHA PERO DEBO CONVERTIRLA A FECHA SIN HORA
-                                         drawCallback: function(settings){
-                                    // Se separa fecha y hora para tomar solo la fecha
-                                            var api = this.api();
-                                            var rows = api.rows({page: 'current'}).nodes();
-                                            var last=null;
-                                            
-                                            api.column(groupColumn, {page:'current'}).data().each(function(group,i){
-                                            console.log(group,'recorre valores de la columna asignada (8)')
-                                            })
-                                         }, */
-
-
-                                 "columns": [{
-                                     "data": "id_compra",
-                                     "data": "codigo_producto"
-                                 }],
-
-
                                  "order": [
                                      [7, 'desc']
                                  ],
@@ -374,14 +350,43 @@
                                  columnDefs: [{
                                          //oculte las columnas
                                          targets: 0,
+                                         "data": "id_compra",
                                          visible: false
                                      },
+                                     {
+                                         targets: 1,
+                                         "data": "codigo_producto",
+                                     },
+                                     {
+                                         targets: 2,
+                                         "data": "categoria",
+                                     },
+                                     {
+                                         targets: 3,
+                                         "data": "producto",
+                                     },
+                                     {
+                                         targets: 4,
+                                         "data": "cantidad",
 
+                                     },
+                                     {
+                                         targets: 5,
+                                         "data": "precio_compra",
+
+                                     },
                                      {
                                          targets: 6,
-                                         orderable: false,
-
-
+                                         "data": "total_compra",
+                                     },
+                                     {
+                                         targets: 7,
+                                         "data": "fecha_compra",
+                                     },
+                                     {
+                                         targets: 8,
+                                         "data": "comentarios",
+                                         visible: false
                                      },
                                      {
                                          targets: 9,

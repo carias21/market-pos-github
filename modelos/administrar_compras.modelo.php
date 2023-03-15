@@ -18,7 +18,6 @@ class AdministrarComprasModelo
                                                  c.descripcion as producto, 
                                                  c.cantidad, 
                                                   CONCAT('Q. ',CONVERT(ROUND(c.precio_compra,2), CHAR)) as precio_compra,
-                                                 
                                                   CONCAT('Q. ',CONVERT(ROUND(c.total_compra,2), CHAR)) as total_compra,
                                                   c.fecha_compra,
                                                   c.comentarios,
@@ -47,8 +46,6 @@ class AdministrarComprasModelo
 
     static public function mdlEliminarCompra($tableCompras, $id_compra, $nameId, $codigo_producto,  $cantidad)
     {
-
-   
         $stmt = Conexion::conectar()->prepare("DELETE FROM $tableCompras WHERE $nameId = :$nameId");
 
         $stmt->bindParam(":" . $nameId, $id_compra, PDO::PARAM_INT);

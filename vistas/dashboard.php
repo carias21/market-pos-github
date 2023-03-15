@@ -148,6 +148,9 @@
                              <button type="button" class="btn btn-tool" data-card-widget="remove">
                                  <i class="fas fa-times"></i>
                              </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i></button>
+
 
                          </div> <!-- ./ end card-tools -->
 
@@ -187,11 +190,14 @@
                              <button type="button" class="btn btn-tool" data-card-widget="remove">
                                  <i class="fas fa-times"></i>
                              </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i></button>
+
                          </div> <!-- ./ end card-tools -->
                      </div> <!-- ./ end card-header -->
                      <div class="card-body">
                          <div class="table-responsive">
-                             <table class="table table-bordered" id="tbl_productos_mas_vendidos">
+                             <table class="table display nowrap table-bordered w-100 rounded" id="tbl_productos_mas_vendidos">
                                  <thead>
                                      <tr class="text-nowrap">
                                          <th>COD PRODUCTO</th>
@@ -212,7 +218,7 @@
              <div class="col-lg-6">
                  <div class="card card-info ">
                      <div class="card-header">
-                         <h3 class="card-title">LISTADO PRODUCTOS POCA EXITENCIA</h3>
+                         <h3 class="card-title">LISTADO PRODUCTOS POCA EXISTENCIA</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
@@ -220,11 +226,14 @@
                              <button type="button" class="btn btn-tool" data-card-widget="remove">
                                  <i class="fas fa-times"></i>
                              </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                                </button>
                          </div> <!-- ./ end card-tools -->
                      </div> <!-- ./ end card-header -->
                      <div class="card-body">
                          <div class="table-responsive">
-                             <table class="table table-bordered" id="tbl_productos_poco_stock">
+                             <table class="table display nowrap table-bordered w-100 rounded" id="tbl_productos_poco_stock">
                                  <thead>
                                      <tr class="text-nowrap">
                                          <th>COD PRODUCTO</th>
@@ -255,6 +264,9 @@
      /* solicitus ajax, tarjetas de informacion en el tablero
       princial */
      $(document).ready(function() {
+
+         ajustarHeadersDataTables($('#tbl_productos_poco_stock'));
+         ajustarHeadersDataTables($('#tbl_productos_mas_vendidos'));
 
          function numberWithCommas(x) {
              return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -434,7 +446,7 @@
          //-------------AJAX LOS 10 PRODUCTOS MAS VENDIDOS------------------------------
 
          table = $("#tbl_productos_mas_vendidos").DataTable({
-            searching: false,
+             searching: false,
              dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
              scrollX: true,
              buttons: [
@@ -464,12 +476,12 @@
          // LISTADO PRODUCTOS POCO STOCK 
          /*===================================================================*/
          table = $("#tbl_productos_poco_stock").DataTable({
-            searching: false,
+             searching: false,
              dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
              scrollX: true,
              buttons: [
                  'copy', 'excel', 'print',
-                 
+
              ],
              "order": [
                  [2, 'desc']
@@ -490,5 +502,25 @@
          });
 
 
-     })
+     }) //FIN DOCUMENT READY
+
+     //FUNCION AJUSTAR LAS TABLAS POR DEFORMARCE O NO SE MIRAN BIEN
+     //VD 30 MIN 25.10
+     function ajustarHeadersDataTables(element) {
+
+         var observer = window.ResizeObserver ? new ResizeObserver(function(entries) {
+             entries.forEach(function(entry) {
+                 $(entry.target).DataTable().columns.adjust();
+             });
+         }) : null;
+
+         // Function to add a datatable to the ResizeObserver entries array
+         resizeHandler = function($table) {
+             if (observer)
+                 observer.observe($table[0]);
+         };
+
+         // Initiate additional resize handling on datatable
+         resizeHandler(element);
+     }
  </script>

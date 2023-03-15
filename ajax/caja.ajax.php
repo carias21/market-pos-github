@@ -44,7 +44,7 @@ class AjaxCaja
     {
 
         //SETEAMOS LA SESSION PARA QUE SOLO EL ADMIN CON ID 1 PUEDA ELIMINAR LA CAJA
-        $id_usuario = $_SESSION["usuario"]->id_usuario;
+        $id_usuario = $_SESSION["usuario1"]->id_usuario;
 
         if ($id_usuario == 1) {
             $tbl_Caja = "caja";

@@ -37,9 +37,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Market POS</title>
+    <title>TECNET</title>
 
-    <link rel="shortcut icon" href="vistas/assets/dist/img/AdminLTELogo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="vistas/assets/dist/img/log_tecnet_sin_fondo.png" type="image/x-icon">
 
     <!-- ============================================================================================================= -->
     <!-- REQUIRED CSS -->
@@ -148,7 +148,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 </head>
 
-<?php if(isset($_SESSION["usuario"])): ?>
+<?php if(isset($_SESSION["usuario1"])): ?>
 
     <body class ="hold-transition sidebar-mini">
         <div class="wrapper">
@@ -159,7 +159,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             ?>
 
             <div class="content-wrapper">
-                <?php include "vistas/". $_SESSION['usuario']->vista ?>
+                <?php include "vistas/". $_SESSION['usuario1']->vista ?>
 
             </div>
         </div>

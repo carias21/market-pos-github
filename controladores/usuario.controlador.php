@@ -26,8 +26,8 @@ class UsuarioControlador
 
             //VALIDACION DE LAS CREDENCIALES
             if (count($respuesta) > 0) {
-                $_SESSION["usuario"] = $respuesta[0];
-
+                //session se conecta con plantilla.php
+                $_SESSION["usuario1"] = $respuesta[0];
                 echo ' 
                 <script>
                 window.location = "http://localhost/market-pos-github/"

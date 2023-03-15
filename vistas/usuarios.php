@@ -183,21 +183,13 @@
     var tbl_Usuarios;
     var id_Usuario = 0;
 
-    var nombre_Usuario = "";
-    var apellido_Usuario = "";
-    var usuario = "";
-    var contraseña = "";
-    var perfil = "";
-    var estado_Usuario;
-
-
 
     $(document).ready(function() {
 
         cargarDataTables();
         ajustarHeadersDataTables($('#tbl_Usuarios'));
         cargarSelectPerfiles();
-        
+
 
 
 
@@ -212,7 +204,7 @@
         EVENTO EDITAR PERFIL seleccione la fila y seguidamente al dar clic quite el selecionado
         ==========================================================================================================*/
         $('#tbl_Usuarios tbody').on('click', '.btnEditarUsuario', function() {
-            
+
 
             var data = tbl_Usuarios.row($(this).parents('tr')).data();
 
@@ -243,7 +235,7 @@
                 $("#ipt_Apellido_Usuario").val(data[2]);
                 $("#ipt_Usuario").val(data[3]);
                 $("#ipt_Contraseña").val(data[4]);
-                $("#sel_Perfil_Usuario").val(data[5]);
+                $("#sel_Perfil_Usuario").val('descripcion');
                 $("#sel_Estado_Usuario").val(data[6]);
 
 
@@ -286,7 +278,7 @@
 
 
                     Swal.fire({
-                        title: 'Está seguro de guardar el usuario',
+                        title: '¿ESTÁ SEGURO DE REGISTRAR EL USUARIO?',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -311,19 +303,7 @@
                                 success: function(respuesta) {
                                     if (respuesta == "ok") {
 
-
-                                        Toast.fire({
-                                            icon: 'success',
-                                            title: 'Registrado, correctamente'
-                                        });
-
-                                        id_Usuario = 0;
-                                        nombre_Usuario = "";
-                                        apellido_Usuario = "";
-                                        usuario = "";
-                                        contraseña = "";
-                                        perfil = "";
-                                        estado_Usuario = "";
+                                        mensajeToast('success', 'REGISTRADO CORRECTAMENTE');
 
                                         $("#ipt_Nombre_Usuario").val("");
                                         $("#ipt_Apellido_Usuario").val("");
@@ -336,9 +316,13 @@
                                         $(".needs-validation").removeClass("was-validated");
 
                                     } else {
-                                        Toast.fire({
+                                        Swal.fire({
+                                            position: 'center',
                                             icon: 'error',
-                                            title: 'El usuario no se pudo registrar'
+                                            title: 'NO SE PUDO REGISTRAR EL USUARIO' +
+                                                'comunicate con tu administrador',
+                                            showConfirmButton: false,
+                                            timer: 3500
                                         });
                                     }
                                 }
@@ -367,7 +351,7 @@
             //     alert(id_categoria);
 
             Swal.fire({
-                title: 'Está seguro de eliminar el usuario ' + data[3] + '?',
+                title: '¿ESTÁ SEGURO DE ELIMINAR EL USUARIO: ' + data[3] + '?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -378,10 +362,7 @@
                 if (result.isConfirmed) {
 
                     if (id_Usuario == 1) {
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'No se puede eliminar Usuario Admin'
-                        });
+                        mensajeToast('error', 'NO SE PUEDE ELIMINAR EL USUARIO (ADMIN)');
 
                     } else {
                         //  console.log(id_Usuario);
@@ -399,16 +380,18 @@
                             dataType: 'json',
                             success: function(respuesta) {
                                 if (respuesta == "ok") {
-                                    Toast.fire({
-                                        icon: 'success',
-                                        title: 'Se elimino el usuario, correctamente'
-                                    });
+                                    mensajeToast('success', 'SE ELIMINÓ EL USUARIO CORRECTAMENTE');
+                                  
                                     tbl_Usuarios.ajax.reload();
                                 } else {
-                                    Toast.fire({
-                                        icon: 'error',
-                                        title: 'El usuario no se pudo eliminar'
-                                    });
+                                    Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: 'NO SE PUDO ELIMINAR EL USUARIO' +
+                                        ' comunicate con tu administrador',
+                                    showConfirmButton: false,
+                                    timer: 3500
+                                });
                                 }
                             }
                         });
@@ -449,6 +432,36 @@
                 [0, 'asc']
             ],
             columnDefs: [{
+                    targets: 0,
+                    'data': 'id_usuario',
+                },
+                {
+                    targets: 1,
+                    'data': 'nombre_usuario',
+                },
+                {
+                    targets: 2,
+                    'data': 'apellido_usuario',
+                },
+                {
+                    targets: 3,
+                    'data': 'usuario',
+                },
+                {
+                    //colocamos no visible las columnas del....
+                    targets: 4,
+                    visible: false,
+                    'data': 'clave',
+                },
+                {
+                    targets: 5,
+                    'data': 'descripcion',
+                },
+                {
+                    targets: 6,
+                    'data': 'estado',
+                },
+                {
                     //columna 7 OPCIONES
                     //columna 5
                     targets: 7,
@@ -467,11 +480,7 @@
                         }*/
                     },
                 },
-                {
-                    //colocamos no visible las columnas del....
-                    targets: 4,
-                    visible: false
-                }
+
             ],
 
 

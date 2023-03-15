@@ -84,11 +84,11 @@
                                      <th>P. Venta</th>
                                      <th>Descuento</th>
                                      <th>Total</th>
-                                     <!--   <th>Observaciones</th>   -->
                                      <th>Fecha de Venta</th>
                                      <th>Usuario</th>
+                                     <th>Precio_compra</th>
                                      <th class="text-center">Opciones</th>
-                                   
+
 
                                  </thead>
                                  <tbody class="small text left"></tbody>
@@ -111,7 +111,7 @@
 
                      // VD 21 MIN 6:38
                      $(document).ready(function() {
-                        
+
                          var tableVentas, ventas_desde, ventas_hasta;
                          //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLUMN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 8=fecha_venta
                          var groupColumn = 8;
@@ -142,9 +142,26 @@
                              //ajustable 
                              scrollX: true,
                              dom: 'Bfrtip',
-                             buttons: [
-                                 'excel', 'print', 'pageLength',
+                             buttons: [{
+
+                                     extend: 'excelHtml5',
+                                     titleAttr: 'Exportar a Excel',
+                                     className: 'btn btn-success',
+                                     exportOptions: {
+                                         columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                     }
+                                 },
+                                 {
+                                     extend: 'print',
+
+                                     titleAttr: 'Imprimir',
+                                     className: 'btn btn-info',
+                                     exportOptions: {
+                                         columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                     }
+                                 },
                              ],
+
                              ajax: {
                                  url: 'ajax/administrar_ventas.ajax.php',
                                  type: 'POST',
@@ -156,42 +173,8 @@
                                      'fechaDesde': ventas_desde,
                                      'fechaHasta': ventas_hasta
                                  }
-                                
+
                              },
-
-
-
-                             /* ==========================================PENDIENTE (AGRUPAR POR FECHAS)===========================     //  
-                                    //VD 21 MIN 21:5 FUNCTIO PARA BUSCAR EN LA TABLA DATOS REPETIDOS
-                                    //ME MUESTRA LA FECHA PERO DEBO CONVERTIRLA A FECHA SIN HORA
-                                     drawCallback: function(settings){
-                                // Se separa fecha y hora para tomar solo la fecha
-                                        var api = this.api();
-                                        var rows = api.rows({page: 'current'}).nodes();
-                                        var last=null;
-                                        
-                                        api.column(groupColumn, {page:'current'}).data().each(function(group,i){
-                                        console.log(group,'recorre valores de la columna asignada (8)')
-                                        })
-                                     }, */
-
-
-                             "columns": [{
-                                 "data": "id_venta",
-                                 "data": "codigo_producto",
-                                 "data": "categoria",
-                                 "data": "descripcion",
-                                 "data": "cantidad",
-                                 "data": "precio_venta",
-                                 "data": "descuento_venta",
-                                 "data": "total_venta",
-                                 "data": "fecha_venta", 
-                                 "data": "usuario"
-                                
-
-                             }],
-
-
                              "order": [
                                  [8, 'desc']
                              ],
@@ -199,17 +182,66 @@
                              columnDefs: [{
                                      //oculte las columnas
                                      targets: 0,
-                                     visible: false
+                                     visible: false,
+                                     'data': 'id_venta'
+                                 },
+                                 {
+                                     //oculte las columnas
+                                     targets: 1,
+                                     'data': 'codigo_producto'
+                                 },
+                                 {
+                                     //oculte las columnas
+                                     targets: 2,
+                                     'data': 'categoria'
+                                 },
+                                 {
+                                     //oculte las columnas
+                                     targets: 3,
+                                     'data': 'producto'
+                                 },
+                                 {
+                                     //oculte las columnas
+                                     targets: 4,
+                                     'data': 'cantidad'
+                                 },
+                                 {
+                                     //oculte las columnas
+                                     targets: 5,
+                                     'data': 'precio_venta'
                                  },
 
                                  {
                                      targets: 6,
+                                     'data': 'descuento_venta',
                                      orderable: false,
-
 
                                  },
                                  {
+                                     //oculte las columnas
+                                     targets: 7,
+                                     'data': 'total_venta'
+                                 },
+                                 {
+                                     //oculte las columnas
+                                     targets: 8,
+                                     'data': 'fecha_venta'
+                                 },
+                                 {
+                                     //oculte las columnas
+                                     targets: 9,
+                                     'data': 'usuario'
+                                 },
+                                 {
+                                     //oculte las columnas
                                      targets: 10,
+                                     'data': 'precio_compra',
+                                     visible: false,
+                                     //que no busque registro en la tabla
+                                     searchable: false,
+                                 },
+                                 {
+                                     targets: 11,
 
                                      render: function(data, type, full, meta) {
                                          /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
@@ -223,12 +255,16 @@
                                      }
                                  }
                              ],
-
-                             lengthMenu: [0, 15, 50, 100, 500, 1000],
-                             "pageLength": 15,
                              "language": {
                                  "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
-                             }
+                             },
+
+                             "aLengthMenu": [
+                                 [90000000]
+                             ]
+
+
+
                          });
 
 
@@ -243,13 +279,13 @@
                              var codigo_producto = data["codigo_producto"];
                              var cantidad = data["cantidad"];
                              var fecha_venta = data["fecha_venta"];
-                             
-                            //alert(cantidad);
-                            //return;
+
+                             //alert(cantidad);
+                             //return;
                              //  alert(id_venta);
 
                              Swal.fire({
-                                 title: 'Está seguro de eliminar la venta con el id' + id_venta + '?',
+                                 title: 'ESTÁ SEGURO DE ELIMINAR LA VENTA?',
                                  icon: 'warning',
                                  showCancelButton: true,
                                  confirmButtonColor: '#3085d6',
@@ -276,22 +312,22 @@
                                          dataType: 'json',
                                          success: function(respuesta) {
                                              if (respuesta == "ok") {
-                                                 Toast.fire({
-                                                     icon: 'success',
-                                                     title: 'Se elimino la venta correctamente!'
-                                                 });
+
+                                                 mensajeToast('success', 'SE ELIMINÓ LA VENTA CORRECTAMENTE');
+
                                                  tableVentas.ajax.reload();
                                              } else {
-                                                 Toast.fire({
+                                                 Swal.fire({
+                                                     position: 'center',
                                                      icon: 'error',
-                                                     title: 'La venta, no se pudo eliminar'
-                                                 });
+                                                     title: 'ERROR AL ELIMINAR LA VENTA' +
+                                                         'comunicate con tu administrador',
+                                                     showConfirmButton: false,
+                                                     timer: 3500
+                                                 })
                                              }
                                          }
                                      });
-
-
-
                                  }
                              })
                          });
@@ -329,23 +365,39 @@
                                  //ajustable 
                                  scrollX: true,
                                  dom: 'Bfrtip',
-                                 buttons: [
-                                     'excel', 'print', 'pageLength',
+                                 buttons: [{
+
+                                         extend: 'excelHtml5',
+                                         titleAttr: 'Exportar a Excel',
+                                         className: 'btn btn-success',
+                                         exportOptions: {
+                                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                         }
+                                     },
+                                     {
+                                         extend: 'print',
+
+                                         titleAttr: 'Imprimir',
+                                         className: 'btn btn-info',
+                                         exportOptions: {
+                                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                         }
+                                     },
                                  ],
                                  ajax: {
-                                    
+
                                      url: 'ajax/administrar_ventas.ajax.php',
                                      type: 'POST',
                                      dataType: 'json',
                                      //VD 22 MIN 1.10
-                                   
+
                                      data: {
                                          'accion': 2,
                                          'fechaDesde': ventas_desde,
                                          'fechaHasta': ventas_hasta
                                      },
                                      "dataSrc": function(respuesta) {
-                                           console.log(respuesta, "Total Venta !");
+                                         console.log(respuesta, "Total Venta !");
                                          var TotalVenta = 0.00;
                                          for (let i = 0; i < respuesta.length; i++) {
                                              TotalVenta = parseFloat(respuesta[i][7].replace('Q.', '')) + parseFloat(TotalVenta);
@@ -356,27 +408,6 @@
                                      }
                                  },
 
-                                 /* ==========================================PENDIENTE (AGRUPAR POR FECHAS)===========================     //  
-                                        //VD 21 MIN 21:5 FUNCTIO PARA BUSCAR EN LA TABLA DATOS REPETIDOS
-                                        //ME MUESTRA LA FECHA PERO DEBO CONVERTIRLA A FECHA SIN HORA
-                                         drawCallback: function(settings){
-                                    // Se separa fecha y hora para tomar solo la fecha
-                                            var api = this.api();
-                                            var rows = api.rows({page: 'current'}).nodes();
-                                            var last=null;
-                                            
-                                            api.column(groupColumn, {page:'current'}).data().each(function(group,i){
-                                            console.log(group,'recorre valores de la columna asignada (8)')
-                                            })
-                                         }, */
-
-
-                                 "columns": [{
-                                     "data": "id_venta",
-                                     "data": "codigo_producto"
-                                 }],
-
-
                                  "order": [
                                      [8, 'desc']
                                  ],
@@ -384,17 +415,64 @@
                                  columnDefs: [{
                                          //oculte las columnas
                                          targets: 0,
-                                         visible: false
+                                         visible: false,
+                                         'data': 'id_venta'
+                                     },
+                                     {
+                                         //oculte las columnas
+                                         targets: 1,
+                                         'data': 'codigo_producto'
+                                     },
+                                     {
+                                         //oculte las columnas
+                                         targets: 2,
+                                         'data': 'categoria'
+                                     },
+                                     {
+                                         //oculte las columnas
+                                         targets: 3,
+                                         'data': 'producto'
+                                     },
+                                     {
+                                         //oculte las columnas
+                                         targets: 4,
+                                         'data': 'cantidad'
+                                     },
+                                     {
+                                         //oculte las columnas
+                                         targets: 5,
+                                         'data': 'precio_venta'
                                      },
 
                                      {
                                          targets: 6,
+                                         'data': 'descuento_venta',
                                          orderable: false,
-
 
                                      },
                                      {
+                                         //oculte las columnas
+                                         targets: 7,
+                                         'data': 'total_venta'
+                                     },
+                                     {
+                                         //oculte las columnas
+                                         targets: 8,
+                                         'data': 'fecha_venta'
+                                     },
+                                     {
+                                         //oculte las columnas
+                                         targets: 9,
+                                         'data': 'usuario'
+                                     },
+                                     {
+                                         //oculte las columnas
                                          targets: 10,
+                                         'data': 'precio_compra',
+                                         visible: false,
+                                     },
+                                     {
+                                         targets: 11,
 
                                          render: function(data, type, full, meta) {
                                              /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
@@ -418,15 +496,15 @@
                              });
 
                          })
-    //ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
-  /*  setInterval(() => {
+                         //ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
+                         /*  setInterval(() => {
 
 tableVentas.ajax.reload();
 console.log("Actualizar 7 segundos");
 // 10000 = 10segundos 
 }, 7000);
                              
-                   */ 
+                   */
                      })
                  </script>
 

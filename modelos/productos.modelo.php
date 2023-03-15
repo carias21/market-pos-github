@@ -151,7 +151,7 @@ class ProductosModelo{
 
             $fecha = date('Y-m-d');
 
-            $stmt = Conexion::conectar()->prepare("INSERT INTO PRODUCTOS(codigo_producto, 
+            $stmt = Conexion::conectar()->prepare("INSERT INTO productos(codigo_producto, 
                                                                         id_categoria_producto, 
                                                                         descripcion_producto, 
                                                                         precio_compra_producto, 
@@ -267,14 +267,7 @@ class ProductosModelo{
        //VD 15 MIN 27:50
     ====================================================================*/
     static public function mdlListarNombreProductos(){
-        //https://www.youtube.com/watch?v=IEdZlIpH81M
-
-      /*  $stmt = Conexion::conectar()->prepare("SELECT Concat(codigo_producto , ' / ' ,c.nombre_categoria,' / ',descripcion_producto, ' / Q. ' , p.precio_venta_producto, ' / Existencia: '  ,p.stock_producto)  as descripcion_producto
-                                                FROM productos p inner join categorias c on p.id_categoria_producto = c.id_categoria");
-
-        $stmt -> execute();
-
-        return $stmt->fetchAll();*/
+    
 
         $stmt = Conexion::conectar()->prepare("SELECT  codigo_producto,
                                                 c.nombre_categoria,
@@ -333,7 +326,8 @@ class ProductosModelo{
                                                         CONCAT('Q. ',CONVERT(ROUND(1*precio_venta_producto,2), CHAR)) as total,
                                                         '' as acciones,
                                                         c.aplica_peso,
-                                                        p.foto
+                                                        p.foto,
+                                                        precio_compra_producto
                                                 FROM productos p inner join categorias c on p.id_categoria_producto = c.id_categoria
                                             WHERE codigo_producto = :codigoProducto
                                                 AND p.stock_producto > 0");

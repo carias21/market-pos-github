@@ -72,6 +72,7 @@
                                     <th>Total</th>
                                     <th class="text-center">Opciones</th>
                                     <th>Aplica Peso</th>
+                                    <th>Precio Compra Producto</th>
 
                                 </tr>
                             </thead>
@@ -138,7 +139,7 @@
                             </span>
 
                         </div>
-                      
+
                         <!-- INPUT DE EFECTIVO ENTREGADO -->
                         <div class="form-group">
                             <label for="iptEfectivoRecibido">Efectivo recibido</label>
@@ -266,6 +267,9 @@
                 {
                     "data": "aplica_peso"
                 },
+                {
+                    "data": "precio_compra_producto"    
+                }
 
                 // { "data": "precio_mayor_producto" },
                 //{ "data": "precio_oferta_producto" }
@@ -274,10 +278,16 @@
             order: [
                 [0, 'asc']
             ],
+            
             columnDefs: [{
                     //oculte las columnas
                     targets: 0,
+                    "data": "id",
                     visible: false
+                },
+                {
+                    targets: 1,
+                    "data": "codigo_producto",
                 },
                 {
                     targets: 2,
@@ -287,22 +297,53 @@
                         return '<img src="vistas/assets/imagenes/' + img + '" height="40px" width="45px" />';
                     }
                 },
-
                 {
                     targets: 3,
+                    "data": "id_categoria",
                     visible: false
                 },
                 {
                     targets: 4,
+                    "data": "nombre_categoria",
                     visible: false
+                },
+                {
+                    targets: 5,
+                    "data": "descripcion_producto",
+                },
+                {
+                    targets: 6,
+                    "data": "cantidad",
                 },
                 {
                     targets: 7,
+                    "data": "precio_venta_producto",
                     orderable: false
                 },
                 {
+                    targets: 8,
+                    "data": "descuento",
+                    orderable: false
+                },
+                {
+                    targets: 9,
+                    "data": "total",
+                    orderable: false
+                },
+                {
+                    targets: 10,
+                    "data": "acciones",
+                },
+                {
                     targets: 11,
+                    "data": "aplica_peso",
                     visible: false
+                },
+                {
+                    targets: 12,
+                    "data": "precio_compra_producto",
+                    visible: false
+                  
                 }
 
 
@@ -433,7 +474,7 @@
                         //se procede a cambiar el total de la Venta 
                         NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
                         NuevoPrecio = "Q. " + NuevoPrecio;
-                        //columna 8 = Total
+                        //columna 9 = Total
                         table.cell(idx, 9).data(NuevoPrecio).draw();
 
                         //al momento de realizar la acción de disminuir el stock y ya se habia agregado el descuento del producto. 
@@ -753,7 +794,8 @@
                             $("#iptCodigoVenta").val("");
                             //   $("#iptCodigoVenta").focus();
 
-
+                            // RECALCULAMOS TOTALES
+                            recalcularTotales();
 
                         } else {
 
@@ -763,7 +805,7 @@
                             // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE VENTA
                             NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
                             NuevoPrecio = "Q. " + NuevoPrecio;
-                            table.cell(index, 8).data(NuevoPrecio).draw();
+                            table.cell(index, 9).data(NuevoPrecio).draw();
                             //al momento de realizar la acción de AUMENTAR el stock y ya se habia agregado el descuento del producto. 
                             table.cell(index, 8).data("");
 
@@ -833,6 +875,8 @@
                                    "</div>" + */
                                 "</center>",
                             'aplica_peso': respuesta['aplica_peso'],
+                            'precio_compra_producto': respuesta['precio_compra_producto'],
+                            'precio_compra_producto': respuesta['precio_compra_producto'],
 
                         }).draw();
 
@@ -880,6 +924,7 @@
                                  "</div>" +  */
                                 "</center>",
                             'aplica_peso': respuesta['aplica_peso'],
+                            'precio_compra_producto': respuesta['precio_compra_producto'],
 
                             /*  'precio_mayor_producto': respuesta['precio_mayor_producto'],
 		                    'precio_oferta_producto': respuesta['precio_oferta_producto'] */
@@ -953,11 +998,11 @@
                         parseFloat(data['cantidad']) + "," +
                         data['precio_venta_producto'].replace("Q. ", "") + "," +
                         data['descuento'].replace("Q. ", "") + "," +
-                        data['total'].replace("Q. ", "");
+                        data['total'].replace("Q. ", "") + "," +
+                        data['precio_compra_producto'];
                     //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
 
                     formData.append('arr[]', arr[index]);
-
                 });
 
 
@@ -984,7 +1029,7 @@
                             Swal.fire({
                                 position: 'center',
                                 icon: 'error',
-                                title: 'EEROR AL REGISTRAR LA VENTA',
+                                title: 'ERROR AL REGISTRAR LA VENTA',
                                 showConfirmButton: false,
                                 timer: 2500
                             })

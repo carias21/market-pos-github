@@ -28,14 +28,14 @@ class VentasModelo
                                                         cantidad,
                                                         precio_venta,
                                                         descuento_venta,
-                                                        total_venta, fecha_venta, usuario)         
+                                                        total_venta, fecha_venta, usuario, precio_compra)         
                                                         VALUES(:codigo_producto,
                                                         :nombre_categoria, 
                                                         :descripcion_producto,
                                                         :cantidad, 
                                                         :precio_venta_producto, 
                                                         :descuento, 
-                                                        :total_venta, :fecha_venta, :usuario)");
+                                                        :total_venta, :fecha_venta, :usuario, :precio_compra)");
 
                 $stmt->bindParam(":codigo_producto", $listaProductos[0], PDO::PARAM_STR);
                 $stmt->bindParam(":nombre_categoria", $listaProductos[1], PDO::PARAM_STR);
@@ -46,6 +46,7 @@ class VentasModelo
                 $stmt->bindParam(":total_venta", $listaProductos[6], PDO::PARAM_STR);
                 $stmt->bindParam(":fecha_venta", $fecha_venta, PDO::PARAM_STR);
                 $stmt->bindParam(":usuario", $usuario, PDO::PARAM_STR);
+                $stmt->bindParam(":precio_compra",  $listaProductos[7], PDO::PARAM_STR);
                 
 
 

@@ -18,11 +18,7 @@
 
 <body class="hold-transition login-page">
     <div class="login-box">
-
-        <div class="card card-outline card-primary"></div>
-        <div class="card-header text-center">
-        <h1 class="h1"><b>TECNET</b></h1>
-        </div><!-- card header -->
+    <img src="vistas/assets/dist/img/Log_Tecnet_Sin_fondo.png " height="30%" width="100%"  >
 
         <div class="card-body">
 

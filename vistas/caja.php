@@ -38,7 +38,7 @@
                     <div class="card-body">
                         <div class="row">
                             <!-- BORONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
-                            <div class="col-md-12 text-left">
+                            <div class="col-md-12 text-center">
                                 <button class="btn btn-success btn-lg" id="btnIngresoEfectivo">
                                     <i class=" fas fa-plus"></i> ENTRADA
                                 </button>
@@ -267,6 +267,7 @@ YA QUE NO SE MUESTRA -->
 
         cargarDataTables();
         ajustarHeadersDataTables($('#tbl_Caja'));
+        Ajax_Total_Caja();
 
 
         /*===================================================================
@@ -303,12 +304,12 @@ YA QUE NO SE MUESTRA -->
         //EVENTO ELIMINAR CAJA
         /*===================================================================*/
         $('#tbl_Caja tbody').on('click', '.btnEliminarCaja', function() {
-       
+
             accion = 5;
             var data = tbl_Caja.row($(this).parents('tr')).data();
 
             var id_Caja = data["id_caja"];
-          
+
 
             //alert(id_Caja);
             //return;
@@ -322,7 +323,7 @@ YA QUE NO SE MUESTRA -->
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Aceptar!',
                 cancelButtonText: 'Cancelar!',
-                
+
             }).then((result) => {
                 if (result.isConfirmed) {
                     var datos = new FormData();
@@ -338,24 +339,25 @@ YA QUE NO SE MUESTRA -->
                         processData: false,
                         dataType: 'json',
                         success: function(respuesta, error) {
-                          
+
 
                             if (respuesta == "ok") {
                                 mensajeToast('success', 'SE ELIMINÓ EL REGISTRO CORRECTAMENTE');
                                 tbl_Caja.ajax.reload();
-                            }else if(respuesta == 0){
-                                 mensajeToast('warning', 'SOLO EL ADMIN PUEDE REALIZAR ESTA ACCION');
+                                Ajax_Total_Caja();
+                            } else if (respuesta == 0) {
+                                mensajeToast('warning', 'SOLO EL ADMIN PUEDE REALIZAR ESTA ACCION');
 
                             } else {
                                 Swal.fire({
-                                position: 'center',
-                                icon: 'error',
-                                title: 'NO SE PUDO ELIMINAR EL REGISTRO' + 
-                                ' comunicate con tu administrador',
-                                showConfirmButton: false,
-                                timer: 3500
-                            })
-                              
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: 'NO SE PUDO ELIMINAR EL REGISTRO' +
+                                        ' comunicate con tu administrador',
+                                    showConfirmButton: false,
+                                    timer: 3500
+                                })
+
                             }
                         }
                     });
@@ -428,7 +430,8 @@ YA QUE NO SE MUESTRA -->
                                 $("#mdlIngresarEfectivo").modal('hide');
 
                                 tbl_Caja.ajax.reload();
-                                //    total_Caja = $("#total_Caja").html();
+                                //llamar la funcion ajax
+                                Ajax_Total_Caja()
 
 
                                 document.getElementById("btnIngresoEfectivo").addEventListener("click", function() {
@@ -460,8 +463,6 @@ YA QUE NO SE MUESTRA -->
         /*===================================================================*/
         document.getElementById("btnGuardarSalidaEfectivo").addEventListener("click", function() {
             accion = 4;
-            total_Caja = $("#total_Caja").html();
-
 
             // Get the forms we want to add validation styles to
             var forms = document.getElementsByClassName('needs-validation');
@@ -481,7 +482,7 @@ YA QUE NO SE MUESTRA -->
                     datos.append("salida", salida);
                     datos.append("descripcion", descripcion);
 
-                  /* HAY ERROR AL MOMENTO QUE TOTAL_CAJA TENGA 1,000 NO VALIDA LA ACCION 
+                    /* HAY ERROR AL MOMENTO QUE TOTAL_CAJA TENGA 1,000 NO VALIDA LA ACCION 
                     if (total_Caja < salida) {
                         //console.log(salida);
                         console.log(total_Caja)
@@ -503,13 +504,11 @@ YA QUE NO SE MUESTRA -->
                             if (respuesta == "ok") {
 
                                 mensajeToast('success', 'SALIDA DE EFECTIVO CORRECTAMENTE');
-                           
+
                                 LimpiarInputsVentanasModal();
-
-                                tbl_Caja.ajax.reload();
-
                                 $("#mdlSalidaEfectivo").modal('hide');
-
+                                tbl_Caja.ajax.reload();
+                                Ajax_Total_Caja();
 
                                 document.getElementById("btnSalidaEfectivo").addEventListener("click", function() {
                                     $(".needs-validation").removeClass("was-validated");
@@ -548,19 +547,20 @@ YA QUE NO SE MUESTRA -->
     /* =======================================================
        SOLICITUD AJAX TOTAL_CAJA
        =======================================================*/
-    $.ajax({
-        url: "ajax/caja.ajax.php",
-        method: 'POST',
-        dataType: 'json',
-        success: function(respuesta) {
-            $("#total_Caja").html(respuesta[0]['total_Caja'].toLocaleString('en'))
-        }
+
+    function Ajax_Total_Caja() {
+        $.ajax({
+            url: "ajax/caja.ajax.php",
+            method: 'POST',
+            dataType: 'json',
+            success: function(respuesta) {
+                $("#total_Caja").html(respuesta[0]['total_Caja'].toLocaleString('en'))
+            }
 
 
-    });
+        });
 
-
-
+    }
 
 
     /*===================================================================
@@ -581,10 +581,35 @@ YA QUE NO SE MUESTRA -->
                 }
             },
             dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
-             buttons: [
-                 'copy', 'excel', 'print',,
-                 
-             ],
+            buttons: [{
+
+                    extend: 'copy',
+                    titleAttr: 'copiar',
+                    className: 'btn btn-success',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5]
+                    }
+                },
+                {
+
+                    extend: 'excelHtml5',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5]
+                    }
+                },
+                {
+                    extend: 'print',
+
+                    titleAttr: 'Imprimir',
+                    className: 'btn btn-info',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5]
+                    }
+                },
+            ],
+
             scrollX: true,
             order: [
                 [2, 'desc']
