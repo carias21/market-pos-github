@@ -160,8 +160,8 @@
 
                             </div>
                         </div>
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
     </div>
@@ -381,17 +381,17 @@
                             success: function(respuesta) {
                                 if (respuesta == "ok") {
                                     mensajeToast('success', 'SE ELIMINÓ EL USUARIO CORRECTAMENTE');
-                                  
+
                                     tbl_Usuarios.ajax.reload();
                                 } else {
                                     Swal.fire({
-                                    position: 'center',
-                                    icon: 'error',
-                                    title: 'NO SE PUDO ELIMINAR EL USUARIO' +
-                                        ' comunicate con tu administrador',
-                                    showConfirmButton: false,
-                                    timer: 3500
-                                });
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'NO SE PUDO ELIMINAR EL USUARIO' +
+                                            ' comunicate con tu administrador',
+                                        showConfirmButton: false,
+                                        timer: 3500
+                                    });
                                 }
                             }
                         });
