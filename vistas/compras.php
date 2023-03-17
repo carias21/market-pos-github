@@ -574,7 +574,7 @@
                     //SI LA RESPUESTA ES FALSO, NO TRAE ALGUN DATO
                     /*===================================================================*/
                 } else {
-                    mensajeToast('warning', 'EL PRODUCTO NO EXISTE, AGREGALO A TU INVENTARIO!');
+                    mensajeToast('info', 'EL PRODUCTO NO EXISTE, AGREGALO A TU INVENTARIO!');
                     $("#iptCodigoCompra").val("");
                     //     $("#iptCodigoVenta").focus();
                 }

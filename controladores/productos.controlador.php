@@ -85,4 +85,13 @@ $precio_venta_producto,$utilidad,$stock_producto,$minimo_stock_producto,$ventas_
         return $respuesta;
     }
 
+    //LISTAR PRODUCTOS INVENTARIO ACTUAL CAJA
+    static public function ctrInventarioActual()
+    {
+
+        $inventario_actual = ProductosModelo::mdlInventarioActual();
+
+        return $inventario_actual;
+    }
+
 }

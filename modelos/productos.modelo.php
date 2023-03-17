@@ -354,6 +354,20 @@ class ProductosModelo{
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-
+        /*===================================================================
+    LISTAR INVENTARIO ACTUAL DEL MODULO DE INVENTARIO ACTUAL CAJA
+    ====================================================================*/
+    static public function mdlInventarioActual(){
     
+        $stmt = Conexion::conectar()->prepare("SELECT
+                                                codigo_producto,
+                                                foto,
+                                                descripcion_producto,
+                                                stock_producto FROM productos
+                                                ");
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
 }

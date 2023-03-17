@@ -29,4 +29,11 @@ class CajaControlador
 
         return $respuesta;
     }
+
+    static public function ctrCierreDeCaja($tbl_Caja){
+
+        $CierreDeCaja = CajaModelo::mdlCierreDeCaja($tbl_Caja);
+
+        return $CierreDeCaja;
+    }
 }

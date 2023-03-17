@@ -140,4 +140,16 @@ class CajaModelo
             return Conexion::conectar()->errorInfo();
         }
     }
+
+    static public function mdlCierreDeCaja($tbl_Caja)
+    {
+
+        $stmt = Conexion::conectar()->prepare("DELETE FROM $tbl_Caja");
+        
+         if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return Conexion::conectar()->errorInfo();
+        }
+    }
 }

@@ -53,11 +53,24 @@ class AjaxCaja
             $respuesta = CajaControlador::ctrEliminarCaja($tbl_Caja, $id_Caja, $nameId);
 
             echo json_encode($respuesta);
-        }else{
-            $respuesta = 0;
+        } else {
+            $respuesta = "permiso_denegado";
             echo json_encode($respuesta);
         }
+    }
+    public function ajaxCierreDeCaja()
+    {
+        //SETEAMOS LA SESSION PARA QUE SOLO EL ADMIN CON ID 1 PUEDA ELIMINAR LA CAJA
+        $id_usuario = $_SESSION["usuario1"]->id_usuario;
+        $tbl_Caja = "caja";
 
+        if ($id_usuario == 1) {
+            $CierreDeCaja = CajaControlador::ctrCierreDeCaja($tbl_Caja);
+            echo json_encode($CierreDeCaja);
+        }else{
+            $respuesta = "permiso_denegado";
+            echo json_encode($respuesta);
+        }
     }
 }
 
@@ -88,6 +101,9 @@ if (isset($_POST['accion']) && $_POST['accion'] == 2) {
     $EliminarCaja = new AjaxCaja();
     $EliminarCaja->id_caja = $_POST["id_caja"];
     $EliminarCaja->ajaxEliminarCaja();
+} else if (isset($_POST['accion']) && $_POST['accion'] == 6) {
+    $CierreDeCaja = new AjaxCaja;
+    $CierreDeCaja->ajaxCierreDeCaja();
 } else {
     $datos = new AjaxCaja();
     $datos->getTotal_Caja();

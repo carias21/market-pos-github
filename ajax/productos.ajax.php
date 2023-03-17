@@ -22,7 +22,7 @@ class ajaxProductos
     public $ventas_producto;
 
     public $cantidad_a_comprar;
-    
+
 
     public function ajaxCargaMasivaProductos()
     {
@@ -34,27 +34,28 @@ class ajaxProductos
 
     public function ajaxListarProductos()
     {
-        
+
 
         $productos = ProductosControlador::ctrListarProductos();
 
         echo json_encode($productos);
     }
 
-    public function ajaxRegistrarProducto(){
+    public function ajaxRegistrarProducto()
+    {
 
         $img = $_FILES['imagen'];
- 
+
         $name = $img['name'];
         $tmpname = $img['tmp_name'];
 
-        $destino = $_SERVER['DOCUMENT_ROOT'].'/market-pos-github/vistas/assets/imagenes/'.$name;
-        move_uploaded_file($_FILES['imagen'] ['tmp_name'], $destino);
-        if(empty($name)){
-           $name = "default.png";
-           // echo json_encode($destino);
-        
-        } 
+        $destino = $_SERVER['DOCUMENT_ROOT'] . '/market-pos-github/vistas/assets/imagenes/' . $name;
+        move_uploaded_file($_FILES['imagen']['tmp_name'], $destino);
+        if (empty($name)) {
+            $name = "default.png";
+            // echo json_encode($destino);
+
+        }
 
 
         $producto = ProductosControlador::ctrRegistrarProducto(
@@ -68,8 +69,10 @@ class ajaxProductos
             $this->minimo_stock_producto,
             $this->ventas_producto,
             $name,
-            $img, $tmpname, $destino 
-        
+            $img,
+            $tmpname,
+            $destino
+
 
         );
 
@@ -98,30 +101,25 @@ class ajaxProductos
         //datos para cambiar nueva imagen al momento de editarla
         $img = $_FILES['imagen'];
         $name = $img['name'];
-        $destino = $_SERVER['DOCUMENT_ROOT'].'/market-pos-github/vistas/assets/imagenes/'.$name;
+        $destino = $_SERVER['DOCUMENT_ROOT'] . '/market-pos-github/vistas/assets/imagenes/' . $name;
 
-            //si el usuario quita la imagen, por defecto seria default.png
-            if(empty($name)){
-                $data['foto'] = "default.png";
-             } 
+        //si el usuario quita la imagen, por defecto seria default.png
+        if (empty($name)) {
+            $data['foto'] = "default.png";
+        }
 
-           if(!empty($_POST['foto_delete'])){
-            $data['foto'] =($_POST['foto_actual']);
+        if (!empty($_POST['foto_delete'])) {
+            $data['foto'] = ($_POST['foto_actual']);
             $respuesta = ProductosControlador::ctrActualizarProducto($table, $data, $id, $nameId);
             echo json_encode($respuesta);
-            move_uploaded_file($_FILES['imagen'] ['tmp_name'], $destino);
-          
-         } 
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $destino);
+        } else if ($_POST['foto_actual'] != $_POST['foto_delete']) {
 
-     
-
-        else if($_POST['foto_actual']!= $_POST['foto_delete']){
-
-                $respuesta = ProductosControlador::ctrActualizarProducto($table, $data, $id, $nameId);
-                echo json_encode($respuesta);
-                move_uploaded_file($_FILES['imagen'] ['tmp_name'], $destino);
-               // echo json_encode("entro foto actual");
-        }else{
+            $respuesta = ProductosControlador::ctrActualizarProducto($table, $data, $id, $nameId);
+            echo json_encode($respuesta);
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $destino);
+            // echo json_encode("entro foto actual");
+        } else {
             echo json_encode("no pasaron los datos");
         }
     }
@@ -152,12 +150,22 @@ class ajaxProductos
         echo json_encode($producto);
     }
 
-    public function ajaxVerificaStockProducto(){
+    public function ajaxVerificaStockProducto()
+    {
 
-        $respuesta = ProductosControlador::ctrVerificaStockProducto($this->codigo_producto,$this->cantidad_a_comprar);
-   
-       echo json_encode($respuesta);
-   }
+        $respuesta = ProductosControlador::ctrVerificaStockProducto($this->codigo_producto, $this->cantidad_a_comprar);
+
+        echo json_encode($respuesta);
+    }
+
+    public function ajaxInventarioActual()
+    {
+
+
+        $inventario_actual = ProductosControlador::ctrInventarioActual();
+
+        echo json_encode($inventario_actual);
+    }
 }
 
 
@@ -167,9 +175,8 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
 
     $productos = new ajaxProductos();
     $productos->ajaxListarProductos();
-
 } else if (isset($_POST['accion']) && $_POST['accion'] == 2) { //parametro para registrar un nuevo producto
-    
+
     $registrarProducto = new AjaxProductos();
     $registrarProducto->codigo_producto = $_POST["codigo_producto"];
     $registrarProducto->id_categoria_producto = $_POST["id_categoria_producto"];
@@ -184,7 +191,6 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
 
 
     $registrarProducto->ajaxRegistrarProducto();
-
 } else if (isset($_POST['accion']) && $_POST['accion'] == 3) { // parametro para actualizar el stock del producto
 
     $actualizarStock = new ajaxProductos();
@@ -201,34 +207,31 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
 
     //obtenemos los valores para 
     $img = $_FILES['imagen'];
-    
-        $data = array(
-            "id_categoria_producto" => $_POST["id_categoria_producto"],
-            "descripcion_producto" => $_POST["descripcion_producto"],
-            "precio_compra_producto" => $_POST["precio_compra_producto"],
-            "precio_venta_producto" => $_POST["precio_venta_producto"],
-            "utilidad" => $_POST["utilidad"],
-            "stock_producto" => $_POST["stock_producto"],
-            "minimo_stock_producto" => $_POST["minimo_stock_producto"],
-            "foto" =>  $img['name'],
-        );
-    
-        $actualizarProducto->ajaxActualizarProducto($data);
 
+    $data = array(
+        "id_categoria_producto" => $_POST["id_categoria_producto"],
+        "descripcion_producto" => $_POST["descripcion_producto"],
+        "precio_compra_producto" => $_POST["precio_compra_producto"],
+        "precio_venta_producto" => $_POST["precio_venta_producto"],
+        "utilidad" => $_POST["utilidad"],
+        "stock_producto" => $_POST["stock_producto"],
+        "minimo_stock_producto" => $_POST["minimo_stock_producto"],
+        "foto" =>  $img['name'],
+    );
+
+    $actualizarProducto->ajaxActualizarProducto($data);
 } else if (isset($_POST['accion']) && $_POST['accion'] == 5) { //ACCION ELIMINAR PRODUCTO
 
     $eliminarProducto = new ajaxProductos();
     $eliminarProducto->ajaxEliminarProducto();
-//VD 15 MIN 25:45
+    //VD 15 MIN 25:45
 } else if (isset($_POST["accion"]) && $_POST["accion"] == 6) { //traer listado de productos para el autocompletable del input
     $nombreProductos = new AjaxProductos();
     $nombreProductos->ajaxListarNombreProductos();
-
 } else if (isset($_POST["accion"]) && $_POST["accion"] == 7) {
     $listaProducto = new AjaxProductos();
     $listaProducto->codigo_producto = $_POST["codigo_producto"];
     $listaProducto->ajaxGetDatosProducto();
-    
 } else if (isset($_POST["accion"]) && $_POST["accion"] == 8) { // VERIFICAR STOCK DEL PRODUCTO
 
     $verificaStock = new AjaxProductos();
@@ -237,6 +240,10 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
     $verificaStock->cantidad_a_comprar = $_POST["cantidad_a_comprar"];
 
     $verificaStock->ajaxVerificaStockProducto();
+} else if (isset($_POST['accion']) && $_POST['accion'] == 10) { //LISTAR PRODUCTOS DE INVENTARIO ACTUAL DE CAJA
+
+    $inventario_actual = new ajaxProductos();
+    $inventario_actual->ajaxInventarioActual();
 } else if (isset($_FILES)) {
     $archivo_productos = new ajaxProductos();
     $archivo_productos->fileProductos = $_FILES['fileProductos'];

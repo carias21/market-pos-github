@@ -26,18 +26,19 @@
          <!-- row Grafico de barras -->
          <div class="row">
 
-             <div class="col-12">
+             <div class="col-12"> 
 
-                 <div class="card card-info">
+                 <div class="card card-info ">
 
-                     <div class="card-header">
+                     <div class="card-header ">
 
                          <h3 class="card-title" id="Productos_vendidos"></h3>
 
-                         <div class="card-tools">
+                         <div class="card-tools ">
 
                              <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
             con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
+      
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
                              </button>
