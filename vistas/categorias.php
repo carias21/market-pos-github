@@ -86,6 +86,7 @@
 
                             </div>
                         </div>
+
                         <div class="col-md-12">
                             <div class="form-group m-0 mt-3">
                                 <a style="cursor:pointer;" class="btn btn-primary btn-sm w-100" id="btnRegistrarCategoria">Registrar Categoría
@@ -93,8 +94,8 @@
 
                             </div>
                         </div>
-                </div>
                 </form>
+                </div>
             </div>
         </div>
     </div>
@@ -305,7 +306,7 @@
                     datos.append("medida", medida);
 
                     Swal.fire({
-                        title: 'ESTÁ SEGURO DE ELIMINAR LA CATEGORÍA?',
+                        title: 'ESTÁ SEGURO DE REGISTRAR LA CATEGORÍA?',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',

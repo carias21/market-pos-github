@@ -87,6 +87,7 @@
                                      <th>Fecha de Venta</th>
                                      <th>Usuario</th>
                                      <th>Precio_compra</th>
+                                     <th>Tipo Pago</th>
                                      <th class="text-center">Opciones</th>
 
 
@@ -183,32 +184,38 @@
                                      //oculte las columnas
                                      targets: 0,
                                      visible: false,
-                                     'data': 'id_venta'
+                                     'data': 'id_venta',
+                                     orderable: false,
                                  },
                                  {
                                      //oculte las columnas
                                      targets: 1,
-                                     'data': 'codigo_producto'
+                                     'data': 'codigo_producto',
+                                     orderable: false,
                                  },
                                  {
                                      //oculte las columnas
                                      targets: 2,
-                                     'data': 'categoria'
+                                     'data': 'categoria',
+                                     orderable: false,
                                  },
                                  {
                                      //oculte las columnas
                                      targets: 3,
-                                     'data': 'producto'
+                                     'data': 'producto',
+                                     orderable: false,
                                  },
                                  {
                                      //oculte las columnas
                                      targets: 4,
-                                     'data': 'cantidad'
+                                     'data': 'cantidad',
+                                     orderable: false,
                                  },
                                  {
                                      //oculte las columnas
                                      targets: 5,
-                                     'data': 'precio_venta'
+                                     'data': 'precio_venta',
+                                     orderable: false,
                                  },
 
                                  {
@@ -220,17 +227,20 @@
                                  {
                                      //oculte las columnas
                                      targets: 7,
-                                     'data': 'total_venta'
+                                     'data': 'total_venta',
+                                     orderable: false,
                                  },
                                  {
                                      //oculte las columnas
                                      targets: 8,
-                                     'data': 'fecha_venta'
+                                     'data': 'fecha_venta',
+                                     orderable: false,
                                  },
                                  {
                                      //oculte las columnas
                                      targets: 9,
-                                     'data': 'usuario'
+                                     'data': 'usuario',
+                                     orderable: false,
                                  },
                                  {
                                      //oculte las columnas
@@ -239,9 +249,17 @@
                                      visible: false,
                                      //que no busque registro en la tabla
                                      searchable: false,
+                                     orderable: false,
                                  },
                                  {
+                                     //oculte las columnas
                                      targets: 11,
+                                     'data': 'tipo_pago',
+                                     orderable: false,
+
+                                 },
+                                 {
+                                     targets: 12,
 
                                      render: function(data, type, full, meta) {
                                          /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
@@ -255,6 +273,29 @@
                                      }
                                  }
                              ],
+                             drawCallback: function(settings) {
+                                 var api = this.api();
+                                 var rows = api.rows({
+                                     page: 'current'
+                                 }).nodes();
+                                 var last = null;
+
+                                 api.column(groupColumn, {
+                                     page: 'current'
+                                 }).data().each(function(group, i) {
+                                     //console.log(group);
+                                     if (last !== group) {
+                                         $(rows).eq(i).before(
+                                             '<tr class="group">' +
+                                             '<td colspan="12" class="fs-6 fw-bold fst-italic bg-success text-white">' +
+                                             group +
+                                             '</td>' +
+                                             '</tr>'
+                                         );
+                                         last = group;
+                                     }
+                                 });
+                             },
                              "language": {
                                  "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
                              },
@@ -359,7 +400,7 @@
                              //    console.log(ventas_desde, "Con formato 2022-12-01")
                              ventas_hasta = ventas_hasta.substr(6, 4) + '-' + ventas_hasta.substr(3, 2) + '-' + ventas_hasta.substr(0, 2);
 
-                             var groupColumn = 0;
+                             var groupColumn = 8;
 
                              tableVentas = $('#lstVentas').DataTable({
                                  //ajustable 
@@ -416,32 +457,38 @@
                                          //oculte las columnas
                                          targets: 0,
                                          visible: false,
-                                         'data': 'id_venta'
+                                         'data': 'id_venta',
+                                         orderable: false,
                                      },
                                      {
                                          //oculte las columnas
                                          targets: 1,
-                                         'data': 'codigo_producto'
+                                         'data': 'codigo_producto',
+                                         orderable: false,
                                      },
                                      {
                                          //oculte las columnas
                                          targets: 2,
-                                         'data': 'categoria'
+                                         'data': 'categoria',
+                                         orderable: false,
                                      },
                                      {
                                          //oculte las columnas
                                          targets: 3,
-                                         'data': 'producto'
+                                         'data': 'producto',
+                                         orderable: false,
                                      },
                                      {
                                          //oculte las columnas
                                          targets: 4,
-                                         'data': 'cantidad'
+                                         'data': 'cantidad',
+                                         orderable: false,
                                      },
                                      {
                                          //oculte las columnas
                                          targets: 5,
-                                         'data': 'precio_venta'
+                                         'data': 'precio_venta',
+                                         orderable: false,
                                      },
 
                                      {
@@ -453,26 +500,39 @@
                                      {
                                          //oculte las columnas
                                          targets: 7,
-                                         'data': 'total_venta'
+                                         'data': 'total_venta',
+                                         orderable: false,
                                      },
                                      {
                                          //oculte las columnas
                                          targets: 8,
-                                         'data': 'fecha_venta'
+                                         'data': 'fecha_venta',
+                                         orderable: false,
                                      },
                                      {
                                          //oculte las columnas
                                          targets: 9,
-                                         'data': 'usuario'
+                                         'data': 'usuario',
+                                         orderable: false,
                                      },
                                      {
                                          //oculte las columnas
                                          targets: 10,
                                          'data': 'precio_compra',
                                          visible: false,
+                                         //que no busque registro en la tabla
+                                         searchable: false,
+                                         orderable: false,
                                      },
                                      {
+                                         //oculte las columnas
                                          targets: 11,
+                                         'data': 'tipo_pago',
+                                         orderable: false,
+
+                                     },
+                                     {
+                                         targets: 12,
 
                                          render: function(data, type, full, meta) {
                                              /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
@@ -486,6 +546,29 @@
                                          }
                                      }
                                  ],
+                                 drawCallback: function(settings) {
+                                     var api = this.api();
+                                     var rows = api.rows({
+                                         page: 'current'
+                                     }).nodes();
+                                     var last = null;
+
+                                     api.column(groupColumn, {
+                                         page: 'current'
+                                     }).data().each(function(group, i) {
+                                         //console.log(group);
+                                         if (last !== group) {
+                                             $(rows).eq(i).before(
+                                                 '<tr class="group">' +
+                                                 '<td colspan="12" class="fs-6 fw-bold fst-italic bg-success text-white">' +
+                                                 group +
+                                                 '</td>' +
+                                                 '</tr>'
+                                             );
+                                             last = group;
+                                         }
+                                     });
+                                 },
 
                                  lengthMenu: [0, 15, 50, 100, 500, 1000],
                                  "pageLength": 15,

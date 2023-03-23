@@ -8,7 +8,6 @@ require_once "../modelos/ventas.modelo.php";
 class AjaxVentas
 {
 
-
   public function ajaxRegistrarVenta($datos)
   {
     //obtener usuario que realizo venta

@@ -208,7 +208,7 @@
 
             var data = tbl_Usuarios.row($(this).parents('tr')).data();
 
-            console.log(data);
+            //console.log(data);
             if ($(this).parents('tr').hasClass('selected')) {
 
                 $(this).parents('tr').removeClass('selected');
@@ -249,9 +249,8 @@
          ============================================================================================*/
         document.getElementById("btnRegistrarUsuario").addEventListener("click", function() {
 
-            // Get the forms we want to add validation styles to
+            // Obtener los formularios a los que queremos agregar estilos de validación
             var forms = document.getElementsByClassName('needs-validation');
-
             // Loop over them and prevent submission
             var validation = Array.prototype.filter.call(forms, function(form) {
                 //si los datos son validados correctamente
@@ -288,6 +287,12 @@
                     }).then((result) => {
 
                         if (result.isConfirmed) {
+
+                                if(id_Usuario == 1 && perfil !=1){
+
+                                    mensajeToast('error', 'NO PUEDES CAMBIAR EL PERFIL DEL ADMIN');
+                                    return;
+                                }
 
                             //  console.log(id_Usuario, nombre_Usuario, apellido_Usuario, usuario, contraseña, perfil, estado_Usuario);
 

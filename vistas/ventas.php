@@ -26,12 +26,11 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row mb-3">
+
             <div class="col-md-9">
                 <div class="row">
                     <!--INPUT PARA INGRESO DEL CODIGO O DESCRIPCION DEL PRODUCTO -->
                     <div class="col-md-12 mb-3">
-
-
                         <div class="form-group mb-2">
                             <label class="col-form-label" for="iptCodigoVenta">
                                 <i class="fas fa-barcode fs-6"></i>
@@ -45,7 +44,7 @@
                         <h3 class="fw-bold m-0">Total Venta: Q. <span id="totalVenta">0.00</span></h3>
                     </div>
 
-                    <!-- BORONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
+                    <!-- BOTONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
                     <div class="col-md-6 text-right">
                         <button class="btn btn-primary" id="btnIniciarVenta">
                             <i class="fas fa-shopping-cart"></i>Realizar Venta
@@ -73,129 +72,101 @@
                                     <th class="text-center">Opciones</th>
                                     <th>Aplica Peso</th>
                                     <th>Precio Compra Producto</th>
-
                                 </tr>
                             </thead>
                             <tbody class="small text-left fs-6">
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
 
             <div class="col-md-3">
 
-                <div class="card shadow">
+                <form class="needs-validation" novalidate method="POST" enctype="multipart/form-data" id="tipo_de_pago">
 
-                    <h5 class="card-header py-1 bg-primary text-white text-center">
-                        Total Venta: Q. <span id="totalVentaRegistrar">0.00</span>
-                    </h5>
+                    <div class="card shadow">
 
-                    <div class="card-body p-2">
+                        <h5 class="card-header py-1 bg-primary text-white text-center">
+                            Total Venta: Q. <span id="totalVentaRegistrar">0.00</span>
+                        </h5>
 
-                        <!-- SELECCIONAR TIPO DE DOCUMENTO -->
-                        <div class="form-group mb-2">
+                        <div class="card-body p-2">
 
-                            <label class="col-form-label" for="selCategoriaReg">
-                                <i class="fas fa-file-alt fs-6"></i>
-                                <span class="small">Documento</span><span class="text-danger">*</span>
-                            </label>
+                            <div class="form-group mb-2">
 
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selDocumentoVenta">
-                                <option value="0">Seleccione Documento</option>
-                                <!--por defecto se seleciona la boleta -->
-                                <option value="1" selected="true">Boleta</option>
-                                <option value="2">Factura</option>
-                                <option value="3">Ticket</option>
-                            </select>
+                                <label class="col-form-label" for="selTipoPago">
+                                    <i class="fas fa-money-bill-alt fs-6"></i>
+                                    <span class="small">Tipo Pago </span><span class="text-danger ">*</span>
+                                </label>
 
-                            <span id="validate_categoria" class="text-danger small fst-italic" style="display:none">
-                                Debe Seleccionar documento
-                            </span>
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selTipoPago" required>
+                                    <option value="">--- TIPO DE PAGO ---</option>
+                                    <option value="1">EFECTIVO</option>
+                                    <option value="2">TARJETA</option>
+                                    <option value="3">TRANFERENCIA</option>
+                                    <option value="4">OTRO</option>
+                                </select>
 
-                        </div>
+                                <div class="invalid-feedback">Seleccione tipo de pago</div>
 
-                        <!-- SELECCIONAR TIPO DE PAGO -->
-                        <div class="form-group mb-2">
-
-                            <label class="col-form-label" for="selCategoriaReg">
-                                <i class="fas fa-money-bill-alt fs-6"></i>
-                                <span class="small">Tipo Pago</span><span class="text-danger">*</span>
-                            </label>
-
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selTipoPago">
-                                <option value="0">Seleccione Tipo Pago</option>
-                                <!-- por defecto seleciona efectivo -->
-                                <option value="1" selected="true">Efectivo</option>
-                                <option value="2">Tarjeta</option>
-                                <!-- Otros tipos de pagos -->
-                                <!--   <option value="3">Yape</option>-->
-                                <!--  <option value="4">plin</option>-->
-                            </select>
-
-                            <span id="validate_categoria" class="text-danger small fst-italic" style="display:none">
-                                Debe Ingresar tipo de pago
-                            </span>
-
-                        </div>
-
-                        <!-- INPUT DE EFECTIVO ENTREGADO -->
-                        <div class="form-group">
-                            <label for="iptEfectivoRecibido">Efectivo recibido</label>
-                            <input type="number" min="0" name="iptEfectivo" id="iptEfectivoRecibido" class="form-control form-control-sm" placeholder="Cantidad de efectivo recibida">
-                        </div>
-
-                        <!-- INPUT CHECK DE EFECTIVO EXACTO -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="chkEfectivoExacto">
-                            <label class="form-check-label" for="chkEfectivoExacto">
-                                Efectivo Exacto
-                            </label>
-                        </div>
-
-                        <!-- MOSTRAR MONTO EFECTIVO ENTREGADO Y EL VUELTO -->
-                        <div class="row mt-2">
-
-                            <div class="col-12">
-                                <h6 class="text-start fw-bold">Monto Efectivo: Q. <span id="EfectivoEntregado">0.00</span></h6>
                             </div>
 
-                            <div class="col-12">
-                                <h6 class="text-start text-danger fw-bold">Vuelto: Q. <span id="Vuelto">0.00</span>
-                                </h6>
-                            </div>
-                        </div>
-
-                        <!-- MOSTRAR EL SUBTOTAL, IVA Y TOTAL DE LA VENTA -->
-                        <div class="row">
-                            <div class="col-md-7">
-                                <span>SUBTOTAL</span>
-                            </div>
-                            <div class="col-md-5 text-right">
-                                Q. <span class="" id="boleta_subtotal">0.00</span>
+                            <!-- INPUT DE EFECTIVO ENTREGADO -->
+                            <div class="form-group">
+                                <label for="iptEfectivoRecibido">Efectivo recibido</label>
+                                <input type="float" min="0" name="iptEfectivo" id="iptEfectivoRecibido" class="form-control form-control-sm" placeholder="Cantidad de efectivo recibida">
                             </div>
 
-                            <div class="col-md-7">
-                                <span>IVA (12%)</span>
-                            </div>
-                            <div class="col-md-5 text-right">
-                                Q. <span class="" id="boleta_iva">0.00</span>
+                            <!-- INPUT CHECK DE EFECTIVO EXACTO -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="chkEfectivoExacto">
+                                <label class="form-check-label" for="chkEfectivoExacto">
+                                    Efectivo Exacto
+                                </label>
                             </div>
 
-                            <div class="col-md-7">
-                                <span>TOTAL</span>
+                            <!-- MOSTRAR MONTO EFECTIVO ENTREGADO Y EL VUELTO -->
+                            <div class="row mt-2">
+
+                                <div class="col-12">
+                                    <h6 class="text-start fw-bold">Monto Efectivo: Q. <span id="EfectivoEntregado">0.00</span></h6>
+                                </div>
+
+                                <div class="col-12">
+                                    <h6 class="text-start text-danger fw-bold">Vuelto: Q. <span id="Vuelto">0.00</span>
+                                    </h6>
+                                </div>
                             </div>
-                            <div class="col-md-5 text-right">
-                                Q. <span class="" id="boleta_total">0.00</span>
+
+                            <!-- MOSTRAR EL SUBTOTAL, IVA Y TOTAL DE LA VENTA -->
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <span>SUBTOTAL</span>
+                                </div>
+                                <div class="col-md-5 text-right">
+                                    Q. <span class="" id="boleta_subtotal">0.00</span>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <span>IVA (12%)</span>
+                                </div>
+                                <div class="col-md-5 text-right">
+                                    Q. <span class="" id="boleta_iva">0.00</span>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <span>TOTAL</span>
+                                </div>
+                                <div class="col-md-5 text-right">
+                                    Q. <span class="" id="boleta_total">0.00</span>
+                                </div>
                             </div>
-                        </div>
+                        </div><!-- ./ CARD BODY -->
 
-                    </div><!-- ./ CARD BODY -->
-
-                </div><!-- ./ CARD -->
-            </div>
-
+                    </div><!-- ./ CARD SHADOW -->
+                </form>
+            </div> <!--col-md-3-->
         </div>
     </div>
 </div>
@@ -268,7 +239,7 @@
                     "data": "aplica_peso"
                 },
                 {
-                    "data": "precio_compra_producto"    
+                    "data": "precio_compra_producto"
                 }
 
                 // { "data": "precio_mayor_producto" },
@@ -278,7 +249,7 @@
             order: [
                 [0, 'asc']
             ],
-            
+
             columnDefs: [{
                     //oculte las columnas
                     targets: 0,
@@ -343,7 +314,7 @@
                     targets: 12,
                     "data": "precio_compra_producto",
                     visible: false
-                  
+
                 }
 
 
@@ -638,6 +609,7 @@
         $("#boleta_subtotal").html("0.00");
         $("#boleta_total").html("0.00");
         $("#boleta_iva").html("0.00");
+        $("#selTipoPago").val("");
 
     } /* FIN LimpiarInputs */
 
@@ -965,6 +937,7 @@
         table.rows().eq(0).each(function(index) { //recorremos los datos que tiene la tabla ventas
             count = count + 1; // reccoriendo de 1 a 1 y sumando 
         });
+
         //si la cantidad es mayor a 0 quiere decir que si hay productos por lo que procede a realizar la venta
         if (count > 0) {
 
@@ -981,70 +954,97 @@
                     return false;
                 }
 
-                //ENVIAMOS LOS VALORES A LA BASE DE DATOS
-                var formData = new FormData();
-                var arr = [];
 
-                //recorremos la tabla
-                table.rows().eq(0).each(function(index) {
+                // Obtener los formularios a los que queremos agregar estilos de validación
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
 
-                    var row = table.row(index);
-
-                    var data = row.data();
-                    //agregame a mi array 
-                    arr[index] = data['codigo_producto'] + "," +
-                        data['nombre_categoria'] + "," +
-                        data['descripcion_producto'] + "," +
-                        parseFloat(data['cantidad']) + "," +
-                        data['precio_venta_producto'].replace("Q. ", "") + "," +
-                        data['descuento'].replace("Q. ", "") + "," +
-                        data['total'].replace("Q. ", "") + "," +
-                        data['precio_compra_producto'];
-                    //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
-
-                    formData.append('arr[]', arr[index]);
-                });
+                    if (form.checkValidity() === true) {
 
 
-                $.ajax({
-                    url: "ajax/ventas.ajax.php",
-                    method: "POST",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
-                    success: function(respuesta) {
-                        if (respuesta == "ok") {
-                            mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
-                        } else if (respuesta == "error_stock") {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'error',
-                                title: 'ERROR AL ACTUALIZAR STOCK',
-                                showConfirmButton: false,
-                                timer: 2500
-                            })
-                        } else {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'error',
-                                title: 'ERROR AL REGISTRAR LA VENTA',
-                                showConfirmButton: false,
-                                timer: 2500
-                            })
-                        }
+                        //ENVIAMOS LOS VALORES A LA BASE DE DATOS
+                        var formData = new FormData();
+                        var arr = [];
+                        //agregamos datos para almacenar el tipo de pago
+                        var datos = new FormData();
 
-                        table.clear().draw();
+                        //capturamos los valores para llevar a la base de datos
+                      
+                       // $tipo_pago = $("#selTipoPago").val();
+                        var datos = new FormData();
 
-                        LimpiarInputs();
+                        //recorremos la tabla
+                        table.rows().eq(0).each(function(index) {
 
-                        //   CargarNroBoleta();
+                            var row = table.row(index);
+                            var data = row.data();
+                            //agregame a mi array 
 
+                            var tipo_pago = $("#selTipoPago").val();
+
+                            arr[index] = data['codigo_producto'] + "," +
+                                data['nombre_categoria'] + "," +
+                                data['descripcion_producto'] + "," +
+                                parseFloat(data['cantidad']) + "," +
+                                data['precio_venta_producto'].replace("Q. ", "") + "," +
+                                data['descuento'].replace("Q. ", "") + "," +
+                                data['total'].replace("Q. ", "") + "," +
+                                data['precio_compra_producto']+ "," +
+                                tipo_pago;
+                               
+                            //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
+
+                            formData.append('arr[]', arr[index]);
+                        });
+
+
+                        $.ajax({
+                            url: "ajax/ventas.ajax.php",
+                            method: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            success: function(respuesta) {
+                                if (respuesta == "ok") {
+                                    mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
+                                    $(".needs-validation").removeClass("was-validated");
+                                } else if (respuesta == "error_stock") {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'ERROR AL ACTUALIZAR STOCK',
+                                        showConfirmButton: false,
+                                        timer: 2500
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'ERROR AL REGISTRAR LA VENTA',
+                                        showConfirmButton: false,
+                                        timer: 2500
+                                    })
+                                }
+
+                                table.clear().draw();
+
+                                LimpiarInputs();
+
+                                //   CargarNroBoleta();
+
+                            }
+                        });
+
+
+
+                    } else {
+                        //me solicita que tengo que ingresar los campos 
+                        form.classList.add('was-validated');
                     }
-                });
-
-
+                })
 
             } else {
 

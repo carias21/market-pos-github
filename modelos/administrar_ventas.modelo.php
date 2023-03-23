@@ -1,6 +1,7 @@
 <?php
 
 require_once "conexion.php";
+session_start();
 
 class AdministrarVentasModelo
 {
@@ -9,38 +10,73 @@ class AdministrarVentasModelo
 
     static public function mdlListarVentas($fechaDesde, $fechaHasta)
     {
+        //obtener usuario que realizo venta
+        $usuario = $_SESSION["usuario1"]->usuario;
+        $id_usuario = $_SESSION["usuario1"]->id_usuario;
+
 
         try {
 
-            $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
-                                                 v.codigo_producto, 
-                                                 v.categoria, 
-                                                 v.descripcion as producto, 
-                                                 v.cantidad, 
-                                                  CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
-                                                  CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
-                                                  CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
-                                                  v.fecha_venta,
-                                                  usuario,
-                                                  precio_compra,
-                                                 '' as opciones
-                                                 from ventas v
-                                                 where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta)  
-                                                 order BY v.fecha_venta desc");
+            if ($id_usuario == 1) {
+                $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
+                v.codigo_producto, 
+                v.categoria, 
+                v.descripcion as producto, 
+                v.cantidad, 
+                 CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
+                 CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
+                 CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
+                 v.fecha_venta,
+                 usuario,
+                 precio_compra,
+                 tp.tipo_pago,
+                '' as opciones
+                from ventas v
+                inner join tipo_pago tp on tp.id = fk_tipo_pago
+                where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
+                order BY v.fecha_venta desc");
 
-            $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
-            $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
 
-            $stmt->execute();
 
-            return $stmt->fetchAll();
 
-            return ("Todo bien hasta aqui");
+                $stmt->execute();
+
+                return $stmt->fetchAll();
+            } else {
+                $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
+                v.codigo_producto, 
+                v.categoria, 
+                v.descripcion as producto, 
+                v.cantidad, 
+                 CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
+                 CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
+                 CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
+                 v.fecha_venta,
+                 usuario,
+                 precio_compra,
+                 tp.tipo_pago,
+                '' as opciones
+                from ventas v
+                inner join tipo_pago tp on tp.id = fk_tipo_pago
+                where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) and usuario = :usuario
+                order BY v.fecha_venta desc");
+
+                $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+                $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+                $stmt->bindParam(":usuario", $usuario, PDO::PARAM_STR);
+
+
+                $stmt->execute();
+
+                return $stmt->fetchAll();
+
+                //return ("Todo bien hasta aqui");
+            }
         } catch (Exception $e) {
             return 'Excepción capturada: ' .  $e->getMessage() . "\n";
         }
-
-
         $stmt = null;
     }
 
@@ -87,6 +123,7 @@ class AdministrarVentasModelo
         } else {
             return Conexion::conectar()->errorInfo();
         }
+        $stmt = null;
     }
 }
 

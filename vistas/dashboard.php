@@ -309,7 +309,7 @@
                      $("#totalGancias").html('Q.' + respuesta[0]['ganancias'].toLocaleString('en'))
                      $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'].toLocaleString('en'))
                      $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toLocaleString('en'))
-                     console.log("respuesta", respuesta);
+                     //console.log("respuesta", respuesta);
                  }
              });
              /* 10000 = 10segundos */

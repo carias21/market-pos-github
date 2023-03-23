@@ -92,6 +92,7 @@
                             <th>Entrada</th>
                             <th>Salida</th>
                             <th>Saldo Actual</th>
+                            <th>Usuario</th>
                             <th class="text-center">Opciones</th>
 
                         </thead>
@@ -677,7 +678,7 @@ YA QUE NO SE MUESTRA -->
                     'data': 'id_caja',
                     orderable: false,
                     className: 'control',
-                    visible: true
+                    visible: false
                 },
                 {
                     targets: 1,
@@ -691,6 +692,11 @@ YA QUE NO SE MUESTRA -->
                 },
                 {
                     targets: 7,
+                    'data': 'usuario',
+                
+                },
+                {
+                    targets: 8,
                     'data': 'opciones',
                     render: function(td, cellData, rowData, row, col) {
                         if (parseFloat(rowData[1]) == 0) {
