@@ -27,7 +27,7 @@
     <div class="container-fluid">
         <div class="row mb-3">
 
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="row">
                     <!--INPUT PARA INGRESO DEL CODIGO O DESCRIPCION DEL PRODUCTO -->
                     <div class="col-md-12 mb-3">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <!--ETIQUETA QUE MUSTRA LA SUMA TOTAL DE LOS PRODUCTOS AGREGADOS AL LISTADO -->
-                    <div class="col-md-6 mb-3 rounded-3">
+                    <div class="col-md-6 mb-3 rounded-3 mx-auto">
                         <h3 class="fw-bold m-0">Total Venta: Q. <span id="totalVenta">0.00</span></h3>
                     </div>
 
@@ -53,6 +53,7 @@
                             <i class="far fa-trash-alt"></i> Vaciar Listado
                         </button>
                     </div>
+                    <br></br>
 
                     <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA VENTA -->
                     <div class="col-md-12">
@@ -81,11 +82,12 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-8 mx-auto">
+
 
                 <form class="needs-validation" novalidate method="POST" enctype="multipart/form-data" id="tipo_de_pago">
 
-                    <div class="card shadow">
+                    <div class="card shadow ">
 
                         <h5 class="card-header py-1 bg-primary text-white text-center">
                             Total Venta: Q. <span id="totalVentaRegistrar">0.00</span>
@@ -134,7 +136,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <h6 class="text-start text-danger fw-bold">Vuelto: Q. <span id="Vuelto">0.00</span>
+                                    <h6 class="text-start text-danger fw-bold">Cambio: Q. <span id="Vuelto">0.00</span>
                                     </h6>
                                 </div>
                             </div>
@@ -188,6 +190,9 @@
     });
 
     $(document).ready(function() {
+
+        ajustarHeadersDataTables($('#lstProductosVenta'));
+        
 
         /* ======================================================================================
         		EVENTO VACIAR LA TABLA VENTAS, VACIAR EL LISTADO DE LA TABALA VENTAS
@@ -249,6 +254,11 @@
             order: [
                 [0, 'asc']
             ],
+            //cambios GDO
+            "scrollY": "200px",
+            "scrollCollapse": true,
+            "paging": false,
+            "searching": false,
 
             columnDefs: [{
                     //oculte las columnas
@@ -586,6 +596,27 @@
     //FUNCIONES
     /*===========================================================================================================================================*/
 
+
+
+    //FUNCION AJUSTAR LAS TABLAS POR DEFORMARCE O NO SE MIRAN BIEN
+    //VD 30 MIN 25.10
+    function ajustarHeadersDataTables(element) {
+
+        var observer = window.ResizeObserver ? new ResizeObserver(function(entries) {
+            entries.forEach(function(entry) {
+                $(entry.target).DataTable().columns.adjust();
+            });
+        }) : null;
+
+        // Function to add a datatable to the ResizeObserver entries array
+        resizeHandler = function($table) {
+            if (observer)
+                observer.observe($table[0]);
+        };
+
+        // Initiate additional resize handling on datatable
+        resizeHandler(element);
+    }
 
     /*===================================================================*/
     //FUNCION PARA LIMPIAR TOTOTALMENTE LA TABLA DE VENTAS 
@@ -970,8 +1001,8 @@
                         var datos = new FormData();
 
                         //capturamos los valores para llevar a la base de datos
-                      
-                       // $tipo_pago = $("#selTipoPago").val();
+
+                        // $tipo_pago = $("#selTipoPago").val();
                         var datos = new FormData();
 
                         //recorremos la tabla
@@ -990,9 +1021,9 @@
                                 data['precio_venta_producto'].replace("Q. ", "") + "," +
                                 data['descuento'].replace("Q. ", "") + "," +
                                 data['total'].replace("Q. ", "") + "," +
-                                data['precio_compra_producto']+ "," +
+                                data['precio_compra_producto'] + "," +
                                 tipo_pago;
-                               
+
                             //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
 
                             formData.append('arr[]', arr[index]);

@@ -1,0 +1,45 @@
+ARCHIVOS NO MODIFICABLES
+AJAX
+caja.ajax.php
+productos.ajax.php
+ventas.ajax.php
+CONTROLADORES
+usuario.contralador.php
+MODELOS
+ventas.modelo.php
+administrar_ventas.modelo.php
+caja.modelo.php
+conexion.php
+VISTAS
+aside.php
+plantilla.php
+
+
+
+------------------------------------------------------------------------------------------------------
+CAMBIOS BD
+CAMBIOS
+
+alter table caja add fk_tipo_pago int(7)
+
+tabla caja
+alter table caja add fk_tipo_pago int(7);
+
+
+insert into tipo_pago(id, tipo_pago) VALUES
+(5, "N/A")
+
+alter table caja add FOREIGN key (fk_tipo_pago)
+REFERENCES tipo_pago(id)
+
+//INDICA NO NULLA A LA COLUMA TIPO PAGO
+ALTER TABLE caja
+MODIFY fk_tipo_pago INT NOT NULL;
+
+//INDICA NO NULLA A LA COLUMA USUUARIO
+ALTER TABLE caja
+MODIFY fk_usuario INT NOT NULL;
+
+//cambiar los datos de 0 a 1
+UPDATE caja SET fk_tipo_pago = 1 WHERE fk_tipo_pago = 0;
+

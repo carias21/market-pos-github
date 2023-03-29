@@ -32,13 +32,23 @@ class ReportesModelo{
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    static public function mdlVentasComprasGanancia(){
+    static public function mdlGananciaNeta(){
     
-        $stmt = Conexion::conectar()->prepare('call prc_TotalVentasComprasGanancia');
+        $stmt = Conexion::conectar()->prepare('call prc_GananciaNeta');
     
         $stmt->execute();
     
         return $stmt->fetchAll();
     }
+
+    static public function mdlGananciaBruta(){
+    
+        $stmt = Conexion::conectar()->prepare('call prc_GananciaBruta');
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
+
 
 }

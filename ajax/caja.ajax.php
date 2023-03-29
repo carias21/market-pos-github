@@ -77,7 +77,7 @@ class AjaxCaja
 
 
 
-if (isset($_POST['accion']) && $_POST['accion'] == 2) {
+if (isset($_POST['accion']) && $_POST['accion'] == 2) {//listar caja
     $ListarCaja = new AjaxCaja;
     $ListarCaja->ajaxListarCaja();
 } else if (isset($_POST['accion']) && $_POST['accion'] == 3) { //parametro para ingreso de caja

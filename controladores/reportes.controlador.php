@@ -27,12 +27,20 @@ class ReportesControlador{
         return $ventasPorCategorias;
     }
 
-    static public function ctrVentasComprasGanancia()
+    static public function ctrGananciaNeta()
     {
-        $VentasComprasGanancia = ReportesModelo::mdlVentasComprasGanancia();
+        $GananciaNeta = ReportesModelo::mdlGananciaNeta();
     
-        return $VentasComprasGanancia;
+        return $GananciaNeta;
     }
+
+    static public function ctrGananciaBruta()
+    {
+        $GananciaNeta = ReportesModelo::mdlGananciaBruta();
+    
+        return $GananciaNeta;
+    }
+
 
 
 

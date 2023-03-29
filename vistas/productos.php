@@ -183,7 +183,7 @@
                                 <label class="" for="iptCodigoReg"><i class="fas fa-barcode fs-6"></i>
                                     <span class="small">CODIGO DEL PRODUCTO</span><span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
+                                <input type="number" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
                                 <div class="invalid-feedback">Debe ingresar el codigo de barras</div>
                             </div>
                         </div>

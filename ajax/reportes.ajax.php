@@ -27,12 +27,21 @@ class AjaxReportes
 
         echo json_encode($ventasPorCategorias, JSON_NUMERIC_CHECK);
     }
-    public function getVentasComprasGanancia()
+    public function getGananciaNeta()
     {
-        $VentasComprasGanancia = ReportesControlador::ctrVentasComprasGanancia(); //prc_TotalVentasComprasGanancia
+        $GananciaNeta= ReportesControlador::ctrGananciaNeta(); //prc_TotalGananciaNeta
 
 
-        echo json_encode($VentasComprasGanancia);
+        echo json_encode($GananciaNeta);
+        
+    }
+
+    public function getGananciaBruta()
+    {
+        $GananciaBruta= ReportesControlador::ctrGananciaBruta(); //prc_TotalGananciaNeta
+
+
+        echo json_encode($GananciaBruta);
         
     }
 }
@@ -48,6 +57,9 @@ if (isset($_POST['accion']) && $_POST['accion'] == 4) { //Ejecutar function cant
     $TotalVentasMesAño = new AjaxReportes();
     $TotalVentasMesAño->getTotalVentasMesAño();
 }else if (isset($_POST['accion']) && $_POST['accion'] == 5) { //Ejecutar function prc_TotalVentasComprasCaja VENTAS, COMPRAS, GANANCIA
-    $VentasComprasGanancia = new AjaxReportes();
-    $VentasComprasGanancia->getVentasComprasGanancia();
+    $GananciaNeta = new AjaxReportes();
+    $GananciaNeta->getGananciaNeta();
+}else if(isset($_POST['accion'])&& $_POST['accion'] == 6){
+    $GananciaBruta = new AjaxReportes();
+    $GananciaBruta->getGananciaBruta();
 }

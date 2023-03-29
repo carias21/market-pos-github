@@ -141,7 +141,7 @@
                          <div class="card-tools">
 
                              <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
-            con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
+                              con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
                              </button>

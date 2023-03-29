@@ -69,8 +69,15 @@
     </div><!-- /.container-fluid -->
 </div>
 
-<div class="col-md-4 mb-3">
-    <h4>Total Caja: Q. <span id="total_Caja">0.00</span></h4>
+<div class="card card-info">
+    <div class="col-md-12 mb-3 text-center">
+        <h3 style="font-weight: bold; display: inline-block;">Total Caja: Q.<span id="total_Caja" style="font-weight: bold;">0.00</span></h4>
+        <p></p>
+        <h4 style="display: inline-block;">Efectivo: Q.<span id="efectivo" style="font-weight: bold;">0.00</span> / </h5>
+        <h4 style="display: inline-block;">Tarjeta: Q.<span id="tarjeta" style="font-weight: bold;">0.00</span> / </h5>
+        <h4 style="display: inline-block;">Transferencia: Q.<span id="transferencia" style="font-weight: bold;">0.00</span> / </h5>
+        <h4 style="display: inline-block;">Otro: Q.<span id="otro" style="font-weight: bold;">0.00</span></h5>
+    </div>
 </div>
 
 <!-- Main content -->
@@ -93,6 +100,7 @@
                             <th>Salida</th>
                             <th>Saldo Actual</th>
                             <th>Usuario</th>
+                            <th>Tipo Pago</th>
                             <th class="text-center">Opciones</th>
 
                         </thead>
@@ -273,7 +281,6 @@ YA QUE NO SE MUESTRA -->
         cargarDataTables();
         ajustarHeadersDataTables($('#tbl_Caja'));
         Ajax_Total_Caja();
-
 
         /*===================================================================
         =====================================================================
@@ -615,7 +622,11 @@ YA QUE NO SE MUESTRA -->
             method: 'POST',
             dataType: 'json',
             success: function(respuesta) {
-                $("#total_Caja").html(respuesta[0]['total_Caja'])
+                $("#total_Caja").html(respuesta[0]['total_Caja']);
+                $("#efectivo").html(respuesta[0]['efectivo']);
+                $("#tarjeta").html(respuesta[0]['tarjeta']);
+                $("#transferencia").html(respuesta[0]['transferencia']);
+                $("#otro").html(respuesta[0]['otro']);
             }
         });
 
@@ -627,8 +638,12 @@ YA QUE NO SE MUESTRA -->
     ===================================================================*/
     function cargarDataTables() {
 
+        //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLUMN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 2=fecha_venta
+        var groupColumn = 2;
+
         //DATA TABLE CAJA
         tbl_Caja = $('#tbl_Caja').DataTable({
+
             ajax: {
                 async: false,
                 url: 'ajax/caja.ajax.php',
@@ -646,7 +661,7 @@ YA QUE NO SE MUESTRA -->
                     titleAttr: 'copiar',
                     className: 'btn btn-success',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
+                        columns: [0, 1, 2, 3, 4, 5, 7, 8]
                     }
                 },
                 {
@@ -655,7 +670,7 @@ YA QUE NO SE MUESTRA -->
                     titleAttr: 'Exportar a Excel',
                     className: 'btn btn-success',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
+                        columns: [0, 1, 2, 3, 4, 5, 7, 8]
                     }
                 },
                 {
@@ -664,10 +679,11 @@ YA QUE NO SE MUESTRA -->
                     titleAttr: 'Imprimir',
                     className: 'btn btn-info',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
+                        columns: [0, 1, 2, 3, 4, 5, 7, 8]
                     }
                 },
             ],
+            
 
             scrollX: true,
             order: [
@@ -686,6 +702,23 @@ YA QUE NO SE MUESTRA -->
                     visible: false
                 },
                 {
+                    targets: 2,
+                    'data': 'fecha',
+                    visible: false
+                },
+                {
+                    targets: 3,
+                    'data': 'descripcion',
+                },
+                {
+                    targets: 4,
+                    'data': 'entrada',
+                },
+                {
+                    targets: 5,
+                    'data': 'salida',
+                },
+                {
                     targets: 6,
                     'data': 'saldo_actual',
                     visible: false
@@ -693,10 +726,15 @@ YA QUE NO SE MUESTRA -->
                 {
                     targets: 7,
                     'data': 'usuario',
-                
+
                 },
                 {
                     targets: 8,
+                    'data': 'tipo_pago',
+
+                },
+                {
+                    targets: 9,
                     'data': 'opciones',
                     render: function(td, cellData, rowData, row, col) {
                         if (parseFloat(rowData[1]) == 0) {
@@ -715,6 +753,29 @@ YA QUE NO SE MUESTRA -->
 
 
             ],
+            drawCallback: function(settings) {
+                var api = this.api();
+                var rows = api.rows({
+                    page: 'current'
+                }).nodes();
+                var last = null;
+
+                api.column(groupColumn, {
+                    page: 'current'
+                }).data().each(function(group, i) {
+                    //console.log(group);
+                    if (last !== group) {
+                        $(rows).eq(i).before(
+                            '<tr class="group">' +
+                            '<td colspan="8" class="fs-6 fw-bold fst-italic bg-success text-white">' +
+                            group +
+                            '</td>' +
+                            '</tr>'
+                        );
+                        last = group;
+                    }
+                });
+            },
 
             language: {
                 "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"

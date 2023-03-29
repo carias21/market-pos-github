@@ -5,8 +5,7 @@ class VentasModelo
 
     public $resultado;
 
-    static public function mdlRegistrarVenta($datos, $fecha_venta,  $usuario)
-    {
+    static public function mdlRegistrarVenta($datos, $fecha_venta,  $usuario){
 
         $id_usuario = $_SESSION["usuario1"]->id_usuario;
 
@@ -79,7 +78,7 @@ class VentasModelo
                             descripcion,
                             entrada,
                             salida,
-                            saldo_actual, fk_usuario)         
+                            saldo_actual, fk_usuario, fk_tipo_pago)         
                             VALUES(
                             :codigo_producto,
                             :fecha,
@@ -87,12 +86,14 @@ class VentasModelo
                             :total_venta,
                             '',
                             '', 
-                            :usuario)");
+                            :usuario,
+                            :tipo_pago)");
                         $stmt->bindParam(":codigo_producto", $listaProductos[0], PDO::PARAM_STR);
                         $stmt->bindParam(":descripcion_producto", $listaProductos[2], PDO::PARAM_STR);
                         $stmt->bindParam(":total_venta", $listaProductos[6], PDO::PARAM_STR);
                         $stmt->bindParam(":fecha", $fecha_venta, PDO::PARAM_STR);
                         $stmt->bindParam(":usuario", $id_usuario, PDO::PARAM_STR);
+                        $stmt->bindParam(":tipo_pago",  $listaProductos[8], PDO::PARAM_STR);
 
 
                         if ($stmt->execute()) {

@@ -21,9 +21,11 @@ class CajaModelo
                                                          CONCAT('Q. ',CONVERT(ROUND(salida,2), CHAR)) as salida,
                                                          CONCAT('Q. ',CONVERT(ROUND(saldo_actual,2), CHAR)) as saldo_actual,
                                                          u.usuario,
+                                                         tipo_pago,
                                                          '' as opciones
-                                                        FROM caja 
-                                                        inner join usuarios u on u.id_usuario = fk_usuario");
+                                                        FROM caja
+                                                        inner join usuarios u on u.id_usuario = fk_usuario
+                                                        inner join tipo_pago tp on tp.id = fk_tipo_pago");
 
         $stmt->execute();
 
@@ -48,7 +50,8 @@ class CajaModelo
                entrada,
                salida,
                saldo_actual, 
-               fk_usuario)         
+               fk_usuario,
+               fk_tipo_pago)         
                VALUES(
                '',
                :fecha,
@@ -56,7 +59,8 @@ class CajaModelo
                :entrada,
                '',
                '',
-               :id_usuario)");
+               :id_usuario,
+               '1')");
 
             $stmt->bindParam(":fecha", $fecha_caja, PDO::PARAM_STR);
             $stmt->bindParam(":descripcion", $descripcion, PDO::PARAM_STR);
@@ -95,7 +99,8 @@ class CajaModelo
                entrada,
                salida,
                saldo_actual, 
-               fk_usuario)         
+               fk_usuario,
+               fk_tipo_pago)         
                VALUES(
                '',
                :fecha,
@@ -103,7 +108,8 @@ class CajaModelo
                '',
                :salida,
                '',
-               :id_usuario)");
+               :id_usuario,
+               '1')");
 
             $stmt->bindParam(":fecha", $fecha_caja, PDO::PARAM_STR);
             $stmt->bindParam(":descripcion", $descripcion, PDO::PARAM_STR);

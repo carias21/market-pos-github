@@ -114,6 +114,7 @@
                      $(document).ready(function() {
 
                          var tableVentas, ventas_desde, ventas_hasta;
+
                          //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLUMN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 8=fecha_venta
                          var groupColumn = 8;
 
@@ -143,6 +144,9 @@
                              //ajustable 
                              scrollX: true,
                              dom: 'Bfrtip',
+                             paging: true, // Habilita la paginación
+                           
+                             pageLength: 10,
                              buttons: [{
 
                                      extend: 'excelHtml5',
@@ -235,6 +239,7 @@
                                      targets: 8,
                                      'data': 'fecha_venta',
                                      orderable: false,
+                                     visible: false,
                                  },
                                  {
                                      //oculte las columnas
@@ -508,6 +513,7 @@
                                          targets: 8,
                                          'data': 'fecha_venta',
                                          orderable: false,
+                                         visible: false
                                      },
                                      {
                                          //oculte las columnas

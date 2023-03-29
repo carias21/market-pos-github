@@ -26,7 +26,7 @@
          <!-- row Grafico de barras -->
          <div class="row">
 
-             <div class="col-12"> 
+             <div class="col-12">
 
                  <div class="card card-info ">
 
@@ -38,7 +38,7 @@
 
                              <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
             con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
-      
+
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
                              </button>
@@ -174,7 +174,7 @@
              <div class="col-lg-6">
                  <div class="card card-info ">
                      <div class="card-header">
-                         <h3 class="card-title">VENTAS COMPRAS GANANCIA, POR AÑO</h3>
+                         <h3 class="card-title">GANANCIA NETA POR MES</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
@@ -187,19 +187,61 @@
                              </button>
                          </div> <!-- ./ end card-tools -->
                      </div> <!-- ./ end card-header -->
+
                      <div class="card-body">
                          <div class="table-responsive">
-                             <table class="table table-bordered" id="tbl_Ventas_Compras_Ganancias">
+                             <table class="table table-bordered" id="tbl_Ganancia_Neta">
                                  <thead>
                                      <tr class="text-nowrap">
                                          <th>MES</th>
                                          <th>VENTAS</th>
                                          <th>COMPRAS</th>
-                                         <th>GANANCIA</th>
+                                         <th>GANANCIA NETA</th>
                                      </tr>
                                  </thead>
                                  <tbody>
+                                     <!-- AQUI SE ALMACENAN LOS DATOS TBODY -->
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div> <!-- ./ end card-body -->
+                 </div>
+             </div>
 
+
+        <!-------------------------------------------------------------------------------------------
+        REPORTE GANANCIA BRUTA
+        -------------------------------------------------------------------------------------------->
+             <div class="col-lg-6">
+                 <div class="card card-info ">
+                     <div class="card-header">
+                         <h3 class="card-title">GANANCIA BRUTA POR MES</h3>
+                         <div class="card-tools">
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
+                         </div> <!-- ./ end card-tools -->
+                     </div> <!-- ./ end card-header -->
+
+                     <div class="card-body">
+                         <div class="table-responsive">
+                             <table class="table table-bordered" id="tbl_Ganancia_Bruta">
+                                 <thead>
+                                     <tr class="text-nowrap">
+                                         <th>MES</th>
+                                         <th>VENTAS</th>
+                                         <th>COMPRAS</th>
+                                         <th>GANANCIA BRUTA</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     <!-- AQUI SE ALMACENAN LOS DATOS TBODY -->
                                  </tbody>
                              </table>
                          </div>
@@ -207,7 +249,6 @@
                  </div>
              </div>
          </div>
-
 
 
      </div><!-- /.container-fluid -->
@@ -220,8 +261,8 @@
          cargarGraficoDoughnut();
          cargarGraficoProductosVendidos();
          cargarGraficoVentasPorMes();
-         cargarListadoVentasComprasGanancia();
-
+         cargarListadoGananciaNeta();
+         cargarListadoGananciaBruta();
 
 
      })
@@ -511,12 +552,12 @@
          });
      }
 
-     function cargarListadoVentasComprasGanancia(){
+     function cargarListadoGananciaNeta() {
 
          /* =======================================================
           SOLICITUD AJAX VENTAS, COMPRAS Y GANANCIAS
           =======================================================*/
-          $.ajax({
+         $.ajax({
              url: "ajax/reportes.ajax.php",
              type: "POST",
              data: {
@@ -533,9 +574,42 @@
                          '<td>' + respuesta[i]["fecha"] + '</td>' +
                          '<td> Q. ' + respuesta[i]["ventas"] + '</td>' +
                          '<td> Q. ' + respuesta[i]["compras"] + '</td>' +
-                         '<td> Q. ' + respuesta[i]["ganancia"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["gananciaNeta"] + '</td>' +
                          '</tr>'
-                     $("#tbl_Ventas_Compras_Ganancias tbody").append(filas);
+                     $("#tbl_Ganancia_Neta tbody").append(filas);
+                 }
+
+             }
+         });
+
+
+     }
+
+     function cargarListadoGananciaBruta() {
+
+         /* =======================================================
+          SOLICITUD AJAX VENTAS, COMPRAS Y GANANCIAS
+          =======================================================*/
+         $.ajax({
+             url: "ajax/reportes.ajax.php",
+             type: "POST",
+             data: {
+                 'accion': 6 // listado ventas, compras y ganancias bruta
+             },
+
+
+             dataType: 'json',
+             success: function(respuesta) {
+                  console.log("respuesta",respuesta);
+
+                 for (let i = 0; i < respuesta.length; i++) {
+                     filas = '<tr>' +
+                         '<td>' + respuesta[i]["fecha"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["ventas"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["compras"] + '</td>' +
+                         '<td> Q. ' + respuesta[i]["gananciaBruta"] + '</td>' +
+                         '</tr>'
+                     $("#tbl_Ganancia_Bruta tbody").append(filas);
                  }
 
              }
