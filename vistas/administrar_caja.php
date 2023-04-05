@@ -72,11 +72,11 @@
 <div class="card card-info">
     <div class="col-md-12 mb-3 text-center">
         <h3 style="font-weight: bold; display: inline-block;">Total Caja: Q.<span id="total_Caja" style="font-weight: bold;">0.00</span></h4>
-        <p></p>
-        <h4 style="display: inline-block;">Efectivo: Q.<span id="efectivo" style="font-weight: bold;">0.00</span> / </h5>
-        <h4 style="display: inline-block;">Tarjeta: Q.<span id="tarjeta" style="font-weight: bold;">0.00</span> / </h5>
-        <h4 style="display: inline-block;">Transferencia: Q.<span id="transferencia" style="font-weight: bold;">0.00</span> / </h5>
-        <h4 style="display: inline-block;">Otro: Q.<span id="otro" style="font-weight: bold;">0.00</span></h5>
+            <p></p>
+            <h4 style="display: inline-block;">Efectivo: Q.<span id="efectivo" style="font-weight: bold;">0.00</span> / </h5>
+                <h4 style="display: inline-block;">Tarjeta: Q.<span id="tarjeta" style="font-weight: bold;">0.00</span> / </h5>
+                    <h4 style="display: inline-block;">Transferencia: Q.<span id="transferencia" style="font-weight: bold;">0.00</span> / </h5>
+                        <h4 style="display: inline-block;">Otro: Q.<span id="otro" style="font-weight: bold;">0.00</span></h5>
     </div>
 </div>
 
@@ -154,7 +154,8 @@ YA QUE NO SE MUESTRA -->
                                 <div class="form-group mb-2">
                                     <label class="" for="iptSalidaEfect"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Salida de efectivo
                                         </span><span class="text-danger">*</span></label>
-                                    <input type="number" min="0" class="form-control form-control-sm" step="0.01" id="iptSalidaEfectivo" placeholder="Efectivo" required>
+                                    <input type="number" min="0" class="form-control form-control-sm" step="0.01" id="iptSalidaEfectivo" name="iptSalidaEfectivo" placeholder="Efectivo" required>
+
                                     <div class="invalid-feedback">Debe ingresar el efectivo</div>
                                 </div>
                             </div>
@@ -163,7 +164,7 @@ YA QUE NO SE MUESTRA -->
                             <div class="col-12">
                                 <div class="form-group mb-2">
                                     <b-field expanded label class="" for="iptDescripcionSalida"><i class="fas fa-file-signature fs-6"></i> <span class="small">Descripción</span><span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control form-control-sm" id="iptDescripcionSalida" placeholder="Descripción" required>
+                                        <input type="text" class="form-control form-control-sm" id="iptDescripcionSalida" name="iptDescripcionSalida" placeholder="Descripción" required>
                                         <!--notificacion si no se ingresa la categoria -->
                                         <div class="invalid-feedback">Debe ingresar la descripción</div>
                                 </div>
@@ -469,6 +470,8 @@ YA QUE NO SE MUESTRA -->
 
                 if (form.checkValidity() === true) {
 
+                    // Deshabilitar el botón para evitar múltiples envíos
+                    this.disabled = true;
 
                     //capturamos los valores para llevar a la base de datos
                     entrada = $("#iptIngresoEfectivo").val();
@@ -493,6 +496,11 @@ YA QUE NO SE MUESTRA -->
                         success: function(respuesta) {
                             if (respuesta == "ok") {
                                 mensajeToast('success', 'ENTRADA DE EFECTIVO CORRECTAMENTE');
+
+
+                                // Habilitar el botón después de que se haya completado la solicitud AJAX
+                                document.getElementById("btnGuardarIngresoEfectivo").disabled = false;
+
                                 LimpiarInputsVentanasModal();
 
                                 $("#mdlIngresarEfectivo").modal('hide');
@@ -530,8 +538,12 @@ YA QUE NO SE MUESTRA -->
         //EVENTO QUE GUARDA LOS DATOS DEL SALIDA DE EFECTIVO, PREVIA VALIDACION DEL INGRESO DE LOS DATOS OBLIGATORIOS
         /*===================================================================*/
         document.getElementById("btnGuardarSalidaEfectivo").addEventListener("click", function() {
+
+
             accion = 4;
 
+            efectivo = $("#efectivo").html();
+            salida = $("#iptSalidaEfectivo").val();
             // Get the forms we want to add validation styles to
             var forms = document.getElementsByClassName('needs-validation');
 
@@ -539,6 +551,10 @@ YA QUE NO SE MUESTRA -->
             var validation = Array.prototype.filter.call(forms, function(form) {
 
                 if (form.checkValidity() === true) {
+
+                    // Deshabilitar el botón para evitar múltiples envíos
+                    this.disabled = true;
+
                     //capturamos los valores para llevar a la base de datos
                     salida = $("#iptSalidaEfectivo").val();
                     descripcion = $("#iptDescripcionSalida").val();
@@ -550,14 +566,10 @@ YA QUE NO SE MUESTRA -->
                     datos.append("salida", salida);
                     datos.append("descripcion", descripcion);
 
-                    /* HAY ERROR AL MOMENTO QUE TOTAL_CAJA TENGA 1,000 NO VALIDA LA ACCION 
-                    if (total_Caja < salida) {
-                        //console.log(salida);
-                        console.log(total_Caja)
-            
-                        mensajeToast('warning', 'NO PUEDES RETIRAR MAS DINERO');
-                          return;
-                      } */
+                    if (parseFloat(efectivo) < parseFloat(salida)) {
+                        mensajeToast('warning', 'NO PUEDES RETIRAR MAS EFECTIVO');
+                        return;
+                    }
 
                     $.ajax({
                         url: "ajax/caja.ajax.php",
@@ -569,11 +581,18 @@ YA QUE NO SE MUESTRA -->
                         processData: false,
                         dataType: 'json',
                         success: function(respuesta) {
+
                             if (respuesta == "ok") {
 
                                 mensajeToast('success', 'SALIDA DE EFECTIVO CORRECTAMENTE');
 
+
+                                // Habilitar el botón después de que se haya completado la solicitud AJAX
+                                document.getElementById("btnGuardarSalidaEfectivo").disabled = false;
+
                                 LimpiarInputsVentanasModal();
+
+
                                 $("#mdlSalidaEfectivo").modal('hide');
                                 tbl_Caja.ajax.reload();
                                 Ajax_Total_Caja();
@@ -683,7 +702,7 @@ YA QUE NO SE MUESTRA -->
                     }
                 },
             ],
-            
+
 
             scrollX: true,
             order: [

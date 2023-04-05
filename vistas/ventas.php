@@ -192,7 +192,7 @@
     $(document).ready(function() {
 
         ajustarHeadersDataTables($('#lstProductosVenta'));
-        
+
 
         /* ======================================================================================
         		EVENTO VACIAR LA TABLA VENTAS, VACIAR EL LISTADO DE LA TABALA VENTAS
@@ -993,6 +993,8 @@
 
                     if (form.checkValidity() === true) {
 
+                        // Deshabilitar el botón para evitar múltiples envíos
+                        this.disabled = true;
 
                         //ENVIAMOS LOS VALORES A LA BASE DE DATOS
                         var formData = new FormData();
@@ -1062,6 +1064,8 @@
 
                                 table.clear().draw();
 
+                                // Habilitar el botón después de que se haya completado la solicitud AJAX
+                                document.getElementById("btnIniciarVenta").disabled = false;
                                 LimpiarInputs();
 
                                 //   CargarNroBoleta();
