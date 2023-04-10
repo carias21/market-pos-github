@@ -10,13 +10,11 @@ class AjaxVentas
 
   public function ajaxRegistrarVenta($datos)
   {
-    //obtener usuario que realizo venta
-    $usuario = $_SESSION["usuario1"]->usuario;
  
     date_default_timezone_set('America/Guatemala');
     $fecha_venta = date("Y-m-d H:i:s");
     
-    $registroVenta = VentasControlador::ctrRegistrarVenta($datos,  $fecha_venta, $usuario);
+    $registroVenta = VentasControlador::ctrRegistrarVenta($datos,  $fecha_venta);
     echo json_encode($registroVenta, JSON_UNESCAPED_UNICODE);
   }
 //----------------------------------------------------------------------------------------------

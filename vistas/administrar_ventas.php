@@ -48,9 +48,28 @@
                                  </div>
                              </div>
 
+                             <div class="col-md-2">
+                                 <div class="form-group">
+                                     <label for="">Usuario:</label>
+                                     <select class="form-select form-select-sm  form-control" aria-label=".form-select-sm example" id="sel_Usuario">
+                                     </select>
+                                 </div>
+                             </div>
 
+                             <div class="col-md-2">
+                                 <div class="form-group">
+                                     <label for="">Tipo Pago:</label>
+                                     <select class="form-select form-select-sm  form-control" aria-label=".form-select-sm example" id="sel_Tipo_Pago">
+                                     <option value="">TIPO DE PAGO</option>
+                                    <option value="1">EFECTIVO</option>
+                                    <option value="2">TARJETA</option>
+                                    <option value="3">TRANFERENCIA</option>
+                                    <option value="4">OTRO</option>
+                                     </select>
+                                 </div>
+                             </div>
 
-                             <div class="col-md-8 d-flex flex-row align-items-center justify-content-end">
+                             <div class="col-md-4 d-flex flex-row align-items-center justify-content-end">
                                  <!-- href="" se le coloca # para que no dirija a ningun lugar -->
                                  <div class="form-group m-0"><a href="#" class="btn btn-primary" style="width:120px;" id="btnFiltrar">Buscar</a></div>
                              </div>
@@ -113,7 +132,9 @@
                      // VD 21 MIN 6:38
                      $(document).ready(function() {
 
-                         var tableVentas, ventas_desde, ventas_hasta;
+                         cargarSelectUsuarios();
+
+                         var tableVentas, ventas_desde, ventas_hasta, sel_Tipo_Pago,  sel_Usuario ;
 
                          //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLUMN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 8=fecha_venta
                          var groupColumn = 8;
@@ -135,17 +156,24 @@
                          //VD 21 MIN 16:40
                          ventas_desde = $("#ventas_desde").val();
                          ventas_hasta = $("#ventas_hasta").val();
+                         sel_Usuario = $("#sel_Usuario").val();
+                         sel_Tipo_Pago = $("#sel_Tipo_Pago").val();
+
 
                          ventas_desde = ventas_desde.substr(6, 4) + '-' + ventas_desde.substr(3, 2) + '-' + ventas_desde.substr(0, 2);
                          //  console.log(ventas_desde, "Ventas Desde")
                          ventas_hasta = ventas_hasta.substr(6, 4) + '-' + ventas_hasta.substr(3, 2) + '-' + ventas_hasta.substr(0, 2);
 
+                         //=============================================================================
+                         //=======================LISTAR VENTAS=========================================
+                         //=============================================================================
+                         
                          var tableVentas = $('#lstVentas').DataTable({
                              //ajustable 
                              scrollX: true,
                              dom: 'Bfrtip',
                              paging: true, // Habilita la paginación
-                           
+
                              pageLength: 10,
                              buttons: [{
 
@@ -176,7 +204,9 @@
                                  data: {
                                      'accion': 2,
                                      'fechaDesde': ventas_desde,
-                                     'fechaHasta': ventas_hasta
+                                     'fechaHasta': ventas_hasta,
+                                     'id_usuario': sel_Usuario,
+                                     'tipo_pago': sel_Tipo_Pago
                                  }
 
                              },
@@ -292,7 +322,7 @@
                                      if (last !== group) {
                                          $(rows).eq(i).before(
                                              '<tr class="group">' +
-                                             '<td colspan="12" class="fs-6 fw-bold fst-italic bg-success text-white">' +
+                                             '<td colspan="12" class="fs-6 fw-bold fst-italic bg-warning text-white">' +
                                              group +
                                              '</td>' +
                                              '</tr>'
@@ -384,6 +414,8 @@
                          //VD 2:50
 
                          $('#btnFiltrar').on('click', function() {
+                            sel_Usuario = $("#sel_Usuario").val();
+                            sel_Tipo_Pago = $("#sel_Tipo_Pago").val();
 
                              tableVentas.destroy();
 
@@ -440,7 +472,9 @@
                                      data: {
                                          'accion': 2,
                                          'fechaDesde': ventas_desde,
-                                         'fechaHasta': ventas_hasta
+                                         'fechaHasta': ventas_hasta,
+                                         'id_usuario': sel_Usuario,
+                                         'tipo_pago': sel_Tipo_Pago
                                      },
                                      "dataSrc": function(respuesta) {
                                          console.log(respuesta, "Total Venta !");
@@ -585,16 +619,38 @@
                              });
 
                          })
-                         //ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
-                         /*  setInterval(() => {
 
-tableVentas.ajax.reload();
-console.log("Actualizar 7 segundos");
-// 10000 = 10segundos 
-}, 7000);
-                             
-                   */
                      })
+
+                     /*===================================================================*/
+                     //SOLICITUD AJAX PARA CARGAR SELECT USUARIO
+                     /*===================================================================*/
+                     //Solicitud Ajax para Cargar los datos de laperfiles en la ventana agregar nuevo usuario
+                     //VD 11 MIN 46:00
+                     function cargarSelectUsuarios() {
+                         $.ajax({
+                             url: "ajax/usuario.ajax.php",
+                             cache: false,
+                             contentType: false,
+                             processData: false,
+                             dataType: 'json',
+                             success: function(respuesta) {
+
+                                 var options = '<option selected value="">USUARIO</option>';
+
+                                 for (let index = 0; index < respuesta.length; index++) {
+                                     options = options + '<option value=' + respuesta[index][0] + '>' + respuesta[index][
+                                         3
+                                     ] + '</option>';
+                                 }
+                                 //  console.log("Pruebas de respuesta de usuarios::",options);
+                                 $("#sel_Usuario").append(options);
+                             }
+                         });
+
+
+                     }
+
                  </script>
 
 

@@ -8,9 +8,9 @@ class AdministrarVentasModelo
 
     public $resultado;
 
-    static public function mdlListarVentas($fechaDesde, $fechaHasta)
+    static public function mdlListarVentas($fechaDesde, $fechaHasta, $sel_Usuario, $sel_Tipo_Pago)
     {
-        //obtener usuario que realizo venta
+        //obtener id usuario que realizo venta
         $usuario = $_SESSION["usuario1"]->usuario;
         $id_usuario = $_SESSION["usuario1"]->id_usuario;
 
@@ -18,32 +18,124 @@ class AdministrarVentasModelo
         try {
 
             if ($id_usuario == 1) {
-                $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
-                v.codigo_producto, 
-                v.categoria, 
-                v.descripcion as producto, 
-                v.cantidad, 
-                 CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
-                 CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
-                 CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
-                 v.fecha_venta,
-                 usuario,
-                 precio_compra,
-                 tp.tipo_pago,
-                '' as opciones
-                from ventas v
-                inner join tipo_pago tp on tp.id = fk_tipo_pago
-                where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
-                order BY v.fecha_venta desc");
 
-                $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
-                $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+                if (!empty($sel_Usuario)  && !empty($sel_Tipo_Pago)) {
+                    $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
+                    v.codigo_producto, 
+                    v.categoria, 
+                    v.descripcion as producto, 
+                    v.cantidad, 
+                     CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
+                     CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
+                     CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
+                     v.fecha_venta,
+                     u.usuario,
+                     precio_compra,
+                     tp.tipo_pago,
+                    '' as opciones
+                    from ventas v
+                    inner join usuarios u on u.id_usuario = v.usuario
+                    inner join tipo_pago tp on tp.id = v.fk_tipo_pago
+                    where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
+                    AND v.usuario = :sel_usuario
+                    AND v.fk_tipo_pago = :sel_Tipo_Pago
+                    order BY v.fecha_venta desc");
+
+
+                    $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+                    $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+                    $stmt->bindParam(":sel_usuario", $sel_Usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":sel_Tipo_Pago", $sel_Tipo_Pago, PDO::PARAM_STR);
 
 
 
-                $stmt->execute();
 
-                return $stmt->fetchAll();
+                    $stmt->execute();
+
+                    return $stmt->fetchAll();
+                } else if (!empty($sel_Usuario) && empty($sel_Tipo_Pago)) {
+                    $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
+                  v.codigo_producto, 
+                  v.categoria, 
+                  v.descripcion as producto, 
+                  v.cantidad, 
+                  CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
+                  CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
+                  CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
+                  v.fecha_venta,
+                  u.usuario,
+                  precio_compra,
+                  tp.tipo_pago,
+                  '' as opciones
+                  from ventas v
+                  inner join usuarios u on u.id_usuario = v.usuario
+                  inner join tipo_pago tp on tp.id = v.fk_tipo_pago
+                  where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
+                  AND v.usuario = :sel_usuario
+                  order BY v.fecha_venta desc");
+
+                    $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+                    $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+                    $stmt->bindParam(":sel_usuario", $sel_Usuario, PDO::PARAM_STR);
+
+                    $stmt->execute();
+
+                    return $stmt->fetchAll();
+                } else if (empty($sel_Usuario) && !empty($sel_Tipo_Pago)) {
+                    $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
+                    v.codigo_producto, 
+                    v.categoria, 
+                    v.descripcion as producto, 
+                    v.cantidad, 
+                    CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
+                    CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
+                    CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
+                    v.fecha_venta,
+                    u.usuario,
+                    precio_compra,
+                    tp.tipo_pago,
+                    '' as opciones
+                    from ventas v
+                    inner join usuarios u on u.id_usuario = v.usuario
+                    inner join tipo_pago tp on tp.id = v.fk_tipo_pago
+                    where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
+                    AND v.fk_tipo_pago = :sel_Tipo_Pago
+                    order BY v.fecha_venta desc");
+
+                    $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+                    $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+                    $stmt->bindParam(":sel_Tipo_Pago", $sel_Tipo_Pago, PDO::PARAM_STR);
+
+                    $stmt->execute();
+
+                    return $stmt->fetchAll();
+                }else{
+                    $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
+                    v.codigo_producto, 
+                    v.categoria, 
+                    v.descripcion as producto, 
+                    v.cantidad, 
+                    CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
+                    CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
+                    CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
+                    v.fecha_venta,
+                    u.usuario,
+                    precio_compra,
+                    tp.tipo_pago,
+                    '' as opciones
+                    FROM ventas v
+                    INNER JOIN usuarios u ON u.id_usuario = v.usuario
+                    INNER JOIN tipo_pago tp ON tp.id = v.fk_tipo_pago
+                    WHERE DATE(v.fecha_venta) >= DATE(:fechaDesde) AND DATE(v.fecha_venta) <= DATE(:fechaHasta)
+                    ORDER BY v.fecha_venta DESC");
+
+
+                    $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+                    $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+
+                    $stmt->execute();
+                    return $stmt->fetchAll();
+                }
             } else {
                 $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
                 v.codigo_producto, 
@@ -54,18 +146,19 @@ class AdministrarVentasModelo
                  CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
                  CONCAT('Q. ',CONVERT(ROUND(v.total_venta,2), CHAR)) as total_venta,
                  v.fecha_venta,
-                 usuario,
+                 u.usuario,
                  precio_compra,
                  tp.tipo_pago,
                 '' as opciones
                 from ventas v
+                inner join usuarios u on u.id_usuario = v.usuario
                 inner join tipo_pago tp on tp.id = fk_tipo_pago
-                where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) and usuario = :usuario
+                where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) and v.usuario = :usuario
                 order BY v.fecha_venta desc");
 
                 $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
                 $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
-                $stmt->bindParam(":usuario", $usuario, PDO::PARAM_STR);
+                $stmt->bindParam(":usuario", $id_usuario, PDO::PARAM_STR);
 
 
                 $stmt->execute();
