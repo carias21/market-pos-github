@@ -11,7 +11,6 @@ class AdministrarVentasModelo
     static public function mdlListarVentas($fechaDesde, $fechaHasta, $sel_Usuario, $sel_Tipo_Pago)
     {
         //obtener id usuario que realizo venta
-        $usuario = $_SESSION["usuario1"]->usuario;
         $id_usuario = $_SESSION["usuario1"]->id_usuario;
 
 

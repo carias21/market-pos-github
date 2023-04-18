@@ -181,7 +181,7 @@
                                      titleAttr: 'Exportar a Excel',
                                      className: 'btn btn-success',
                                      exportOptions: {
-                                         columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                         columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
                                      }
                                  },
                                  {
@@ -190,7 +190,7 @@
                                      titleAttr: 'Imprimir',
                                      className: 'btn btn-info',
                                      exportOptions: {
-                                         columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                         columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
                                      }
                                  },
                              ],
@@ -449,7 +449,7 @@
                                          titleAttr: 'Exportar a Excel',
                                          className: 'btn btn-success',
                                          exportOptions: {
-                                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
                                          }
                                      },
                                      {
@@ -458,7 +458,7 @@
                                          titleAttr: 'Imprimir',
                                          className: 'btn btn-info',
                                          exportOptions: {
-                                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
                                          }
                                      },
                                  ],

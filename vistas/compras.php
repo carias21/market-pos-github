@@ -27,7 +27,7 @@
     <div class="container-fluid">
 
 
-<!--
+        <!--
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-info">
@@ -130,7 +130,7 @@
                                     <th>Producto</th>
                                     <th>Cantidad</th>
                                     <th>Precio C.</th>
-
+                                    <th>Precio V.</th>
                                     <th>Total</th>
                                     <th class="text-center">Opciones</th>
                                     <th>Comentarios</th>
@@ -206,6 +206,10 @@
                 {
                     "data": "precio_compra_producto"
                 },
+                {
+                    "data": "precio_venta_producto"
+                },
+
                 {
                     "data": "total"
                 },
@@ -309,6 +313,31 @@
 
 
         /* ======================================================================================
+           EVENTO PARA MODIFICAR EL PRECIO VENTA DEL PRODUCTO A COMPRAR
+           ======================================================================================*/
+
+        $('#lstProductosCompra tbody').on('change', '.iptPrecioVenta', function() {
+
+            var data = table.row($(this).parents('tr')).data();
+            //obtenemos los valores del input al realizar change
+            nuevo_precio = $(this)[0]['value'];
+            cod_producto_actual = $(this)[0]['attributes'][2]['value'];
+            precio_actual = parseFloat($.parseHTML(data['precio_venta_producto'])[0]['value'])
+
+            table.rows().eq(0).each(function(index) {
+                var row = table.row(index);
+                var data = row.data();
+                if (data['codigo_producto'] == cod_producto_actual) {
+                    table.cell(index, 8).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptPrecioVenta m-0 p-0" value="' + nuevo_precio + '">').draw();
+
+                }
+            });
+        });
+
+
+
+
+        /* ======================================================================================
         EVENTO PARA MODIFICAR EL PRECIO DE COMPRA DE PRODUCTOS A COMPRAR
         ======================================================================================*/
         $('#lstProductosCompra tbody').on('change', '.iptPrecioCompra', function() {
@@ -323,7 +352,7 @@
             if (!$.isNumeric(nuevo_precio)) {
 
                 mensajeToast('error', 'INGRESE UN VALOR NUMERICO ');
-             
+
                 $(this)[0]['value'] = precio_actual.toFixed(2);
 
                 $("#iptPrecioCompra").val("");
@@ -341,7 +370,7 @@
                     // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA 
                     NuevoPrecio = (parseFloat(cantidad_actual) * (nuevo_precio));
                     NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
-                    table.cell(index, 8).data(NuevoPrecio).draw();
+                    table.cell(index, 9).data(NuevoPrecio).draw();
                     recalcularTotales();
                 }
             });
@@ -366,7 +395,7 @@
 
             if (!$.isNumeric($(this)[0]['value']) || $(this)[0]['value'] <= 0) {
 
-                
+
                 mensajeToast('error', 'INGRESE UN VALOR NUMERICO Y MAYOR A 0');
 
                 $(this)[0]['value'] = "1";
@@ -392,7 +421,7 @@
                     // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA
                     NuevoPrecio = (parseFloat(cantidad_actual) * (precio_actual));
                     NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
-                    table.cell(index, 8).data(NuevoPrecio).draw();
+                    table.cell(index, 9).data(NuevoPrecio).draw();
 
                     recalcularTotales();
 
@@ -459,7 +488,7 @@
                 // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA
                 NuevoPrecio = (parseFloat(cantidad_actual) * data['precio_compra_producto'].replaceAll("Q. ", "")).toFixed(2);
                 NuevoPrecio = "S./ " + NuevoPrecio;
-                table.cell(index, 8).data(NuevoPrecio).draw();
+                table.cell(index, 9).data(NuevoPrecio).draw();
             }
         });
         // RECALCULAMOS TOTALES
@@ -522,7 +551,7 @@
             if (codigo_producto == data['codigo_producto']) {
                 producto_repetido = 1;
                 //  cantidad_a_comprar = parseFloat($.parseHTML(data['cantidad'])[0]['value'])
-                mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA ESTA EN EL LISTADO' );
+                mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA ESTA EN EL LISTADO');
                 $("#iptCodigoCompra").val("");
                 $("#iptCodigoCompra").focus();
             }
@@ -554,7 +583,7 @@
                         'descripcion_producto': respuesta['descripcion_producto'],
                         'cantidad': '<input type="number" style="width:80px;" codigoProducto = "' + respuesta['codigo_producto'] + '" class="form-control text-center iptCantidad p-0 m-0" value="1">',
                         'precio_compra_producto': '<input type="number" style="width:80px;" codigoProducto = "' + respuesta['codigo_producto'] + '" class="form-control text-center iptPrecioCompra p-0 m-0" value= ' + respuesta['precio_compra_producto'] + ' >',
-
+                        'precio_venta_producto': '<input type="number" style="width:80px;" codigoProducto = "' + respuesta['codigo_producto'] + '" class="form-control text-center iptPrecioVenta p-0 m-0" value= ' + respuesta['precio_venta_producto'] + ' >',
                         'total': respuesta['total'],
                         'acciones': "<center>" +
 
@@ -590,8 +619,6 @@
         var totalCompra = $("#totalCompra").html();
         table.rows().eq(0).each(function(index) { //recorremos los datos que tiene la tabla compras
             count = count + 1; // reccoriendo de 1 a 1 y sumando 
-
-
         });
         //si la cantidad es mayor a 0 quiere decir que si hay productos por lo que procede a realizar la compra
         if (count > 0) {
@@ -614,12 +641,13 @@
                     //se agrega el siguiente cod para obtener desde un input el valor
                     parseFloat($.parseHTML(data['cantidad'])[0]['value']) + "," +
                     parseFloat($.parseHTML(data['precio_compra_producto'])[0]['value']) + "," +
+                    parseFloat($.parseHTML(data['precio_venta_producto'])[0]['value']) + "," +
                     data['total'].replace("Q. ", "") + "," +
                     parseFloat($.parseHTML(data['comentarios']));
                 //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
                 formData.append('arr[]', arr[index]);
             });
-            // console.log(arr, "data realizar");
+            console.log(arr, "data realizar");
             formData.append('total_compra', parseFloat(totalCompra));
 
             $.ajax({
@@ -638,7 +666,7 @@
                             position: 'center',
                             icon: 'error',
                             title: 'ERROR AL ACTUALIZAR STOCK' +
-                            'comunicate con tu administrador',
+                                'comunicate con tu administrador',
                             showConfirmButton: false,
                             timer: 3500
                         })
@@ -647,7 +675,7 @@
                             position: 'center',
                             icon: 'error',
                             title: 'ERROR AL REGISTRAR COMPRA' +
-                            'comunicate con tu administrador',
+                                'comunicate con tu administrador',
                             showConfirmButton: false,
                             timer: 3500
                         })

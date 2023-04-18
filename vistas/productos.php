@@ -412,8 +412,13 @@
                 },
                 'excel', 'print', 'pageLength'
             ],
-
+            //ajustable 
             scrollX: true,
+            dom: 'Bfrtip',
+            paging: true, // Habilita la paginación
+            "scrollY": "500px", //altura de la tabla visible
+            "deferRender": true, //habilita la opción de Lazy Loading
+            "scrollCollapse": true,
 
             pageLength: [5, 10, 15, 30, 50, 100],
             pageLength: 10,

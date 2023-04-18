@@ -228,7 +228,7 @@
                              </button>
                              <button type="button" class="btn btn-tool" data-card-widget="maximize">
                                  <i class="fas fa-expand"></i>
-                                </button>
+                             </button>
                          </div> <!-- ./ end card-tools -->
                      </div> <!-- ./ end card-header -->
                      <div class="card-body">
@@ -333,6 +333,11 @@
                  var total_venta = [];
                  var total_venta_ant = [];
 
+                 var mes_actual = new Date();
+                // console.log("🚀 ~ file: dashboard.php:351 ~ cargarGraficoBarras ~ mes_actual", mes_actual)
+                 var mes_anterior = moment(mes_actual, "DD-MM-YYYY").add(-1, 'months').format('MM/YYYY');
+                 //console.log("🚀 ~ file: dashboard.php:353 ~ cargarGraficoBarras ~ mes_anterior", mes_anterior)
+
                  var total_ventas_mes = 0;
 
                  for (let i = 0; i < respuesta.length; i++) {
@@ -340,16 +345,11 @@
                      fecha_venta.push(respuesta[i]['fecha_venta']);
                      total_venta.push(respuesta[i]['total_venta']);
                      total_venta_ant.push(respuesta[i]['total_venta_ant']);
-                     total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i][
-                         'total_venta'
-                     ]);
-
+                     total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i]['total_venta']);
                  }
 
                  total_venta.push(0);
-                 // total_venta.push(600);
-
-                 // console.log(total_ventas_mes);
+                 //console.log(total_ventas_mes);
 
                  //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
                  $("#title-header").html('Ventas del Mes: Q. ' + total_ventas_mes.toFixed(2).toString().replace(
@@ -359,17 +359,16 @@
 
                  var areaChartData = {
                      labels: fecha_venta,
-                     datasets: [
-                         /*{
-                                                 label: 'Ventas del mes anterior',
-                                                    //color de las barras
-                                                 // backgroundColor: 'rgba(60,141,188,0.9)',
-                                                 /* data: total_venta_ant
-                                              },*/
+                     datasets: [{
+                             label: 'Ventas del mes anterior',
+                             //color de las barras
+                             backgroundColor: 'rgb(255, 171, 0)',
+                             data: total_venta_ant
+                         },
                          {
                              label: 'Ventas del Mes Actual',
                              //color de las barras'rgba(60,141,188,0.9)',
-                             backgroundColor: 'rgb(100, 255, 0)',
+                             backgroundColor: 'rgb(142, 255, 0)',
                              data: total_venta
                          }
                      ]

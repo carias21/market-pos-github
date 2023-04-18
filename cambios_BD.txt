@@ -3,13 +3,16 @@ AJAX
 caja.ajax.php
 productos.ajax.php
 ventas.ajax.php
+
 CONTROLADORES
 usuario.contralador.php
+
 MODELOS
 ventas.modelo.php
 administrar_ventas.modelo.php
 caja.modelo.php
 conexion.php
+
 VISTAS
 aside.php
 plantilla.php
@@ -18,7 +21,7 @@ plantilla.php
 
 ------------------------------------------------------------------------------------------------------
 CAMBIOS BD
-CAMBIOS
+CAMBIOS EN PRODUCCION
 
 alter table caja add fk_tipo_pago int(7)
 
@@ -43,3 +46,41 @@ MODIFY fk_usuario INT NOT NULL;
 //cambiar los datos de 0 a 1
 UPDATE caja SET fk_tipo_pago = 1 WHERE fk_tipo_pago = 0;
 
+--------------------------------------------------------------------------
+//INDICA NO NULLA A LA COLUMA USUUARIO EN VENTAS
+ALTER TABLE ventas
+MODIFY usuario VARCHAR(11) NOT NULL;
+
+------------------------------------------------
+
+ALTER TABLE ventas ADD CONSTRAINT uq_codigo_producto_fecha_venta UNIQUE (descripcion, fecha_venta );
+
+------------------------------------------
+ALTER TABLE ventas DROP FOREIGN KEY fk_tipo_pago;
+
+ALTER TABLE ventas 
+MODIFY fk_tipo_pago INT(2) NOT NULL
+
+ALTER TABLE ventas ADD FOREIGN KEY (fk_tipo_pago)
+REFERENCES tipo_pago(id)
+
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+UPDATE ventas SET usuario = 1 WHERE usuario = 'carias';
+
+ALTER TABLE ventas 
+MODIFY usuario INT(2) NOT NULL
+
+ALTER TABLE ventas ADD FOREIGN KEY (usuario)
+REFERENCES usuarios(id_usuario)
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+falta agregar en el porvenir
+ALTER TABLE caja ADD CONSTRAINT uq_fecha_descripcion UNIQUE (fecha, descripcion );
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+ALTER TABLE productos ADD FOREIGN KEY (id_categoria_producto)
+REFERENCES categorias(id_categoria)

@@ -353,12 +353,7 @@
             dataType: 'json',
             //una vez que tengamos la "respuesta" de la base de datos
             success: function(respuesta) {
-                //recorre el aray
 
-                /* for (let i = 0; i < respuesta.length; i++) {
-                     items.push(respuesta[i]['descripcion_producto'])
-                 } 
-                 */
                 //input iptCodigoVenta que lo autocomplete
                 $("#iptCodigoVenta").autocomplete({
 
@@ -382,6 +377,17 @@
                         .append(item.label)
                         .appendTo(ul);
                 }
+
+                // Limitar el número de elementos que se muestran en la lista de sugerencias
+                $("#iptCodigoVenta").autocomplete("instance")._renderMenu = function(ul, items) {
+                    var max = 4; // número máximo de elementos a mostrar
+                    var that = this;
+                    items = items.slice(0, max);
+                    $.each(items, function(index, item) {
+                        that._renderItemData(ul, item);
+                    });
+                    $(ul).addClass("ui-autocomplete-list");
+                };
 
 
             }

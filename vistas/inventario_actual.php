@@ -101,7 +101,13 @@
                     accion: 10
                 }
             },
-            scrollX: true,
+               //ajustable 
+               scrollX: true,
+            dom: 'Bfrtip',
+            paging: true, // Habilita la paginación
+            "scrollY": "500px", //altura de la tabla visible
+            "deferRender": true, //habilita la opción de Lazy Loading
+            "scrollCollapse": true,
             order: [
                 [0, 'asc']
             ],
