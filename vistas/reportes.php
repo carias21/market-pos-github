@@ -21,6 +21,238 @@
      <div class="container-fluid">
 
          <!-------------------------------------------------------------------------------------------
+        GRAFICO DE BARRAS TOTAL VENTAS POR MES DE AÑO ACTUAL
+        -------------------------------------------------------------------------------------------->
+         <!-- row Grafico de barras -->
+         <div class="row">
+
+             <div class="col-12">
+
+                 <div class="card card-info">
+
+                     <div class="card-header">
+
+                         <h3 class="card-title" id="Total_Ventas_Mes_Año"></h3>
+
+                         <div class="card-tools">
+
+                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
+            con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
+
+                         </div> <!-- ./ end card-tools -->
+
+                     </div> <!-- ./ end card-header -->
+
+
+                     <div class="card-body">
+
+                         <div class="chart">
+
+                             <canvas id="barChart_Total_Ventas_Mes_Año" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
+
+                             </canvas>
+
+                         </div>
+
+                     </div> <!-- ./ end card-body -->
+
+                 </div>
+
+             </div>
+
+         </div><!-- ./row Grafico de barras toal ventas mes por año-->
+
+         <!-------------------------------------------------------------------------------------------
+        GRAFICO DE BARRAS TOP VENTAS POR CATEGORIA
+        -------------------------------------------------------------------------------------------->
+         <div class="row">
+
+             <div class="col-12">
+
+
+                 <div class="card card-info">
+
+                     <div class="card-header">
+
+                         <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
+
+                         <div class="card-tools">
+
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
+
+                         </div> <!-- ./ end card-tools -->
+
+                     </div> <!-- ./ end card-header -->
+
+
+                     <div class="card-body">
+
+                         <div class="chart">
+
+                             <div id="chartContainer" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
+
+                         </div>
+
+                     </div> <!-- ./ end card-body -->
+
+                 </div>
+
+             </div>
+
+         </div>
+
+         <!-------------------------------------------------------------------------------------------
+        GRAFICO CIRCULAR VENTAS POR USUARIOS
+        -------------------------------------------------------------------------------------------->
+         <div class="row">
+
+             <div class="col-12">
+
+                 <div class="card card-info">
+
+                     <div class="card-header">
+
+                         <h3 class="card-title" id="Ventas_Por_Usuario"></h3>
+
+                         <div class="card-tools">
+
+                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
+                    con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
+
+                         </div> <!-- ./ end card-tools -->
+
+                     </div> <!-- ./ end card-header -->
+
+
+                     <div class="card-body">
+
+                         <div class="chart">
+
+                             <canvas id="barChart_Ventas_Por_Usuario" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
+
+                             </canvas>
+
+                         </div>
+
+                     </div> <!-- ./ end card-body -->
+
+                 </div>
+
+             </div>
+
+         </div>
+
+
+         <!-------------------------------------------------------------------------------------------
+        REPORTE VENTAS, COMPRAS Y GANANCIAS
+        -------------------------------------------------------------------------------------------->
+         <div class="row">
+             <div class="col-lg-6">
+                 <div class="card card-info ">
+                     <div class="card-header">
+                         <h3 class="card-title">GANANCIA NETA POR MES</h3>
+                         <div class="card-tools">
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
+                         </div> <!-- ./ end card-tools -->
+                     </div> <!-- ./ end card-header -->
+
+                     <div class="card-body">
+                         <div class="table-responsive">
+                             <table class="table table-bordered" id="tbl_Ganancia_Neta">
+                                 <thead>
+                                     <tr class="text-nowrap">
+                                         <th>MES</th>
+                                         <th>VENTAS</th>
+                                         <th>COMPRAS</th>
+                                         <th>GANANCIA NETA</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     <!-- AQUI SE ALMACENAN LOS DATOS TBODY -->
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div> <!-- ./ end card-body -->
+                 </div>
+             </div>
+
+
+             <!-------------------------------------------------------------------------------------------
+        REPORTE GANANCIA BRUTA
+        -------------------------------------------------------------------------------------------->
+             <div class="col-lg-6">
+                 <div class="card card-info ">
+                     <div class="card-header">
+                         <h3 class="card-title">GANANCIA BRUTA POR MES</h3>
+                         <div class="card-tools">
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
+                         </div> <!-- ./ end card-tools -->
+                     </div> <!-- ./ end card-header -->
+
+                     <div class="card-body">
+                         <div class="table-responsive">
+                             <table class="table table-bordered" id="tbl_Ganancia_Bruta">
+                                 <thead>
+                                     <tr class="text-nowrap">
+                                         <th>MES</th>
+                                         <th>VENTAS</th>
+                                         <th>COMPRAS</th>
+                                         <th>GANANCIA BRUTA</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     <!-- AQUI SE ALMACENAN LOS DATOS TBODY -->
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div> <!-- ./ end card-body -->
+                 </div>
+             </div>
+         </div>
+
+         <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS PRODUCTOS VENDIDOS
         -------------------------------------------------------------------------------------------->
          <!-- row Grafico de barras -->
@@ -72,35 +304,55 @@
 
          </div><!-- ./row Grafico de barras -->
 
+
          <!-------------------------------------------------------------------------------------------
-        GRAFICO DE BARRAS TOTAL VENTAS POR MES DE AÑO ACTUAL
-        -------------------------------------------------------------------------------------------->
-         <!-- row Grafico de barras -->
+            BUSQUEDA POR RANGO DE FECHAS VENTAS DEL MES
+         -------------------------------------------------------------------------------------------->
          <div class="row">
 
              <div class="col-12">
 
-                 <div class="card card-info">
+                 <div class="card card-info ">
 
-                     <div class="card-header">
+                     <div class="card-header ">
 
-                         <h3 class="card-title" id="Total_Ventas_Mes_Año"></h3>
+                         <h3 class="card-title" id="ventas_Del_Mes"></h3>
 
-                         <div class="card-tools">
 
-                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
-            con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
-                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                 <i class="fas fa-minus"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                 <i class="fas fa-times"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                                 <i class="fas fa-expand"></i>
-                             </button>
+                         <div class="row">
+                             <div class="col-md-4 text-left">
+                                 <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="sel_Mes">
+                                     <option value="1">Enero</option>
+                                     <option value="2">Febrero</option>
+                                     <option value="3">Marzo</option>
+                                     <option value="4">Abril</option>
+                                     <option value="5">Mayo</option>
+                                     <option value="6">Junio</option>
+                                     <option value="7">Julio</option>
+                                     <option value="8">Agosto</option>
+                                     <option value="9">Septiembre</option>
+                                     <option value="10">Octubre</option>
+                                     <option value="11">Noviembre</option>
+                                     <option value="12">Diciembre</option>
+                                 </select>
 
-                         </div> <!-- ./ end card-tools -->
+                             </div>
+
+                             <div class="col-md-8 text-right">
+                                 <div class="card-tools ml-auto">
+                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                         <i class="fas fa-minus"></i>
+                                     </button>
+                                     <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                         <i class="fas fa-times"></i>
+                                     </button>
+                                     <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                         <i class="fas fa-expand"></i>
+                                     </button>
+                                 </div> <!-- ./ end card-tools -->
+                             </div>
+                         </div>
+
 
                      </div> <!-- ./ end card-header -->
 
@@ -109,7 +361,7 @@
 
                          <div class="chart">
 
-                             <canvas id="barChart_Total_Ventas_Mes_Año" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
+                             <canvas id="barChart_Ventas_Del_Mes" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
 
                              </canvas>
 
@@ -121,133 +373,6 @@
 
              </div>
 
-         </div><!-- ./row Grafico de barras toal ventas mes por año-->
-
-
-         <!-------------------------------------------------------------------------------------------
-        GRAFICO DE BARRAS TOP VENTAS POR CATEGORIA
-        -------------------------------------------------------------------------------------------->
-         <div class="col-12">
-
-             <div class="card card-gray shadow">
-
-                 <div class="card-header">
-
-                     <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
-
-                     <div class="card-tools">
-
-                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                             <i class="fas fa-minus"></i>
-                         </button>
-                         <button type="button" class="btn btn-tool" data-card-widget="remove">
-                             <i class="fas fa-times"></i>
-                         </button>
-                         <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                             <i class="fas fa-expand"></i>
-                         </button>
-
-                     </div> <!-- ./ end card-tools -->
-
-                 </div> <!-- ./ end card-header -->
-
-
-                 <div class="card-body">
-
-                     <div class="chart">
-
-                         <div id="chartContainer" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
-
-                     </div>
-
-                 </div> <!-- ./ end card-body -->
-
-             </div>
-
-         </div>
-
-
-         <!-------------------------------------------------------------------------------------------
-        REPORTE VENTAS, COMPRAS Y GANANCIAS
-        -------------------------------------------------------------------------------------------->
-         <div class="row">
-             <div class="col-lg-6">
-                 <div class="card card-info ">
-                     <div class="card-header">
-                         <h3 class="card-title">GANANCIA NETA POR MES</h3>
-                         <div class="card-tools">
-                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                 <i class="fas fa-minus"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                 <i class="fas fa-times"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                                 <i class="fas fa-expand"></i>
-                             </button>
-                         </div> <!-- ./ end card-tools -->
-                     </div> <!-- ./ end card-header -->
-
-                     <div class="card-body">
-                         <div class="table-responsive">
-                             <table class="table table-bordered" id="tbl_Ganancia_Neta">
-                                 <thead>
-                                     <tr class="text-nowrap">
-                                         <th>MES</th>
-                                         <th>VENTAS</th>
-                                         <th>COMPRAS</th>
-                                         <th>GANANCIA NETA</th>
-                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                     <!-- AQUI SE ALMACENAN LOS DATOS TBODY -->
-                                 </tbody>
-                             </table>
-                         </div>
-                     </div> <!-- ./ end card-body -->
-                 </div>
-             </div>
-
-
-        <!-------------------------------------------------------------------------------------------
-        REPORTE GANANCIA BRUTA
-        -------------------------------------------------------------------------------------------->
-             <div class="col-lg-6">
-                 <div class="card card-info ">
-                     <div class="card-header">
-                         <h3 class="card-title">GANANCIA BRUTA POR MES</h3>
-                         <div class="card-tools">
-                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                 <i class="fas fa-minus"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                 <i class="fas fa-times"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                                 <i class="fas fa-expand"></i>
-                             </button>
-                         </div> <!-- ./ end card-tools -->
-                     </div> <!-- ./ end card-header -->
-
-                     <div class="card-body">
-                         <div class="table-responsive">
-                             <table class="table table-bordered" id="tbl_Ganancia_Bruta">
-                                 <thead>
-                                     <tr class="text-nowrap">
-                                         <th>MES</th>
-                                         <th>VENTAS</th>
-                                         <th>COMPRAS</th>
-                                         <th>GANANCIA BRUTA</th>
-                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                     <!-- AQUI SE ALMACENAN LOS DATOS TBODY -->
-                                 </tbody>
-                             </table>
-                         </div>
-                     </div> <!-- ./ end card-body -->
-                 </div>
-             </div>
          </div>
 
 
@@ -263,7 +388,124 @@
          cargarGraficoVentasPorMes();
          cargarListadoGananciaNeta();
          cargarListadoGananciaBruta();
+         cargarGraficoTotalVentasUsuario()
 
+         var sel_Mes = $("#sel_Mes");
+
+         sel_Mes.on('change', function() {
+             $.ajax({
+                 url: 'ajax/reportes.ajax.php',
+                 type: 'POST',
+                 dataType: 'json',
+                 data: {
+                     'accion': 9,
+                     'sel_Mes': sel_Mes.val()
+                 },
+                 success: function(respuesta) {
+                     // console.log("respuesta", respuesta);
+
+                     var fecha_venta = [];
+                     var total_venta = [];
+                     var total_venta_ant = [];
+
+                     var mes_actual = new Date();
+                     // console.log("🚀 ~ file: dashboard.php:351 ~ cargarGraficoBarras ~ mes_actual", mes_actual)
+                     var mes_anterior = moment(mes_actual, "DD-MM-YYYY").add(-1, 'months').format('MM/YYYY');
+                     //console.log("🚀 ~ file: dashboard.php:353 ~ cargarGraficoBarras ~ mes_anterior", mes_anterior)
+
+                     var total_ventas_mes = 0;
+
+                     for (let i = 0; i < respuesta.length; i++) {
+
+                         fecha_venta.push(respuesta[i]['fecha_venta']);
+                         total_venta.push(respuesta[i]['total_venta']);
+                         total_venta_ant.push(respuesta[i]['total_venta_ant']);
+                         total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i]['total_venta']);
+                     }
+
+                     total_venta.push(0);
+                     //console.log(total_ventas_mes);
+
+                     //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
+
+
+                     var barChartCanvas = $("#barChart_Ventas_Del_Mes").get(0).getContext('2d');
+
+                     var areaChartData = {
+                         labels: fecha_venta,
+
+                         datasets: [{
+                             label: 'VENTAS',
+                             backgroundColor: 'rgb(142, 255, 0,0.8)',
+                             borderColor: 'rgb(142, 255, 0)',
+                             borderWidth: 5, // ancho del borde en píxeles
+                             data: total_venta
+                         }]
+                     }
+
+                     var barChartData = $.extend(true, {}, areaChartData);
+
+                     var temp0 = areaChartData.datasets[0];
+
+                     barChartData.datasets[0] = temp0;
+
+                     var barChartOptions = {
+                         maintainAspectRatio: false,
+                         responsive: true,
+                         events: false,
+                         legend: {
+                             display: true
+                         },
+                         scales: {
+                             xAxes: [{
+                                 stacked: true,
+                             }],
+                             yAxes: [{
+                                 stacked: true
+                             }]
+                         },
+                         animation: {
+                             duration: 500,
+                             easing: "easeOutQuart",
+                             onComplete: function() {
+                                 var ctx = this.chart.ctx;
+                                 ctx.font = Chart.helpers.fontString(Chart.defaults.global
+                                     .defaultFontFamily, 'normal',
+                                     Chart.defaults.global.defaultFontFamily);
+                                 ctx.textAlign = 'center';
+                                 ctx.textBaseline = 'bottom';
+
+                                 this.data.datasets.forEach(function(dataset) {
+                                     for (var i = 0; i < dataset.data.length; i++) {
+                                         var model = dataset._meta[Object.keys(dataset
+                                                 ._meta)[0]].data[i]._model,
+                                             scale_max = dataset._meta[Object.keys(dataset
+                                                 ._meta)[0]].data[i]._yScale.maxHeight;
+                                         ctx.fillStyle = '#444';
+                                         var y_pos = model.y - 5;
+                                         // Make sure data value does not get overflown and hidden
+                                         // when the bar's value is too close to max value of scale
+                                         // Note: The y value is reverse, it counts from top down
+                                         if ((scale_max - model.y) / scale_max >= 0.93)
+                                             y_pos = model.y + 20;
+                                         ctx.fillText(dataset.data[i], model.x, y_pos);
+                                     }
+                                 });
+                             }
+                         }
+                     }
+
+                     new Chart(barChartCanvas, {
+                         type: 'bar',
+                         data: barChartData,
+                         options: barChartOptions
+                     })
+
+
+                 }
+
+             });
+         });
 
      })
 
@@ -329,10 +571,6 @@
 
                      descripcion_producto.push(respuesta[i]['descripcion_producto']);
                      cantidad.push(respuesta[i]['cantidad']);
-
-                     /*    total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i][
-                             'total_venta'
-                         ] ); */
 
                  }
 
@@ -418,7 +656,7 @@
                  }
 
                  new Chart(barChartCanvas, {
-                     type: 'bar',
+                     type: 'horizontalBar',
                      data: barChartData,
                      options: barChartOptions
                  })
@@ -552,6 +790,75 @@
          });
      }
 
+     function cargarGraficoTotalVentasUsuario() {
+         /* =======================================================
+          SOLICITUD AJAX GRAFICO DE BARRAS TOTAL VENTAS MES POR AÑO
+          =======================================================*/
+         $.ajax({
+             url: "ajax/reportes.ajax.php",
+             method: 'POST',
+             data: {
+                 'accion': 8 //parametro para obtener TOTALES DE VENTAS DE MES POR AÑO
+             },
+             dataType: 'json',
+             success: function(respuesta) {
+                 // console.log("respuesta", respuesta);
+
+                 var usuario = [];
+                 var ventas_totales = [];
+
+                 for (let i = 0; i < respuesta.length; i++) {
+                     usuario.push(respuesta[i]['usuario']);
+                     ventas_totales.push(respuesta[i]['ventas_totales']);
+                 }
+
+                 ventas_totales.push(0);
+
+                 //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
+                 $("#Ventas_Por_Usuario").html('VENTAS DEL MES POR USUARIO');
+
+                 var CharCircular = $("#barChart_Ventas_Por_Usuario").get(0).getContext('2d');
+
+                 var data = {
+                     labels: usuario,
+                     datasets: [{
+                         data: ventas_totales,
+                         backgroundColor: [
+
+
+                             'rgba(128, 0, 128, 0.7)', // morado
+                             'rgb(255, 204, 0, 0.7)', // anaranjado
+                             'rgba(255, 0, 0, 0.7)', // rojo
+                             'rgba(255, 255, 0, 0.7)' // amarillo
+                         ],
+                         borderColor: [
+
+                             'rgba(128, 0, 128, 1)', // morado
+                             'rgba(255, 204, 0, 1)', // anaranjado
+                             'rgba(255, 0, 0, 1)', // rojo
+                             'rgba(255, 255, 0, 1)' // amarillo
+                         ],
+                         borderWidth: 3
+                     }]
+                 };
+
+                 var options = {
+                     title: {
+                         display: true,
+                         text: 'VENTAS DEL MES POR USUARIO'
+                     }
+                 };
+
+                 new Chart(CharCircular, {
+                     type: 'pie',
+                     data: data,
+                     options: options
+                 });
+             }
+         });
+     }
+
+
      function cargarListadoGananciaNeta() {
 
          /* =======================================================
@@ -600,7 +907,7 @@
 
              dataType: 'json',
              success: function(respuesta) {
-                  console.log("respuesta",respuesta);
+                 console.log("respuesta", respuesta);
 
                  for (let i = 0; i < respuesta.length; i++) {
                      filas = '<tr>' +

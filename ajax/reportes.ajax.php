@@ -44,6 +44,24 @@ class AjaxReportes
         echo json_encode($GananciaBruta);
         
     }
+
+    public function getVentas_Por_Usuario()
+    {
+        $Ventas_Por_Usuario= ReportesControlador::ctrVentas_Por_Usuario(); //prc_total_ventas_usuarios
+
+
+        echo json_encode($Ventas_Por_Usuario);
+        
+    }
+
+    public function getFiltrar_Ventas_Mes($sel_Mes){
+        $Filtrar_Ventas_Mes = ReportesControlador::ctrFiltrar_Ventas_Mes($sel_Mes); //Filtrar_Ventas_Mes
+        echo json_encode($Filtrar_Ventas_Mes);
+     
+        
+    }
+
+
 }
 
 
@@ -59,6 +77,12 @@ if (isset($_POST['accion']) && $_POST['accion'] == 4) { //Ejecutar function cant
 }else if (isset($_POST['accion']) && $_POST['accion'] == 5) { //Ejecutar function prc_TotalVentasComprasCaja VENTAS, COMPRAS, GANANCIA
     $GananciaNeta = new AjaxReportes();
     $GananciaNeta->getGananciaNeta();
+}else if (isset($_POST['accion']) && $_POST['accion'] == 8) { //Ejecutar function VENTAS POR USUARIO
+    $Ventas_Por_Usuario = new AjaxReportes();
+    $Ventas_Por_Usuario->getVentas_Por_Usuario();
+}else if (isset($_POST['accion']) && $_POST['accion'] == 9) { //FILTRAR VENTAS POR MES
+    $Filtrar_Ventas_Mes = new AjaxReportes();
+    $Filtrar_Ventas_Mes->getFiltrar_Ventas_Mes($_POST["sel_Mes"]);
 }else if(isset($_POST['accion'])&& $_POST['accion'] == 6){
     $GananciaBruta = new AjaxReportes();
     $GananciaBruta->getGananciaBruta();

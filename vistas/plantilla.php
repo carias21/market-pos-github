@@ -74,10 +74,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
      <!-- jstree css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 
- <!-- Estilo Calendario-->
+ <!-- Estilo Calendario
  <link rel="stylesheet" href="vistas/assets/dist/css/bootstrap-datepicker.min.css">
- <link rel="stylesheet" href="vistas/assets/dist/css/font-awesome.min.css">
+ <link rel="stylesheet" href="vistas/assets/dist/css/font-awesome.min.css">-->
  
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
+
     <!-- ============================================================
     =ESTILOS PARA USO DE DATATABLES JS
     ===============================================================-->
@@ -140,11 +144,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script src="vistas/assets/dist/js/plantilla.js"></script>
 
-    <!-- jquery para calendario -->
-  
-    <script src="vistas/assets/dist/js/bootstrap-datepicker.min.js"></script>
-
-    
+ 
 
 </head>
 

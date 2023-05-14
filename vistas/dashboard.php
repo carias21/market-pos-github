@@ -25,7 +25,7 @@
          <div class="row">
 
              <!-- productos registrados -->
-             <div class="col-lg-2">
+             <div class="col-lg-2" style="width: 50%;">
                  <!-- small box -->
                  <div class="small-box border border-info">
                      <div class="inner">
@@ -41,7 +41,7 @@
              </div>
 
              <!-- TARJETA TOTAL COMPRAS -->
-             <div class="col-lg-2">
+             <div class="col-lg-2" style="width: 50%;">
                  <!-- small box -->
                  <div class="small-box border border-primary">
                      <div class="inner">
@@ -57,7 +57,7 @@
              </div>
 
              <!-- TARJETA TOTAL VENTAS -->
-             <div class="col-lg-2">
+             <div class="col-lg-2" style="width: 50%;">
                  <!-- small box -->
                  <div class="small-box border border-success">
                      <div class="inner">
@@ -73,7 +73,7 @@
              </div>
 
              <!-- TARJETA TOTAL GANANCIAS -->
-             <div class="col-lg-2">
+             <div class="col-lg-2" style="width: 50%;">
                  <!-- small box -->
                  <div class="small-box border border-warning">
                      <div class="inner">
@@ -89,7 +89,7 @@
              </div>
 
              <!-- TARJETA PRODUCTOS POCO STOCK -->
-             <div class="col-lg-2">
+             <div class="col-lg-2" style="width: 50%;">
                  <!-- small box -->
                  <div class="small-box border border-danger">
                      <div class="inner">
@@ -105,7 +105,8 @@
              </div>
 
              <!-- TARJETA TOTAL VENTAS DIA ACTUAL -->
-             <div class="col-lg-2">
+             <div class="col-lg-2" style="width: 50%;">
+
                  <!-- small box -->
                  <div class="small-box border border-dark">
                      <div class="inner">
@@ -180,7 +181,7 @@
         -------------------------------------------------------------------------------------------->
          <div class="row">
              <div class="col-lg-6">
-                 <div class="card card-info ">
+                 <div class="card card-success ">
                      <div class="card-header">
                          <h3 class="card-title">LOS 10 PRODUCTOS MAS VENDIDOS</h3>
                          <div class="card-tools">
@@ -216,7 +217,7 @@
              </div>
 
              <div class="col-lg-6">
-                 <div class="card card-info ">
+                 <div class="card card-danger ">
                      <div class="card-header">
                          <h3 class="card-title">LISTADO PRODUCTOS POCA EXISTENCIA</h3>
                          <div class="card-tools">
@@ -352,7 +353,7 @@
                  //console.log(total_ventas_mes);
 
                  //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
-                 $("#title-header").html('Ventas del Mes: Q. ' + total_ventas_mes.toFixed(2).toString().replace(
+                 $("#title-header").html('VENTAS DEL MES: Q. ' + total_ventas_mes.toFixed(2).toString().replace(
                      /\d(?=(\d{3})+\.)/g, "$&,"));
 
                  var barChartCanvas = $("#barChart").get(0).getContext('2d');
@@ -362,13 +363,17 @@
                      datasets: [{
                              label: 'Ventas del mes anterior',
                              //color de las barras
-                             backgroundColor: 'rgb(255, 171, 0)',
+                             backgroundColor: 'rgb(255, 171, 0, 0.8)',
+                             borderColor: 'rgb(255, 171, 0)',
+                             borderWidth: 5, // ancho del borde en píxeles
                              data: total_venta_ant
                          },
                          {
                              label: 'Ventas del Mes Actual',
                              //color de las barras'rgba(60,141,188,0.9)',
-                             backgroundColor: 'rgb(142, 255, 0)',
+                             backgroundColor: 'rgb(142, 255, 0, 0.8)',
+                             borderColor: 'rgb(142, 255, 0)',
+                             borderWidth: 5, // ancho del borde en píxeles
                              data: total_venta
                          }
                      ]

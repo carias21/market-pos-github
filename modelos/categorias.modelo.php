@@ -15,7 +15,7 @@ class CategoriasModelo{
                                                 date(fecha_creacion_categoria) as fecha_creacion_categoria,
                                                 fecha_actualizacion_categoria,
         '' as opciones
-         FROM categorias c order BY id_categoria DESC");
+         FROM categorias c order BY nombre_categoria ASC");
 
         $stmt -> execute();
 

@@ -276,7 +276,8 @@ class ProductosModelo{
                                                 p.stock_producto,
                                                 foto
                                                 FROM productos p 
-                                                INNER JOIN categorias c on p.id_categoria_producto = c.id_categoria");
+                                                INNER JOIN categorias c on p.id_categoria_producto = c.id_categoria
+                                                where p.stock_producto > 0");
     $stmt -> execute();
     $productos = $stmt->fetchAll();
 

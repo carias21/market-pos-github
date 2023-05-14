@@ -201,11 +201,17 @@
             vaciarListado();
         })
 
+        //Para bloquear la tecla "tab" en EL INPUT codigoventa para no duplicar productos
+        var input = document.getElementById("iptCodigoVenta");
+        input.addEventListener("keydown", function(event) {
+            if (event.keyCode === 9) {
+                event.preventDefault();
+            }
+        });
 
         /* ======================================================================================
 		EVENTO INICIALIZAR LA TABLA VENTAS
 		======================================================================================*/
-
         table = $('#lstProductosVenta').DataTable({
             "columns": [{
                     "data": "id"
@@ -327,8 +333,6 @@
 
                 }
 
-
-
             ],
             "order": [
                 [0, 'desc']
@@ -439,13 +443,6 @@
                     if (parseInt(respuesta['existe']) == 0) {
 
                         mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA NO TIENE EXISTENCIA');
-
-
-                        /*Toast.fire({
-                            icon: 'error',
-                            title: ' El producto ' + data['descripcion_producto'] + ' ya no tiene stock',
-
-                        })*/
 
                         $("#iptCodigoVenta").val("");
                         // $("#iptCodigoVenta").focus();
@@ -969,7 +966,7 @@
 
         var count = 0;
         var totalVenta = $("#totalVenta").html();
-        // var nro_boleta = $("#iptNroVenta").val();
+        var btnRealizarVenta = document.getElementById("btnIniciarVenta");
 
         table.rows().eq(0).each(function(index) { //recorremos los datos que tiene la tabla ventas
             count = count + 1; // reccoriendo de 1 a 1 y sumando 
@@ -998,9 +995,7 @@
                 var validation = Array.prototype.filter.call(forms, function(form) {
 
                     if (form.checkValidity() === true) {
-
-                        // Deshabilitar el botón para evitar múltiples envíos
-                        this.disabled = true;
+                        btnRealizarVenta.disabled = true;
 
                         //ENVIAMOS LOS VALORES A LA BASE DE DATOS
                         var formData = new FormData();
@@ -1067,14 +1062,10 @@
                                         timer: 2500
                                     })
                                 }
-
                                 table.clear().draw();
-
-                                // Habilitar el botón después de que se haya completado la solicitud AJAX
-                                document.getElementById("btnIniciarVenta").disabled = false;
+                                // Habilitar el botón después de que se complete la acción
+                                btnRealizarVenta.disabled = false;
                                 LimpiarInputs();
-
-                                //   CargarNroBoleta();
 
                             }
                         });

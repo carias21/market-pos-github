@@ -34,7 +34,7 @@
                                      <label for="">Ventas desde:</label>
                                      <div class="input-group">
                                          <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
-                                         <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" id="ventas_desde">
+                                         <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" id="ventas_desde" readonly>
                                      </div>
                                  </div>
                              </div>
@@ -43,7 +43,7 @@
                                      <label for="">Ventas hasta:</label>
                                      <div class="input-group">
                                          <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
-                                         <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" id="ventas_hasta">
+                                         <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" id="ventas_hasta" readonly>
                                      </div>
                                  </div>
                              </div>
@@ -60,11 +60,11 @@
                                  <div class="form-group">
                                      <label for="">Tipo Pago:</label>
                                      <select class="form-select form-select-sm  form-control" aria-label=".form-select-sm example" id="sel_Tipo_Pago">
-                                     <option value="">TIPO DE PAGO</option>
-                                    <option value="1">EFECTIVO</option>
-                                    <option value="2">TARJETA</option>
-                                    <option value="3">TRANFERENCIA</option>
-                                    <option value="4">OTRO</option>
+                                         <option value="">TIPO DE PAGO</option>
+                                         <option value="1">EFECTIVO</option>
+                                         <option value="2">TARJETA</option>
+                                         <option value="3">TRANFERENCIA</option>
+                                         <option value="4">OTRO</option>
                                      </select>
                                  </div>
                              </div>
@@ -134,9 +134,7 @@
 
                          cargarSelectUsuarios();
 
-                         var tableVentas, ventas_desde, ventas_hasta, sel_Tipo_Pago,  sel_Usuario ;
-
-                         //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLUMN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 8=fecha_venta
+                         var tableVentas, ventas_desde, ventas_hasta, sel_Tipo_Pago, sel_Usuario;
                          var groupColumn = 8;
 
                          // // VD 21 MIN 8:40
@@ -144,14 +142,14 @@
                          $('#ventas_desde, #ventas_hasta').inputmask('dd/mm/yyyy', {
                              'placeholder': 'dd/mm/yyyy'
                          })
-                         /*FUNCION PARA COLOCAR CALENDARIO PENDIENTE
-                          $('#ventas_desde, #ventas_hasta').datepicker().format('DD/MM/YYYY');
-                          */
+
+
 
                          //INDICAMOS QUE POR DEFECTO NOS MUESTRE LA FECHA INICIANDO EL MES HASTA EL DIA DE HOY EN LOS INPUTS
                          $("#ventas_desde").val(moment().startOf('month').format('DD/MM/YYYY'));
                          //CAPUTAMOS EL DIA DE HOY       
                          $("#ventas_hasta").val(moment().format('DD/MM/YYYY'));
+
 
                          //VD 21 MIN 16:40
                          ventas_desde = $("#ventas_desde").val();
@@ -160,14 +158,16 @@
                          sel_Tipo_Pago = $("#sel_Tipo_Pago").val();
 
 
+
                          ventas_desde = ventas_desde.substr(6, 4) + '-' + ventas_desde.substr(3, 2) + '-' + ventas_desde.substr(0, 2);
-                         //  console.log(ventas_desde, "Ventas Desde")
+                         console.log(ventas_desde, "Ventas Desde")
                          ventas_hasta = ventas_hasta.substr(6, 4) + '-' + ventas_hasta.substr(3, 2) + '-' + ventas_hasta.substr(0, 2);
 
-                         //=============================================================================
-                         //=======================LISTAR VENTAS=========================================
-                         //=============================================================================
-                         
+
+
+                         /*===================================================================*/
+                         //LISTAR VENTAS
+                         /*===================================================================*/
                          var tableVentas = $('#lstVentas').DataTable({
                              //ajustable 
                              scrollX: true,
@@ -343,7 +343,6 @@
 
                          });
 
-
                          /*===================================================================*/
                          //EVENTO ELIMINAR UNA VENTA
                          /*===================================================================*/
@@ -408,14 +407,28 @@
                              })
                          });
 
+
+
+                         $(function() {
+                             $("#ventas_desde, #ventas_hasta").datepicker({
+                                 dateFormat: "dd/mm/yy",
+                                 language: "es",
+                                 selectOtherMonths: true,
+                                 // Opciones de configuración aquí
+                             });
+                         });
+
+
+
+
                          /*===================================================================*/
                          //EVENTO BUSCAR POR RANGO DE FECHAS
                          /*===================================================================*/
                          //VD 2:50
 
                          $('#btnFiltrar').on('click', function() {
-                            sel_Usuario = $("#sel_Usuario").val();
-                            sel_Tipo_Pago = $("#sel_Tipo_Pago").val();
+                             sel_Usuario = $("#sel_Usuario").val();
+                             sel_Tipo_Pago = $("#sel_Tipo_Pago").val();
 
                              tableVentas.destroy();
 
@@ -477,7 +490,7 @@
                                          'tipo_pago': sel_Tipo_Pago
                                      },
                                      "dataSrc": function(respuesta) {
-                                         console.log(respuesta, "Total Venta !");
+                                         //console.log(respuesta, "Total Venta !");
                                          var TotalVenta = 0.00;
                                          for (let i = 0; i < respuesta.length; i++) {
                                              TotalVenta = parseFloat(respuesta[i][7].replace('Q.', '')) + parseFloat(TotalVenta);
@@ -620,12 +633,11 @@
 
                          })
 
-                     })
+                     }) //FUN DOCUMENT READY
 
                      /*===================================================================*/
                      //SOLICITUD AJAX PARA CARGAR SELECT USUARIO
                      /*===================================================================*/
-                     //Solicitud Ajax para Cargar los datos de laperfiles en la ventana agregar nuevo usuario
                      //VD 11 MIN 46:00
                      function cargarSelectUsuarios() {
                          $.ajax({
@@ -650,8 +662,8 @@
 
 
                      }
-
                  </script>
+
 
 
 

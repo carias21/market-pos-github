@@ -294,6 +294,13 @@
             }
         });
 
+        //Para bloquear la tecla "tab" en EL INPUT codigoventa para no duplicar productos
+        var input = document.getElementById("iptCodigoCompra");
+        input.addEventListener("keydown", function(event) {
+            if (event.keyCode === 9) {
+                event.preventDefault();
+            }
+        });
         /* ======================================================================================
 		REGISTRAR EL PRODUCTO EN LA TABLA CUANDO SE ESCANEE CON BARCODE TO PC AUTOMATICAMANTE
 		======================================================================================*/
