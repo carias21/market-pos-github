@@ -153,17 +153,12 @@
     <div class="modal-dialog modal-lg">
 
         <!-- contenido del modal -->
-        <div class="modal-content">
+        <div class="modal-content ">
 
             <!-- cabecera del modal -->
-            <div class="modal-header bg-gray py-1">
-
-                <h5 class="modal-title">Agregar Producto</h5>
-
-                <button type="button" class="btn btn-outline-primary text-white border-0 fs-5" data-bs-dismiss="modal" id="btnCerrarModal">
-                    <i class="far fa-times-circle"></i>
-                </button>
-
+            <div class="modal-header bg-info py-3">
+                <h4 class="modal-title text-white">AGREGAR PRODUCTO</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- <form method="POST" enctype="multipart/form-data" id="form_cargar_imagen">
                         <input type="submit">
@@ -180,10 +175,11 @@
                         <!-- Columna para registro del codigo de barras -->
                         <div class="col-12 col-lg-6">
                             <div class="form-group mb-2">
-                                <label class="" for="iptCodigoReg"><i class="fas fa-barcode fs-6"></i>
+                                <label class="" for="iptCodigoReg "><i class="fas fa-barcode fs-6"></i>
                                     <span class="small">CODIGO DEL PRODUCTO</span><span class="text-danger">*</span>
                                 </label>
-                                <input type="number" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
+
+                                <input type="number" style="border: 1px solid #66B3FF" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
                                 <div class="invalid-feedback">Debe ingresar el codigo de barras</div>
                             </div>
                         </div>
@@ -194,7 +190,7 @@
                                 <label class="" for="selCategoriaReg"><i class="fas fa-dumpster fs-6"></i>
                                     <span class="small">Categoría</span><span class="text-danger">*</span>
                                 </label>
-                                <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selCategoriaReg" required>
+                                <select style="border: 1px solid #66B3FF" class="form-select form-select-sm" aria-label=".form-select-sm example" id="selCategoriaReg" required>
                                 </select>
                                 <!--notificacion si no se ingresa la categoria -->
                                 <div class="invalid-feedback">Seleccione la categoría</div>
@@ -205,7 +201,7 @@
                         <div class="col-12">
                             <div class="form-group mb-2">
                                 <label class="" for="iptDescripcionReg"><i class="fas fa-file-signature fs-6"></i> <span class="small">Descripción</span><span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-sm" id="iptDescripcionReg" placeholder="Descripción" required>
+                                <input type="text" style="border: 1px solid #66B3FF" class="form-control form-control-sm" id="iptDescripcionReg" placeholder="Descripción" required>
                                 <!--notificacion si no se ingresa la categoria -->
                                 <div class="invalid-feedback">Debe ingresar la descripción</div>
                             </div>
@@ -216,7 +212,7 @@
                             <div class="form-group mb-2">
                                 <label class="" for="iptPrecioCompraReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
                                         Compra</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" step="0.01" id="iptPrecioCompraReg" placeholder="Precio de Compra" required>
+                                <input type="number" style="border: 1px solid #66B3FF" min="0" class="form-control form-control-sm" step="0.01" id="iptPrecioCompraReg" placeholder="Precio de Compra" required>
                                 <div class="invalid-feedback">Debe ingresar el Precio de compra</div>
                             </div>
                         </div>
@@ -226,7 +222,7 @@
                             <div class="form-group mb-2">
                                 <label class="" for="iptPrecioVentaReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Precio
                                         Venta</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptPrecioVentaReg" placeholder="Precio de Venta" step="0.01" required>
+                                <input type="number" style="border: 1px solid #66B3FF" min="0" class="form-control form-control-sm" id="iptPrecioVentaReg" placeholder="Precio de Venta" step="0.01" required>
                                 <div class="invalid-feedback">Debe ingresar el precio de venta</div>
                             </div>
                         </div>
@@ -235,7 +231,7 @@
                         <div class="col-12 col-lg-4">
                             <div class="form-group mb-2">
                                 <label class="" for="iptUtilidadReg"><i class="fas fa-dollar-sign fs-6"></i> <span class="small">Ganancia</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptUtilidadReg" placeholder="Ganancia" disabled>
+                                <input type="number" style="border: 1px solid #66B3FF" min="0" class="form-control form-control-sm" id="iptUtilidadReg" placeholder="Ganancia" disabled>
                             </div>
                         </div>
 
@@ -244,7 +240,7 @@
                             <div class="form-group mb-2">
                                 <label class="" for="iptStockReg"><i class="fas fa-plus-circle fs-6"></i>
                                     <span class="small">Stock</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptStockReg" placeholder="Stock" required>
+                                <input type="number" style="border: 1px solid #66B3FF" min="0" class="form-control form-control-sm" id="iptStockReg" placeholder="Stock" required>
                                 <div class="invalid-feedback">Debe ingresar el stock</div>
                             </div>
                         </div>
@@ -254,7 +250,7 @@
                             <div class="form-group mb-2">
                                 <label class="" for="iptMinimoStockReg"><i class="fas fa-minus-circle fs-6"></i> <span class="small">Mínimo
                                         Stock</span><span class="text-danger">*</span></label>
-                                <input type="number" min="0" class="form-control form-control-sm" id="iptMinimoStockReg" placeholder="Mínimo Stock" required>
+                                <input type="number" style="border: 1px solid #66B3FF" min="0" class="form-control form-control-sm" id="iptMinimoStockReg" placeholder="Mínimo Stock" required>
                                 <div class="invalid-feedback">Debe ingresar el minimo stock</div>
                             </div>
                         </div>
@@ -269,7 +265,7 @@
                                         <div class="card-body">
                                             <label for="imagen" id="icon-image" class="btn btn-primary"><i class="fas fa-image"></i></label>
                                             <span id="icon-cerrar"></span>
-                                            <input id="imagen" class="d-none" type="file" name="imagen" accept="image/*" onchange="preview(event)">
+                                            <input id="imagen" style="border: 1px solid #66B3FF" class="d-none" type="file" name="imagen" accept="image/*" onchange="preview(event)">
                                             <!--colocamos dos inputos ocultos, al momento de editar, saber que se esta seleccionando otra imagen o se quito para reemplazarla. -->
                                             <input type="hidden" id="foto_actual" name="foto_actual">
                                             <input type="hidden" id="foto_delete" name="foto_delete">
@@ -279,9 +275,6 @@
                                 </div>
 
                             </div>
-
-
-
 
                             <!-- creacion de botones para cancelar y guardar el producto -->
                             <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
@@ -406,6 +399,9 @@
                     action: function(e, dt, node, config) {
                         //codigo que funciona para mostrar la ventana modal, o venta para agregar un nuevo producto
                         $("#mdlGestionarProducto").modal('show');
+                        LimpiarInputsVentanaModal();
+                         $("#iptCodigoReg").prop("disabled", false);
+                         deleteImg();
                         //se agrega el boton agregar nuevo producto
                         accion = 2; //registrar producto
                     }
@@ -841,6 +837,8 @@
         VD 14 MIN 1:30
         =========================================================================================*/
         $('#tbl_productos tbody').on('click', '.btnEditarProducto', function() {
+
+            $("#iptCodigoReg").prop("disabled", true);
 
 
             accion = 4; //seteamos la accion para editar

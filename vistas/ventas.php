@@ -17,7 +17,6 @@
 </div>
 
 
-
 <!-- main content -->
 <!--======================================================================================
         		DISEÑO DE NUESTRA PAGINA VENTAS
@@ -26,7 +25,6 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row mb-3">
-
             <div class="col-md-12">
                 <div class="row">
                     <!--INPUT PARA INGRESO DEL CODIGO O DESCRIPCION DEL PRODUCTO -->
@@ -38,69 +36,101 @@
                             </label>
                             <input type="text" class="form-control form-control-sm" id="iptCodigoVenta" placeholder="Ingrese el codigo o el nombre el producto">
                         </div>
-                    </div>
-                    <!--ETIQUETA QUE MUSTRA LA SUMA TOTAL DE LOS PRODUCTOS AGREGADOS AL LISTADO -->
-                    <div class="col-md-6 mb-3 rounded-3 mx-auto">
-                        <h3 class="fw-bold m-0">Total Venta: Q. <span id="totalVenta">0.00</span></h3>
+
                     </div>
 
-                    <!-- BOTONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
-                    <div class="col-md-6 text-right">
-                        <button class="btn btn-primary" id="btnIniciarVenta">
-                            <i class="fas fa-shopping-cart"></i>Realizar Venta
-                        </button>
-                        <button class="btn btn-danger" id="btnVaciarListado">
-                            <i class="far fa-trash-alt"></i> Vaciar Listado
-                        </button>
-                    </div>
-                    <br></br>
+                    <div class="row">
+                        <!-- ETIQUETA QUE MUESTRA LA SUMA TOTAL DE LOS PRODUCTOS AGREGADOS AL LISTADO -->
+                        <div class="col-md-4 mb-3 rounded-3 mx-auto text-center">
+                            <h3 class="fw-bold m-0">Total Venta: Q. <span id="totalVenta">0.00</span></h3>
+                        </div>
 
-                    <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA VENTA -->
-                    <div class="col-md-12">
-                        <table id="lstProductosVenta" class="display nowrap table-striped w-100 shadow">
-                            <thead class="bg-info text-left fs-6">
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Codigo</th>
-                                    <th>Imagen</th>
-                                    <th>Id Categoria</th>
-                                    <th>Categoria</th>
-                                    <th>Producto</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio</th>
-                                    <th>Descuento</th>
-                                    <th>Total</th>
-                                    <th class="text-center">Opciones</th>
-                                    <th>Aplica Peso</th>
-                                    <th>Precio Compra Producto</th>
-                                </tr>
-                            </thead>
-                            <tbody class="small text-left fs-6">
-                            </tbody>
-                        </table>
+                        <!-- BOTONES PARA VACIAR LISTADO Y COMPLETAR LA VENTA -->
+                        <div class="col-md-8 mb-2 mx-auto">
+                            <div class="row">
+
+                                <div class="col-md-4 text-center">
+                                    <form class="needs-validation-iptBuscarNitCliente" novalidate method="POST" enctype="multipart/form-data" id="form_iptBuscarNitCliente" action="#">
+                                        <input type="text" maxlength="13" class="form-control text-center" style="height: 36px;" id="iptBuscarNitCliente" name="iptBuscarNitCliente" placeholder="Nit del Cliente" required>
+                                    </form>
+                                </div>
+
+
+                                <br></br>
+
+                                <div class="col-md-8 text-center">
+                                    <button class="btn btn-primary same-size-btn mr-2" id="btnIniciarVenta">
+                                        <i class="fas fa-shopping-cart"></i>Realizar Venta
+                                    </button>
+                                    <button class="btn btn-danger same-size-btn" id="btnVaciarListado">
+                                        <i class="far fa-trash-alt"></i> Vaciar Listado
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+
+
             </div>
 
-            <div class="col-md-8 mx-auto">
 
 
-                <form class="needs-validation" novalidate method="POST" enctype="multipart/form-data" id="tipo_de_pago">
+            <br></br>
 
-                    <div class="card shadow ">
+            <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA VENTA -->
+            <div class="col-md-12">
+                <table id="lstProductosVenta" class="display nowrap table-striped w-100 shadow">
+                    <thead class="bg-info text-left fs-6">
+                        <tr>
+                            <th>Item</th>
+                            <th>Codigo</th>
+                            <th>Imagen</th>
+                            <th>Id Categoria</th>
+                            <th>Categoria</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Descuento</th>
+                            <th>Total</th>
+                            <th class="text-center">Opciones</th>
+                            <th>Aplica Peso</th>
+                            <th>Precio Compra Producto</th>
+                        </tr>
+                    </thead>
+                    <tbody class="small text-left fs-6">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-                        <h5 class="card-header py-1 bg-primary text-white text-center">
-                            Total Venta: Q. <span id="totalVentaRegistrar">0.00</span>
-                        </h5>
+    <div class="row">
+        <div class="col-md-8 mx-auto">
 
-                        <div class="card-body p-2">
+            <form class="needs-validation" novalidate method="POST" enctype="multipart/form-data" id="tipo_de_pago">
 
-                            <div class="form-group mb-2">
+                <div class="card card-success ">
 
-                                <label class="col-form-label" for="selTipoPago">
-                                    <i class="fas fa-money-bill-alt fs-6"></i>
-                                    <span class="small">Tipo Pago </span><span class="text-danger ">*</span>
-                                </label>
+                    <h5 class="card-header text-white text-center">
+                        Total Venta: Q. <span id="totalVentaRegistrar">0.00</span>
+                    </h5>
+
+                    <div class="card-body p-2">
+
+
+                        <div class="row col-md-12">
+                            <input hidden  id="iptIdNitCliente" name="iptIdNitCliente">
+                            <input class="form-control form-control-sm" type="text" id="iptIdNombreCliente" name="iptIdNombreCliente" style="display: none; background-color: #FFD700; font-weight: bold;" ">
+                        </div>
+
+
+                        <div class=" row col-md-12">
+
+                            <div class="form-group col-md-6">
+                                <label for="selTipoPago">Tipo Pago</label>
+
 
                                 <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="selTipoPago" required>
                                     <option value="">--- TIPO DE PAGO ---</option>
@@ -115,62 +145,158 @@
                             </div>
 
                             <!-- INPUT DE EFECTIVO ENTREGADO -->
-                            <div class="form-group">
+                            <div class="form-group col-md-6">
                                 <label for="iptEfectivoRecibido">Efectivo recibido</label>
                                 <input type="float" min="0" name="iptEfectivo" id="iptEfectivoRecibido" class="form-control form-control-sm" placeholder="Cantidad de efectivo recibida">
                             </div>
 
-                            <!-- INPUT CHECK DE EFECTIVO EXACTO -->
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="chkEfectivoExacto">
-                                <label class="form-check-label" for="chkEfectivoExacto">
-                                    Efectivo Exacto
+                        </div>
+
+                        <!-- INPUT CHECK DE EFECTIVO EXACTO -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="chkEfectivoExacto">
+                            <label class="form-check-label" for="chkEfectivoExacto">
+                                Efectivo Exacto
+                            </label>
+                        </div>
+
+                        <!-- MOSTRAR MONTO EFECTIVO ENTREGADO Y EL VUELTO -->
+                        <div class="row mt-2">
+
+                            <div class="col-12">
+                                <h6 class="text-start fw-bold">Monto Efectivo: Q. <span id="EfectivoEntregado">0.00</span></h6>
+                            </div>
+
+                            <div class="col-12">
+                                <h6 class="text-start text-danger fw-bold">Cambio: Q. <span id="Vuelto">0.00</span>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <!-- MOSTRAR EL SUBTOTAL, IVA Y TOTAL DE LA VENTA -->
+                        <div class="row">
+                            <div class="col-md-7">
+                                <span>SUBTOTAL</span>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                Q. <span class="" id="boleta_subtotal">0.00</span>
+                            </div>
+
+                            <div class="col-md-7">
+                                <span>IVA (12%)</span>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                Q. <span class="" id="boleta_iva">0.00</span>
+                            </div>
+
+                            <div class="col-md-7">
+                                <span>TOTAL</span>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                Q. <span class="" id="boleta_total">0.00</span>
+                            </div>
+                        </div>
+                    </div><!-- ./ CARD BODY -->
+
+                </div><!-- ./ CARD SHADOW -->
+            </form>
+        </div> <!--col-md-3-->
+    </div>
+</div>
+</div>
+</div>
+
+<!-----------------------------------------------------------------------------------------------
+VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
+------------------------------------------------------------------------------------------------>
+<div class="modal fade" id="mdlAgregarCliente" role="dialog">
+
+    <div class="modal-dialog modal-lg">
+
+        <!-- contenido del modal -->
+        <div class="modal-content ">
+
+            <!-- cabecera del modal -->
+            <div class="modal-header bg-info py-3">
+                <h4 class="modal-title text-white">AGREGAR CLIENTE</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- *************************** CUERPO DE LA VENTA ******************** -->
+            <div class="modal-body">
+
+                <form class="needs-validation-modal" novalidate method="POST" enctype="multipart/form-data" id="form_clientes">
+                    <!-- Abrimos una fila -->
+                    <div class="row">
+
+                        <!-- Columna para registro del codigo de barras -->
+                        <div class="col-12 col-lg-4">
+                            <div class="form-group mb-2">
+                                <label class="" for="iptNitCliente"><i class="fas fa-barcode fs-6"></i>
+                                    <span class="small">NIT</span>
                                 </label>
+                                <input type="text" pattern="[0-9-C/Fc/f]+" title="Ingrese solo números y guiones" class="form-control form-control-sm" id="iptNitCliente" name="iptNitCliente" placeholder="Nit del Cliente" required>
+                                <div class="invalid-feedback">Debe ingresar NIT válido</div>
                             </div>
+                        </div>
 
-                            <!-- MOSTRAR MONTO EFECTIVO ENTREGADO Y EL VUELTO -->
-                            <div class="row mt-2">
-
-                                <div class="col-12">
-                                    <h6 class="text-start fw-bold">Monto Efectivo: Q. <span id="EfectivoEntregado">0.00</span></h6>
-                                </div>
-
-                                <div class="col-12">
-                                    <h6 class="text-start text-danger fw-bold">Cambio: Q. <span id="Vuelto">0.00</span>
-                                    </h6>
-                                </div>
+                        <!-- Columna para registro de la descripción del producto -->
+                        <div class="col-12 col-lg-8">
+                            <div class="form-group mb-2">
+                                <label class="" for="iptNombreClienteModal"><i class="fas fa-users fs-6"></i> <span class="small">NOMBRE CLIENTE</span></label>
+                                <input type="text" class="form-control form-control-sm" id="iptNombreClienteModal" placeholder="Nombre Cliente" required>
+                                <div class="invalid-feedback">Debe ingresar el nombre</div>
                             </div>
+                        </div>
 
-                            <!-- MOSTRAR EL SUBTOTAL, IVA Y TOTAL DE LA VENTA -->
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <span>SUBTOTAL</span>
-                                </div>
-                                <div class="col-md-5 text-right">
-                                    Q. <span class="" id="boleta_subtotal">0.00</span>
-                                </div>
-
-                                <div class="col-md-7">
-                                    <span>IVA (12%)</span>
-                                </div>
-                                <div class="col-md-5 text-right">
-                                    Q. <span class="" id="boleta_iva">0.00</span>
-                                </div>
-
-                                <div class="col-md-7">
-                                    <span>TOTAL</span>
-                                </div>
-                                <div class="col-md-5 text-right">
-                                    Q. <span class="" id="boleta_total">0.00</span>
-                                </div>
+                        <!-- Columna para registro de la descripción del producto -->
+                        <div class="col-12 col-lg-4">
+                            <div class="form-group mb-2">
+                                <label class="" for="iptNumeroTel"><i class="fa-solid fa-phone fs-6"></i> <span class="small">NUMERO CELULAR</span></label>
+                                <input type="number" class="form-control form-control-sm" id="iptNumeroTel" placeholder="Numero Celular">
                             </div>
-                        </div><!-- ./ CARD BODY -->
+                        </div>
 
-                    </div><!-- ./ CARD SHADOW -->
+                        <!-- Columna para registro de la descripción del producto -->
+                        <div class="col-12 col-lg-8">
+                            <div class="form-group mb-2">
+                                <label class="" for="iptCorreoElectronico"><i class="fas fa-file-signature fs-6"></i> <span class="small">E-MAIL</span></label>
+                                <input type="email" class="form-control form-control-sm" id="iptCorreoElectronico" placeholder="Correo Electrónico" pattern="^$|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
+                                <div class="invalid-feedback">Debe ingresar correo válido</div>
+                            </div>
+                        </div>
+                        <!-- Columna para registro de la descripción del producto -->
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group mb-2">
+                                <label class="" for="iptDireccionCliente"><i class="fas fa-file-signature fs-6"></i> <span class="small">DIRECCIÓN</span></label>
+                                <input type="text" class="form-control form-control-sm" id="iptDireccionCliente" placeholder="Direccion">
+                            </div>
+                        </div>
+                        <!-- Columna para registro de la descripción del producto -->
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group mb-2">
+                                <label class="" for="iptNotas"><i class="fas fa-file-signature fs-6"></i> <span class="small">NOTAS</span></label>
+                                <input type="text" class="form-control form-control-sm" id="iptNotas" placeholder="Notas">
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
+                            <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2" id="btnGuardarCliente">Guardar Cliente</button>
+                        </div>
+
+                        <!-- <button class="btn btn-default btn-success" type="submit" name="submit" value="Submit">Save</button> -->
+
+
+                    </div>
                 </form>
-            </div> <!--col-md-3-->
+
+            </div>
+
         </div>
     </div>
+
+
 </div>
 
 
@@ -180,6 +306,7 @@
 <script>
     var table;
     var items = []; //Se usa para el input de autocompletable
+    var itemsClientes = [];
     var itemProducto = 1;
 
     var Toast = Swal.mixin({
@@ -192,6 +319,8 @@
     $(document).ready(function() {
 
         ajustarHeadersDataTables($('#lstProductosVenta'));
+
+        var iptBuscarNitCliente = $("#mdlAgregarCliente").find("#iptBuscarNitCliente");
 
 
         /* ======================================================================================
@@ -364,7 +493,7 @@
                     source: respuesta,
                     select: function(event, ui) {
 
-                        console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
+                        //console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
 
                         CargarProductos(ui.item.value);
 
@@ -396,6 +525,49 @@
 
             }
         });
+
+
+        /* ======================================================================================
+		TRAER LISTADO DE CLIENTES
+		======================================================================================*/
+        $.ajax({
+            async: false,
+            url: "ajax/clientes.ajax.php",
+            method: "POST",
+            data: {
+                'accion': 2
+            },
+            dataType: 'json',
+            success: function(respuesta) {
+                //console.log(respuesta, "hay respuesta");
+                var itemsClientes = []; // Declara la variable 'items' antes del ciclo for
+                for (let i = 0; i < respuesta.length; i++) {
+                    itemsClientes.push(respuesta[i]['descripcion_cliente']);
+                }
+                $("#iptBuscarNitCliente").autocomplete({
+                    source: itemsClientes,
+                    select: function(event, ui) {
+                        //console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value);
+                        CargarCliente(ui.item.value);
+                        return false;
+                    }
+                });
+            }
+        });
+
+        /* ======================================================================================
+		REGISTRAR EL PRODUCTO EN LA TABLA CUANDO SE ESCANEE CON BARCODE TO PC AUTOMATICAMANTE
+		======================================================================================*/
+        $(document).ready(function() {
+            $("#iptBuscarNitCliente").on("change keydown", function(e) {
+                if (e.type === "change" || e.keyCode === 13) {
+                    e.preventDefault();
+                    CargarCliente();
+                }
+            });
+        });
+
+
 
         /* ======================================================================================
 		REGISTRAR EL PRODUCTO EN LA TABLA CUANDO SE ESCANEE CON BARCODE TO PC AUTOMATICAMANTE
@@ -588,9 +760,21 @@
         });
 
 
+        /* ======================================================================================
+        EVENTO CLIENTE
+        =========================================================================================*/
+        $("#btnAgregarNuevoCliente").on('click', function() {
+
+            $("#mdlAgregarCliente").modal('show'); //MOSTRAR VENTANA MODAL
+        });
+
+
+
 
 
     }) //FIN DOCUMENT READY
+
+
 
 
 
@@ -644,8 +828,25 @@
         $("#boleta_total").html("0.00");
         $("#boleta_iva").html("0.00");
         $("#selTipoPago").val("");
+        $("#iptBuscarNitCliente").val("");
+        $("#iptIdNitCliente").val("");
+        $("#iptIdNombreCliente").val("");
 
-    } /* FIN LimpiarInputs */
+    }
+
+
+    function LimpiarInputsModal() {
+        $("#iptNitCliente").val("");
+        $("#iptNombreClienteModal").val("");
+        $("#iptNumeroTel").val("");
+        $("#iptCorreoElectronico").val("");
+        $("#iptDireccionCliente").val("");
+        $("#iptNotas").val("");
+
+        $("#iptBuscarNitCliente").val("");
+
+
+    }
 
     /*===================================================================*/
     //FUNCION PARA ACTUALIZAR EL VUELTO DE LA VENTA 
@@ -759,7 +960,7 @@
             var codigo_producto = $("#iptCodigoVenta").val();
         }
 
-        console.log("🚀 ~ file: ventas.php ~ line 335 ~ CargarProductos ~ codigo_producto", codigo_producto)
+        //console.log("🚀 ~ file: ventas.php ~ line 335 ~ CargarProductos ~ codigo_producto", codigo_producto)
 
         var producto_repetido = 0;
         //  var codigo_repetido = 0;
@@ -959,6 +1160,147 @@
 
     } /* FIN CargarProductos */
 
+
+    function CargarCliente(cliente = "") {
+        var iptBuscarNitCliente = $("#iptBuscarNitCliente").val();
+        var iptNombreClienteModal = $("#iptNombreClienteModal").val(); // Agregar el símbolo "#" antes de "iptNombreClienteModal"
+
+        var nit_cliente;
+        if (cliente != "") {
+            nit_cliente = cliente;
+        } else {
+            nit_cliente = $("#iptBuscarNitCliente").val();
+        }
+
+        //console.log("🚀 ~ file: ventas.php ~ line 335 ~ CargarProductos ~ codigo_producto", nit_cliente);
+
+        $.ajax({
+            url: "ajax/clientes.ajax.php",
+            method: "POST",
+            data: {
+                'accion': 3,
+                'nit_cliente': nit_cliente
+            },
+            dataType: 'json',
+            success: function(respuesta) {
+                var id_cliente = respuesta['id_cliente'];
+                var iptIdNombreCliente = respuesta['nombre_cliente'];
+
+                if (!respuesta) {
+                    var forms = document.getElementsByClassName('needs-validation-iptBuscarNitCliente');
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                        var iptBuscarNitCliente = $("#iptBuscarNitCliente").val();
+                        var regex = /[a-zA-Z]/; // Expresión regular para letras
+
+                        if (regex.test(iptBuscarNitCliente)) {
+                            mensajeToast('error', 'CAMPOS INCORRECTOS');
+                            $("#iptBuscarNitCliente").val("");
+                        } else if (form.checkValidity() === true) {
+                            mensajeToast('info', 'NO EXISTE EL CLIENTE, AGREGALO');
+                            $("#mdlAgregarCliente").modal('show');
+                            $("#iptNitCliente").val(iptBuscarNitCliente);
+                            $("#mdlAgregarCliente").on("shown.bs.modal", function() {
+                                $("#iptNombreClienteModal").focus();
+                            });
+                            document.getElementById("btnGuardarCliente").addEventListener("click", agregarCliente);
+                        } else {
+                            mensajeToast('error', 'CAMPOS INCORRECTOS');
+                        }
+                    });
+                } else {
+                    $(".needs-validation").removeClass("was-validated");
+                    // Para mostrar el campo
+                    $("#iptIdNombreCliente").css("display", "block");
+                    $("#iptBuscarNitCliente").val("");
+                    $("#iptIdNitCliente").val(id_cliente);
+                    $("#iptIdNombreCliente").val(iptIdNombreCliente);
+
+                    //console.log("existe cliente", id_cliente);
+                }
+            }
+        });
+    }
+
+
+
+    function agregarCliente() {
+
+        var id_cliente = $("#iptIdNitCliente").val();
+
+        var iptNombreClienteModal = $("#iptNombreClienteModal").val();
+
+        var accion = 1;
+
+        var forms = document.getElementsByClassName('needs-validation-modal');
+
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            if (form.checkValidity() === true) {
+                Swal.fire({
+                    title: '¿ESTÁ SEGURO DE REGISTRAR EL PRODUCTO?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, deseo registrarlo!',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var datos = new FormData();
+
+                        datos.append("accion", accion);
+                        datos.append("nit_cliente", $("#iptNitCliente").val());
+                        datos.append("nombre_cliente", $("#iptNombreClienteModal").val());
+                        datos.append("telefono", $("#iptNumeroTel").val());
+                        datos.append("correo_e", $("#iptCorreoElectronico").val());
+                        datos.append("direccion", $("#iptDireccionCliente").val());
+                        datos.append("notas", $("#iptNotas").val());
+
+                        if (accion == 1) {
+                            var titulo_msj = "SE REGISTRÓ CORRECTAMENTE EL CLIENTE"
+                        }
+
+                        $.ajax({
+                            url: "ajax/clientes.ajax.php",
+                            method: "POST",
+                            data: datos,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            success: function(respuesta) {
+                                if (respuesta > 0) {
+                                    $("#iptIdNitCliente").val(respuesta);
+                                    $("#iptIdNombreCliente").css("display", "block");
+                                    $("#iptIdNombreCliente").val(iptNombreClienteModal);
+
+                                    mensajeToast('success', titulo_msj);
+                                    $("#mdlAgregarCliente").modal('hide');
+                                    LimpiarInputsModal();
+                                    $(".needs-validation-modal").removeClass("was-validated");
+
+                                } else {
+                                    Swal.fire({
+                                        position: 'center',
+                                        icon: 'error',
+                                        title: 'ERROR',
+                                        showConfirmButton: false,
+                                        timer: 3500
+                                    })
+                                }
+                            }
+                        });
+
+                        //console.log(datos);
+                    }
+                })
+            } else {
+                mensajeToast('warning', 'INGRESA TODOS LOS CAMPOS');
+            }
+            form.classList.add('was-validated');
+        });
+    }
+
+
     /*===================================================================*/
     //REALIZAR LA VENTA
     /*===================================================================*/
@@ -986,6 +1328,10 @@
 
 
                     return false;
+                }
+
+                if ($("#iptEfectivoRecibido").val() != "") {
+                    $("#iptEfectivoRecibido").val() != 0;
                 }
 
 
@@ -1016,6 +1362,11 @@
                             //agregame a mi array 
 
                             var tipo_pago = $("#selTipoPago").val();
+                            var id_cliente = $("#iptIdNitCliente").val();
+
+                            if (id_cliente == "") {
+                                id_cliente = 1;
+                            }
 
                             arr[index] = data['codigo_producto'] + "," +
                                 data['nombre_categoria'] + "," +
@@ -1025,10 +1376,8 @@
                                 data['descuento'].replace("Q. ", "") + "," +
                                 data['total'].replace("Q. ", "") + "," +
                                 data['precio_compra_producto'] + "," +
-                                tipo_pago;
-
-                            //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
-
+                                tipo_pago + "," +
+                                id_cliente;
                             formData.append('arr[]', arr[index]);
                         });
 
@@ -1045,19 +1394,12 @@
                                 if (respuesta == "ok") {
                                     mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
                                     $(".needs-validation").removeClass("was-validated");
-                                } else if (respuesta == "error_stock") {
-                                    Swal.fire({
-                                        position: 'center',
-                                        icon: 'error',
-                                        title: 'ERROR AL ACTUALIZAR STOCK',
-                                        showConfirmButton: false,
-                                        timer: 2500
-                                    })
                                 } else {
                                     Swal.fire({
                                         position: 'center',
                                         icon: 'error',
-                                        title: 'ERROR AL REGISTRAR LA VENTA',
+                                        title: 'ERROR AL REGISTRAR LA VENTA ' + '\n' +
+                                            ' comunicate con tu administrador',
                                         showConfirmButton: false,
                                         timer: 2500
                                     })
@@ -1066,6 +1408,8 @@
                                 // Habilitar el botón después de que se complete la acción
                                 btnRealizarVenta.disabled = false;
                                 LimpiarInputs();
+                                $("#iptIdNombreCliente").css("display", "none");
+
 
                             }
                         });

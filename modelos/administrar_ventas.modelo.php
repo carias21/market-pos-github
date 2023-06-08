@@ -31,10 +31,12 @@ class AdministrarVentasModelo
                      u.usuario,
                      precio_compra,
                      tp.tipo_pago,
+                     c.nombre_cliente,
                     '' as opciones
                     from ventas v
                     inner join usuarios u on u.id_usuario = v.usuario
                     inner join tipo_pago tp on tp.id = v.fk_tipo_pago
+                    inner join clientes c on c.id_cliente = v.fk_id_cliente
                     where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
                     AND v.usuario = :sel_usuario
                     AND v.fk_tipo_pago = :sel_Tipo_Pago
@@ -65,10 +67,12 @@ class AdministrarVentasModelo
                   u.usuario,
                   precio_compra,
                   tp.tipo_pago,
+                  c.nombre_cliente,
                   '' as opciones
                   from ventas v
                   inner join usuarios u on u.id_usuario = v.usuario
                   inner join tipo_pago tp on tp.id = v.fk_tipo_pago
+                  inner join clientes c on c.id_cliente = v.fk_id_cliente
                   where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
                   AND v.usuario = :sel_usuario
                   order BY v.fecha_venta desc");
@@ -93,10 +97,12 @@ class AdministrarVentasModelo
                     u.usuario,
                     precio_compra,
                     tp.tipo_pago,
+                    c.nombre_cliente,
                     '' as opciones
                     from ventas v
                     inner join usuarios u on u.id_usuario = v.usuario
                     inner join tipo_pago tp on tp.id = v.fk_tipo_pago
+                    inner join clientes c on c.id_cliente = v.fk_id_cliente
                     where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
                     AND v.fk_tipo_pago = :sel_Tipo_Pago
                     order BY v.fecha_venta desc");
@@ -108,7 +114,7 @@ class AdministrarVentasModelo
                     $stmt->execute();
 
                     return $stmt->fetchAll();
-                }else{
+                } else {
                     $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
                     v.codigo_producto, 
                     v.categoria, 
@@ -121,10 +127,12 @@ class AdministrarVentasModelo
                     u.usuario,
                     precio_compra,
                     tp.tipo_pago,
+                    c.nombre_cliente,
                     '' as opciones
                     FROM ventas v
                     INNER JOIN usuarios u ON u.id_usuario = v.usuario
                     INNER JOIN tipo_pago tp ON tp.id = v.fk_tipo_pago
+                    inner join clientes c on c.id_cliente = v.fk_id_cliente
                     WHERE DATE(v.fecha_venta) >= DATE(:fechaDesde) AND DATE(v.fecha_venta) <= DATE(:fechaHasta)
                     ORDER BY v.fecha_venta DESC");
 
@@ -148,10 +156,12 @@ class AdministrarVentasModelo
                  u.usuario,
                  precio_compra,
                  tp.tipo_pago,
+                 c.nombre_cliente,
                 '' as opciones
                 from ventas v
                 inner join usuarios u on u.id_usuario = v.usuario
                 inner join tipo_pago tp on tp.id = fk_tipo_pago
+                inner join clientes c on c.id_cliente = v.fk_id_cliente
                 where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) and v.usuario = :usuario
                 order BY v.fecha_venta desc");
 

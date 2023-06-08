@@ -461,6 +461,7 @@ YA QUE NO SE MUESTRA -->
         document.getElementById("btnGuardarIngresoEfectivo").addEventListener("click", function() {
 
             accion = 3;
+            var btnGuardarIngresoEfectivo = document.getElementById("btnGuardarIngresoEfectivo");
 
             // Get the forms we want to add validation styles to
             var forms = document.getElementsByClassName('needs-validation');
@@ -471,7 +472,7 @@ YA QUE NO SE MUESTRA -->
                 if (form.checkValidity() === true) {
 
                     // Deshabilitar el botón para evitar múltiples envíos
-                    this.disabled = true;
+                    btnGuardarIngresoEfectivo.disabled = true;
 
                     //capturamos los valores para llevar a la base de datos
                     entrada = $("#iptIngresoEfectivo").val();
@@ -498,8 +499,8 @@ YA QUE NO SE MUESTRA -->
                                 mensajeToast('success', 'ENTRADA DE EFECTIVO CORRECTAMENTE');
 
 
-                                // Habilitar el botón después de que se haya completado la solicitud AJAX
-                                document.getElementById("btnGuardarIngresoEfectivo").disabled = false;
+                                // Deshabilitar el botón para evitar múltiples envíos
+                                btnGuardarIngresoEfectivo.disabled = false;
 
                                 LimpiarInputsVentanasModal();
 
@@ -515,10 +516,7 @@ YA QUE NO SE MUESTRA -->
                                 })
 
                             } else {
-                                Toast.fire({
-                                    icon: 'error',
-                                    title: 'No se logro el ingreso'
-                                });
+                                mensajeToast('error', 'NO SE LOGRO EL INGRESO');
                             }
 
                         }
@@ -541,6 +539,7 @@ YA QUE NO SE MUESTRA -->
 
 
             accion = 4;
+            var btnGuardarSalidaEfectivo = document.getElementById("btnGuardarSalidaEfectivo");
 
             efectivo = $("#efectivo").html();
             salida = $("#iptSalidaEfectivo").val();
@@ -553,7 +552,7 @@ YA QUE NO SE MUESTRA -->
                 if (form.checkValidity() === true) {
 
                     // Deshabilitar el botón para evitar múltiples envíos
-                    this.disabled = true;
+                    btnGuardarSalidaEfectivo.disabled = true;
 
                     //capturamos los valores para llevar a la base de datos
                     salida = $("#iptSalidaEfectivo").val();
@@ -568,6 +567,8 @@ YA QUE NO SE MUESTRA -->
 
                     if (parseFloat(efectivo) < parseFloat(salida)) {
                         mensajeToast('warning', 'NO PUEDES RETIRAR MAS EFECTIVO');
+                        // Habilitar el botón después de que se complete la acción
+                        btnGuardarSalidaEfectivo.disabled = false;
                         return;
                     }
 
@@ -585,11 +586,8 @@ YA QUE NO SE MUESTRA -->
                             if (respuesta == "ok") {
 
                                 mensajeToast('success', 'SALIDA DE EFECTIVO CORRECTAMENTE');
-
-
-                                // Habilitar el botón después de que se haya completado la solicitud AJAX
-                                document.getElementById("btnGuardarSalidaEfectivo").disabled = false;
-
+                                // Habilitar el botón después de que se complete la acción
+                                btnGuardarSalidaEfectivo.disabled = false;
                                 LimpiarInputsVentanasModal();
 
 

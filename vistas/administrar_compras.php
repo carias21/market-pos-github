@@ -414,19 +414,15 @@
 
                          })
 
+                         $(function() {
+                             $("#compras_desde, #compras_hasta").datepicker({
+                                 dateFormat: "dd/mm/yy",
+                                 language: "es",
+                                 selectOtherMonths: true,
+                                 // Opciones de configuración aquí
+                             });
+                         });
 
-
-
-
-                         //ACTUALIZAR CADA 5 SEGUNDOS LA TABLA
-                         /*  setInterval(() => {
-
-tableCompras.ajax.reload();
-console.log("Actualizar 7 segundos");
-// 10000 = 10segundos 
-}, 7000);
-                             
-                   */
                      })
                  </script>
 

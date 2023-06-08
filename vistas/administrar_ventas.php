@@ -107,6 +107,8 @@
                                      <th>Usuario</th>
                                      <th>Precio_compra</th>
                                      <th>Tipo Pago</th>
+                                     <th>Cliente</th>
+
                                      <th class="text-center">Opciones</th>
 
 
@@ -294,7 +296,14 @@
 
                                  },
                                  {
+                                
                                      targets: 12,
+                                     'data': 'nombre_cliente',
+                                     orderable: false,
+
+                                 },
+                                 {
+                                     targets: 13,
 
                                      render: function(data, type, full, meta) {
                                          /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
@@ -585,7 +594,14 @@
 
                                      },
                                      {
+                                         //oculte las columnas
                                          targets: 12,
+                                         'data': 'nombre_cliente',
+                                         orderable: false,
+
+                                     },
+                                     {
+                                         targets: 13,
 
                                          render: function(data, type, full, meta) {
                                              /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 

@@ -84,3 +84,48 @@ ALTER TABLE caja ADD CONSTRAINT uq_fecha_descripcion UNIQUE (fecha, descripcion 
 
 ALTER TABLE productos ADD FOREIGN KEY (id_categoria_producto)
 REFERENCES categorias(id_categoria)
+
+
+
+////////////////////////////////////////////////////////////////////
+CLIENTES
+///////////////////////////////////////////////////////////////////
+
+CREATE TABLE clientes (
+    id_cliente INT(11) NOT NULL,
+    nit_cliente VARCHAR(15) NOT NULL,
+    nombre_cliente VARCHAR(55) NULL,
+    numero_tel VARCHAR(15) NULL, 
+    correo_electronico VARCHAR(50) NULL,
+    direccion VARCHAR(70) NULL,
+       notas VARCHAR(50) NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+ALTER TABLE clientes
+ADD PRIMARY KEY (id_cliente);
+
+ALTER TABLE clientes MODIFY COLUMN id_cliente INT(11) NOT NULL  AUTO_INCREMENT;
+
+//insert
+insert into clientes(id_cliente, nit_cliente, nombre_cliente, numero_tel, correo_electronico, direccion, notas)VALUES
+(1, '0', 'C/F', '-', 'CIUDAD', 'Guatemala', 'N/A');
+
+//modulos
+INSERT INTO `modulos` ( `modulo`, `padre_id`, `vista`, `icon_menu`, `orden`) VALUES
+( 'Clientes', 2, 'clientes.php', 'fas fa-tachometer-alt', 18);
+
+
+
+
+alter table ventas add fk_id_cliente int(11)
+
+ALTER table ventas add FOREIGN key(fk_id_cliente)
+REFERENCES clientes(id_cliente);
+
+UPDATE ventas
+SET fk_id_cliente = 1
+WHERE fk_id_cliente IS NULL;
+
+ALTER TABLE clientes ADD CONSTRAINT uq_nit_cliente UNIQUE (nit_cliente );

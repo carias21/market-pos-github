@@ -266,6 +266,10 @@
 		TRAER LISTADO DE PRODUCTOS PARA INPUT DE AUTOCOMPLETADO
         VD 15 MIN 22:10
 		======================================================================================*/
+        /* ======================================================================================
+		TRAER LISTADO DE PRODUCTOS PARA INPUT DE AUTOCOMPLETADO
+        VD 15 MIN 22:10
+		======================================================================================*/
         $.ajax({
             async: false,
             url: "ajax/compras.ajax.php",
@@ -276,21 +280,43 @@
             dataType: 'json',
             //una vez que tengamos la "respuesta" de la base de datos
             success: function(respuesta) {
-                //recorre el aray
-                for (let i = 0; i < respuesta.length; i++) {
-                    items.push(respuesta[i]['descripcion_producto'])
-                }
-                //input iptCodigoCompra que lo autocomplete
+
+                //input iptCodigoVenta que lo autocomplete
                 $("#iptCodigoCompra").autocomplete({
-                    source: items,
+
+                    source: respuesta,
                     select: function(event, ui) {
-                        console.log("🚀 ~ file: compras.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
+
+                        //console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
+
                         CargarProductos(ui.item.value);
+
+
                         // $("#iptCodigoVenta").val("");
+
                         // $("#iptCodigoVenta").focus();
+
                         return false;
                     }
-                })
+                }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                    return $("<li class ='ui-autocomplete-row'></li>")
+                        .data("item.autocomplete", item)
+                        .append(item.label)
+                        .appendTo(ul);
+                }
+
+                // Limitar el número de elementos que se muestran en la lista de sugerencias
+                $("#iptCodigoCompra").autocomplete("instance")._renderMenu = function(ul, items) {
+                    var max = 4; // número máximo de elementos a mostrar
+                    var that = this;
+                    items = items.slice(0, max);
+                    $.each(items, function(index, item) {
+                        that._renderItemData(ul, item);
+                    });
+                    $(ul).addClass("ui-autocomplete-list");
+                };
+
+
             }
         });
 
@@ -407,9 +433,11 @@
 
                 $(this)[0]['value'] = "1";
 
+                  recalcularTotales();
+                recalcularMontos();
+
                 $("#iptCantidad").val("");
                 $("#iptCantidad").focus();
-                return;
 
             }
 
@@ -431,6 +459,7 @@
                     table.cell(index, 9).data(NuevoPrecio).draw();
 
                     recalcularTotales();
+            
 
                 }
             });
@@ -518,18 +547,9 @@
         $("#totalCompra").html("");
         $("#totalCompra").html(TotalCompra.toFixed(2));
         var totalCompra = $("#totalCompra").html();
-        var iva = parseFloat(totalCompra) * 0.12
-        var subtotal = parseFloat(totalCompra) - parseFloat(iva);
-        $("#totalCompraRegistrar").html(totalCompra);
-        $("#boleta_subtotal").html(parseFloat(subtotal).toFixed(2));
-        $("#boleta_iva").html(parseFloat(iva).toFixed(2));
-        $("#boleta_total").html(parseFloat(totalCompra).toFixed(2));
-        //LIMPIAMOS LOS INPUTS DE EFECTIVO EXACTO, DESMARCAMOS EL CHECK DE EFECTIVO EXACTO
-        //BORRAMOS LOS DATOS DE EFECTIVO ENTREGADO Y VUELTO
-        $("#iptEfectivoRecibido").val("");
-        $("#chkEfectivoExacto").prop('checked', false);
-        $("#EfectivoEntregado").html("0.00");
-        $("#Vuelto").html("0.00");
+   
+    
+  
         $("#iptCodigoCompra").val("");
         //    $("#iptCodigoVenta").focus();
     }
