@@ -123,6 +123,7 @@
                             <thead class="bg-info text-left fs-6">
                                 <tr>
                                     <th>Item</th>
+                                    <th>Id</th>
                                     <th>Codigo</th>
                                     <th>Imagen</th>
                                     <th>Id Categoria</th>
@@ -182,7 +183,11 @@
 		======================================================================================*/
 
         table = $('#lstProductosCompra').DataTable({
-            "columns": [{
+            "columns": [
+                {
+                    "data": "id_Item"
+                },
+                {
                     "data": "id"
                 },
                 {
@@ -229,10 +234,23 @@
             columnDefs: [{
                     //oculte las columnas
                     targets: 0,
-                    visible: false
+                    "data": "id_Item",
+                    visible: true
                 },
                 {
+                    //oculte las columnas
+                    targets: 1,
+                    "data": "id",
+                    visible: true
+                },
+                {
+                    //oculte las columnas
                     targets: 2,
+                    "data": "codigo_producto",
+                    visible: true
+                },
+                {
+                    targets: 3,
                     'data': 'foto',
                     'render': function(foto) {
                         var img = foto;
@@ -241,15 +259,15 @@
                 },
 
                 {
-                    targets: 3,
-                    visible: false
-                },
-                {
                     targets: 4,
                     visible: false
                 },
                 {
-                    targets: 7,
+                    targets: 5,
+                    visible: false
+                },
+                {
+                    targets: 6,
                     orderable: false
                 },
             ],
@@ -361,7 +379,7 @@
                 var row = table.row(index);
                 var data = row.data();
                 if (data['codigo_producto'] == cod_producto_actual) {
-                    table.cell(index, 8).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptPrecioVenta m-0 p-0" value="' + nuevo_precio + '">').draw();
+                    table.cell(index, 9).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptPrecioVenta m-0 p-0" value="' + nuevo_precio + '">').draw();
 
                 }
             });
@@ -399,11 +417,11 @@
                 var row = table.row(index);
                 var data = row.data();
                 if (data['codigo_producto'] == cod_producto_actual) {
-                    table.cell(index, 7).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptPrecioCompra m-0 p-0" value="' + nuevo_precio + '">').draw();
+                    table.cell(index, 8).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptPrecioCompra m-0 p-0" value="' + nuevo_precio + '">').draw();
                     // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA 
                     NuevoPrecio = (parseFloat(cantidad_actual) * (nuevo_precio));
                     NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
-                    table.cell(index, 9).data(NuevoPrecio).draw();
+                    table.cell(index, 10).data(NuevoPrecio).draw();
                     recalcularTotales();
                 }
             });
@@ -452,11 +470,11 @@
 
                     //asignamos el valor a la celda (cantidad), en dado caso se agregan mas de dos productos a comprar. 
                     // AUMENTAR EN 1 EL VALOR DE LA CANTIDAD
-                    table.cell(index, 6).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptCantidad m-0 p-0" value="' + cantidad_actual + '">').draw();
+                    table.cell(index, 7).data('<input type="int" style="width:80px;" codigoProducto = "' + cod_producto_actual + '" class="form-control text-center iptCantidad m-0 p-0" value="' + cantidad_actual + '">').draw();
                     // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA
                     NuevoPrecio = (parseFloat(cantidad_actual) * (precio_actual));
                     NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
-                    table.cell(index, 9).data(NuevoPrecio).draw();
+                    table.cell(index, 10).data(NuevoPrecio).draw();
 
                     recalcularTotales();
             
@@ -524,7 +542,7 @@
                 // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE COMPRA
                 NuevoPrecio = (parseFloat(cantidad_actual) * data['precio_compra_producto'].replaceAll("Q. ", "")).toFixed(2);
                 NuevoPrecio = "S./ " + NuevoPrecio;
-                table.cell(index, 9).data(NuevoPrecio).draw();
+                table.cell(index, 10).data(NuevoPrecio).draw();
             }
         });
         // RECALCULAMOS TOTALES
@@ -602,7 +620,8 @@
                 if (respuesta) {
                     var TotalCompra = 0.00;
                     table.row.add({
-                        'id': itemProducto,
+                        'id_Item': itemProducto,
+                        'id': respuesta['id'],
                         'codigo_producto': respuesta['codigo_producto'],
                         'foto': respuesta['foto'],
                         'id_categoria': respuesta['id_categoria'],
@@ -644,11 +663,15 @@
     function realizarCompra() {
         var count = 0;
         var totalCompra = $("#totalCompra").html();
+        var btnRealizarCompra = document.getElementById("btnIniciarCompra");
+
         table.rows().eq(0).each(function(index) { //recorremos los datos que tiene la tabla compras
             count = count + 1; // reccoriendo de 1 a 1 y sumando 
         });
         //si la cantidad es mayor a 0 quiere decir que si hay productos por lo que procede a realizar la compra
         if (count > 0) {
+
+            btnRealizarCompra.disabled = true;
             //ENVIAMOS LOS VALORES A LA BASE DE DATOS
             var formData = new FormData();
             var arr = [];
@@ -663,8 +686,8 @@
                 //return;
                 //agregame a mi array 
                 arr[index] = data['codigo_producto'] + "," +
-                    data['nombre_categoria'] + "," +
-                    data['descripcion_producto'] + "," +
+                    data['id_categoria'] + "," +
+                    data['id'] + "," +
                     //se agrega el siguiente cod para obtener desde un input el valor
                     parseFloat($.parseHTML(data['cantidad'])[0]['value']) + "," +
                     parseFloat($.parseHTML(data['precio_compra_producto'])[0]['value']) + "," +
@@ -673,8 +696,10 @@
                     parseFloat($.parseHTML(data['comentarios']));
                 //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
                 formData.append('arr[]', arr[index]);
+
+                console.log(arr, "arrcompras");
             });
-            console.log(arr, "data realizar");
+
             formData.append('total_compra', parseFloat(totalCompra));
 
             $.ajax({
@@ -688,6 +713,7 @@
                 success: function(respuesta) {
                     if (respuesta == "ok") {
                         mensajeToast('success', 'COMPRA REGISTRADA CORRECTAMENTE');
+                        btnRealizarCompra.disabled = false;
                     } else if (respuesta == "error_stock") {
                         Swal.fire({
                             position: 'center',

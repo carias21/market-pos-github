@@ -85,6 +85,8 @@
                     <thead class="bg-info text-left fs-6">
                         <tr>
                             <th>Item</th>
+                            <th>Id</th>
+
                             <th>Codigo</th>
                             <th>Imagen</th>
                             <th>Id Categoria</th>
@@ -299,6 +301,25 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
 
 </div>
 
+<?php
+// Asegúrate de iniciar la sesión antes de acceder a $_SESSION
+
+
+// Verifica si la variable de sesión está definida antes de acceder a ella
+if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]->apellido_usuario)) {
+    $nombre_usuario = $_SESSION["usuario1"]->nombre_usuario;
+    $apellido_usuario = $_SESSION["usuario1"]->apellido_usuario;
+
+    // Mostrar la notificación con emoji de mano saludando
+    echo '<script>';
+    echo 'mensajeToast("info", "HOLA DE NUEVO! ' . $nombre_usuario . ' ' . $apellido_usuario . ' 👋 ");';
+    echo '</script>';
+} else {
+    $nombre_usuario = "";
+    $apellido_usuario = "";
+}
+?>
+
 
 <!--======================================================================================
         		FUNCIONALIDADES DEL CODIGO-
@@ -343,8 +364,12 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
 		======================================================================================*/
         table = $('#lstProductosVenta').DataTable({
             "columns": [{
+                    "data": "id_Item"
+                },
+                {
                     "data": "id"
                 },
+
                 {
                     "data": "codigo_producto"
                 },
@@ -398,15 +423,21 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
             columnDefs: [{
                     //oculte las columnas
                     targets: 0,
-                    "data": "id",
+                    "data": "id_Item",
                     visible: false
                 },
                 {
+                    //oculte las columnas
                     targets: 1,
-                    "data": "codigo_producto",
+                    "data": "id",
+                    visible: true
                 },
                 {
                     targets: 2,
+                    "data": "codigo_producto",
+                },
+                {
+                    targets: 3,
                     'data': 'foto',
                     'render': function(foto) {
                         var img = foto;
@@ -414,49 +445,49 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
                     }
                 },
                 {
-                    targets: 3,
+                    targets: 4,
                     "data": "id_categoria",
                     visible: false
                 },
                 {
-                    targets: 4,
+                    targets: 5,
                     "data": "nombre_categoria",
                     visible: false
                 },
                 {
-                    targets: 5,
+                    targets: 6,
                     "data": "descripcion_producto",
                 },
                 {
-                    targets: 6,
+                    targets: 7,
                     "data": "cantidad",
                 },
                 {
-                    targets: 7,
+                    targets: 8,
                     "data": "precio_venta_producto",
                     orderable: false
                 },
                 {
-                    targets: 8,
+                    targets: 9,
                     "data": "descuento",
                     orderable: false
                 },
                 {
-                    targets: 9,
+                    targets: 10,
                     "data": "total",
                     orderable: false
                 },
                 {
-                    targets: 10,
+                    targets: 11,
                     "data": "acciones",
                 },
                 {
-                    targets: 11,
+                    targets: 12,
                     "data": "aplica_peso",
                     visible: false
                 },
                 {
-                    targets: 12,
+                    targets: 13,
                     "data": "precio_compra_producto",
                     visible: false
 
@@ -625,16 +656,16 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
                         cantidad = parseInt(data['cantidad']) + 1;
 
                         //columna 5 = cantidad
-                        table.cell(idx, 6).data(cantidad + ' Und(s)').draw();
+                        table.cell(idx, 7).data(cantidad + ' Und(s)').draw();
 
                         //se procede a cambiar el total de la Venta 
                         NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
                         NuevoPrecio = "Q. " + NuevoPrecio;
                         //columna 9 = Total
-                        table.cell(idx, 9).data(NuevoPrecio).draw();
+                        table.cell(idx, 10).data(NuevoPrecio).draw();
 
                         //al momento de realizar la acción de disminuir el stock y ya se habia agregado el descuento del producto. 
-                        table.cell(idx, 8).data("");
+                        table.cell(idx, 9).data("");
 
                         recalcularTotales();
                     }
@@ -657,15 +688,15 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
 
                 var idx = table.row($(this).parents('tr')).index();
 
-                table.cell(idx, 6).data(cantidad + ' Und(s)').draw();
+                table.cell(idx, 7).data(cantidad + ' Und(s)').draw();
 
                 NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
                 NuevoPrecio = "Q. " + NuevoPrecio;
 
-                table.cell(idx, 9).data(NuevoPrecio).draw();
+                table.cell(idx, 10).data(NuevoPrecio).draw();
 
                 //al momento de realizar la acción de disminuir el stock y ya se habia agregado el descuento del producto. 
-                table.cell(idx, 8).data("");
+                table.cell(idx, 9).data("");
 
             }
 
@@ -747,12 +778,12 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
                     descuento = result.value;
 
                     var idx = table.row($(this).parents('tr')).index();
-                    table.cell(idx, 8).data('Q. ' + descuento).draw();
+                    table.cell(idx, 9).data('Q. ' + descuento).draw();
 
                     NuevoPrecio = ((parseFloat(data['cantidad']) * data['precio_venta_producto'].replace("Q.", "")).toFixed(2) - data['descuento'].replace("Q.", ""));
                     NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
 
-                    table.cell(idx, 9).data(NuevoPrecio).draw();
+                    table.cell(idx, 10).data(NuevoPrecio).draw();
                     recalcularTotales();
 
                 }
@@ -887,12 +918,12 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
             if (data['codigo_producto'] == codigo_producto) {
 
                 // AUMENTAR EN 1 EL VALOR DE LA CANTIDAD
-                table.cell(index, 7).data("Q. " + parseFloat(precio_venta).toFixed(2)).draw();
+                table.cell(index, 8).data("Q. " + parseFloat(precio_venta).toFixed(2)).draw();
 
                 // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE VENTA
                 NuevoPrecio = (parseFloat(data['cantidad']) * data['precio_venta_producto'].replaceAll("Q. ", "")).toFixed(2);
                 NuevoPrecio = "Q. " + NuevoPrecio;
-                table.cell(index, 9).data(NuevoPrecio).draw();
+                table.cell(index, 10).data(NuevoPrecio).draw();
 
             }
 
@@ -1007,14 +1038,14 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
                         } else {
 
                             // AQUI AUMENTA LA CANTIDAD DEL STOCK A 1
-                            table.cell(index, 6).data(parseFloat(data['cantidad']) + 1 + ' Und(s)').draw();
+                            table.cell(index, 7).data(parseFloat(data['cantidad']) + 1 + ' Und(s)').draw();
 
                             // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE VENTA
                             NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
                             NuevoPrecio = "Q. " + NuevoPrecio;
-                            table.cell(index, 9).data(NuevoPrecio).draw();
+                            table.cell(index, 10).data(NuevoPrecio).draw();
                             //al momento de realizar la acción de AUMENTAR el stock y ya se habia agregado el descuento del producto. 
-                            table.cell(index, 8).data("");
+                            table.cell(index, 9).data("");
 
                             // RECALCULAMOS TOTALES
                             recalcularTotales();
@@ -1052,7 +1083,8 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
                     if (respuesta['aplica_peso'] == 1) {
 
                         table.row.add({
-                            'id': itemProducto,
+                            'id_Item': itemProducto,
+                            'id':  respuesta['id'],
                             'codigo_producto': respuesta['codigo_producto'],
                             'foto': respuesta['foto'],
                             'id_categoria': respuesta['id_categoria'],
@@ -1093,7 +1125,8 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
 
 
                         table.row.add({
-                            'id': itemProducto,
+                            'id_Item': itemProducto,
+                            'id': respuesta['id'],
                             'codigo_producto': respuesta['codigo_producto'],
                             'foto': respuesta['foto'],
                             'id_categoria': respuesta['id_categoria'],
@@ -1368,19 +1401,21 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
                                 id_cliente = 1;
                             }
 
+                      
                             arr[index] = data['codigo_producto'] + "," +
-                                data['nombre_categoria'] + "," +
-                                data['descripcion_producto'] + "," +
+                                data['id_categoria'] + "," +
+                                data['id'] + "," +
                                 parseFloat(data['cantidad']) + "," +
                                 data['precio_venta_producto'].replace("Q. ", "") + "," +
                                 data['descuento'].replace("Q. ", "") + "," +
                                 data['total'].replace("Q. ", "") + "," +
                                 data['precio_compra_producto'] + "," +
                                 tipo_pago + "," +
-                                id_cliente;
+                                id_cliente  + "," +
+                                data['descripcion_producto'];
+
                             formData.append('arr[]', arr[index]);
                         });
-
 
                         $.ajax({
                             url: "ajax/ventas.ajax.php",

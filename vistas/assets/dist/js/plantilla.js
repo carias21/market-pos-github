@@ -192,6 +192,8 @@ function fncSweetAlert(type, text, url) {
 
 			break;
 
+			
+
 		/*=============================================
 		Cuando estamos precargando
 		=============================================*/
@@ -249,8 +251,8 @@ function validateLoginUsuarioBS4() {
 function mensajeToast(tipo_mensaje, mensaje) {
 
 	toastr.options.progressBar = true;
-	toastr.options.timeOut = 3000; // How long the toast will display without user interaction
-	toastr.options.extendedTimeOut = 3000;
+	toastr.options.timeOut = 4000; // How long the toast will display without user interaction
+	toastr.options.extendedTimeOut = 4000;
 	toastr.options.rtl = true;
 	toastr.options.preventDuplicates = true;
 
@@ -274,6 +276,7 @@ function mensajeToast(tipo_mensaje, mensaje) {
 	if (tipo_mensaje == 'info2') {
 		toastr.warning(mensaje);
 	}
+
 
 
 }

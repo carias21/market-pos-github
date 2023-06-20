@@ -21,8 +21,8 @@ class AdministrarVentasModelo
                 if (!empty($sel_Usuario)  && !empty($sel_Tipo_Pago)) {
                     $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
                     v.codigo_producto, 
-                    v.categoria, 
-                    v.descripcion as producto, 
+                    ca.nombre_categoria, 
+                    p.descripcion_producto as producto, 
                     v.cantidad, 
                      CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
                      CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
@@ -34,9 +34,13 @@ class AdministrarVentasModelo
                      c.nombre_cliente,
                     '' as opciones
                     from ventas v
+
+                    inner join categorias ca on ca.id_categoria = v.fk_id_categoria
+                    inner join productos p on p.id = v.fk_id_producto
                     inner join usuarios u on u.id_usuario = v.usuario
                     inner join tipo_pago tp on tp.id = v.fk_tipo_pago
                     inner join clientes c on c.id_cliente = v.fk_id_cliente
+
                     where DATE(v.fecha_venta) >= DATE(:fechaDesde) and DATE(v.fecha_venta) <= DATE(:fechaHasta) 
                     AND v.usuario = :sel_usuario
                     AND v.fk_tipo_pago = :sel_Tipo_Pago
@@ -57,8 +61,8 @@ class AdministrarVentasModelo
                 } else if (!empty($sel_Usuario) && empty($sel_Tipo_Pago)) {
                     $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
                   v.codigo_producto, 
-                  v.categoria, 
-                  v.descripcion as producto, 
+                  ca.nombre_categoria, 
+                  p.descripcion_producto as producto, 
                   v.cantidad, 
                   CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
                   CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
@@ -70,6 +74,8 @@ class AdministrarVentasModelo
                   c.nombre_cliente,
                   '' as opciones
                   from ventas v
+                  inner join categorias ca on ca.id_categoria = v.fk_id_categoria
+                  inner join productos p on p.id = v.fk_id_producto
                   inner join usuarios u on u.id_usuario = v.usuario
                   inner join tipo_pago tp on tp.id = v.fk_tipo_pago
                   inner join clientes c on c.id_cliente = v.fk_id_cliente
@@ -87,8 +93,8 @@ class AdministrarVentasModelo
                 } else if (empty($sel_Usuario) && !empty($sel_Tipo_Pago)) {
                     $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
                     v.codigo_producto, 
-                    v.categoria, 
-                    v.descripcion as producto, 
+                    ca.nombre_categoria, 
+                    p.descripcion_producto as producto, 
                     v.cantidad, 
                     CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
                     CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
@@ -100,6 +106,8 @@ class AdministrarVentasModelo
                     c.nombre_cliente,
                     '' as opciones
                     from ventas v
+                    inner join categorias ca on ca.id_categoria = v.fk_id_categoria
+                    inner join productos p on p.id = v.fk_id_producto
                     inner join usuarios u on u.id_usuario = v.usuario
                     inner join tipo_pago tp on tp.id = v.fk_tipo_pago
                     inner join clientes c on c.id_cliente = v.fk_id_cliente
@@ -117,8 +125,8 @@ class AdministrarVentasModelo
                 } else {
                     $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
                     v.codigo_producto, 
-                    v.categoria, 
-                    v.descripcion as producto, 
+                    ca.nombre_categoria, 
+                    p.descripcion_producto as producto, 
                     v.cantidad, 
                     CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
                     CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
@@ -130,6 +138,8 @@ class AdministrarVentasModelo
                     c.nombre_cliente,
                     '' as opciones
                     FROM ventas v
+                    inner join categorias ca on ca.id_categoria = v.fk_id_categoria
+                    inner join productos p on p.id = v.fk_id_producto
                     INNER JOIN usuarios u ON u.id_usuario = v.usuario
                     INNER JOIN tipo_pago tp ON tp.id = v.fk_tipo_pago
                     inner join clientes c on c.id_cliente = v.fk_id_cliente
@@ -146,8 +156,8 @@ class AdministrarVentasModelo
             } else {
                 $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
                 v.codigo_producto, 
-                v.categoria, 
-                v.descripcion as producto, 
+                ca.nombre_categoria, 
+                p.descripcion_producto as producto,  
                 v.cantidad, 
                  CONCAT('Q. ',CONVERT(ROUND(v.precio_venta,2), CHAR)) as precio_venta,
                  CONCAT('Q. ',CONVERT(ROUND(v.descuento_venta,2), CHAR)) as descuento_venta,
@@ -159,6 +169,8 @@ class AdministrarVentasModelo
                  c.nombre_cliente,
                 '' as opciones
                 from ventas v
+                inner join categorias ca on ca.id_categoria = v.fk_id_categoria
+                inner join productos p on p.id = v.fk_id_producto
                 inner join usuarios u on u.id_usuario = v.usuario
                 inner join tipo_pago tp on tp.id = fk_tipo_pago
                 inner join clientes c on c.id_cliente = v.fk_id_cliente

@@ -232,7 +232,7 @@
                                  {
                                      //oculte las columnas
                                      targets: 2,
-                                     'data': 'categoria',
+                                     'data': 'nombre_categoria',
                                      orderable: false,
                                  },
                                  {
@@ -530,7 +530,7 @@
                                      {
                                          //oculte las columnas
                                          targets: 2,
-                                         'data': 'categoria',
+                                         'data': 'nombre_categoria',
                                          orderable: false,
                                      },
                                      {

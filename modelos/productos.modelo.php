@@ -324,7 +324,8 @@ class ProductosModelo
     static public function mdlGetDatosProducto($codigoProducto)
     {
 
-        $stmt = Conexion::conectar()->prepare("SELECT   id,
+        $stmt = Conexion::conectar()->prepare("SELECT   '' as id_Item,
+                                                        id, 
                                                         codigo_producto,
                                                         c.id_categoria,                                                        
                                                         c.nombre_categoria,

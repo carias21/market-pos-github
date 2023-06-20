@@ -62,7 +62,8 @@ class ComprasModelo
     static public function mdlGetDatosProducto($codigoProducto)
     {
 
-        $stmt = Conexion::conectar()->prepare("SELECT   id,
+        $stmt = Conexion::conectar()->prepare("SELECT   '' as id_Item,
+                                                        id,
                                                         p.codigo_producto,
                                                         c.id_categoria,                                                        
                                                         c.nombre_categoria,
@@ -89,7 +90,8 @@ class ComprasModelo
     public $resultado;
 
 
-    static public function mdlRegistrarCompra($datos){
+    static public function mdlRegistrarCompra($datos)
+    {
         date_default_timezone_set('America/Guatemala');
         $fecha_compra = date("Y-m-d H:i:s");
 
@@ -104,8 +106,8 @@ class ComprasModelo
 
                 $stmt = $conn->prepare("INSERT INTO compras (
                                             codigo_producto,
-                                            categoria,
-                                            descripcion,
+                                            fk_id_categoria,
+                                            fk_id_producto,
                                             cantidad,
                                             precio_compra,
                                             total_compra,
@@ -114,8 +116,8 @@ class ComprasModelo
                                         )
                                         VALUES (
                                             :codigo_producto,
-                                            :categoria, 
-                                            :descripcion,
+                                            :id_categoria, 
+                                            :id,
                                             :cantidad, 
                                             :precio_compra, 
                                             :total_compra, 
@@ -124,8 +126,8 @@ class ComprasModelo
                                         )");
 
                 $stmt->bindParam(":codigo_producto", $listaProductos[0], PDO::PARAM_STR);
-                $stmt->bindParam(":categoria", $listaProductos[1], PDO::PARAM_STR);
-                $stmt->bindParam(":descripcion", $listaProductos[2], PDO::PARAM_STR);
+                $stmt->bindParam(":id_categoria", $listaProductos[1], PDO::PARAM_STR);
+                $stmt->bindParam(":id", $listaProductos[2], PDO::PARAM_STR);
                 $stmt->bindParam(":cantidad", $listaProductos[3], PDO::PARAM_STR);
                 $stmt->bindParam(":precio_compra", $listaProductos[4], PDO::PARAM_STR);
                 $stmt->bindParam(":total_compra", $listaProductos[6], PDO::PARAM_STR);

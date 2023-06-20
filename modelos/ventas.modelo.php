@@ -19,8 +19,8 @@ class VentasModelo
             $conn = Conexion::conectar();
             $conn->beginTransaction();
     
-            $stmt = $conn->prepare("INSERT INTO ventas (codigo_producto, categoria, descripcion, cantidad, precio_venta, descuento_venta, total_venta, fecha_venta, usuario, precio_compra, fk_tipo_pago, fk_id_cliente)
-                                    VALUES (:codigo_producto, :nombre_categoria, :descripcion_producto, :cantidad, :precio_venta_producto, :descuento, :total_venta, :fecha_venta, :usuario, :precio_compra, :tipo_pago, :id_cliente)");
+            $stmt = $conn->prepare("INSERT INTO ventas (codigo_producto, fk_id_categoria, fk_id_producto, cantidad, precio_venta, descuento_venta, total_venta, fecha_venta, usuario, precio_compra, fk_tipo_pago, fk_id_cliente)
+                                    VALUES (:codigo_producto, :id_categoria, :id, :cantidad, :precio_venta_producto, :descuento, :total_venta, :fecha_venta, :usuario, :precio_compra, :tipo_pago, :id_cliente)");
     
             $stmtCaja = $conn->prepare("INSERT INTO caja (codigo_producto, fecha, descripcion, entrada, salida, saldo_actual, fk_usuario, fk_tipo_pago)
                                         VALUES (:codigo_producto, :fecha, :descripcion_producto, :total_venta, '', '', :usuario, :tipo_pago)");
@@ -29,8 +29,8 @@ class VentasModelo
     
             foreach ($listaProductos as $producto) {
                 $stmt->bindParam(":codigo_producto", $producto[0], PDO::PARAM_STR);
-                $stmt->bindParam(":nombre_categoria", $producto[1], PDO::PARAM_STR);
-                $stmt->bindParam(":descripcion_producto", $producto[2], PDO::PARAM_STR);
+                $stmt->bindParam(":id_categoria", $producto[1], PDO::PARAM_STR);
+                $stmt->bindParam(":id", $producto[2], PDO::PARAM_STR);
                 $stmt->bindParam(":cantidad", $producto[3], PDO::PARAM_STR);
                 $stmt->bindParam(":precio_venta_producto", $producto[4], PDO::PARAM_STR);
                 $stmt->bindParam(":descuento", $producto[5], PDO::PARAM_STR);
@@ -42,7 +42,7 @@ class VentasModelo
                 $stmt->bindParam(":id_cliente",  $producto[9], PDO::PARAM_STR);
     
                 $stmtCaja->bindParam(":codigo_producto", $producto[0], PDO::PARAM_STR);
-                $stmtCaja->bindParam(":descripcion_producto", $producto[2], PDO::PARAM_STR);
+                $stmtCaja->bindParam(":descripcion_producto", $producto[10], PDO::PARAM_STR);
                 $stmtCaja->bindParam(":total_venta", $producto[6], PDO::PARAM_STR);
                 $stmtCaja->bindParam(":fecha", $fecha_venta, PDO::PARAM_STR);
                 $stmtCaja->bindParam(":usuario", $id_usuario, PDO::PARAM_STR);

@@ -14,8 +14,8 @@ class AdministrarComprasModelo
 
             $stmt = Conexion::conectar()->prepare("SELECT c.id_compra,
                                                  c.codigo_producto, 
-                                                 c.categoria, 
-                                                 c.descripcion as producto, 
+                                                 ca.nombre_categoria as categoria, 
+                                                 p.descripcion_producto as producto, 
                                                  c.cantidad, 
                                                   CONCAT('Q. ',CONVERT(ROUND(c.precio_compra,2), CHAR)) as precio_compra,
                                                   CONCAT('Q. ',CONVERT(ROUND(c.total_compra,2), CHAR)) as total_compra,
@@ -23,6 +23,9 @@ class AdministrarComprasModelo
                                                   c.comentarios,
                                                  '' as opciones
                                                  from compras c
+                                                 inner join categorias ca on ca.id_categoria = c.fk_id_categoria
+                                                 inner join productos p on p.id = c.fk_id_producto
+                                   
                                                  where DATE(c.fecha_compra) >= DATE(:fechaDesde) and DATE(c.fecha_compra) <= DATE(:fechaHasta)  
                                                  order BY c.fecha_compra desc");
 

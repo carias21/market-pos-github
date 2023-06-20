@@ -129,3 +129,63 @@ SET fk_id_cliente = 1
 WHERE fk_id_cliente IS NULL;
 
 ALTER TABLE clientes ADD CONSTRAINT uq_nit_cliente UNIQUE (nit_cliente );
+
+
+
+
+
+
+//OPTIMIZANDO CON LLAVES FORANEAS EN VENTAS
+
+
+UPDATE ventas
+SET categoria = 120
+WHERE categoria = "categoria";
+
+ALTER TABLE ventas CHANGE categoria fk_id_categoria  INT;
+
+ALTER TABLE ventas MODIFY COLUMN fk_id_categoria INT;
+
+ALTER table ventas add FOREIGN key(fk_id_categoria)
+REFERENCES categorias(id_categoria);
+
+ALTER TABLE categorias ADD CONSTRAINT uq_nombre_categoria UNIQUE (nombre_categoria );
+
+//////////// VENTAS PRODUCTO
+
+UPDATE ventas
+SET descripcion = 449
+WHERE codigo_producto = 111111111111;
+
+ALTER TABLE ventas CHANGE descripcion fk_id_producto  INT;
+
+ALTER TABLE ventas MODIFY COLUMN fk_id_producto INT;
+
+
+ALTER table ventas add FOREIGN key(fk_id_producto)
+REFERENCES productos(id);
+
+//////// COMPRAS
+UPDATE compras
+SET categoria = 124
+WHERE categoria = "FLORES";
+
+ALTER TABLE compras CHANGE categoria fk_id_categoria  INT;
+
+ALTER table compras add FOREIGN key(fk_id_categoria)
+REFERENCES categorias(id_categoria);
+
+///// compras descripcion
+
+
+UPDATE compras
+SET descripcion = 450
+WHERE codigo_producto = 2222222222222;
+
+ALTER TABLE compras CHANGE descripcion fk_id_producto  INT;
+
+ALTER table compras add FOREIGN key(fk_id_producto)
+REFERENCES productos(id);
+
+
+
