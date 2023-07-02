@@ -10,6 +10,12 @@ class VentasControlador
         return $productos;
     }
 
+    static public function ctrRegistrarVenta0($cantidad, $precio_venta, $descuento, $total, $precio_compra, $id_tipo_pago) {
+
+        $registrarCliente = VentasModelo::mdlRegistrarVenta0($cantidad, $precio_venta, $descuento, $total, $precio_compra, $id_tipo_pago);
+
+        return $registrarCliente;
+    }
 
     
 }

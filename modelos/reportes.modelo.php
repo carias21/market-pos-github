@@ -81,4 +81,68 @@ class ReportesModelo
 
         return $stmt->fetchAll();
     }
+
+
+
+    public static function mdlFiltrar_Promedios($sel_Promedio, $fechaDesde, $fechaHasta)
+    {
+
+        if ($sel_Promedio == 1) {
+            $stmt = Conexion::conectar()->prepare('SELECT
+            CONCAT(SUM(ROUND(v.total_venta, 2)), " / (DESDE ", DATE(:fechaDesde), " - HASTA ",  DATE(:fechaHasta), ")") AS Total_Venta,
+            CONCAT(ROUND(SUM(v.total_venta) / COUNT(DISTINCT DATE(v.fecha_venta)), 2), " / PROMEDIO VENTAS DIARIAS") AS promedio
+            FROM ventas v
+            WHERE DATE(v.fecha_venta) >= DATE(:fechaDesde) AND DATE(v.fecha_venta) <= DATE(:fechaHasta) ');
+
+            $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+            $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        }else if ($sel_Promedio == 2){
+            $stmt = Conexion::conectar()->prepare('SELECT
+          CONCAT(SUM(ROUND(v.total_venta, 2)), " / (DESDE ", DATE(:fechaDesde), " - HASTA ",  DATE(:fechaHasta), ")") AS Total_Venta,
+            CONCAT(ROUND(SUM(v.total_venta) / COUNT(DISTINCT WEEK(v.fecha_venta)), 2), " / PROMEDIO VENTAS SEMANALES") AS promedio
+            FROM ventas v
+            WHERE DATE(v.fecha_venta) >= DATE(:fechaDesde) AND DATE(v.fecha_venta) <= DATE(:fechaHasta) ');
+
+            $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+            $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        }else if ($sel_Promedio == 3){
+            $stmt = Conexion::conectar()->prepare('SELECT
+          CONCAT(SUM(ROUND(v.total_venta, 2)), " / (DESDE ", DATE(:fechaDesde), " - HASTA ",  DATE(:fechaHasta), ")") AS Total_Venta,
+            CONCAT(ROUND(SUM(v.total_venta) / COUNT(DISTINCT MONTH(v.fecha_venta)), 2), " / PROMEDIO VENTAS MENSUALES") AS promedio
+            FROM ventas v
+            WHERE DATE(v.fecha_venta) >= DATE(:fechaDesde) AND DATE(v.fecha_venta) <= DATE(:fechaHasta) ');
+
+            $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+            $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        }else if ($sel_Promedio == 4){
+            $stmt = Conexion::conectar()->prepare('SELECT
+          CONCAT(SUM(ROUND(v.total_venta, 2)), " / (DESDE ", DATE(:fechaDesde), " - HASTA ",  DATE(:fechaHasta), ")") AS Total_Venta,
+            
+            CONCAT(ROUND(SUM(v.total_venta) / COUNT(DISTINCT YEAR(v.fecha_venta)), 2), " / PROMEDIO VENTAS ANUALES")  AS promedio
+            FROM ventas v
+            WHERE DATE(v.fecha_venta) >= DATE(:fechaDesde) AND DATE(v.fecha_venta) <= DATE(:fechaHasta) ');
+
+            $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
+            $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        }
+    }
 }
+
+
+

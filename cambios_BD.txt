@@ -189,3 +189,10 @@ REFERENCES productos(id);
 
 
 
+
+
+//AGREGAR VENTAS 0
+
+ALTER TABLE ventas
+MODIFY codigo_producto bigint(20) NULL;
+

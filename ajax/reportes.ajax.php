@@ -57,6 +57,12 @@ class AjaxReportes
     public function getFiltrar_Ventas_Mes($sel_Mes){
         $Filtrar_Ventas_Mes = ReportesControlador::ctrFiltrar_Ventas_Mes($sel_Mes); //Filtrar_Ventas_Mes
         echo json_encode($Filtrar_Ventas_Mes);
+    }
+
+    public function getFiltrar_Promedios($sel_Promedio, $fechaDesde, $fechaHasta){
+        $Filtrar_Promedios = ReportesControlador::ctrFiltrar_Promedios($sel_Promedio, $fechaDesde, $fechaHasta); //Filtrar_Ventas_Mes
+        echo json_encode($Filtrar_Promedios);
+      
      
         
     }
@@ -83,6 +89,9 @@ if (isset($_POST['accion']) && $_POST['accion'] == 4) { //Ejecutar function cant
 }else if (isset($_POST['accion']) && $_POST['accion'] == 9) { //FILTRAR VENTAS POR MES
     $Filtrar_Ventas_Mes = new AjaxReportes();
     $Filtrar_Ventas_Mes->getFiltrar_Ventas_Mes($_POST["sel_Mes"]);
+}else if (isset($_POST['accion']) && $_POST['accion'] == 10) { //FILTRAR PARA OBTENER PROMEDIOS
+    $Filtrar_Promedios = new AjaxReportes();
+    $Filtrar_Promedios->getFiltrar_Promedios($_POST["sel_Promedio"], $_POST["fechaDesde"], $_POST["fechaHasta"]);
 }else if(isset($_POST['accion'])&& $_POST['accion'] == 6){
     $GananciaBruta = new AjaxReportes();
     $GananciaBruta->getGananciaBruta();

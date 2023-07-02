@@ -35,8 +35,8 @@ class UsuarioControlador
             } else {
                 echo '
                 <script>
-                fncSweetAlert(
-                    "error",
+                toastr.error(
+                    "",
                     "Usuario y/o contraseña inválida",
                     "http://localhost/market-pos-github/"
                 );

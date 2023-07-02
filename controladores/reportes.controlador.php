@@ -55,4 +55,11 @@ class ReportesControlador
 
         return $Filtrar_Ventas_Mes;
     }
+
+    static public function ctrFiltrar_Promedios($sel_Promedio, $fechaDesde, $fechaHasta)
+    {
+        $Filtrar_Promedios = ReportesModelo::mdlFiltrar_Promedios($sel_Promedio, $fechaDesde, $fechaHasta);
+
+        return $Filtrar_Promedios;
+    }
 }

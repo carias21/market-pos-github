@@ -62,9 +62,10 @@
                                     <button class="btn btn-primary same-size-btn mr-2" id="btnIniciarVenta">
                                         <i class="fas fa-shopping-cart"></i>Realizar Venta
                                     </button>
-                                    <button class="btn btn-danger same-size-btn" id="btnVaciarListado">
+                                    <button class="btn btn-danger same-size-btn mr-2" id="btnVaciarListado">
                                         <i class="far fa-trash-alt"></i> Vaciar Listado
                                     </button>
+                                 
                                 </div>
                             </div>
                         </div>
@@ -123,7 +124,7 @@
 
 
                         <div class="row col-md-12">
-                            <input hidden  id="iptIdNitCliente" name="iptIdNitCliente">
+                            <input hidden id="iptIdNitCliente" name="iptIdNitCliente">
                             <input class="form-control form-control-sm" type="text" id="iptIdNombreCliente" name="iptIdNombreCliente" style="display: none; background-color: #FFD700; font-weight: bold;" ">
                         </div>
 
@@ -521,37 +522,38 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                 //input iptCodigoVenta que lo autocomplete
                 $("#iptCodigoVenta").autocomplete({
 
-                    source: respuesta,
-                    select: function(event, ui) {
+                        source: respuesta,
+                        //minLength: 3, // Mínimo de 3 caracteres antes de buscar
+                        select: function(event, ui) {
 
-                        //console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
+                            //console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
 
-                        CargarProductos(ui.item.value);
+                            CargarProductos(ui.item.value);
 
 
-                        // $("#iptCodigoVenta").val("");
+                            // $("#iptCodigoVenta").val("");
 
-                        // $("#iptCodigoVenta").focus();
+                            // $("#iptCodigoVenta").focus();
 
-                        return false;
-                    }
-                }).data("ui-autocomplete")._renderItem = function(ul, item) {
-                    return $("<li class ='ui-autocomplete-row'></li>")
-                        .data("item.autocomplete", item)
-                        .append(item.label)
-                        .appendTo(ul);
-                }
+                            return false;
+                        }
+                    }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                        return $("<li class ='ui-autocomplete-row'></li>")
+                            .data("item.autocomplete", item)
+                            .append(item.label)
+                            .appendTo(ul);
+                    },
 
-                // Limitar el número de elementos que se muestran en la lista de sugerencias
-                $("#iptCodigoVenta").autocomplete("instance")._renderMenu = function(ul, items) {
-                    var max = 4; // número máximo de elementos a mostrar
-                    var that = this;
-                    items = items.slice(0, max);
-                    $.each(items, function(index, item) {
-                        that._renderItemData(ul, item);
-                    });
-                    $(ul).addClass("ui-autocomplete-list");
-                };
+                    // Limitar el número de elementos que se muestran en la lista de sugerencias
+                    $("#iptCodigoVenta").autocomplete("instance")._renderMenu = function(ul, items) {
+                        var max = 4; // número máximo de elementos a mostrar
+                        var that = this;
+                        items = items.slice(0, max);
+                        $.each(items, function(index, item) {
+                            that._renderItemData(ul, item);
+                        });
+                        $(ul).addClass("ui-autocomplete-list");
+                    };
 
 
             }
@@ -1084,7 +1086,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
 
                         table.row.add({
                             'id_Item': itemProducto,
-                            'id':  respuesta['id'],
+                            'id': respuesta['id'],
                             'codigo_producto': respuesta['codigo_producto'],
                             'foto': respuesta['foto'],
                             'id_categoria': respuesta['id_categoria'],
@@ -1269,7 +1271,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
         var validation = Array.prototype.filter.call(forms, function(form) {
             if (form.checkValidity() === true) {
                 Swal.fire({
-                    title: '¿ESTÁ SEGURO DE REGISTRAR EL PRODUCTO?',
+                    title: '¿ESTÁ SEGURO DE REGISTRA AL CLIENTE?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -1401,7 +1403,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                                 id_cliente = 1;
                             }
 
-                      
+
                             arr[index] = data['codigo_producto'] + "," +
                                 data['id_categoria'] + "," +
                                 data['id'] + "," +
@@ -1411,7 +1413,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                                 data['total'].replace("Q. ", "") + "," +
                                 data['precio_compra_producto'] + "," +
                                 tipo_pago + "," +
-                                id_cliente  + "," +
+                                id_cliente + "," +
                                 data['descripcion_producto'];
 
                             formData.append('arr[]', arr[index]);
@@ -1463,9 +1465,95 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
             }
 
         } else {
+
             mensajeToast('warning', 'NO HAY PRODUCTOS EN EL LISTADO');
+
+            //    $("#iptCodigoVenta").focus();
+
+            // Mostrar un mensaje de Toastr con acción al hacer clic
+            toastr.info('?QUIERES REPORTAR VENTAS 0¿', 'Mensaje con acción', {
+                onclick: function() {
+                    Swal.fire({
+                        title: '¿QUIERES REPORTAR VENTA DEL DIA = 0?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Aceptar!',
+                        cancelButtonText: 'Cancelar!',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var accion = 2;
+                         
+                            var cantidad = 0;
+                            var precio_venta = 0;
+                            var descuento = 0;
+                            var total = 0;
+                            var precio_compra = 0;
+                            var id_tipo_pago = 5;
+
+                            var datos = new FormData();
+
+                            datos.append("accion", accion);
+                            datos.append("cantidad", cantidad);
+                            datos.append("precio_venta", precio_venta);
+                            datos.append("descuento", descuento);
+                            datos.append("total", total);
+                            datos.append("precio_compra", precio_compra);
+                            datos.append("id_tipo_pago", id_tipo_pago);
+                      
+
+                            $.ajax({
+                                url: "ajax/ventas.ajax.php",
+                                method: "POST",
+                                data: datos,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(respuesta) {
+                                    //console.log(respuesta);
+                                    if (respuesta == "ok") {
+                                        mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
+                                        $(".needs-validation").removeClass("was-validated");
+                                    } else if(respuesta == "error_ya_registros") {
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'info',
+                                            title: 'YA HAY VENTA REGISTRADA :)',
+                                            showConfirmButton: false,
+                                            timer: 2500
+                                        })
+                                    }else{
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'error',
+                                            title: 'ERROR AL REGISTRAR LA VENTA ' + '\n' +
+                                                ' comunicate con tu administrador',
+                                            showConfirmButton: false,
+                                            timer: 2500
+                                        })
+
+                                    }
+                          
+                                    // Habilitar el botón después de que se complete la acción
+                                    btnRealizarVenta.disabled = false;
+                                    LimpiarInputs();
+                                    $("#iptIdNombreCliente").css("display", "none");
+
+
+                                }
+                            });
+                        }else{
+                            return;
+                        }
+
+
+                    });
+                }
+            });
         }
-        //    $("#iptCodigoVenta").focus();
+
 
     } /* FIN realizarVenta */
 </script>

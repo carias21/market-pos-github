@@ -20,8 +20,9 @@
  <div class="content">
      <div class="container-fluid">
 
-         <!-------------------------------------------------------------------------------------------
-        GRAFICO DE BARRAS TOTAL VENTAS POR MES DE AÑO ACTUAL
+
+   <!-------------------------------------------------------------------------------------------
+        GRAFICO DE LINEA TOTAL VENTAS POR MES DE AÑO ACTUAL
         -------------------------------------------------------------------------------------------->
          <!-- row Grafico de barras -->
          <div class="row">
@@ -32,12 +33,14 @@
 
                      <div class="card-header">
 
-                         <h3 class="card-title" id="Total_Ventas_Mes_Año"></h3>
+                         <h3 class="card-title" id="title-header"> TOTAL VENTAS POR MES</h3>
+
+                         <h3 class="card-title" id="idineCharVentasMes"></h3>
 
                          <div class="card-tools">
 
                              <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
-            con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
+                                con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
                              </button>
@@ -57,9 +60,7 @@
 
                          <div class="chart">
 
-                             <canvas id="barChart_Total_Ventas_Mes_Año" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
-
-                             </canvas>
+                             <div id="lineCharVentasMes" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
 
                          </div>
 
@@ -69,7 +70,7 @@
 
              </div>
 
-         </div><!-- ./row Grafico de barras toal ventas mes por año-->
+         </div><!-- ./row Grafico de LINEA toal ventas mes por año-->
 
          <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS TOP VENTAS POR CATEGORIA
@@ -209,6 +210,7 @@
                      </div> <!-- ./ end card-body -->
                  </div>
              </div>
+
 
 
              <!-------------------------------------------------------------------------------------------
@@ -376,21 +378,129 @@
          </div>
 
 
+         <!-------------------------------------------------------------------------------------------
+            BUSQUEDA PROMEDIOS DE VENTAS
+         -------------------------------------------------------------------------------------------->
+         <div class="row">
+
+             <div class="col-12">
+
+                 <div class="card card-info ">
+
+                     <div class="card-header ">
+
+                         <h3 class="card-title" id="promedio_ventas"></h3>
+
+
+                         <div class="row">
+                             <div class="col-md-3 text-left">
+                                 <div class="form-group">
+                                     <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="sel_promedio">
+                                         <option value="1">PROMEDIO VENTAS DIARIAS</option>
+                                         <option value="2">PROMEDIO VENTAS SEMANALES</option>
+                                         <option value="3">PROMEDIO VENTAS MENSUALES</option>
+                                         <option value="4">PROMEDIO VENTAS ANUALES</option>
+                                     </select>
+                                 </div>
+                             </div>
+
+                             <div class="col-md-2">
+                                 <div class="form-group">
+                                     <div class="input-group">
+                                         <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
+                                         <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" id="fecha_desde" readonly>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="col-md-2">
+                                 <div class="form-group">
+                                     <div class="input-group">
+                                         <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
+                                         <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" id="fecha_hasta" readonly>
+                                     </div>
+                                 </div>
+                             </div>
+
+
+                             <div class="col-md-2 text-center">
+                                 <!-- href="" se le coloca # para que no dirija a ningun lugar -->
+                                 <div class="form-group m-0"><a class="btn btn-primary" style="width:120px;" id="btnFiltrar">Buscar</a></div>
+
+                             </div>
+
+                             <div class="col-md-1 text-center">
+                                 <!-- href="" se le coloca # para que no dirija a ningun lugar -->
+                                 <div class="form-group m-0"><a class="btn btn-danger" style="width:120px;" id="btnVaciar">VACIAR</a></div>
+
+                             </div>
+                             <div class="col-md-2 text-right">
+                                 <div class="card-tools ml-auto">
+                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                         <i class="fas fa-minus"></i>
+                                     </button>
+                                     <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                         <i class="fas fa-times"></i>
+                                     </button>
+                                     <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                         <i class="fas fa-expand"></i>
+                                     </button>
+                                 </div> <!-- ./ end card-tools -->
+                             </div>
+                         </div>
+
+
+                     </div> <!-- ./ end card-header -->
+
+
+                     <div class="card-body">
+
+                         <div class="table-responsive">
+                             <table class="table display nowrap table-bordered w-100 rounded" id="tbl_Promedios">
+                                 <thead>
+                                     <tr class="text-nowrap">
+                                         <th>TOTAL VENTAS</th>
+                                         <th>PROMEDIO VENTAS</th>
+
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+
+                                 </tbody>
+                             </table>
+                         </div>
+
+                     </div> <!-- ./ end card-body -->
+
+                 </div>
+
+             </div>
+
+         </div>
+
+
      </div><!-- /.container-fluid -->
  </div>
  <!-- /.content -->
 
+
+
+
+
  <script>
      $(document).ready(function() {
+
+         var tbl_promedios;
 
          cargarGraficoDoughnut();
          cargarGraficoProductosVendidos();
          cargarGraficoVentasPorMes();
          cargarListadoGananciaNeta();
          cargarListadoGananciaBruta();
-         cargarGraficoTotalVentasUsuario()
+         cargarGraficoTotalVentasUsuario();
+         pruebas();
 
          var sel_Mes = $("#sel_Mes");
+         var fecha_desde, fecha_hasta, sel_promedio;
 
          sel_Mes.on('change', function() {
              $.ajax({
@@ -507,7 +617,106 @@
              });
          });
 
-     })
+         tbl_promedios = $("#tbl_Promedios").DataTable({
+             searching: false,
+             dom: 'Bfrtip',
+             scrollX: true,
+             buttons: [
+                 'copy', 'excel', 'print',
+             ],
+             columnDefs: [{
+                     targets: 0,
+                     visible: true,
+                     orderable: false
+                 },
+                 {
+                     targets: 1,
+                     createdCell: function(td, cellData, rowData, row, col) {
+
+                         if (cellData.indexOf("DIARIAS") !== -1) {
+                             $(td).parent().css('background', '#00afe5');
+                         } else if (cellData.indexOf("SEMANALES") !== -1) {
+                             $(td).parent().css('background', '#ff9633');
+                         } else if (cellData.indexOf("MENSUALES") !== -1) {
+                             $(td).parent().css('background', '#cccc00');
+                         } else if (cellData.indexOf("ANUALES") !== -1) {
+                             $(td).parent().css('background', '#714acd');
+                         }
+                     }
+                 }
+             ],
+             language: {
+                 url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+             },
+
+         });
+
+
+         $('#btnFiltrar').on('click', function() {
+             var sel_promedio = $("#sel_promedio").val();
+             var fecha_desde = $("#fecha_desde").val();
+             var fecha_hasta = $("#fecha_hasta").val();
+
+             fecha_desde = fecha_desde.substr(6, 4) + '-' + fecha_desde.substr(3, 2) + '-' + fecha_desde.substr(0, 2);
+             fecha_hasta = fecha_hasta.substr(6, 4) + '-' + fecha_hasta.substr(3, 2) + '-' + fecha_hasta.substr(0, 2);
+
+             $.ajax({
+                 url: 'ajax/reportes.ajax.php',
+                 type: 'POST',
+                 dataType: 'json',
+                 data: {
+                     'accion': 10,
+                     'sel_Promedio': sel_promedio,
+                     'fechaDesde': fecha_desde,
+                     'fechaHasta': fecha_hasta,
+                 },
+                 success: function(respuesta) {
+
+
+                     for (let i = 0; i < respuesta.length; i++) {
+                         let filas = [
+                             'Q. ' + respuesta[i]["Total_Venta"],
+                             'Q. ' + respuesta[i]["promedio"]
+                         ];
+                         tbl_promedios.row.add(filas).draw();
+                     }
+                 }
+             });
+         });
+
+         $('#btnVaciar').on('click', function() {
+             tbl_promedios.clear().draw();
+         });
+
+
+
+         //CRITERIOS DE BUSQUEDA
+         $('#fecha_desde, #fecha_hasta').inputmask('dd/mm/yyyy', {
+             'placeholder': 'dd/mm/yyyy'
+         });
+
+
+         //INDICAMOS QUE POR DEFECTO NOS MUESTRE LA FECHA INICIANDO EL MES HASTA EL DIA DE HOY EN LOS INPUTS
+         $("#fecha_desde").val(moment().startOf('MONTH').format('DD/MM/YYYY'));
+
+         //CAPUTAMOS EL DIA DE HOY       
+         $("#fecha_hasta").val(moment().format('DD/MM/YYYY'));
+
+
+
+
+
+
+     }); //FIN DOCUMENT READY
+
+     $(function() {
+         $("#fecha_desde, #fecha_hasta").datepicker({
+             dateFormat: "dd/mm/yy",
+             language: "es",
+             selectOtherMonths: true,
+             // Opciones de configuración aquí
+         });
+     });
 
      /* =======================================================
      SOLICITUD AJAX GRAFICO DE DOUGHNUT
@@ -921,7 +1130,52 @@
 
              }
          });
+     }
 
+
+     function pruebas() {
+         $.ajax({
+             url: "ajax/reportes.ajax.php",
+             method: 'POST',
+             data: {
+                 'accion': 1 //parametro para obtener TOTALES DE VENTAS DE MES POR AÑO
+             },
+             dataType: 'json',
+             success: function(respuesta) {
+                 var Mes = [];
+                 var Total_Venta = [];
+                 var dataPoints = [];
+
+                 for (let i = 0; i < respuesta.length; i++) {
+                     Mes.push(respuesta[i]['Mes']);
+                     Total_Venta.push(respuesta[i]['Total_Venta']);
+
+                     dataPoints.push({
+                         label: Mes[i], // Agregar el dato "mes" en el eje x
+                         y: parseFloat(respuesta[i]['Total_Venta']),
+                         indexLabel: "Q." + respuesta[i]['Total_Venta'],
+                         markerColor: "black",
+                         markerType: "circle"
+                     });
+                 }
+
+                 var chart = new CanvasJS.Chart("lineCharVentasMes", {
+                     animationEnabled: true,
+                     theme: "light2",
+
+
+                     data: [{
+                         type: "area",
+                         indexLabelFontSize: 15,
+                         lineThickness: 4,
+                         color: "green",
+                         dataPoints: dataPoints,
+                         animationDuration: 9000
+                     }]
+                 });
+                 chart.render();
+             }
+         });
 
      }
  </script>

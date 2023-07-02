@@ -69,6 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- ChartJS -->
     <script src="vistas/assets/plugins/chart.js/Chart.min.js"></script>
 
+
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
      <!-- jstree css -->
@@ -104,9 +105,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <!-- Bootstrap 4 -->
     <script src="vistas/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- ChartJS -->
-    <script src="vistas/assets/plugins/chart.js/Chart.min.js"></script>
+
 
      <!-- InputMask --> 
     <script src="vistas/assets/plugins/moment/moment.min.js"></script>

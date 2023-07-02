@@ -69,6 +69,7 @@ class ProductosModelo
                 $minimo_stock_producto = $hojaProductos->getCell("H" . $i);
                 $ventas_producto = $hojaProductos->getCell("I" . $i);
                 $fecha_actualizacion_producto = date('Y-m-d');
+                $foto = $hojaProductos->getCell("L" . $i);
 
                 if (!empty($codigo_producto)) {
                     $stmt = Conexion::conectar()->prepare("INSERT INTO productos(codigo_producto,
@@ -80,7 +81,8 @@ class ProductosModelo
                                                                                 stock_producto,
                                                                                 minimo_stock_producto,
                                                                                 ventas_producto,
-                                                                                fecha_actualizacion_producto)
+                                                                                fecha_actualizacion_producto, 
+                                                                                foto)
                                                                         values(:codigo_producto,
                                                                                 :id_categoria_producto,
                                                                                 :descripcion_producto,
@@ -90,7 +92,8 @@ class ProductosModelo
                                                                                 :stock_producto,
                                                                                 :minimo_stock_producto,
                                                                                 :ventas_producto,
-                                                                                :fecha_actualizacion_producto);");
+                                                                                :fecha_actualizacion_producto,
+                                                                                :foto);");
 
                     $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
                     $stmt->bindParam(":id_categoria_producto", $id_categoria_producto[0], PDO::PARAM_STR);
@@ -102,6 +105,7 @@ class ProductosModelo
                     $stmt->bindParam(":minimo_stock_producto", $minimo_stock_producto, PDO::PARAM_STR);
                     $stmt->bindParam(":ventas_producto", $ventas_producto, PDO::PARAM_STR);
                     $stmt->bindParam(":fecha_actualizacion_producto", $fecha_actualizacion_producto, PDO::PARAM_STR);
+                    $stmt->bindParam(":foto", $foto, PDO::PARAM_STR);
 
                     if ($stmt->execute()) {
                         $productosRegistrados = $productosRegistrados + 1;
@@ -119,7 +123,7 @@ class ProductosModelo
     }
 
     /*===================================================================
-    BUSCAR EL ID DE UNA CATEGORIA POR EL NOMBRE DE LA CATEGORIA
+    BUSCAR EL ID DE UNA CATEGORIA POR EL NOMBRE DE LA CATEGORIA PARA LA CARGA MASIVA
     ====================================================================*/
     static public function mdlBuscarIdCategoria($nombreCategoria)
     {

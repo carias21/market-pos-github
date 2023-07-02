@@ -5,7 +5,9 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario1"]->
 
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 position-fixed sidebar-scroll">
+
+
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link">
         <img src="vistas/assets/dist/img/Log_Tecnet_Sin_fondo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -14,7 +16,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario1"]->
 <!-- COLOCAR EL NOMBRE Y APELLIDO DEL USUARIO LOGEDO, O QUE TIENE LA SESION INICIADA. -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-            <img src="vistas/assets/dist/img/Carlos_Arias.jpeg" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="User Image">
+            <img src="vistas/assets/dist/img/user1.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="User Image">
         </div>
         <div class="info">
         <h6 class="text-warning"><?php echo $_SESSION["usuario1"]->nombre_usuario. ' ' . $_SESSION["usuario1"]->apellido_usuario ?></h6>
