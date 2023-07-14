@@ -62,4 +62,12 @@ class ReportesControlador
 
         return $Filtrar_Promedios;
     }
+
+    
+    static public function ctrVentasPorSemana()
+    {
+        $VentasPorSemana = ReportesModelo::mdlVentasPorSemana();
+
+        return $VentasPorSemana;
+    }
 }

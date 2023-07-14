@@ -21,7 +21,7 @@
      <div class="container-fluid">
 
 
-   <!-------------------------------------------------------------------------------------------
+         <!-------------------------------------------------------------------------------------------
         GRAFICO DE LINEA TOTAL VENTAS POR MES DE AÑO ACTUAL
         -------------------------------------------------------------------------------------------->
          <!-- row Grafico de barras -->
@@ -72,6 +72,101 @@
 
          </div><!-- ./row Grafico de LINEA toal ventas mes por año-->
 
+
+
+         <!-------------------------------------------------------------------------------------------
+        GRAFICO CIRCULAR VENTAS POR USUARIOS
+        -------------------------------------------------------------------------------------------->
+         <div class="row">
+
+             <div class="col-lg-6">
+
+                 <div class="card card-info">
+
+                     <div class="card-header">
+
+                         <h3 class="card-title" id="Ventas_Por_Usuario"></h3>
+
+                         <div class="card-tools">
+
+                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
+                    con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
+
+                         </div> <!-- ./ end card-tools -->
+
+                     </div> <!-- ./ end card-header -->
+
+
+                     <div class="card-body">
+
+                         <div class="chart">
+
+                             <canvas id="barChart_Ventas_Por_Usuario" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
+
+                             </canvas>
+
+                         </div>
+
+                     </div> <!-- ./ end card-body -->
+
+                 </div>
+
+             </div>
+
+
+             <!-------------------------------------------------------------------------------------------
+        GRAFICO VENTAS DIA SEMANA
+        -------------------------------------------------------------------------------------------->
+             <div class="col-lg-6">
+
+                 <div class="card card-info">
+
+                     <div class="card-header">
+
+                         <h3 class="card-title" id="title-header">MAYOR VENTA DIA-SEMANA</h3>
+
+                         <div class="card-tools">
+
+                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                 <i class="fas fa-minus"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                 <i class="fas fa-expand"></i>
+                             </button>
+
+                         </div> <!-- ./ end card-tools -->
+
+                     </div> <!-- ./ end card-header -->
+
+
+                     <div class="card-body">
+
+                         <div class="chart">
+
+                             <div id="charVentasDiaSemana" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
+
+                         </div>
+
+                     </div> <!-- ./ end card-body -->
+
+                 </div>
+
+             </div>
+         </div>
+
+
          <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS TOP VENTAS POR CATEGORIA
         -------------------------------------------------------------------------------------------->
@@ -119,55 +214,6 @@
 
          </div>
 
-         <!-------------------------------------------------------------------------------------------
-        GRAFICO CIRCULAR VENTAS POR USUARIOS
-        -------------------------------------------------------------------------------------------->
-         <div class="row">
-
-             <div class="col-12">
-
-                 <div class="card card-info">
-
-                     <div class="card-header">
-
-                         <h3 class="card-title" id="Ventas_Por_Usuario"></h3>
-
-                         <div class="card-tools">
-
-                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
-                    con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
-                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                 <i class="fas fa-minus"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                 <i class="fas fa-times"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                                 <i class="fas fa-expand"></i>
-                             </button>
-
-                         </div> <!-- ./ end card-tools -->
-
-                     </div> <!-- ./ end card-header -->
-
-
-                     <div class="card-body">
-
-                         <div class="chart">
-
-                             <canvas id="barChart_Ventas_Por_Usuario" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
-
-                             </canvas>
-
-                         </div>
-
-                     </div> <!-- ./ end card-body -->
-
-                 </div>
-
-             </div>
-
-         </div>
 
 
          <!-------------------------------------------------------------------------------------------
@@ -478,6 +524,8 @@
          </div>
 
 
+
+
      </div><!-- /.container-fluid -->
  </div>
  <!-- /.content -->
@@ -497,7 +545,8 @@
          cargarListadoGananciaNeta();
          cargarListadoGananciaBruta();
          cargarGraficoTotalVentasUsuario();
-         pruebas();
+         cargarVentasMesAño();
+         cargarVentasSemana();
 
          var sel_Mes = $("#sel_Mes");
          var fecha_desde, fecha_hasta, sel_promedio;
@@ -1133,7 +1182,7 @@
      }
 
 
-     function pruebas() {
+     function cargarVentasMesAño() {
          $.ajax({
              url: "ajax/reportes.ajax.php",
              method: 'POST',
@@ -1176,6 +1225,49 @@
                  chart.render();
              }
          });
+
+     }
+
+
+     /* =======================================================
+     SOLICITUD AJAX GRAFICO DE DOUGHNUT
+     =======================================================*/
+     function cargarVentasSemana() {
+
+         $.ajax({
+             url: "ajax/reportes.ajax.php",
+             method: 'POST',
+             data: {
+                 'accion': 11
+             },
+             dataType: 'json',
+             success: function(respuesta) {
+
+                 var chart = new CanvasJS.Chart("charVentasDiaSemana", {
+
+                     animationEnabled: true,
+                     animationEnabled: true,
+                     // title:{
+                     //     text: "Email Categories",
+                     //     horizontalAlign: "left"
+                     // },
+
+                     data: [{
+                         type: "pie",
+                         innerRadius: 90,
+                         //innerRadius: 60,
+                         indexLabelFontSize: 17,
+
+                         toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                         dataPoints: respuesta
+                     }]
+                 });
+                 chart.render();
+
+             }
+         });
+
+
 
      }
  </script>

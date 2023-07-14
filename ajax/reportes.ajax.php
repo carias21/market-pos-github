@@ -63,8 +63,14 @@ class AjaxReportes
         $Filtrar_Promedios = ReportesControlador::ctrFiltrar_Promedios($sel_Promedio, $fechaDesde, $fechaHasta); //Filtrar_Ventas_Mes
         echo json_encode($Filtrar_Promedios);
       
-     
-        
+    }
+
+    
+    public function getVentasPorSemana()
+    {
+        $VentasPorSemana = ReportesControlador::ctrVentasPorSemana(); //prc_ObtenerVentasMesesPorAño
+
+        echo json_encode($VentasPorSemana, JSON_NUMERIC_CHECK);
     }
 
 
@@ -95,4 +101,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 4) { //Ejecutar function cant
 }else if(isset($_POST['accion'])&& $_POST['accion'] == 6){
     $GananciaBruta = new AjaxReportes();
     $GananciaBruta->getGananciaBruta();
+}else if(isset($_POST['accion'])&& $_POST['accion'] == 11){
+    $VentasPorSemana = new AjaxReportes();
+    $VentasPorSemana->getVentasPorSemana();
 }

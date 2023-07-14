@@ -142,6 +142,17 @@ class ReportesModelo
             return $stmt->fetchAll();
         }
     }
+
+    
+    static public function mdlVentasPorSemana()
+    {
+
+        $stmt = Conexion::conectar()->prepare('call prc_ventas_dia_semana');
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }
 
 

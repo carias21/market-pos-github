@@ -16,7 +16,8 @@ conexion.php
 VISTAS
 aside.php
 plantilla.php
-
+ventas.php
+dashboard.php
 
 
 ------------------------------------------------------------------------------------------------------
