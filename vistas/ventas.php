@@ -65,7 +65,7 @@
                                     <button class="btn btn-danger same-size-btn mr-2" id="btnVaciarListado">
                                         <i class="far fa-trash-alt"></i> Vaciar Listado
                                     </button>
-                                 
+
                                 </div>
                             </div>
                         </div>
@@ -1431,7 +1431,22 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                                 if (respuesta == "ok") {
                                     mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
                                     $(".needs-validation").removeClass("was-validated");
+
                                 } else {
+                                    $.ajax({
+                                        url: "vistas/enviar_correo.php",
+                                        type: "POST",
+                                        data: {
+                                            respuesta: respuesta
+                                        },
+                                        success: function(respuesta) {
+                                            console.log("Correo enviado correctamente.");
+                                        },
+                                        error: function() {
+                                            console.log("Error al enviar el correo.");
+                                        }
+                                    });
+
                                     Swal.fire({
                                         position: 'center',
                                         icon: 'error',
@@ -1439,7 +1454,8 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                                             ' comunicate con tu administrador',
                                         showConfirmButton: false,
                                         timer: 2500
-                                    })
+                                    });
+
                                 }
                                 table.clear().draw();
                                 // Habilitar el botón después de que se complete la acción
@@ -1484,7 +1500,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                     }).then((result) => {
                         if (result.isConfirmed) {
                             var accion = 2;
-                         
+
                             var cantidad = 0;
                             var precio_venta = 0;
                             var descuento = 0;
@@ -1501,7 +1517,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                             datos.append("total", total);
                             datos.append("precio_compra", precio_compra);
                             datos.append("id_tipo_pago", id_tipo_pago);
-                      
+
 
                             $.ajax({
                                 url: "ajax/ventas.ajax.php",
@@ -1516,7 +1532,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                                     if (respuesta == "ok") {
                                         mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
                                         $(".needs-validation").removeClass("was-validated");
-                                    } else if(respuesta == "error_ya_registros") {
+                                    } else if (respuesta == "error_ya_registros") {
                                         Swal.fire({
                                             position: 'center',
                                             icon: 'info',
@@ -1524,7 +1540,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                                             showConfirmButton: false,
                                             timer: 2500
                                         })
-                                    }else{
+                                    } else {
                                         Swal.fire({
                                             position: 'center',
                                             icon: 'error',
@@ -1535,7 +1551,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                                         })
 
                                     }
-                          
+
                                     // Habilitar el botón después de que se complete la acción
                                     btnRealizarVenta.disabled = false;
                                     LimpiarInputs();
@@ -1544,7 +1560,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
 
                                 }
                             });
-                        }else{
+                        } else {
                             return;
                         }
 

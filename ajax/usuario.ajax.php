@@ -52,9 +52,13 @@ if(isset($_POST['accion']) && $_POST['accion']==1){
     $editarUsuario->nombre_Usuario = $_POST['nombre_Usuario'];
     $editarUsuario->apellido_Usuario = $_POST['apellido_Usuario'];
     $editarUsuario->usuario = $_POST['usuario'];
-    //$editarUsuario->contraseña = $_POST['contraseña'];
-    //enviamos la contraseña encriptada
-    $editarUsuario -> contraseña = crypt($_POST["contraseña"], 'contraseña');
+
+    if (!empty($_POST['contraseña'])) {
+
+        $editarUsuario->contraseña = crypt($_POST["contraseña"], 'contraseña');
+    } else {
+        $editarUsuario->contraseña = $_POST['contraseña'];
+    }
     $editarUsuario->perfil = $_POST['perfil'];
     $editarUsuario->estado_Usuario = $_POST['estado_Usuario'];
     $editarUsuario->ajaxGuardarUsuario(0);

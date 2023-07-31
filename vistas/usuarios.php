@@ -112,7 +112,7 @@
                                         <span class="small">Contraseña</span><span class="text-danger">*</span>
                                     </label>
 
-                                    <input type="password" class="form-control form-control-sm" id="ipt_Contraseña" name="ipt_Contraseña" placeholder="Ingrese una contraseña" required>
+                                    <input type="password" class="form-control form-control-sm" id="ipt_Contraseña" name="ipt_Contraseña" placeholder="Ingrese una contraseña" >
 
                                     <div class="invalid-feedback">Debe ingresar la contraseña</div>
                                 </div>
@@ -234,7 +234,6 @@
                 $("#ipt_Nombre_Usuario").val(data[1]);
                 $("#ipt_Apellido_Usuario").val(data[2]);
                 $("#ipt_Usuario").val(data[3]);
-                $("#ipt_Contraseña").val(data[4]);
                 $("#sel_Perfil_Usuario").val('descripcion');
                 $("#sel_Estado_Usuario").val(data[6]);
 
@@ -274,7 +273,6 @@
                     datos.append("contraseña", contraseña);
                     datos.append("perfil", perfil);
                     datos.append("estado_Usuario", estado_Usuario);
-
 
                     Swal.fire({
                         title: '¿ESTÁ SEGURO DE REGISTRAR EL USUARIO?',

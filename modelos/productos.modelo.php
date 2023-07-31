@@ -161,10 +161,7 @@ class ProductosModelo
         $stock_producto,
         $minimo_stock_producto,
         $ventas_producto,
-        $name,
-        $img,
-        $tmpname,
-        $destino
+        $name
     ) {
 
         try {
@@ -375,12 +372,13 @@ class ProductosModelo
     static public function mdlInventarioActual()
     {
 
-        $stmt = Conexion::conectar()->prepare("SELECT
-                                                codigo_producto,
-                                                foto,
-                                                descripcion_producto,
-                                                stock_producto FROM productos
-                                                ");
+        $stmt = Conexion::conectar()->prepare(" SELECT
+        codigo_producto,
+        foto,
+        descripcion_producto,
+        stock_producto,
+        CONCAT('Q.', ROUND(precio_venta_producto, 2)) as precio_venta_producto FROM productos;
+     ");
 
         $stmt->execute();
 

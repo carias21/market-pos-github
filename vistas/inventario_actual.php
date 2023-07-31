@@ -33,6 +33,7 @@
                             <th>IMAGEN</th>
                             <th>NOMBRE</th>
                             <th>EXISTENCIA ACTUAL</th>
+                            <th>PRECIO VENTA</th>
                         </thead>
                         <tbody class="small text left"></tbody>
                     </table>
@@ -134,6 +135,11 @@
                     targets: 3,
                     'data': 'stock_producto',
                 },
+                {
+                    targets: 4,
+                    'data': 'precio_venta_producto',
+                },
+                
 
             ],
             language: {

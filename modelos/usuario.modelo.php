@@ -48,7 +48,7 @@ class UsuarioModelo
         return $stmt->fetchAll(PDO::FETCH_CLASS);
     }
 
-    static public function mdlObtenerSubMenuUsuario($idMenu,$id_usuario)
+    static public function mdlObtenerSubMenuUsuario($idMenu, $id_usuario)
     {
         $stmt = Conexion::conectar()->prepare("SELECT m.id,m.modulo,m.icon_menu,m.vista,pm.vista_inicio
                                                 from usuarios u inner join perfiles p on u.id_perfil_usuario = p.id_perfil
@@ -57,7 +57,7 @@ class UsuarioModelo
                                                 where u.id_usuario = :id_usuario
                                                 and m.padre_id = :idMenu
                                                 order by m.orden");
-    
+
         $stmt->bindParam(":idMenu", $idMenu, PDO::PARAM_STR);
         $stmt->bindParam(":id_usuario", $id_usuario, PDO::PARAM_STR);
         $stmt->execute();
@@ -94,6 +94,8 @@ OBTENER LISTADO DE USUARIOS DE LA TABLA DE USUARIOS
 
     static public function mdlGuardarUsuario($accion, $id_usuario, $nombre_Usuario, $apellido_Usuario, $usuario, $contraseña, $perfil,  $estado_Usuario)
     {
+
+
         try {
 
             if ($accion > 0) { //Registrar
@@ -115,25 +117,43 @@ OBTENER LISTADO DE USUARIOS DE LA TABLA DE USUARIOS
                 }
             } else { //Editar
 
+                if ($contraseña == "") {
+                    $stmt = Conexion::conectar()->prepare("UPDATE usuarios
+                    SET nombre_usuario = :nombre_usuario,
+                    apellido_usuario = :apellido_usuario,
+                    usuario = :usuario,
+                    id_perfil_usuario = :id_perfil_usuario,
+                    estado = :estado
+                    WHERE id_usuario = :id_usuario");
 
-                $stmt = Conexion::conectar()->prepare("UPDATE usuarios
-                                                        SET nombre_usuario = :nombre_usuario,
-                                                        apellido_usuario = :apellido_usuario,
-                                                        usuario = :usuario,
-                                                        clave = :clave,
-                                                        id_perfil_usuario = :id_perfil_usuario,
-                                                        estado = :estado
+                    $stmt->bindParam(":id_usuario", $id_usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":nombre_usuario", $nombre_Usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":apellido_usuario", $apellido_Usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":usuario", $usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":id_perfil_usuario", $perfil, PDO::PARAM_STR);
+                    $stmt->bindParam(":estado", $estado_Usuario, PDO::PARAM_STR);
+                }else{
+                    $stmt = Conexion::conectar()->prepare("UPDATE usuarios
+                    SET nombre_usuario = :nombre_usuario,
+                    apellido_usuario = :apellido_usuario,
+                    usuario = :usuario,
+                    clave = :clave,
+                    id_perfil_usuario = :id_perfil_usuario,
+                    estado = :estado
 
-                                                     
-                                                        WHERE id_usuario = :id_usuario");
+                 
+                    WHERE id_usuario = :id_usuario");
 
-                $stmt->bindParam(":id_usuario", $id_usuario, PDO::PARAM_STR);
-                $stmt->bindParam(":nombre_usuario", $nombre_Usuario, PDO::PARAM_STR);
-                $stmt->bindParam(":apellido_usuario", $apellido_Usuario, PDO::PARAM_STR);
-                $stmt->bindParam(":usuario", $usuario, PDO::PARAM_STR);
-                $stmt->bindParam(":clave", $contraseña, PDO::PARAM_STR);
-                $stmt->bindParam(":id_perfil_usuario", $perfil, PDO::PARAM_STR);
-                $stmt->bindParam(":estado", $estado_Usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":id_usuario", $id_usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":nombre_usuario", $nombre_Usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":apellido_usuario", $apellido_Usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":usuario", $usuario, PDO::PARAM_STR);
+                    $stmt->bindParam(":clave", $contraseña, PDO::PARAM_STR);
+                    $stmt->bindParam(":id_perfil_usuario", $perfil, PDO::PARAM_STR);
+                    $stmt->bindParam(":estado", $estado_Usuario, PDO::PARAM_STR);
+                }
+
+
 
                 if ($stmt->execute()) {
                     $resultado = "ok";

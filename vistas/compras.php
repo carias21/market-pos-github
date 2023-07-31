@@ -183,8 +183,7 @@
 		======================================================================================*/
 
         table = $('#lstProductosCompra').DataTable({
-            "columns": [
-                {
+            "columns": [{
                     "data": "id_Item"
                 },
                 {
@@ -451,7 +450,7 @@
 
                 $(this)[0]['value'] = "1";
 
-                  recalcularTotales();
+                recalcularTotales();
                 recalcularMontos();
 
                 $("#iptCantidad").val("");
@@ -477,7 +476,7 @@
                     table.cell(index, 10).data(NuevoPrecio).draw();
 
                     recalcularTotales();
-            
+
 
                 }
             });
@@ -565,9 +564,9 @@
         $("#totalCompra").html("");
         $("#totalCompra").html(TotalCompra.toFixed(2));
         var totalCompra = $("#totalCompra").html();
-   
-    
-  
+
+
+
         $("#iptCodigoCompra").val("");
         //    $("#iptCodigoVenta").focus();
     }
@@ -638,9 +637,8 @@
                             "</span>" +
 
                             "</center>",
-                        'comentarios': '<input type="text" style="width:150px;" codigoProducto = "' + respuesta['codigo_producto'] + '" class="form-control text-center iptComentarios p-0 m-0" value= ' + respuesta['comentarios'] + ' >',
-                        /*  'precio_mayor_producto': respuesta['precio_mayor_producto'],
-		                    'precio_oferta_producto': respuesta['precio_oferta_producto'] */
+                            'comentarios': '<input type="text" style="width:150px;" codigoProducto="' + respuesta['codigo_producto'] + '" class="form-control text-center iptComentarios p-0 m-0" value="' + respuesta['comentarios'] + '" maxlength="25">',
+
                     }).draw();
                     itemProducto = itemProducto + 1;
                     //  Recalculamos el total de la compra
@@ -679,25 +677,21 @@
             //recorremos la tabla
             table.rows().eq(0).each(function(index) {
                 var row = table.row(index);
-
                 var data = row.data();
 
-                //console.log($.parseHTML(data['cantidad'])[0]['value'], "data cantidad");
-                //return;
-                //agregame a mi array 
+                var comentariosInput = row.node().querySelector('.iptComentarios');
+                var comentariosValue = comentariosInput.value;
+
                 arr[index] = data['codigo_producto'] + "," +
                     data['id_categoria'] + "," +
                     data['id'] + "," +
-                    //se agrega el siguiente cod para obtener desde un input el valor
                     parseFloat($.parseHTML(data['cantidad'])[0]['value']) + "," +
                     parseFloat($.parseHTML(data['precio_compra_producto'])[0]['value']) + "," +
                     parseFloat($.parseHTML(data['precio_venta_producto'])[0]['value']) + "," +
                     data['total'].replace("Q. ", "") + "," +
-                    parseFloat($.parseHTML(data['comentarios']));
-                //  arr[index] =  data['codigo_producto'] + "," + parseFloat(data['cantidad']) + "," + data['total'].replace("Q. ", "");
-                formData.append('arr[]', arr[index]);
+                    comentariosValue; // Usar el valor del input
 
-                console.log(arr, "arrcompras");
+                formData.append('arr[]', arr[index]);
             });
 
             formData.append('total_compra', parseFloat(totalCompra));
@@ -722,7 +716,20 @@
                                 'comunicate con tu administrador',
                             showConfirmButton: false,
                             timer: 3500
-                        })
+                        });
+                        $.ajax({
+                            url: "vistas/enviar_correo.php",
+                            type: "POST",
+                            data: {
+                                respuesta: respuesta
+                            },
+                            success: function(respuesta) {
+                                console.log("Correo enviado correctamente.");
+                            },
+                            error: function() {
+                                console.log("Error al enviar el correo.");
+                            }
+                        });
                     } else {
                         Swal.fire({
                             position: 'center',
@@ -731,7 +738,21 @@
                                 'comunicate con tu administrador',
                             showConfirmButton: false,
                             timer: 3500
-                        })
+                        });
+                        $.ajax({
+                            url: "vistas/enviar_correo.php",
+                            type: "POST",
+                            data: {
+                                respuesta: respuesta
+                            },
+                            success: function(respuesta) {
+                                console.log("Correo enviado correctamente.");
+                            },
+                            error: function() {
+                                console.log("Error al enviar el correo.");
+                            }
+                        });
+
                     }
                     table.clear().draw();
                     LimpiarInputs();

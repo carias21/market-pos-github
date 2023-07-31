@@ -198,7 +198,7 @@
                                  {
                                      targets: 8,
                                      "data": "comentarios",
-                                     visible: false
+                                     visible: true
                                  },
                                  {
                                      targets: 9,
@@ -386,7 +386,7 @@
                                      {
                                          targets: 8,
                                          "data": "comentarios",
-                                         visible: false
+                                         visible: true
                                      },
                                      {
                                          targets: 9,

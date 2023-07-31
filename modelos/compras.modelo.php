@@ -99,6 +99,8 @@ class ComprasModelo
 
         try {
             $conn = Conexion::conectar();
+            // Configurar PDO para que lance excepciones en caso de errores.
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $conn->beginTransaction();
 
             for ($i = 0; $i < count($datos); ++$i) {
@@ -167,7 +169,7 @@ class ComprasModelo
             }
         } catch (PDOException $e) {
             $conn->rollBack();
-            $resultado = "error: Se produjo un error al registrar la compra.";
+            $resultado = "error: Se produjo un error al registrar la compra.".$e;
             // Aquí puedes agregar código para registrar el mensaje de error completo en un archivo de registro o mostrar un mensaje de error más específico según tus necesidades.
         }
 
