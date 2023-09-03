@@ -197,47 +197,40 @@ class AdministrarVentasModelo
 
     static public function mdlEliminarVenta($tableVentas, $id_venta, $nameId, $cantidad, $codigo_producto, $fecha_venta)
     {
+        try {
+            $conn = Conexion::conectar();
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $conn->beginTransaction();
 
-        $stmt = Conexion::conectar()->prepare("DELETE FROM $tableVentas WHERE $nameId = :$nameId");
+            // Eliminar la venta
+            $stmtEliminarVenta = $conn->prepare("DELETE FROM $tableVentas WHERE $nameId = :$nameId");
+            $stmtEliminarVenta->bindParam(":" . $nameId, $id_venta, PDO::PARAM_INT);
+            $stmtEliminarVenta->execute();
 
-        $stmt->bindParam(":" . $nameId, $id_venta, PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-
-            //   return "Todo ok hasta aqui";
-            $stmt = null;
-
-            //disminuimos el stock despues de la venta
-            $stmt = Conexion::conectar()->prepare("UPDATE productos SET stock_producto = stock_producto + :cantidad, ventas_producto = ventas_producto - :cantidad
-                                           WHERE codigo_producto = :codigo_producto");
-
-            $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
-            $stmt->bindParam(":cantidad", $cantidad, PDO::PARAM_STR);
-
-
-            //ELIMINAMOS EN LA TABLA CAJA EL DATO OBTENIDO POR LA VENTA
-            if ($stmt->execute()) {
+            // Actualizar el stock de productos y ventas
+            $stmtUpdateProductos = $conn->prepare("UPDATE productos SET stock_producto = stock_producto + :cantidad, ventas_producto = ventas_producto - :cantidad
+            WHERE codigo_producto = :codigo_producto");
+            $stmtUpdateProductos->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
+            $stmtUpdateProductos->bindParam(":cantidad", $cantidad, PDO::PARAM_INT);
+            $stmtUpdateProductos->execute();
 
 
-                //   return "Todo ok hasta aqui";
-                $stmt = null;
+            $stmtEliminarCaja = $conn->prepare("DELETE FROM caja 
+            WHERE codigo_producto = :codigo_producto AND fecha = :fecha_venta");
+            $stmtEliminarCaja->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
+            $stmtEliminarCaja->bindParam(":fecha_venta", $fecha_venta, PDO::PARAM_STR);
+            $stmtEliminarCaja->execute();
 
-                //disminuimos el stock del producto 
-                $stmt = Conexion::conectar()->prepare("DELETE FROM caja 
-                                           WHERE codigo_producto = :codigo_producto AND fecha = :fecha_venta");
 
 
-                $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
-                $stmt->bindParam(":fecha_venta", $fecha_venta, PDO::PARAM_STR);
-
-                if ($stmt->execute()) {
-                    return "ok";
-                }
-            }
-        } else {
-            return Conexion::conectar()->errorInfo();
+            // Si llega aquí, ambas operaciones fueron exitosas, entonces confirmar la transacción
+            $conn->commit();
+            $resultado = "ok";
+        } catch (PDOException $e) {
+            $conn->rollBack();
+            $resultado = "ERROR AL ELIMINAR VENTA: " . $e->getMessage();
         }
-        $stmt = null;
+        return $resultado;
     }
 }
 

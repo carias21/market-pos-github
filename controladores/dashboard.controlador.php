@@ -31,5 +31,13 @@ class DashboardControlador{
         return $productosPocoStock;
     
     }
+
+    static public function ctrFiltrarGraficoBarras($fechaDesde, $fechaHasta){
+    
+        $filtrarGraficoBarras = DashboardModelo::mdlFiltrarGraficoBarras($fechaDesde, $fechaHasta);
+    
+        return $filtrarGraficoBarras;
+    
+    }
    
 }

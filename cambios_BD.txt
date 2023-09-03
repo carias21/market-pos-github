@@ -197,3 +197,39 @@ REFERENCES productos(id);
 ALTER TABLE ventas
 MODIFY codigo_producto bigint(20) NULL;
 
+
+
+//GASTOS OPERATIVOS
+CREATE TABLE gastos_operativos (
+    id_gasto INT AUTO_INCREMENT PRIMARY KEY,
+    fk_tipo_gasto INT NOT NULL
+    descripcion VARCHAR(45) NOT NULL,
+    monto DECIMAL(10, 2) NOT NULL,
+    fecha DATE NOT NULL,
+);
+
+ALTER TABLE gastos_operativos
+CHANGE COLUMN fecha fecha TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP();
+
+CREATE TABLE tipo_gasto(
+    id_tipo_gasto INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion VARCHAR(45) NOT NULL
+);
+
+
+ALTER TABLE tipo_gasto
+ADD COLUMN fecha_creacion TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP();
+
+
+alter table gastos_operativos add FOREIGN key (fk_tipo_gasto)
+REFERENCES tipo_gasto(id_tipo_gasto)
+
+
+insert into modulos(modulo, padre_id, vista, icon_menu, orden)values("Gastos", 0, "gastos.php", "far fa-circle", 19)
+
+insert into modulos(modulo, padre_id, vista, icon_menu, orden)values("Categoria Gastos", 20, "categoria_gastos.php", "far fa-circle", 20)
+
+insert into modulos(modulo, padre_id, vista, icon_menu, orden)values("Gastos Operativos", 20, "gastos.php", "far fa-circle", 21);
+
+
+fa fa-wallet

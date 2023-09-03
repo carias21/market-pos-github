@@ -31,6 +31,14 @@ class AjaxDashboard{
         echo json_encode($productosPocoStock);
     
     }
+
+    public function ajaxFiltrarGraficoBarras($fechaDesde, $fechaHasta){
+    
+        $filtrarGraficoBarras = DashboardControlador::ctrFiltrarGraficoBarras($fechaDesde, $fechaHasta);
+    
+        echo json_encode($filtrarGraficoBarras);
+    
+    }
 }
 
 
@@ -49,6 +57,10 @@ if(isset($_POST['accion']) && $_POST['accion'] == 1){ //Ejecutar function ventas
 
     $productosPocoStock = new AjaxDashboard();
     $productosPocoStock -> getProductosPocoStock();
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 4){ //FILTRAR VENTAS POR FECHAS
+    $filtrarGraficoBarras = new AjaxDashboard();
+    $filtrarGraficoBarras->ajaxFiltrarGraficoBarras($_POST["fechaDesde"], $_POST["fechaHasta"]);
 
 }else{
     //tarjetas informativas

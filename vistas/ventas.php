@@ -1419,6 +1419,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                             formData.append('arr[]', arr[index]);
                         });
 
+                  
                         $.ajax({
                             url: "ajax/ventas.ajax.php",
                             method: "POST",
@@ -1428,9 +1429,14 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                             processData: false,
                             dataType: 'json',
                             success: function(respuesta) {
-                                if (respuesta == "ok") {
+                                var venta = 0;
+
+                                if (respuesta.length === 19) {
+
                                     mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
                                     $(".needs-validation").removeClass("was-validated");
+
+                                    window.open('http://localhost/market-pos-github/vistas/generar_ticket.php?fecha_venta=' + respuesta);
 
                                 } else {
                                     $.ajax({

@@ -69,7 +69,7 @@ class ReportesModelo
     static public function mdlFiltrar_Ventas_Mes($sel_Mes)
     {
 
-        $stmt = Conexion::conectar()->prepare('SELECT vc.fecha_venta,
+        $stmt = Conexion::conectar()->prepare('SELECT  DATE_FORMAT(vc.fecha_venta, "%m-%d")  AS fecha_venta,
                                                 SUM(ROUND(vc.total_venta, 2)) AS total_venta
                                                 FROM ventas vc
                                                 WHERE MONTH(vc.fecha_venta) = :sel_Mes

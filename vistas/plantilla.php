@@ -1,19 +1,19 @@
-<?php 
+<?php
 session_start();
 //session_destroy();
 
 $routesArray = explode("/", $_SERVER['REQUEST_URI']);
 $routesArray = array_filter($routesArray);
 
-    if(count(array_filter($routesArray))>1){
-        echo '
+if (count(array_filter($routesArray)) > 1) {
+    echo '
         <script>
         window.location =  "http://localhost/market-pos-github/"
         </script>';
-    }
+}
 
-    //recibe la opcion cerrar cesion
-if(isset($_GET["cerrar_sesion"]) && $_GET["cerrar_sesion"]==1){
+//recibe la opcion cerrar cesion
+if (isset($_GET["cerrar_sesion"]) && $_GET["cerrar_sesion"] == 1) {
     session_destroy(); // cerrar la sesion
     echo '
     <script>
@@ -46,8 +46,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- ============================================================================================================= -->
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="vistas/assets/plugins/fontawesome-free/css/all.min.css">
@@ -65,23 +64,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    
+
+   <!-- GOOGLE CHART JS -->
+   <script src="vistas/assets/dist/js/google.chart.js"></script>
+
     <!-- ChartJS -->
     <script src="vistas/assets/plugins/chart.js/Chart.min.js"></script>
 
 
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-     <!-- jstree css -->
+    <!-- jstree css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 
- <!-- Estilo Calendario
+    <!-- Estilo Calendario
  <link rel="stylesheet" href="vistas/assets/dist/css/bootstrap-datepicker.min.css">
  <link rel="stylesheet" href="vistas/assets/dist/css/font-awesome.min.css">-->
- 
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css">
 
     <!-- ============================================================
     =ESTILOS PARA USO DE DATATABLES JS
@@ -102,12 +104,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- jQuery -->
     <script src="vistas/assets/plugins/jquery/jquery.min.js"></script>
-    
+
     <!-- Bootstrap 4 -->
     <script src="vistas/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
-     <!-- InputMask --> 
+    <!-- InputMask -->
     <script src="vistas/assets/plugins/moment/moment.min.js"></script>
     <script src="vistas/assets/plugins/inputmask/jquery.inputmask.min.js"></script>
 
@@ -126,7 +128,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- ============================================================
     =LIBRERIAS PARA USO DE DATATABLES JS
     ===============================================================-->
-    <script src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>        
+    <script src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
 
@@ -137,19 +139,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
-    
+
     <!-- AdminLTE App -->
     <script src="vistas/assets/dist/js/adminlte.min.js"></script>
 
     <script src="vistas/assets/dist/js/plantilla.js"></script>
 
- 
+
 
 </head>
 
-<?php if(isset($_SESSION["usuario1"])): ?>
+<?php if (isset($_SESSION["usuario1"])) : ?>
 
-    <body class ="hold-transition sidebar-mini">
+    <body class="hold-transition sidebar-mini">
         <div class="wrapper">
 
             <?php
@@ -158,21 +160,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
             ?>
 
             <div class="content-wrapper">
-                <?php include "vistas/". $_SESSION['usuario1']->vista ?>
+                <?php include "vistas/" . $_SESSION['usuario1']->vista ?>
 
             </div>
         </div>
 
         <script>
-            function CargarContenido(pagina_php, contenedor, id_perfil, id_modulo){
+            function CargarContenido(pagina_php, contenedor, id_perfil, id_modulo) {
                 $("." + contenedor).load(pagina_php)
             }
         </script>
-        
+
     </body>
     <!--SI LA SESION NO EXISTE ME DIRECCIONA NUEVAMENTE AL LOGIN -------
     
-    <?php else: ?>
+    <?php else : ?>
 
         <body>
             <?php include "vistas/login.php" ?>

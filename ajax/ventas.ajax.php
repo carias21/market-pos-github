@@ -18,19 +18,16 @@ class AjaxVentas
 
   public function ajaxRegistrarVenta($datos)
   {
-    date_default_timezone_set('America/Guatemala');
-    $fecha_venta = date("Y-m-d H:i:s");
 
-    $registroVenta = VentasControlador::ctrRegistrarVenta($datos, $fecha_venta);
+
+    $registroVenta = VentasControlador::ctrRegistrarVenta($datos);
     echo json_encode($registroVenta, JSON_UNESCAPED_UNICODE);
   }
 
 
 
-  public function ajaxRegistrarVenta0()
-  {
+  public function ajaxRegistrarVenta0(){
     $registrarVenta0 = VentasControlador::ctrRegistrarVenta0(
-
       $this->cantidad,
       $this->precio_venta,
       $this->descuento,
@@ -47,10 +44,9 @@ class AjaxVentas
 }
 
 
-if (isset($_POST["arr"])) {
-  // Ambos están presentes, realizar la lógica deseada aquí
+if (isset($_POST["arr"]) && session_status() === PHP_SESSION_ACTIVE) {
+  // Ambos están presentes y la sesión está activa
   $arr = $_POST["arr"];
-
   $registrar = new AjaxVentas();
   $registrar->ajaxRegistrarVenta($_POST["arr"]);
 

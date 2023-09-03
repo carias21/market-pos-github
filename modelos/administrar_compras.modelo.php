@@ -49,30 +49,31 @@ class AdministrarComprasModelo
 
     static public function mdlEliminarCompra($tableCompras, $id_compra, $nameId, $codigo_producto,  $cantidad)
     {
-        $stmt = Conexion::conectar()->prepare("DELETE FROM $tableCompras WHERE $nameId = :$nameId");
 
-        $stmt->bindParam(":" . $nameId, $id_compra, PDO::PARAM_INT);
+        try {
+            $conn = Conexion::conectar();
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $conn->beginTransaction();
 
-        if ($stmt->execute()) {
+            // Eliminar la compra
+            $stmtDeleteCompra = $conn->prepare("DELETE FROM $tableCompras WHERE $nameId = :$nameId");
+            $stmtDeleteCompra->bindParam(":" . $nameId, $id_compra, PDO::PARAM_INT);
+            $stmtDeleteCompra->execute();
 
-            //   return "Todo ok hasta aqui";
-            $stmt = null;
+            // Actualizar la cantidad de productos
+            $stmtUpdateProductos = $conn->prepare("UPDATE productos SET stock_producto = stock_producto - :cantidad
+            WHERE codigo_producto = :codigo_producto");
+            $stmtUpdateProductos->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
+            $stmtUpdateProductos->bindParam(":cantidad", $cantidad, PDO::PARAM_INT);
+            $stmtUpdateProductos->execute();
 
-            //disminuimos el stock del producto 
-            $stmt = Conexion::conectar()->prepare("UPDATE productos SET stock_producto = stock_producto - :cantidad
-                                           WHERE codigo_producto = :codigo_producto");
-
-
-            $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
-            $stmt->bindParam(":cantidad", $cantidad, PDO::PARAM_STR);
-
-
-
-            if ($stmt->execute()) {
-                return "ok";
-            }
-        } else {
-            return Conexion::conectar()->errorInfo();
+            // Si llega aquí, ambas operaciones fueron exitosas, entonces confirmar la transacción
+            $conn->commit();
+            $resultado = "ok";
+        } catch (PDOException $e) {
+            $conn->rollBack();
+            $resultado = "ERROR ELIMINAR COMPRA " . $e;
         }
+        return $resultado;
     }
 }

@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 class ComprasModelo
 {
 
+    public $resultado;
 
     /*===================================================================
     LISTAR NOMBRE DE PRODUCTOS PARA INPUT DE AUTO COMPLETADO
@@ -86,10 +87,6 @@ class ComprasModelo
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-
-    public $resultado;
-
-
     static public function mdlRegistrarCompra($datos)
     {
         date_default_timezone_set('America/Guatemala');
@@ -97,80 +94,48 @@ class ComprasModelo
 
         $listaProductos = [];
 
+        for ($i = 0; $i < count($datos); ++$i) {
+            $producto = explode(",", $datos[$i]);
+            $listaProductos[] = $producto;
+        }
+
         try {
             $conn = Conexion::conectar();
             // Configurar PDO para que lance excepciones en caso de errores.
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $conn->beginTransaction();
 
-            for ($i = 0; $i < count($datos); ++$i) {
-                $listaProductos = explode(",", $datos[$i]);
+            $stmtInsertCompras = $conn->prepare("INSERT INTO compras (codigo_producto,fk_id_categoria,fk_id_producto,cantidad,precio_compra,total_compra,fecha_compra,comentarios)
+                                        VALUES (:codigo_producto,:id_categoria, :id,:cantidad, :precio_compra, :total_compra, :fecha_compra,:comentarios)");
 
-                $stmt = $conn->prepare("INSERT INTO compras (
-                                            codigo_producto,
-                                            fk_id_categoria,
-                                            fk_id_producto,
-                                            cantidad,
-                                            precio_compra,
-                                            total_compra,
-                                            fecha_compra,
-                                            comentarios
-                                        )
-                                        VALUES (
-                                            :codigo_producto,
-                                            :id_categoria, 
-                                            :id,
-                                            :cantidad, 
-                                            :precio_compra, 
-                                            :total_compra, 
-                                            :fecha_compra,
-                                            :comentarios
-                                        )");
+            $stmtUpdateProductos = $conn->prepare("UPDATE productos SET stock_producto = stock_producto + :cantidad,precio_compra_producto = :precio_compra,precio_venta_producto = :precio_venta
+                                        WHERE codigo_producto = :codigo_producto");
 
-                $stmt->bindParam(":codigo_producto", $listaProductos[0], PDO::PARAM_STR);
-                $stmt->bindParam(":id_categoria", $listaProductos[1], PDO::PARAM_STR);
-                $stmt->bindParam(":id", $listaProductos[2], PDO::PARAM_STR);
-                $stmt->bindParam(":cantidad", $listaProductos[3], PDO::PARAM_STR);
-                $stmt->bindParam(":precio_compra", $listaProductos[4], PDO::PARAM_STR);
-                $stmt->bindParam(":total_compra", $listaProductos[6], PDO::PARAM_STR);
-                $stmt->bindParam(":fecha_compra", $fecha_compra, PDO::PARAM_STR);
-                $stmt->bindParam(":comentarios", $listaProductos[7], PDO::PARAM_STR);
+            foreach ($listaProductos as $producto) {
 
-                if ($stmt->execute()) {
-                    $stmt = null;
+                $stmtInsertCompras->bindParam(":codigo_producto", $producto[0], PDO::PARAM_STR);
+                $stmtInsertCompras->bindParam(":id_categoria", $producto[1], PDO::PARAM_STR);
+                $stmtInsertCompras->bindParam(":id", $producto[2], PDO::PARAM_STR);
+                $stmtInsertCompras->bindParam(":cantidad", $producto[3], PDO::PARAM_STR);
+                $stmtInsertCompras->bindParam(":precio_compra", $producto[4], PDO::PARAM_STR);
+                $stmtInsertCompras->bindParam(":total_compra", $producto[6], PDO::PARAM_STR);
+                $stmtInsertCompras->bindParam(":fecha_compra", $fecha_compra, PDO::PARAM_STR);
+                $stmtInsertCompras->bindParam(":comentarios", $producto[7], PDO::PARAM_STR);
 
-                    $stmt = $conn->prepare("UPDATE productos 
-                                            SET stock_producto = stock_producto + :cantidad,
-                                                precio_compra_producto = :precio_compra,
-                                                precio_venta_producto = :precio_venta
-                                            WHERE codigo_producto = :codigo_producto");
+                $stmtUpdateProductos->bindParam(":codigo_producto", $producto[0], PDO::PARAM_STR);
+                $stmtUpdateProductos->bindParam(":cantidad", $producto[3], PDO::PARAM_STR);
+                $stmtUpdateProductos->bindParam(":precio_compra", $producto[4], PDO::PARAM_STR);
+                $stmtUpdateProductos->bindParam(":precio_venta", $producto[5], PDO::PARAM_STR);
 
-                    $stmt->bindParam(":codigo_producto", $listaProductos[0], PDO::PARAM_STR);
-                    $stmt->bindParam(":cantidad", $listaProductos[3], PDO::PARAM_STR);
-                    $stmt->bindParam(":precio_compra", $listaProductos[4], PDO::PARAM_STR);
-                    $stmt->bindParam(":precio_venta", $listaProductos[5], PDO::PARAM_STR);
-
-                    if ($stmt->execute()) {
-                        $resultado = "ok";
-                    } else {
-                        $resultado = "error_stock";
-                        break; // Salir del bucle en caso de error
-                    }
-                } else {
-                    $resultado = "error";
-                    break; // Salir del bucle en caso de error
-                }
+                $stmtInsertCompras->execute();
+                $stmtUpdateProductos->execute();
             }
 
-            if ($resultado === "ok") {
-                $conn->commit();
-            } else {
-                $conn->rollBack();
-            }
+            $conn->commit();
+            $resultado = "ok";
         } catch (PDOException $e) {
             $conn->rollBack();
-            $resultado = "error: Se produjo un error al registrar la compra.".$e;
-            // Aquí puedes agregar código para registrar el mensaje de error completo en un archivo de registro o mostrar un mensaje de error más específico según tus necesidades.
+            $resultado = "ERROR REGISTRAR COMPRA." . $e;
         }
 
         return $resultado;

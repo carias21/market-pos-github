@@ -296,7 +296,7 @@
 
                                  },
                                  {
-                                
+
                                      targets: 12,
                                      'data': 'nombre_cliente',
                                      orderable: false,
@@ -408,7 +408,20 @@
                                                          'comunicate con tu administrador',
                                                      showConfirmButton: false,
                                                      timer: 3500
-                                                 })
+                                                 });
+                                                 $.ajax({
+                                                     url: "vistas/enviar_correo.php",
+                                                     type: "POST",
+                                                     data: {
+                                                         respuesta: respuesta
+                                                     },
+                                                     success: function(respuesta) {
+                                                         console.log("Correo enviado correctamente.");
+                                                     },
+                                                     error: function() {
+                                                         console.log("Error al enviar el correo.");
+                                                     }
+                                                 });
                                              }
                                          }
                                      });

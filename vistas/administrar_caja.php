@@ -131,16 +131,12 @@ YA QUE NO SE MUESTRA -->
             <div class="modal-content ">
 
                 <!-- cabecera del modal -->
-                <div class="modal-header bg-gray py-1">
-
-                    <h5 class="modal-title">Salida de Efectivo</h5>
-
-                    <button type="button" class="btn btn-outline-primary text-white border-0 fs-5" data-bs-dismiss="modal" id="btnCerrarModal">
+                <div class="modal-header bg-danger py-1 text-center">
+                    <h5 class="text-center fw-bold">Salida de Efectivo</h5>
+                    <button type="button" class="btn btn-outline-light fs-5" data-bs-dismiss="modal" id="btnCerrarModal">
                         <i class="far fa-times-circle"></i>
                     </button>
-
                 </div>
-
 
                 <!-- *************************** CUERPO DE LA VENTANA ******************** -->
                 <div class="modal-body">
@@ -171,8 +167,17 @@ YA QUE NO SE MUESTRA -->
                             </div>
 
                             <!-- creacion de botones para cancelar y guardar el producto -->
-                            <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
-                            <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2" id="btnGuardarSalidaEfectivo">Aceptar</button>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-danger btn-block mt-3" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary btn-block mt-3" id="btnGuardarSalidaEfectivo">Aceptar</button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- <button class="btn btn-default btn-success" type="submit" name="submit" value="Submit">Save</button> -->
 
                     </form>
@@ -198,15 +203,13 @@ YA QUE NO SE MUESTRA -->
             <div class="modal-content ">
 
                 <!-- cabecera del modal -->
-                <div class="modal-header bg-gray py-1">
-
-                    <h5 class="modal-title">Ingreso de Efectivo</h5>
-
+                <div class="modal-header bg-success py-1 text-center">
+                    <h5 class="modal-title fw-bold">Ingreso de Efectivo</h5>
                     <button type="button" class="btn btn-outline-primary text-white border-0 fs-5" data-bs-dismiss="modal" id="btnCerrarModal">
                         <i class="far fa-times-circle"></i>
                     </button>
-
                 </div>
+
 
 
                 <!-- *************************** CUERPO DE LA VENTA ******************** -->
@@ -240,10 +243,16 @@ YA QUE NO SE MUESTRA -->
                             </div>
 
                             <!-- creacion de botones para cancelar y guardar el producto -->
-                            <button type="button" class="btn btn-danger mt-3 mx-2" style="width:170px;" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
-                            <button type="button" style="width:170px;" class="btn btn-primary mt-3 mx-2" id="btnGuardarIngresoEfectivo">Aceptar</button>
-                            <!-- <button class="btn btn-default btn-success" type="submit" name="submit" value="Submit">Save</button> -->
-
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-danger btn-block mt-3" data-bs-dismiss="modal" id="btnCancelarRegistro">Cancelar</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary btn-block mt-3" id="btnGuardarIngresoEfectivo">Aceptar</button>
+                                    </div>
+                                </div>
+                            </div>
                     </form>
 
                 </div>

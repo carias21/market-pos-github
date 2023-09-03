@@ -1,3 +1,5 @@
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
  <!-- Content Header (Page header) -->
  <div class="content-header">
      <div class="container-fluid">
@@ -58,9 +60,10 @@
 
                      <div class="card-body">
 
-                         <div class="chart">
+                         <div class="lineChart">
 
-                             <div id="lineCharVentasMes" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
+                             <canvas id="lineChart" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></canvas>
+
 
                          </div>
 
@@ -75,22 +78,21 @@
 
 
          <!-------------------------------------------------------------------------------------------
-        GRAFICO CIRCULAR VENTAS POR USUARIOS
+        GRAFICO DE BARRAS TOP VENTAS POR CATEGORIA
         -------------------------------------------------------------------------------------------->
          <div class="row">
 
              <div class="col-lg-6">
 
+
                  <div class="card card-info">
 
                      <div class="card-header">
 
-                         <h3 class="card-title" id="Ventas_Por_Usuario"></h3>
+                         <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
 
                          <div class="card-tools">
 
-                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
-                    con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
                              </button>
@@ -110,9 +112,7 @@
 
                          <div class="chart">
 
-                             <canvas id="barChart_Ventas_Por_Usuario" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
-
-                             </canvas>
+                             <div id="piechart_3d" style="width: 100%; height: 350px; "></div>
 
                          </div>
 
@@ -121,7 +121,6 @@
                  </div>
 
              </div>
-
 
              <!-------------------------------------------------------------------------------------------
         GRAFICO VENTAS DIA SEMANA
@@ -155,8 +154,7 @@
 
                          <div class="chart">
 
-                             <div id="charVentasDiaSemana" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
-
+                             <div id="charVentasDiaSemana" style="width: 100%; height: 350px;"></div>
                          </div>
 
                      </div> <!-- ./ end card-body -->
@@ -167,22 +165,24 @@
          </div>
 
 
+
          <!-------------------------------------------------------------------------------------------
-        GRAFICO DE BARRAS TOP VENTAS POR CATEGORIA
+        GRAFICO CIRCULAR VENTAS POR USUARIOS
         -------------------------------------------------------------------------------------------->
          <div class="row">
 
-             <div class="col-12">
-
+             <div class="col-lg-12">
 
                  <div class="card card-info">
 
                      <div class="card-header">
 
-                         <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
+                         <h3 class="card-title" id="Ventas_Por_Usuario"></h3>
 
                          <div class="card-tools">
 
+                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
+       con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                  <i class="fas fa-minus"></i>
                              </button>
@@ -202,7 +202,9 @@
 
                          <div class="chart">
 
-                             <div id="chartContainer" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></div>
+                             <canvas id="barChart_Ventas_Por_Usuario" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
+
+                             </canvas>
 
                          </div>
 
@@ -211,9 +213,7 @@
                  </div>
 
              </div>
-
          </div>
-
 
 
          <!-------------------------------------------------------------------------------------------
@@ -780,28 +780,41 @@
              },
              dataType: 'json',
              success: function(respuesta) {
-
-                 var chart = new CanvasJS.Chart("chartContainer", {
-                     animationEnabled: true,
-                     // title:{
-                     //     text: "Email Categories",
-                     //     horizontalAlign: "left"
-                     // },
-                     data: [{
-                         type: "doughnut",
-                         startAngle: 60,
-                         //innerRadius: 60,
-                         indexLabelFontSize: 17,
-                         indexLabel: "{label} - #percent%",
-                         toolTipContent: "<b>{label}:</b> {y} (#percent%)",
-                         dataPoints: respuesta
-                     }]
+                 google.charts.load("current", {
+                     packages: ["corechart"]
                  });
-                 chart.render();
-
+                 google.charts.setOnLoadCallback(function() {
+                     drawChart(respuesta);
+                 });
              }
          });
 
+         function drawChart(responseData) {
+             var data = new google.visualization.DataTable();
+             data.addColumn('string', 'Label');
+             data.addColumn('number', 'Y');
+
+             for (var i = 0; i < responseData.length; i++) {
+                 data.addRow([responseData[i].label, responseData[i].y]);
+             }
+
+
+
+             var options = {
+                 is3D: true,
+
+                 chartArea: {
+                     width: '80%',
+                     height: '80%'
+                 },
+                 legend: {
+                     position: 'top'
+                 } // Cambia la posición de la leyenda a la parte superior
+             };
+
+             var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+             chart.draw(data, options);
+         }
 
 
      }
@@ -939,50 +952,32 @@
              },
              dataType: 'json',
              success: function(respuesta) {
-                 // console.log("respuesta", respuesta);
 
                  var Mes = [];
                  var Total_Venta = [];
-
 
                  for (let i = 0; i < respuesta.length; i++) {
 
                      Mes.push(respuesta[i]['Mes']);
                      Total_Venta.push(respuesta[i]['Total_Venta']);
-
-                     /*    total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i][
-                             'total_venta'
-                         ] ); */
-
                  }
-
                  Total_Venta.push(0);
-                 // total_venta.push(600);
 
-                 // console.log(total_ventas_mes);
-
-                 //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
                  $("#Total_Ventas_Mes_Año").html('TOTAL VENTAS POR MES');
-
-                 var barChartCanvas = $("#barChart_Total_Ventas_Mes_Año").get(0).getContext('2d');
 
                  var areaChartData = {
                      labels: Mes,
-                     datasets: [
-                         /*{
-                                                 label: 'Ventas del mes anterior',
-                                                    //color de las barras
-                                                 // backgroundColor: 'rgba(60,141,188,0.9)',
-                                                 /* data: total_venta_ant
-                                              },*/
-                         {
-                             label: 'Total ventas Mes',
-                             //color de las barras'rgba(60,141,188,0.9)',
-                             backgroundColor: 'rgb(196, 230, 0)',
-
-                             data: Total_Venta
-                         }
-                     ]
+                     datasets: [{
+                         label: 'Total ventas Mes',
+                         borderColor: 'rgb(196, 230, 0)',
+                         borderWidth: 2,
+                         pointRadius: 20, // Ajusta el tamaño de los puntos
+                         data: Total_Venta,
+                         pointLabel: Total_Venta, // Etiquetas para los puntos
+                         pointHoverBackgroundColor: 'rgb(196, 230, 0)',
+                         pointHoverBorderColor: 'rgb(0,0,0)',
+                         pointHoverBorderWidth: 2,
+                     }]
                  }
 
                  var barChartData = $.extend(true, {}, areaChartData);
@@ -991,59 +986,30 @@
 
                  barChartData.datasets[0] = temp0;
 
-                 var barChartOptions = {
-                     maintainAspectRatio: false,
-                     responsive: true,
-                     events: false,
-                     legend: {
-                         display: true
-                     },
+                 // Configuración del gráfico
+                 var options = {
                      scales: {
-                         xAxes: [{
-                             stacked: true,
-                         }],
-                         yAxes: [{
-                             stacked: true
-                         }]
+                         y: {
+                             beginAtZero: true
+                         }
                      },
-                     animation: {
-                         duration: 2000,
-                         easing: "easeOutQuart",
-                         onComplete: function() {
-                             var ctx = this.chart.ctx;
-                             ctx.font = Chart.helpers.fontString(Chart.defaults.global
-                                 .defaultFontFamily, 'normal',
-                                 Chart.defaults.global.defaultFontFamily);
-                             ctx.textAlign = 'center';
-                             ctx.textBaseline = 'bottom';
-
-                             this.data.datasets.forEach(function(dataset) {
-                                 for (var i = 0; i < dataset.data.length; i++) {
-                                     var model = dataset._meta[Object.keys(dataset
-                                             ._meta)[0]].data[i]._model,
-                                         scale_max = dataset._meta[Object.keys(dataset
-                                             ._meta)[0]].data[i]._yScale.maxHeight;
-                                     ctx.fillStyle = '#444';
-                                     var y_pos = model.y - 5;
-                                     // Make sure data value does not get overflown and hidden
-                                     // when the bar's value is too close to max value of scale
-                                     // Note: The y value is reverse, it counts from top down
-                                     if ((scale_max - model.y) / scale_max >= 0.93)
-                                         y_pos = model.y + 20;
-                                     ctx.fillText(dataset.data[i], model.x, y_pos);
-                                 }
-                             });
+                     responsive: true, // Hacer el gráfico responsive
+                     maintainAspectRatio: false, // Desactivar el aspect ratio para mejor ajuste
+                     plugins: {
+                         legend: {
+                             position: 'top', // Puedes ajustar la posición de la leyenda si es necesario
                          }
                      }
-                 }
-
-                 new Chart(barChartCanvas, {
-                     type: 'bar',
-                     data: barChartData,
-                     options: barChartOptions
-                 })
+                 };
 
 
+                 // Crear el gráfico de líneas
+                 var ctx = document.getElementById('lineChart').getContext('2d');
+                 var lineChart = new Chart(ctx, {
+                     type: 'line',
+                     data: areaChartData,
+                     options: options
+                 });
              }
          });
      }
@@ -1104,7 +1070,9 @@
                      title: {
                          display: true,
                          text: 'VENTAS DEL MES POR USUARIO'
-                     }
+                     },
+                     responsive: true,
+                     maintainAspectRatio: false // Desactivar el aspect ratio para mejor ajuste
                  };
 
                  new Chart(CharCircular, {
@@ -1191,41 +1159,55 @@
              },
              dataType: 'json',
              success: function(respuesta) {
+
                  var Mes = [];
                  var Total_Venta = [];
-                 var dataPoints = [];
 
                  for (let i = 0; i < respuesta.length; i++) {
+
                      Mes.push(respuesta[i]['Mes']);
                      Total_Venta.push(respuesta[i]['Total_Venta']);
+                 }
+                 Total_Venta.push(0);
 
-                     dataPoints.push({
-                         label: Mes[i], // Agregar el dato "mes" en el eje x
-                         y: parseFloat(respuesta[i]['Total_Venta']),
-                         indexLabel: "Q." + respuesta[i]['Total_Venta'],
-                         markerColor: "black",
-                         markerType: "circle"
-                     });
+                 $("#Total_Ventas_Mes_Año").html('TOTAL VENTAS POR MES');
+
+
+                 var areaChartData = {
+                     labels: Mes,
+                     datasets: [{
+                         label: 'Total ventas Mes',
+                         //color de las barras'rgba(60,141,188,0.9)',
+                         backgroundColor: 'rgb(196, 230, 0)',
+                         data: Total_Venta
+                     }]
                  }
 
-                 var chart = new CanvasJS.Chart("lineCharVentasMes", {
-                     animationEnabled: true,
-                     theme: "light2",
+                 var barChartData = $.extend(true, {}, areaChartData);
+
+                 var temp0 = areaChartData.datasets[0];
+
+                 barChartData.datasets[0] = temp0;
+
+                 // Configuración del gráfico
+                 var options = {
+                     scales: {
+                         y: {
+                             beginAtZero: true
+                         }
+                     }
+                 };
 
 
-                     data: [{
-                         type: "area",
-                         indexLabelFontSize: 15,
-                         lineThickness: 4,
-                         color: "green",
-                         dataPoints: dataPoints,
-                         animationDuration: 9000
-                     }]
+                 // Crear el gráfico de líneas
+                 var ctx = document.getElementById('lineChart').getContext('2d');
+                 var lineChart = new Chart(ctx, {
+                     type: 'line',
+                     data: areaChartData,
+                     options: options
                  });
-                 chart.render();
              }
          });
-
      }
 
 
@@ -1242,28 +1224,38 @@
              },
              dataType: 'json',
              success: function(respuesta) {
-
-                 var chart = new CanvasJS.Chart("charVentasDiaSemana", {
-
-                     animationEnabled: true,
-                     animationEnabled: true,
-                     // title:{
-                     //     text: "Email Categories",
-                     //     horizontalAlign: "left"
-                     // },
-
-                     data: [{
-                         type: "pie",
-                         innerRadius: 90,
-                         //innerRadius: 60,
-                         indexLabelFontSize: 17,
-
-                         toolTipContent: "<b>{label}:</b> {y} (#percent%)",
-                         dataPoints: respuesta
-                     }]
+                 google.charts.load("current", {
+                     packages: ["corechart"]
                  });
-                 chart.render();
+                 google.charts.setOnLoadCallback(function() {
+                     drawChart(respuesta);
+                 });
 
+
+                 function drawChart(responseData) {
+                     var data = new google.visualization.DataTable();
+                     data.addColumn('string', 'Label');
+                     data.addColumn('number', 'Y');
+
+                     for (var i = 0; i < responseData.length; i++) {
+                         data.addRow([responseData[i].label, responseData[i].y]);
+                     }
+
+                     var options = {
+                         pieHole: 0.4,
+                         responsive: true,
+                         chartArea: {
+                             width: '80%',
+                             height: '80%'
+                         }, // Ajusta el área del gráfico
+                         legend: {
+                             position: 'top'
+                         } // Cambia la posición de la leyenda
+                     };
+
+                     var chart = new google.visualization.PieChart(document.getElementById('charVentasDiaSemana'));
+                     chart.draw(data, options);
+                 }
              }
          });
 
