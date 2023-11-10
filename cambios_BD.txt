@@ -233,3 +233,64 @@ insert into modulos(modulo, padre_id, vista, icon_menu, orden)values("Gastos Ope
 
 
 fa fa-wallet
+
+
+
+
+
+
+
+
+------------------------------------proveedores----------------------------
+
+
+CREATE TABLE proveedores (
+    id_proveedor INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    direccion VARCHAR(255),
+    telefono VARCHAR(15),
+    email VARCHAR(100),
+    fecha_registro DATE,
+    tipo_producto VARCHAR(50),
+    estado int 
+);
+
+ALTER TABLE proveedores
+MODIFY COLUMN fecha_registro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+
+insert into modulos(modulo, padre_id, vista, icon_menu, orden)values
+("Proveedores", 0, "", "fas fa-truck", 22 )
+
+insert into modulos(modulo, padre_id, vista, icon_menu, orden)values
+("Administrar Proveedores", 23, "proveedores.php", "far fa-circle", 23 )
+
+
+
+ALTER TABLE productos
+ADD COLUMN fk_id_proveedor INT, 
+ADD CONSTRAINT fk_id_proveedor
+FOREIGN KEY (fk_id_proveedor) 
+REFERENCES proveedores(id_proveedor);
+
+
+insert into proveedores(nombre, direccion, telefono, email, tipo_producto, estado)values("PROVEEDOR TEMP", "CIUDAD","", "PTEMPORAL@GMAIL.COM", "N/A", "1" )
+
+
+
+
+consulta para mostrar con el proveedor: select c.id_compra, c.codigo_producto, ca.nombre_categoria , p.descripcion_producto, c.cantidad, c.precio_compra, c.total_compra, c.fecha_compra, c.comentarios from compras c
+inner join productos p on c.codigo_producto = p.codigo_producto
+inner join categorias ca on c.fk_id_categoria = ca.id_categoria
+INNER JOIN proveedores pv on p.fk_id_proveedor = pv.id_proveedor where pv.id_proveedor = 8;
+
+UPDATE productos
+SET fk_id_proveedor = 1;
+
+
+
+SELECT DATE(fecha_venta) AS dia, COUNT(DISTINCT fecha_venta) AS ventas_dia
+FROM ventas
+WHERE DATE_FORMAT(fecha_venta, '%Y-%m') = '2023-10' -- Reemplaza '2023-10' con el año y mes deseados, por ejemplo '2023-10' para octubre de 2023
+GROUP BY dia
+ORDER BY dia;

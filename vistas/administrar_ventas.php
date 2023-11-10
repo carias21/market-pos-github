@@ -340,6 +340,10 @@
                                      }
                                  });
                              },
+                             fixedColumns: {
+                                 leftColumns: 0, // No se fijan columnas a la izquierda
+                                 rightColumns: 1, // Fija la columna con la clase "columna-fija" a la derecha
+                             },
                              "language": {
                                  "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
                              },
@@ -526,6 +530,8 @@
                                  "order": [
                                      [8, 'desc']
                                  ],
+
+
 
                                  columnDefs: [{
                                          //oculte las columnas

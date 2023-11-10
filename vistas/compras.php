@@ -75,7 +75,26 @@
                     <div class="card-body">
 
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">PROVEEDOR</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="IMAGEN"></i></span>
+                                        </div>
+                                        <select style="border: 1px solid #66B3FF" class="form-control" aria-label=".form-select-sm example" id="selProveedor" required>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-danger" id="btnEliminarProveedor" type="button">X</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">PRODUCTO</label>
                                     <div class="input-group">
@@ -84,6 +103,7 @@
                                     </div>
                                 </div>
                             </div>
+
 
                         </div>
                     </div>
@@ -110,7 +130,8 @@
                     <!-- BORONES PARA VACIAR LISTADO Y COMPLETAR LA COMPRA -->
                     <div class="col-md-6 text-right">
                         <button class="btn btn-primary" id="btnIniciarCompra">
-                            <i class="fas fa-shopping-cart"></i>Realizar Compra
+
+                            <i class="fas fa-dolly"></i> Realizar Compra
                         </button>
                         <button class="btn btn-danger" id="btnVaciarListado">
                             <i class="far fa-trash-alt"></i> Vaciar Listado
@@ -169,6 +190,11 @@
     });
 
     $(document).ready(function() {
+
+
+
+
+
 
         /* ======================================================================================
         		EVENTO VACIAR LA TABLA COMPRAS, VACIAR EL LISTADO DE LA TABALA COMPRAS
@@ -279,63 +305,31 @@
         });
 
 
+
         /* ======================================================================================
-		TRAER LISTADO DE PRODUCTOS PARA INPUT DE AUTOCOMPLETADO
-        VD 15 MIN 22:10
+		LISTADO PROVEEDORES
 		======================================================================================*/
-        /* ======================================================================================
-		TRAER LISTADO DE PRODUCTOS PARA INPUT DE AUTOCOMPLETADO
-        VD 15 MIN 22:10
-		======================================================================================*/
+
         $.ajax({
-            async: false,
-            url: "ajax/compras.ajax.php",
-            method: "POST",
-            data: {
-                'accion': 6
-            },
+            url: "ajax/proveedores.ajax.php",
+            cache: false,
+            contentType: false,
+            processData: false,
             dataType: 'json',
-            //una vez que tengamos la "respuesta" de la base de datos
             success: function(respuesta) {
 
-                //input iptCodigoVenta que lo autocomplete
-                $("#iptCodigoCompra").autocomplete({
+                var options = '<option selected value="">Seleccione un proveedor</option>';
 
-                    source: respuesta,
-                    select: function(event, ui) {
-
-                        //console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
-
-                        CargarProductos(ui.item.value);
-
-
-                        // $("#iptCodigoVenta").val("");
-
-                        // $("#iptCodigoVenta").focus();
-
-                        return false;
-                    }
-                }).data("ui-autocomplete")._renderItem = function(ul, item) {
-                    return $("<li class ='ui-autocomplete-row'></li>")
-                        .data("item.autocomplete", item)
-                        .append(item.label)
-                        .appendTo(ul);
+                for (let index = 0; index < respuesta.length; index++) {
+                    options = options + '<option value=' + respuesta[index][0] + '>' + respuesta[index][
+                        1
+                    ] + '</option>';
                 }
-
-                // Limitar el número de elementos que se muestran en la lista de sugerencias
-                $("#iptCodigoCompra").autocomplete("instance")._renderMenu = function(ul, items) {
-                    var max = 4; // número máximo de elementos a mostrar
-                    var that = this;
-                    items = items.slice(0, max);
-                    $.each(items, function(index, item) {
-                        that._renderItemData(ul, item);
-                    });
-                    $(ul).addClass("ui-autocomplete-list");
-                };
-
-
+                //  console.log("Pruebas de respuesta de Cateforias!!!:::",options);
+                $("#selProveedor").append(options);
             }
         });
+
 
         //Para bloquear la tecla "tab" en EL INPUT codigoventa para no duplicar productos
         var input = document.getElementById("iptCodigoCompra");
@@ -499,7 +493,73 @@
 
         $("#btnIniciarCompra").on('click', function() {
             realizarCompra();
-        })
+        });
+
+        $("#btnEliminarProveedor").on('click', function() {
+            $("#selProveedor").val("");
+
+            vaciarListado();
+        });
+
+        var selProveedor = document.getElementById("selProveedor");
+
+
+        selProveedor.addEventListener("change", function(event) {
+
+            vaciarListado();
+
+
+            var id_proveedor = $("#selProveedor").val();
+
+            $.ajax({
+                async: false,
+                url: "ajax/compras.ajax.php",
+                method: "POST",
+                data: {
+                    'accion': 6,
+                    'id_proveedor': id_proveedor
+                },
+                dataType: 'json',
+                //una vez que tengamos la "respuesta" de la base de datos
+                success: function(respuesta) {
+
+                    console.log(respuesta, "repsuata");
+
+                    //input iptCodigoVenta que lo autocomplete
+                    $("#iptCodigoCompra").autocomplete({
+
+                        source: respuesta,
+                        select: function(event, ui) {
+
+                            CargarProductos(ui.item.value);
+
+                            return false;
+                        }
+                    }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                        return $("<li class ='ui-autocomplete-row'></li>")
+                            .data("item.autocomplete", item)
+                            .append(item.label)
+                            .appendTo(ul);
+                    }
+
+                    // Limitar el número de elementos que se muestran en la lista de sugerencias
+                    $("#iptCodigoCompra").autocomplete("instance")._renderMenu = function(ul, items) {
+                        var max = 4; // número máximo de elementos a mostrar
+                        var that = this;
+                        items = items.slice(0, max);
+                        $.each(items, function(index, item) {
+                            that._renderItemData(ul, item);
+                        });
+                        $(ul).addClass("ui-autocomplete-list");
+                    };
+
+
+                }
+            });
+
+
+
+        });
 
     }) //FIN DOCUMENT READY
 
@@ -637,7 +697,7 @@
                             "</span>" +
 
                             "</center>",
-                            'comentarios': '<input type="text" style="width:150px;" codigoProducto="' + respuesta['codigo_producto'] + '" class="form-control text-center iptComentarios p-0 m-0" value="' + respuesta['comentarios'] + '" maxlength="25">',
+                        'comentarios': '<input type="text" style="width:150px;" codigoProducto="' + respuesta['codigo_producto'] + '" class="form-control text-center iptComentarios p-0 m-0" value="' + respuesta['comentarios'] + '" maxlength="25">',
 
                     }).draw();
                     itemProducto = itemProducto + 1;
@@ -765,5 +825,27 @@
         }
         //    $("#iptCodigoVenta").focus();
 
-    } /* FIN realizarVenta */
+    } /* FIN realizar compra */
+
+
+
+
+
+    /* ======================================================================================
+		TRAER LISTADO DE PRODUCTOS PARA INPUT DE AUTOCOMPLETADO
+        VD 15 MIN 22:10
+		======================================================================================*/
+
+    var inputCodigoCompra = document.getElementById("iptCodigoCompra");
+
+    inputCodigoCompra.addEventListener("keyup", function(event) {
+
+        var id_proveedor = $("#selProveedor").val();
+
+        console.log(id_proveedor);
+        if (id_proveedor == '') {
+            mensajeToast('warning', 'SELECCIONA UN PROVEEDOR');
+            return
+        }
+    });
 </script>

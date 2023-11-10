@@ -6,8 +6,8 @@ class ComprasControlador
 
     //LISTAR NOMBRE DE PRODUCTOS PARA INPUT DE AUTO COMPLETADO 
     //VD 15 MIN 27:18
-    static public function ctrListarNombreProductos(){
-        $producto = ComprasModelo::mdlListarNombreProductos();
+    static public function ctrListarNombreProductos($id_proveedor){
+        $producto = ComprasModelo::mdlListarNombreProductos($id_proveedor);
        
         return $producto;
     }

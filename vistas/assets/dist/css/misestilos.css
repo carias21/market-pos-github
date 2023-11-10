@@ -1,0 +1,72 @@
+--AGRANDAT IMAGEN EN PRODUCTOS .imagen-agrandable {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.imagen-agrandada {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(10);
+  z-index: 9999;
+  transition: all 0.3s;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+table.dataTable thead tr>.dtfc-fixed-left,
+table.dataTable thead tr>.dtfc-fixed-right,
+table.dataTable tfoot tr>.dtfc-fixed-left,
+table.dataTable tfoot tr>.dtfc-fixed-right {
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  background-color:  rgb(0, 108, 108)
+}
+
+table.dataTable tbody tr>.dtfc-fixed-left,
+table.dataTable tbody tr>.dtfc-fixed-right {
+  z-index: 1;
+  background-color:  rgb(0, 108, 108)
+}
+
+div.dtfc-left-top-blocker,
+div.dtfc-right-top-blocker {
+  background-color:  rgb(0, 108, 108)
+}
+
+html.dark table.dataTable thead tr>.dtfc-fixed-left,
+html.dark table.dataTable thead tr>.dtfc-fixed-right,
+html.dark table.dataTable tfoot tr>.dtfc-fixed-left,
+html.dark table.dataTable tfoot tr>.dtfc-fixed-right {
+  background-color: var(--dt-html-background)
+}
+
+html.dark table.dataTable tbody tr>.dtfc-fixed-left,
+html.dark table.dataTable tbody tr>.dtfc-fixed-right {
+  background-color: var(--dt-html-background)
+}
+
+html.dark div.dtfc-left-top-blocker,
+html.dark div.dtfc-right-top-blocker {
+  background-color: var(--dt-html-background)
+}
+
+
+
+
+
+.mi_card {
+  background-color: rgb(94, 0, 0);
+}

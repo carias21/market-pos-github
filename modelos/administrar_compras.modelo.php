@@ -7,44 +7,67 @@ class AdministrarComprasModelo
 
     public $resultado;
 
-    static public function mdlListarCompras($fechaDesde, $fechaHasta)
-    {
+    static public function mdlListarCompras($compras_desde, $compras_hasta, $idProveedor)
+{
 
-        try {
+    try {
+        if (!empty($idProveedor)) {
 
             $stmt = Conexion::conectar()->prepare("SELECT c.id_compra,
-                                                 c.codigo_producto, 
-                                                 ca.nombre_categoria as categoria, 
-                                                 p.descripcion_producto as producto, 
-                                                 c.cantidad, 
-                                                  CONCAT('Q. ',CONVERT(ROUND(c.precio_compra,2), CHAR)) as precio_compra,
-                                                  CONCAT('Q. ',CONVERT(ROUND(c.total_compra,2), CHAR)) as total_compra,
-                                                  c.fecha_compra,
-                                                  c.comentarios,
-                                                 '' as opciones
-                                                 from compras c
-                                                 inner join categorias ca on ca.id_categoria = c.fk_id_categoria
-                                                 inner join productos p on p.id = c.fk_id_producto
-                                   
-                                                 where DATE(c.fecha_compra) >= DATE(:fechaDesde) and DATE(c.fecha_compra) <= DATE(:fechaHasta)  
-                                                 order BY c.fecha_compra desc");
+                c.codigo_producto, 
+                ca.nombre_categoria as categoria, 
+                p.descripcion_producto as producto, 
+                c.cantidad, 
+                CONCAT('Q. ', CONVERT(ROUND(c.precio_compra, 2), CHAR)) as precio_compra,
+                CONCAT('Q. ', CONVERT(ROUND(c.total_compra, 2), CHAR)) as total_compra,
+                c.fecha_compra,
+                c.comentarios,
+                prov.nombre,
+                '' as opciones
+                FROM compras c
+                INNER JOIN categorias ca ON ca.id_categoria = c.fk_id_categoria
+                INNER JOIN productos p ON p.id = c.fk_id_producto
+                INNER JOIN proveedores prov ON prov.id_proveedor = p.fk_id_proveedor
+                WHERE DATE(c.fecha_compra) >= DATE(:compras_desde) AND DATE(c.fecha_compra) <= DATE(:compras_hasta) AND p.fk_id_proveedor = :idProveedor
+                ORDER BY c.fecha_compra DESC");
 
-            $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
-            $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
+            $stmt->bindParam(":compras_desde", $compras_desde, PDO::PARAM_STR);
+            $stmt->bindParam(":compras_hasta", $compras_hasta, PDO::PARAM_STR);
+            $stmt->bindParam(":idProveedor", $idProveedor, PDO::PARAM_INT);
 
             $stmt->execute();
 
             return $stmt->fetchAll();
+        } else {
+            $stmt = Conexion::conectar()->prepare("SELECT c.id_compra,
+                c.codigo_producto, 
+                ca.nombre_categoria as categoria, 
+                p.descripcion_producto as producto, 
+                c.cantidad, 
+                CONCAT('Q. ', CONVERT(ROUND(c.precio_compra, 2), CHAR)) as precio_compra,
+                CONCAT('Q. ', CONVERT(ROUND(c.total_compra, 2), CHAR)) as total_compra,
+                c.fecha_compra,
+                c.comentarios,
+                prov.nombre,
+                '' as opciones
+                FROM compras c
+                INNER JOIN categorias ca ON ca.id_categoria = c.fk_id_categoria
+                INNER JOIN productos p ON p.id = c.fk_id_producto
+                inner join proveedores prov on prov.id_proveedor = p.fk_id_proveedor
+                WHERE DATE(c.fecha_compra) >= DATE(:compras_desde) AND DATE(c.fecha_compra) <= DATE(:compras_hasta)
+                ORDER BY c.fecha_compra DESC");
 
-            // return ("Todo bien hasta aqui");
+            $stmt->bindParam(":compras_desde", $compras_desde, PDO::PARAM_STR);
+            $stmt->bindParam(":compras_hasta", $compras_hasta, PDO::PARAM_STR);
 
-        } catch (Exception $e) {
-            return 'Excepción capturada: ' .  $e->getMessage() . "\n";
+            $stmt->execute();
+
+            return $stmt->fetchAll();
         }
-
-
-        $stmt = null;
+    } catch (PDOException $e) {
+        throw new Exception('Excepción capturada: ' . $e->getMessage());
     }
+}
 
 
     static public function mdlEliminarCompra($tableCompras, $id_compra, $nameId, $codigo_producto,  $cantidad)

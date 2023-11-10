@@ -151,17 +151,7 @@ class ProductosModelo
     /*===================================================================
     REGISTRAR PRODUCTOS UNO A UNO DESDE EL FORMULARIO DEL INVENTARIO
     ====================================================================*/
-    static public function mdlRegistrarProducto(
-        $codigo_producto,
-        $id_categoria_producto,
-        $descripcion_producto,
-        $precio_compra_producto,
-        $precio_venta_producto,
-        $utilidad,
-        $stock_producto,
-        $minimo_stock_producto,
-        $ventas_producto,
-        $name
+    static public function mdlRegistrarProducto($codigo_producto,$id_categoria_producto,$descripcion_producto, $id_proveedor,$precio_compra_producto,$precio_venta_producto,$utilidad,$stock_producto,$minimo_stock_producto,$ventas_producto,$name
     ) {
 
         try {
@@ -179,7 +169,7 @@ class ProductosModelo
                                                                         ventas_producto,
                                                                         fecha_creacion_producto,
                                                                         fecha_actualizacion_producto,
-                                                                        foto) 
+                                                                        foto, fk_id_proveedor) 
                                                 VALUES (:codigo_producto, 
                                                         :id_categoria_producto, 
                                                         :descripcion_producto, 
@@ -191,10 +181,11 @@ class ProductosModelo
                                                         :ventas_producto,
                                                         :fecha_creacion_producto,
                                                         :fecha_actualizacion_producto,
-                                                        :foto)");
+                                                        :foto, 
+                                                        :fk_id_proveedor)");
 
             $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
-            $stmt->bindParam(":id_categoria_producto", $id_categoria_producto, PDO::PARAM_STR);
+            $stmt->bindParam(":id_categoria_producto", $id_categoria_producto, PDO::PARAM_INT);
             $stmt->bindParam(":descripcion_producto", $descripcion_producto, PDO::PARAM_STR);
             $stmt->bindParam(":precio_compra_producto", $precio_compra_producto, PDO::PARAM_STR);
             $stmt->bindParam(":precio_venta_producto", $precio_venta_producto, PDO::PARAM_STR);
@@ -205,6 +196,8 @@ class ProductosModelo
             $stmt->bindParam(":fecha_creacion_producto", $fecha, PDO::PARAM_STR);
             $stmt->bindParam(":fecha_actualizacion_producto", $fecha, PDO::PARAM_STR);
             $stmt->bindParam(":foto",  $name, PDO::PARAM_STR);
+            $stmt->bindParam(":fk_id_proveedor", $id_proveedor, PDO::PARAM_INT);
+
 
             if ($stmt->execute()) {
                 $resultado = "ok";
@@ -276,17 +269,17 @@ class ProductosModelo
     ====================================================================*/
     static public function mdlListarNombreProductos()
     {
-
-
+        
+        
         $stmt = Conexion::conectar()->prepare("SELECT  codigo_producto,
-                                                c.nombre_categoria,
-                                                descripcion_producto,
-                                                p.precio_venta_producto,
-                                                p.stock_producto,
-                                                foto
-                                                FROM productos p 
-                                                INNER JOIN categorias c on p.id_categoria_producto = c.id_categoria
-                                                where p.stock_producto > 0");
+                                            c.nombre_categoria,
+                                            descripcion_producto,
+                                            p.precio_venta_producto,
+                                            p.stock_producto,
+                                            foto
+                                        FROM productos p
+                                        INNER JOIN categorias c on p.id_categoria_producto = c.id_categoria
+                                        where p.stock_producto > 0");
         $stmt->execute();
         $productos = $stmt->fetchAll();
 

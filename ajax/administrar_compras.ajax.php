@@ -7,11 +7,12 @@ class AjaxAdministrarCompras
 {
 
 
+
     // VD 21 MIN 13:10
-    public function ajaxListarCompras($fechaDesde, $fechaHasta)
+    public function ajaxListarCompras($fechaDesde, $fechaHasta, $idProveedor)
     {
 
-        $compras = AdministrarComprasControlador::ctrListarCompras($fechaDesde, $fechaHasta);
+        $compras = AdministrarComprasControlador::ctrListarCompras($fechaDesde, $fechaHasta, $idProveedor);
 
         echo json_encode($compras, JSON_UNESCAPED_UNICODE);
     }
@@ -31,8 +32,7 @@ class AjaxAdministrarCompras
 if (isset($_POST["accion"]) && $_POST["accion"] == 2) { // LISTADO DE compras POR RANGO DE FECHAS
 
     $compras = new AjaxAdministrarCompras();
-    $compras->ajaxListarCompras($_POST["fechaDesde"], $_POST["fechaHasta"]);
-    
+    $compras->ajaxListarCompras($_POST["fechaDesde"], $_POST["fechaHasta"], $_POST["idProveedor"]);
 } else if (isset($_POST['accion']) && $_POST['accion'] == 3) {
     $eliminarCompra = new AjaxAdministrarCompras();
     $eliminarCompra->ajaxEliminarCompra();

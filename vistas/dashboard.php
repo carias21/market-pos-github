@@ -174,6 +174,120 @@
             </div>
         </div> <!-- ./row Grafico de barras -->
 
+
+
+
+
+
+        <!-------------------------------------------------------------------------------------------
+            BUSQUEDA CANTIDAD VENTAS POR MES
+         -------------------------------------------------------------------------------------------->
+        <div class="row">
+
+            <div class="col-lg-9">
+
+                <div class="card mi_card ">
+
+                    <div class="card-header ">
+
+                        <h3 class="card-title" id="ventas_Del_Mes"></h3>
+
+
+                        <div class="row">
+
+                            <div class="col-md-3 text-left">
+                                <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="selAnio">
+                                    <option value="0">AÑO ACTUAL</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 text-left">
+                                <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="sel_Mes">
+                                    <option value="0">MES ACTUAL</option>
+                                    <option value="01">Enero</option>
+                                    <option value="02">Febrero</option>
+                                    <option value="03">Marzo</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Mayo</option>
+                                    <option value="06">Junio</option>
+                                    <option value="07">Julio</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Septiembre</option>
+                                    <option value="010">Octubre</option>
+                                    <option value="011">Noviembre</option>
+                                    <option value="012">Diciembre</option>
+                                </select>
+                            </div>
+
+
+
+                            <div class="col-md-6 text-right">
+                                <div class="card-tools ml-auto">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div> <!-- ./ end card-tools -->
+                            </div>
+                        </div>
+
+
+                    </div> <!-- ./ end card-header -->
+
+
+                    <div class="card-body">
+
+                        <div class="chart">
+
+                            <canvas id="lineChart"></canvas>
+
+                            </canvas>
+
+                        </div>
+
+                    </div> <!-- ./ end card-body -->
+
+                </div>
+
+            </div>
+
+
+
+
+
+            <div class="col-lg-3">
+                <div class="card mi_card ">
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table display nowrap table-bordered w-100 rounded" id="tbl_cantidad_ventas">
+                                <thead>
+                                    <tr class="text-nowrap">
+                                        <th>DIA</th>
+                                        <th>CANTIDAD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- ./ end card-body -->
+                </div>
+            </div>
+
+        </div>
+
+
+
+
         <!-------------------------------------------------------------------------------------------
         GRAFICO DE BARRAS LOS 10 PRODUCTOS MAS VENDIDOS
         -------------------------------------------------------------------------------------------->
@@ -291,6 +405,8 @@ if ($dia_actual == $ultimo_dia_del_mes) {
 <script>
     $(document).ready(function() {
 
+
+        obtenerCantidadVentas();
         graficoDeBarras();
         ajustarHeadersDataTables($('#tbl_productos_poco_stock'));
         ajustarHeadersDataTables($('#tbl_productos_mas_vendidos'));
@@ -666,10 +782,150 @@ if ($dia_actual == $ultimo_dia_del_mes) {
         });
 
 
+        tableCantidadVenta = $("#tbl_cantidad_ventas").DataTable({
+            searching: false,
+            dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
+            scrollX: true,
+            buttons: [
+                'copy', 'excel', 'print',
+
+            ],
+            "scrollY": "95px",
+            "scrollCollapse": true,
+            "paging": false,
+            "searching": false,
+
+
+        });
+
+
+
+
+
+
+        var sel_Mes = $("#sel_Mes");
+        var selAnio = $("#selAnio");
+
+        sel_Mes.on('change', function() {
+            obtenerCantidadVentas();
+        });
+
+        selAnio.on('change', function() {
+            obtenerCantidadVentas();
+        });
 
 
     }) //FIN DOCUMENT READY
 
+
+
+    function obtenerCantidadVentas() {
+        var sel_Mes = $("#sel_Mes").val();
+        var selAnio = $("#selAnio").val();
+
+        if (sel_Mes === "0" && selAnio === "0") {
+            // Obtener la fecha actual
+            var fechaActual = new Date();
+            sel_Mes = fechaActual.getMonth() + 1; // Sumamos 1 para que el mes esté en el rango 1-12
+            selAnio = fechaActual.getFullYear();
+            console.log("hola mundo")
+        } else {
+            var sel_Mes = $("#sel_Mes").val();
+            var selAnio = $("#selAnio").val();
+            console.log("hola masdasdasdundo")
+        }
+        $.ajax({
+            url: 'ajax/dashboard.ajax.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'accion': 5,
+                'mes': sel_Mes, // Utilizar la variable directamente
+                'anio': selAnio, // Utilizar la variable directamente
+            },
+            success: function(respuesta) {
+
+                tableCantidadVenta.clear().draw();
+
+
+                tableCantidadVenta.rows.add(respuesta).draw();
+                console.log(respuesta);
+
+                var dia = [];
+                var cantidad_venta = [];
+
+                for (let i = 0; i < respuesta.length; i++) {
+                    dia.push(respuesta[i]['dia']);
+                    cantidad_venta.push(respuesta[i]['ventas_dia']);
+                }
+                cantidad_venta.push(0);
+
+                var areaChartData = {
+                    labels: dia,
+                    datasets: [{
+                        label: 'Cantidad de Ventas',
+                        borderColor: 'rgb(94, 0, 0)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgb(94, 0, 0)',
+                        pointRadius: 5,
+                        data: cantidad_venta,
+                        backgroundColor: 'rgba(94, 0, 0, 0.2)'
+                    }]
+                };
+
+                var barChartData = $.extend(true, {}, areaChartData);
+
+                // Configuración del gráfico
+                var options = {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Ventas Diarias',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Día'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Cantidad de Ventas'
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                };
+
+                // Crear el gráfico de líneas
+                var ctx = document.getElementById('lineChart').getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: areaChartData,
+                    options: options
+                });
+            }
+
+        });
+
+
+    }
 
     $(function() {
         $("#fecha_desde, #fecha_hasta").datepicker({
@@ -744,14 +1000,7 @@ if ($dia_actual == $ultimo_dia_del_mes) {
 
                 var areaChartData = {
                     labels: fecha_venta,
-                    datasets: [{
-                            label: 'Ventas del mes anterior',
-                            //color de las barras
-                            backgroundColor: 'rgb(255, 171, 0, 0.8)',
-                            borderColor: 'rgb(255, 171, 0)',
-                            borderWidth: 5, // ancho del borde en píxeles
-                            data: total_venta_ant
-                        },
+                    datasets: [
                         {
                             label: 'Ventas del Mes Actual',
                             //color de las barras'rgba(60,141,188,0.9)',
@@ -759,6 +1008,13 @@ if ($dia_actual == $ultimo_dia_del_mes) {
                             borderColor: 'rgb(142, 255, 0)',
                             borderWidth: 5, // ancho del borde en píxeles
                             data: total_venta
+                        },{
+                            label: 'Ventas del mes anterior',
+                            //color de las barras
+                            backgroundColor: 'rgb(255, 171, 0, 0.8)',
+                            borderColor: 'rgb(255, 171, 0)',
+                            borderWidth: 5, // ancho del borde en píxeles
+                            data: total_venta_ant
                         }
                     ]
                 }
@@ -778,14 +1034,14 @@ if ($dia_actual == $ultimo_dia_del_mes) {
                     },
                     scales: {
                         xAxes: [{
-                            stacked: true,
+                            stacked: false, // Establece stacked en false
                         }],
                         yAxes: [{
-                            stacked: true
+                            stacked: false, // Establece stacked en false
                         }]
                     },
                     animation: {
-                        duration: 500,
+                        duration: 900,
                         easing: "easeOutQuart",
                         onComplete: function() {
                             var ctx = this.chart.ctx;
@@ -814,6 +1070,7 @@ if ($dia_actual == $ultimo_dia_del_mes) {
                         }
                     }
                 }
+
 
                 new Chart(barChartCanvas, {
                     type: 'bar',

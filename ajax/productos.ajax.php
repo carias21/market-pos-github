@@ -20,6 +20,7 @@ class ajaxProductos
     public $stock_producto;
     public $minimo_stock_producto;
     public $ventas_producto;
+    public $id_proveedor;
 
     public $cantidad_a_comprar;
 
@@ -62,6 +63,7 @@ class ajaxProductos
             $this->codigo_producto,
             $this->id_categoria_producto,
             $this->descripcion_producto,
+            $this->id_proveedor,
             $this->precio_compra_producto,
             $this->precio_venta_producto,
             $this->utilidad,
@@ -140,7 +142,7 @@ class ajaxProductos
     //VD 15 MIN 26:35
     public function ajaxListarNombreProductos()
     {
-        $NombreProductos = ProductosControlador::ctrListarNombreProductos();
+   $NombreProductos = ProductosControlador::ctrListarNombreProductos();
         echo json_encode($NombreProductos);
     }
     //BUSCAR PRODUCTO POR SU CODIGO DE BARRAS
@@ -181,6 +183,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
     $registrarProducto->codigo_producto = $_POST["codigo_producto"];
     $registrarProducto->id_categoria_producto = $_POST["id_categoria_producto"];
     $registrarProducto->descripcion_producto = $_POST["descripcion_producto"];
+    $registrarProducto->id_proveedor = $_POST["id_proveedor"];
     $registrarProducto->precio_compra_producto = $_POST["precio_compra_producto"];
     $registrarProducto->precio_venta_producto = $_POST["precio_venta_producto"];
     $registrarProducto->utilidad = $_POST["utilidad"];
@@ -217,6 +220,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
         "stock_producto" => $_POST["stock_producto"],
         "minimo_stock_producto" => $_POST["minimo_stock_producto"],
         "foto" =>  $img['name'],
+        "fk_id_proveedor" => $_POST["id_proveedor"],
     );
 
     $actualizarProducto->ajaxActualizarProducto($data);

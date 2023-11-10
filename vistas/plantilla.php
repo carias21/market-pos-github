@@ -65,8 +65,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
-   <!-- GOOGLE CHART JS -->
-   <script src="vistas/assets/dist/js/google.chart.js"></script>
+    <!-- GOOGLE CHART JS -->
+    <script src="vistas/assets/dist/js/google.chart.js"></script>
 
     <!-- ChartJS -->
     <script src="vistas/assets/plugins/chart.js/Chart.min.js"></script>
@@ -88,9 +88,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- ============================================================
     =ESTILOS PARA USO DE DATATABLES JS
     ===============================================================-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.0/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
+
+
+    <!-- ============================================================
+    MIS ESTILOS CSS
+    ===============================================================-->
+    <link rel="stylesheet" href="vistas/assets/dist/css/misestilos.css">
+
 
     <!-- Theme style -->
     <link rel="stylesheet" href="vistas/assets/dist/css/adminlte.min.css">
@@ -128,8 +135,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- ============================================================
     =LIBRERIAS PARA USO DE DATATABLES JS
     ===============================================================-->
-    <script src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
+
+
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+    
+
+
+    
 
 
     <!-- ============================================================

@@ -340,6 +340,8 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
 
     $(document).ready(function() {
 
+        $("#iptCodigoVenta").focus();
+
         ajustarHeadersDataTables($('#lstProductosVenta'));
 
         var iptBuscarNitCliente = $("#mdlAgregarCliente").find("#iptBuscarNitCliente");
@@ -364,53 +366,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
 		EVENTO INICIALIZAR LA TABLA VENTAS
 		======================================================================================*/
         table = $('#lstProductosVenta').DataTable({
-            "columns": [{
-                    "data": "id_Item"
-                },
-                {
-                    "data": "id"
-                },
 
-                {
-                    "data": "codigo_producto"
-                },
-                {
-                    "data": "foto"
-                },
-                {
-                    "data": "id_categoria"
-                },
-                {
-                    "data": "nombre_categoria"
-                },
-                {
-                    "data": "descripcion_producto"
-                },
-                {
-                    "data": "cantidad"
-                },
-                {
-                    "data": "precio_venta_producto"
-                },
-                {
-                    "data": "descuento"
-                },
-                {
-                    "data": "total"
-                },
-                {
-                    "data": "acciones"
-                },
-                {
-                    "data": "aplica_peso"
-                },
-                {
-                    "data": "precio_compra_producto"
-                }
-
-                // { "data": "precio_mayor_producto" },
-                //{ "data": "precio_oferta_producto" }
-            ],
             scrollX: true,
             order: [
                 [0, 'asc']
@@ -420,18 +376,23 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
             "scrollCollapse": true,
             "paging": false,
             "searching": false,
+            fixedColumns: {
+                leftColumns: 0, // No se fijan columnas a la izquierda
+                rightColumns: 1, // Fija la columna con la clase "columna-fija" a la derecha
+            },
 
             columnDefs: [{
                     //oculte las columnas
                     targets: 0,
                     "data": "id_Item",
-                    visible: false
+                    visible: false,
                 },
                 {
                     //oculte las columnas
                     targets: 1,
                     "data": "id",
-                    visible: true
+                    visible: false,
+
                 },
                 {
                     targets: 2,
@@ -526,14 +487,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                         //minLength: 3, // Mínimo de 3 caracteres antes de buscar
                         select: function(event, ui) {
 
-                            //console.log("🚀 ~ file: ventas.php ~ line 313 ~ $ ~ ui.item.value", ui.item.value)
-
                             CargarProductos(ui.item.value);
-
-
-                            // $("#iptCodigoVenta").val("");
-
-                            // $("#iptCodigoVenta").focus();
 
                             return false;
                         }
@@ -600,6 +554,27 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
             });
         });
 
+
+        $("#selTipoPago").change(function() {
+            var tipo_pago = $("#selTipoPago").val();
+            var labeliptEfectivoR = document.querySelector("label[for='iptEfectivoRecibido']");
+            var labelchkEfectivoExacto = document.querySelector("label[for='chkEfectivoExacto']");
+
+            if (tipo_pago != 1) {
+                document.getElementById("iptEfectivoRecibido").style.visibility = "hidden";
+                document.getElementById("chkEfectivoExacto").style.visibility = "hidden";
+
+                labeliptEfectivoR.style.display = "none";
+                labelchkEfectivoExacto.style.display = "none";
+
+            } else {
+
+                document.getElementById("iptEfectivoRecibido").style.visibility = "visible";
+                document.getElementById("chkEfectivoExacto").style.visibility = "visible";
+                labeliptEfectivoR.style.display = "block";
+                labelchkEfectivoExacto.style.display = "block";
+            }
+        });
 
 
         /* ======================================================================================
@@ -1345,6 +1320,10 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
         var totalVenta = $("#totalVenta").html();
         var btnRealizarVenta = document.getElementById("btnIniciarVenta");
 
+        var tipo_pago = $("#selTipoPago").val();
+
+        var efectivo_recibido = $("#iptEfectivoRecibido").val();
+
         table.rows().eq(0).each(function(index) { //recorremos los datos que tiene la tabla ventas
             count = count + 1; // reccoriendo de 1 a 1 y sumando 
         });
@@ -1352,24 +1331,131 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
         //si la cantidad es mayor a 0 quiere decir que si hay productos por lo que procede a realizar la venta
         if (count > 0) {
 
-            //si no se agrego en el INPUT de "efectivo recibido" no procede con la venta
-            if ($("#iptEfectivoRecibido").val() > 0 && $("#iptEfectivoRecibido").val() != "") {
-                //si es menor la cantidad del efectivo a la venta total no se puede realizar la venta
-                if ($("#iptEfectivoRecibido").val() < parseFloat(totalVenta)) {
 
-                    //console.log("PROBLEMA CON EL EFECTIVO RECIBIDO 'CARLOS'")
+            if (tipo_pago == 1) {
 
-                    mensajeToast('warning', 'EL EFECTIVO ES MENOR AL COSTO TOTAL DE LA VENTA');
+                if (efectivo_recibido == "") {
 
-
+                    mensajeToast('warning', 'INGRESE EL MONTO EN EFECTIVO');
                     return false;
+                } else if (efectivo_recibido < parseFloat(totalVenta)) {
+                    mensajeToast('warning', 'EL EFECTIVO ES MENOR AL COSTO TOTAL DE LA VENTA');
+                    return false;
+                } else {
+                    // Obtener los formularios a los que queremos agregar estilos de validación
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+
+                        if (form.checkValidity() === true) {
+                            btnRealizarVenta.disabled = true;
+
+                            //ENVIAMOS LOS VALORES A LA BASE DE DATOS
+                            var formData = new FormData();
+                            var arr = [];
+                            //agregamos datos para almacenar el tipo de pago
+                            var datos = new FormData();
+
+                            //capturamos los valores para llevar a la base de datos
+
+                            // $tipo_pago = $("#selTipoPago").val();
+                            var datos = new FormData();
+
+                            //recorremos la tabla
+                            table.rows().eq(0).each(function(index) {
+
+                                var row = table.row(index);
+                                var data = row.data();
+                                //agregame a mi array 
+
+                                var tipo_pago = $("#selTipoPago").val();
+                                var id_cliente = $("#iptIdNitCliente").val();
+
+                                if (id_cliente == "") {
+                                    id_cliente = 1;
+                                }
+
+
+                                arr[index] = data['codigo_producto'] + "," +
+                                    data['id_categoria'] + "," +
+                                    data['id'] + "," +
+                                    parseFloat(data['cantidad']) + "," +
+                                    data['precio_venta_producto'].replace("Q. ", "") + "," +
+                                    data['descuento'].replace("Q. ", "") + "," +
+                                    data['total'].replace("Q. ", "") + "," +
+                                    data['precio_compra_producto'] + "," +
+                                    tipo_pago + "," +
+                                    id_cliente + "," +
+                                    data['descripcion_producto'];
+
+                                formData.append('arr[]', arr[index]);
+                            });
+
+
+                            $.ajax({
+                                url: "ajax/ventas.ajax.php",
+                                method: "POST",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(respuesta) {
+                                    var venta = 0;
+
+                                    if (respuesta.length === 19) {
+
+                                        mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
+                                        $(".needs-validation").removeClass("was-validated");
+
+                                        window.open('http://localhost/market-pos-github/vistas/generar_ticket.php?fecha_venta=' + respuesta);
+
+                                    } else {
+                                        $.ajax({
+                                            url: "vistas/enviar_correo.php",
+                                            type: "POST",
+                                            data: {
+                                                respuesta: respuesta
+                                            },
+                                            success: function(respuesta) {
+                                                console.log("Correo enviado correctamente.");
+                                            },
+                                            error: function() {
+                                                console.log("Error al enviar el correo.");
+                                            }
+                                        });
+
+                                        Swal.fire({
+                                            position: 'center',
+                                            icon: 'error',
+                                            title: 'ERROR AL REGISTRAR LA VENTA ' + '\n' +
+                                                ' comunicate con tu administrador',
+                                            showConfirmButton: false,
+                                            timer: 2500
+                                        });
+
+                                    }
+                                    table.clear().draw();
+                                    // Habilitar el botón después de que se complete la acción
+                                    btnRealizarVenta.disabled = false;
+                                    LimpiarInputs();
+                                    $("#iptIdNombreCliente").css("display", "none");
+
+
+                                }
+                            });
+
+
+
+                        } else {
+                            //me solicita que tengo que ingresar los campos 
+                            form.classList.add('was-validated');
+                        }
+                    })
+
+
                 }
-
-                if ($("#iptEfectivoRecibido").val() != "") {
-                    $("#iptEfectivoRecibido").val() != 0;
-                }
-
-
+            } else if (tipo_pago > 1) {
                 // Obtener los formularios a los que queremos agregar estilos de validación
                 var forms = document.getElementsByClassName('needs-validation');
                 // Loop over them and prevent submission
@@ -1419,7 +1505,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                             formData.append('arr[]', arr[index]);
                         });
 
-                  
+
                         $.ajax({
                             url: "ajax/ventas.ajax.php",
                             method: "POST",
@@ -1479,11 +1565,9 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                         //me solicita que tengo que ingresar los campos 
                         form.classList.add('was-validated');
                     }
-                })
-
+                });
             } else {
-
-                mensajeToast('warning', 'INGRESE EL MONTO EN EFECTIVO');
+                mensajeToast('warning', 'INGRESE EL TIPO DE PAGO');
             }
 
         } else {
@@ -1574,8 +1658,7 @@ if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]-
                     });
                 }
             });
+
         }
-
-
     } /* FIN realizarVenta */
 </script>

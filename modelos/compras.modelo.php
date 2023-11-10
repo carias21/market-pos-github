@@ -14,7 +14,7 @@ class ComprasModelo
     LISTAR NOMBRE DE PRODUCTOS PARA INPUT DE AUTO COMPLETADO
        //VD 15 MIN 27:50
     ====================================================================*/
-    static public function mdlListarNombreProductos()
+    static public function mdlListarNombreProductos($id_proveedor)
     {
 
         $stmt = Conexion::conectar()->prepare("SELECT  codigo_producto,
@@ -24,7 +24,11 @@ class ComprasModelo
                                                 p.stock_producto,
                                                 foto
                                                 FROM productos p 
-                                                INNER JOIN categorias c on p.id_categoria_producto = c.id_categoria");
+                                                INNER JOIN categorias c ON p.id_categoria_producto = c.id_categoria
+                                                WHERE fk_id_proveedor = :id_proveedor");
+
+
+        $stmt->bindParam(":id_proveedor", $id_proveedor, PDO::PARAM_INT);
         $stmt->execute();
         $productos = $stmt->fetchAll();
 

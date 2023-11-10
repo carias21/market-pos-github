@@ -15,6 +15,7 @@ class DashboardModelo
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+
     static public function mdlGetVentasMesActual()
     {
 
@@ -65,4 +66,27 @@ class DashboardModelo
             return 'Excepción capturada: ' . $e->getMessage() . "\n";
         }
     }
+
+
+
+    static public function mdlCantidadVentas($mes, $anio)
+    {
+        try {
+            $mesFormateado = sprintf("%02d", $mes);
+            $anioFormateado = sprintf("%04d", $anio);
+    
+            $stmt = Conexion::conectar()->prepare("SELECT DATE_FORMAT(fecha_venta, '%m-%d') AS dia, COUNT(DISTINCT fecha_venta) AS ventas_dia
+                FROM ventas
+                WHERE DATE_FORMAT(fecha_venta, '%Y-%m') = '$anioFormateado-$mesFormateado'
+                GROUP BY dia
+                ORDER BY dia;");
+    
+            $stmt->execute();
+    
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            return 'Excepción capturada: ' . $e->getMessage() . "\n";
+        }
+    }
+    
 }

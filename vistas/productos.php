@@ -113,13 +113,13 @@
             <div class="col-lg-12">
                 <!--*******************    //TIPOS DE TABLAS *******************-->
                 <!--  Tabla original:   <table id="tbl_productos" class="table table-striped w-100 shadow">-->
-                <table id="tbl_productos" class="table table-bordered table-hover w-100 shadow">
+                <table id="tbl_productos" class="display nowrap  table-bordered  w-100 shadow rounded">
                     <thead class="bg-info">
                         <tr style="font-size: 15px;">
                             <th></th>
                             <th>id</th>
                             <th>Código</th>
-                            <th>imagen</th>
+                            <th>Img</th>
                             <th>Id Categoria</th>
                             <th>Categoría</th>
                             <th>Producto</th>
@@ -131,6 +131,8 @@
                             <th>Ventas</th>
                             <th>Fecha Creación</th>
                             <th>Fecha Actualización</th>
+                            <th>Id Proveedor</th>
+                            <th>Proveedor</th>
                             <th class="text-center">Opciones</th>
                         </tr>
                     </thead>
@@ -193,17 +195,29 @@
                                 <select style="border: 1px solid #66B3FF" class="form-select form-select-sm" aria-label=".form-select-sm example" id="selCategoriaReg" required>
                                 </select>
                                 <!--notificacion si no se ingresa la categoria -->
-                                <div class="invalid-feedback">Seleccione la categoría</div>
+                                <div class="invalid-feedback">Seleccione la categoria</div>
                             </div>
                         </div>
 
                         <!-- Columna para registro de la descripción del producto -->
-                        <div class="col-12">
+                        <div class="col-lg-6">
                             <div class="form-group mb-2">
                                 <label class="" for="iptDescripcionReg"><i class="fas fa-file-signature fs-6"></i> <span class="small">Descripción</span><span class="text-danger">*</span></label>
                                 <input type="text" style="border: 1px solid #66B3FF" class="form-control form-control-sm" id="iptDescripcionReg" placeholder="Descripción" required>
                                 <!--notificacion si no se ingresa la categoria -->
                                 <div class="invalid-feedback">Debe ingresar la descripción</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12  col-lg-6">
+                            <div class="form-group mb-2">
+                                <label class="" for="selProveedor"><i class="fas fa-truck"></i>
+                                    <span class="small">Proveedor</span><span class="text-danger">*</span>
+                                </label>
+                                <select style="border: 1px solid #66B3FF" class="form-select form-select-sm" aria-label=".form-select-sm example" id="selProveedor" required>
+                                </select>
+                                <!--notificacion si no se ingresa la categoria -->
+                                <div class="invalid-feedback">Seleccione un proveedor</div>
                             </div>
                         </div>
 
@@ -376,7 +390,7 @@
             dataType: 'json',
             success: function(respuesta) {
 
-                var options = '<option selected value="">Seleccione una categoría</option>';
+                var options = '<option selected value="">Seleccione una categoria</option>';
 
                 for (let index = 0; index < respuesta.length; index++) {
                     options = options + '<option value=' + respuesta[index][0] + '>' + respuesta[index][
@@ -387,6 +401,28 @@
                 $("#selCategoriaReg").append(options);
             }
         });
+
+
+        $.ajax({
+            url: "ajax/proveedores.ajax.php",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            success: function(respuesta) {
+
+                var options = '<option selected value="">Seleccione un proveedor</option>';
+
+                for (let index = 0; index < respuesta.length; index++) {
+                    options = options + '<option value=' + respuesta[index][0] + '>' + respuesta[index][
+                        1
+                    ] + '</option>';
+                }
+                //  console.log("Pruebas de respuesta de Cateforias!!!:::",options);
+                $("#selProveedor").append(options);
+            }
+        });
+
 
         /*===================================================================*/
         // CARGA DEL LISTADO CON EL PLUGIN DATATABLE JS
@@ -400,10 +436,9 @@
                         //codigo que funciona para mostrar la ventana modal, o venta para agregar un nuevo producto
                         $("#mdlGestionarProducto").modal('show');
                         LimpiarInputsVentanaModal();
-                         $("#iptCodigoReg").prop("disabled", false);
-                         deleteImg();
-                        //se agrega el boton agregar nuevo producto
-                        accion = 2; //registrar producto
+                        $("#iptCodigoReg").prop("disabled", false);
+                        deleteImg();
+                        accion = 2;
                     }
                 },
                 'excel', 'print', 'pageLength'
@@ -415,6 +450,11 @@
             "scrollY": "500px", //altura de la tabla visible
             "deferRender": true, //habilita la opción de Lazy Loading
             "scrollCollapse": true,
+            fixedColumns: {
+                leftColumns: 0, // No se fijan columnas a la izquierda
+                rightColumns: 1, // Fija la columna con la clase "columna-fija" a la derecha
+            },
+
 
             pageLength: [5, 10, 15, 30, 50, 100],
             pageLength: 10,
@@ -433,6 +473,10 @@
                  }
              }, */
             columnDefs: [{
+                    "className": "dt-center",
+                    "targets": "_all"
+                },
+                {
                     targets: 0,
                     orderable: false,
                     className: 'control',
@@ -449,15 +493,17 @@
                 },
                 {
                     targets: 3,
-                    'data': 'foto',
-                    'render': function(foto) {
-                        /*  if (!foto) {
-                              return 'N/A';
-                          } else { */
-                        var img = foto;
-                        return '<img src="vistas/assets/imagenes/' + img + '" height="70px" width="70px" />';
+                    data: 'foto',
+                    render: function(foto) {
+                        if (!foto) {
+                            return 'N/A';
+                        } else {
+                            var img = foto;
+                            return '<img class="imagen-agrandable" src="vistas/assets/imagenes/' + img + '" height="50px" width="50px" />';
+                        }
                     }
                 },
+
                 {
                     targets: 4,
                     'data': 'id_categoria',
@@ -474,17 +520,49 @@
                 },
                 {
                     targets: 7,
+                    data: 'precio_compra',
+                    render: function(data, type, row) {
+                        if (type === 'display' || type === 'filter') {
+                            // Redondear el valor a dos decimales
+                            var roundedValue = parseFloat(data).toFixed(2);
 
-                    'data': 'precio_compra'
-
+                            // Agregar "Q." al comienzo del valor redondeado
+                            return 'Q. ' + roundedValue;
+                        } else {
+                            return data;
+                        }
+                    }
                 },
+
                 {
                     targets: 8,
-                    'data': 'precio_venta'
+                    'data': 'precio_venta',
+                    render: function(data, type, row) {
+                        if (type === 'display' || type === 'filter') {
+                            // Redondear el valor a dos decimales
+                            var roundedValue = parseFloat(data).toFixed(2);
+
+                            // Agregar "Q." al comienzo del valor redondeado
+                            return 'Q. ' + roundedValue;
+                        } else {
+                            return data;
+                        }
+                    }
                 },
                 {
                     targets: 9,
-                    'data': 'utilidad'
+                    'data': 'utilidad',
+                    render: function(data, type, row) {
+                        if (type === 'display' || type === 'filter') {
+                            // Redondear el valor a dos decimales
+                            var roundedValue = parseFloat(data).toFixed(2);
+
+                            // Agregar "Q." al comienzo del valor redondeado
+                            return 'Q. ' + roundedValue;
+                        } else {
+                            return data;
+                        }
+                    }
                 },
                 {
                     /*indicamos que en la columna 9 que seria Stock, que al momento de que 
@@ -523,6 +601,18 @@
                 {
                     //colocamos no visible las columnas del...
                     targets: 15,
+                    'data': 'id_proveedor',
+                    visible: false
+                },
+                {
+                    //colocamos no visible las columnas del...
+                    targets: 16,
+                    'data': 'nombre',
+                    visible: true
+                },
+                {
+                    //colocamos no visible las columnas del...
+                    targets: 17,
                     'data': 'opciones',
                     orderable: false,
                     render: function(data, type, full, meta) {
@@ -553,6 +643,29 @@
                 url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
             }
         });
+
+
+        
+
+        /*===================================================================*/
+        // EVENTOS PARA AGRANDAR LA IMAGEN
+        /*===================================================================*/
+
+
+        $('#tbl_productos tbody').on('click', 'img.imagen-agrandable', function() {
+            var img = $(this);
+            if (img.hasClass('imagen-agrandada')) {
+                img.removeClass('imagen-agrandada');
+            } else {
+                img.addClass('imagen-agrandada');
+            }
+
+
+        });
+
+
+
+
 
         /*===================================================================*/
         // EVENTOS PARA CRITERIOS DE BUSQUEDA (CODIGO, CATEGORIA Y PRODUCTO)
@@ -863,6 +976,7 @@
             $("#iptUtilidadReg").val(data[8]);
             $("#iptStockReg").val(data[9]);
             $("#iptMinimoStockReg").val(data[10]);
+            $("#selProveedor").val(data[15]);
             //colocamos la imagen
             document.getElementById("img-preview").src = 'vistas/assets/imagenes/' + data['foto'];
             //agregamos el icono de quitar imagen
@@ -874,6 +988,8 @@
             //almacenamos los valores de la foto
             document.getElementById("foto_actual").value = data['foto'];
             document.getElementById("foto_delete").value = data['foto'];
+
+            console.log(data);
 
 
         })
@@ -1054,18 +1170,20 @@
                         var datos = new FormData();
                         var datos = new FormData($(form_cargar_imagen)[0]);
 
-                        //explicacion del codigo: https://www.youtube.com/watch?v=k3Ho0BVDf98&list=PL9sacPy8nUhpP02ZXHy4e-kr9BgIm1TVf&index=12
                         datos.append("accion", accion);
-                        datos.append("codigo_producto", $("#iptCodigoReg").val()); //codigo_producto
-                        datos.append("id_categoria_producto", $("#selCategoriaReg").val()); //id_categoria_producto
-                        datos.append("descripcion_producto", $("#iptDescripcionReg").val()); //descripcion_producto
-                        datos.append("precio_compra_producto", $("#iptPrecioCompraReg").val()); //precio_compra_producto
-                        datos.append("precio_venta_producto", $("#iptPrecioVentaReg").val()); //precio_venta_producto
-                        datos.append("utilidad", $("#iptUtilidadReg").val()); //utilidad
-                        datos.append("stock_producto", $("#iptStockReg").val()); //stock_producto
-                        datos.append("minimo_stock_producto", $("#iptMinimoStockReg").val()); //minimo_stock_producto  
-                        datos.append("ventas_producto", 0); //ventas_producto
+                        datos.append("codigo_producto", $("#iptCodigoReg").val());
+                        datos.append("id_categoria_producto", $("#selCategoriaReg").val());
+                        datos.append("descripcion_producto", $("#iptDescripcionReg").val());
+                        datos.append("id_proveedor", $("#selProveedor").val());
+                        datos.append("descripcion_producto", $("#iptDescripcionReg").val());
+                        datos.append("precio_compra_producto", $("#iptPrecioCompraReg").val());
+                        datos.append("precio_venta_producto", $("#iptPrecioVentaReg").val());
+                        datos.append("utilidad", $("#iptUtilidadReg").val());
+                        datos.append("stock_producto", $("#iptStockReg").val());
+                        datos.append("minimo_stock_producto", $("#iptMinimoStockReg").val());
+                        datos.append("ventas_producto", 0);
                         datos.append("name", $name);
+
 
                         if (accion == 2) {
                             var titulo_msj = "EL PRODUCTO SE REGISTRÓ CORRECTAMENTE"

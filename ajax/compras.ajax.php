@@ -11,12 +11,13 @@ class AjaxCompras
 
     public $codigo_producto;
     public $cantidad_a_comprar;
+    public $id_proveedor;
 
     /*LISTAR EL NOMBRE DE PRODUCTOS PARA EL INPUT DE AUTO COMPLETADO ----- */
     //VD 15 MIN 26:35
     public function ajaxListarNombreProductos()
     {
-        $NombreProductos = ComprasControlador::ctrListarNombreProductos();
+        $NombreProductos = ComprasControlador::ctrListarNombreProductos($this->id_proveedor);
         echo json_encode($NombreProductos);
     }
     //BUSCAR PRODUCTO POR SU CODIGO DE BARRAS
@@ -35,9 +36,11 @@ class AjaxCompras
     }
 }
 
-if (isset($_POST["accion"]) && $_POST["accion"] == 6) { //traer listado de productos para el autocompletable del input
+if (isset($_POST["accion"]) && $_POST["accion"] == 6) {
     $nombreProductos = new AjaxCompras();
+    $nombreProductos->id_proveedor = $_POST["id_proveedor"];
     $nombreProductos->ajaxListarNombreProductos();
+
 } else if (isset($_POST["accion"]) && $_POST["accion"] == 7) {
     $listaProducto = new AjaxCompras();
     $listaProducto->codigo_producto = $_POST["codigo_producto"];

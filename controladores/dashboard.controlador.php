@@ -39,5 +39,14 @@ class DashboardControlador{
         return $filtrarGraficoBarras;
     
     }
+
+    static public function ctrCantidadVentas($mes, $anio){
+    
+        $cantidadVentas = DashboardModelo::mdlCantidadVentas($mes, $anio);
+    
+        return $cantidadVentas;
+    
+    }
+    
    
 }

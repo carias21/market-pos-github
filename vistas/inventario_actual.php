@@ -119,25 +119,30 @@
                 {
                     targets: 1,
                     'data': 'foto',
-                    'render': function(foto) {
-                        /*  if (!foto) {
-                              return 'N/A';
-                          } else { */
-                        var img = foto;
-                        return '<img src="vistas/assets/imagenes/' + img + '" height="40px" width="40px" />';
+                    "className": "dt-center",
+                    render: function(foto) {
+                        if (!foto) {
+                            return 'N/A';
+                        } else {
+                            var img = foto;
+                            return '<img class="imagen-agrandable" src="vistas/assets/imagenes/' + img + '" height="40px" width="40px" />';
+                        }
                     }
                 },
                 {
                     targets: 2,
                     'data': 'descripcion_producto',
+                    "className": "dt-center",
                 },
                 {
                     targets: 3,
                     'data': 'stock_producto',
+                    "className": "dt-center",
                 },
                 {
                     targets: 4,
                     'data': 'precio_venta_producto',
+                    "className": "dt-center",
                 },
                 
 
@@ -147,6 +152,21 @@
             }
         });
     }
+
+
+
+    
+    $('#tbl_Inventario_Actual tbody').on('click', 'img.imagen-agrandable', function() {
+            var img = $(this);
+            if (img.hasClass('imagen-agrandada')) {
+                img.removeClass('imagen-agrandada');
+            } else {
+                img.addClass('imagen-agrandada');
+            }
+
+            
+        });
+
 
     //FUNCION AJUSTAR LAS TABLAS POR DEFORMARCE O NO SE MIRAN BIEN
     //VD 30 MIN 25.10

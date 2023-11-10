@@ -48,9 +48,18 @@
                                  </div>
                              </div>
 
+                             <div class="col-md-2">
+                                 <div class="form-group">
+                                     <label for="">Proveedor:</label>
+                                     <select class="form-select form-select-sm  form-control" aria-label=".form-select-sm example" id="selProveedor">
+                                     </select>
+                                 </div>
+                             </div>
 
 
-                             <div class="col-md-8 d-flex flex-row align-items-center justify-content-end">
+
+
+                             <div class="col-md-6 d-flex flex-row align-items-center justify-content-end">
                                  <!-- href="" se le coloca # para que no dirija a ningun lugar -->
                                  <div class="form-group m-0"><a href="#" class="btn btn-primary" style="width:120px;" id="btnFiltrar">Buscar</a></div>
                              </div>
@@ -86,6 +95,7 @@
                                      <!--   <th>Observaciones</th>   -->
                                      <th>Fecha de Compra</th>
                                      <th>comentarios</th>
+                                     <th>Proveedor</th>
                                      <th class="text-center">Opciones</th>
 
                                  </thead>
@@ -110,8 +120,8 @@
                      // VD 21 MIN 6:38
                      $(document).ready(function() {
 
-                         var tableCompras, compras_desde, compras_hasta;
-                         //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLUMN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 7=fecha_compra
+                         var tableCompras, compras_desde, compras_hasta, sel_Usuario, idProveedor;
+                         //VD 21 MIN 20:10 CREAMOS LA VARIABLE GROUPCOLU,MN E INDICAMOS NO. DE QUE COLUMNA QUEREMOS AGRUPAR 7=fecha_compra
                          var groupColumn = 7;
 
                          // // VD 21 MIN 8:40
@@ -128,6 +138,7 @@
                          //VD 21 MIN 16:40
                          compras_desde = $("#compras_desde").val();
                          compras_hasta = $("#compras_hasta").val();
+                         idProveedor = $("#selProveedor").val();
 
                          compras_desde = compras_desde.substr(6, 4) + '-' + compras_desde.substr(3, 2) + '-' + compras_desde.substr(0, 2);
                          //  console.log(compras_desde, "compras Desde")
@@ -149,7 +160,8 @@
                                  data: {
                                      'accion': 2,
                                      'fechaDesde': compras_desde,
-                                     'fechaHasta': compras_hasta
+                                     'fechaHasta': compras_hasta,
+                                     'idProveedor': idProveedor
                                  }
 
                              },
@@ -202,6 +214,11 @@
                                  },
                                  {
                                      targets: 9,
+                                     "data": "nombre",
+                                     visible: true
+                                 },
+                                 {
+                                     targets: 10,
 
                                      render: function(data, type, full, meta) {
                                          /*retorna un ocono de un lapiz en incomprario en opciones, con el style cursor... indicamos que al seleccionar el 
@@ -220,6 +237,29 @@
                              "pageLength": 15,
                              "language": {
                                  "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
+                             }
+                         });
+
+
+
+
+                         $.ajax({
+                             url: "ajax/proveedores.ajax.php",
+                             cache: false,
+                             contentType: false,
+                             processData: false,
+                             dataType: 'json',
+                             success: function(respuesta) {
+
+                                 var options = '<option selected value="">Proveedor</option>';
+
+                                 for (let index = 0; index < respuesta.length; index++) {
+                                     options = options + '<option value=' + respuesta[index][0] + '>' + respuesta[index][
+                                         1
+                                     ] + '</option>';
+                                 }
+                                 //  console.log("Pruebas de respuesta de Cateforias!!!:::",options);
+                                 $("#selProveedor").append(options);
                              }
                          });
 
@@ -306,6 +346,8 @@
 
                              tableCompras.destroy();
 
+                             idProveedor = $("#selProveedor").val();
+
                              if ($("#compras_desde").val() == '') {
                                  compras_desde = '21/10/2001';
                              } else {
@@ -317,11 +359,8 @@
                              } else {
                                  compras_hasta = $("#compras_hasta").val()
                              }
-                             //   console.log(compras_hasta,"buscar por rango compra_hasta");
-                             //  console.log(compras_desde,"buscar por rango compra_desde");
-
+                         
                              compras_desde = compras_desde.substr(6, 4) + '-' + compras_desde.substr(3, 2) + '-' + compras_desde.substr(0, 2);
-                             //    console.log(compras_desde, "Con formato 2022-12-01")
                              compras_hasta = compras_hasta.substr(6, 4) + '-' + compras_hasta.substr(3, 2) + '-' + compras_hasta.substr(0, 2);
 
                              var groupColumn = 0;
@@ -343,7 +382,9 @@
                                      data: {
                                          'accion': 2,
                                          'fechaDesde': compras_desde,
-                                         'fechaHasta': compras_hasta
+                                         'fechaHasta': compras_hasta,
+                                         'idProveedor': idProveedor,
+
                                      },
                                      "dataSrc": function(respuesta) {
                                          console.log(respuesta, "Total Compra !");
@@ -404,6 +445,11 @@
                                      },
                                      {
                                          targets: 9,
+                                         "data": "nombre",
+                                         visible: true
+                                     },
+                                     {
+                                         targets: 10,
 
                                          render: function(data, type, full, meta) {
                                              /*retorna un ocono de un lapiz en incomprario en opciones, con el style cursor... indicamos que al seleccionar el 

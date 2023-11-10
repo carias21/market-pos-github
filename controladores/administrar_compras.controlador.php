@@ -1,9 +1,9 @@
 <?php
 class AdministrarComprasControlador{
 
-    static public function ctrListarCompras($fechaDesde, $fechaHasta) {
+    static public function ctrListarCompras($compras_desde, $compras_hasta, $idProveedor) {
 
-    $compras = AdministrarComprasModelo::mdlListarCompras($fechaDesde, $fechaHasta);
+    $compras = AdministrarComprasModelo::mdlListarCompras($compras_desde, $compras_hasta, $idProveedor);
 
         return $compras;
     }
