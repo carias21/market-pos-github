@@ -1,12 +1,12 @@
 <?php
 require_once "conexion.php";
+require_once "../config.php";
 
 class VentasModelo
 {
     public $resultado;
     public $resultado2;
-
-
+    public $alertaStock;
 
     static public function mdlRegistrarVenta($datos)
     {
@@ -14,7 +14,9 @@ class VentasModelo
         date_default_timezone_set('America/Guatemala');
         $fecha_venta = date("Y-m-d H:i:s");
 
-        $id_usuario = $_SESSION["usuario1"]->id_usuario;
+        global $session_id_usuario;
+        $session_id_usuario = $session_id_usuario->id_usuario;
+
         $listaProductos = [];
 
         for ($i = 0; $i < count($datos); ++$i) {
@@ -45,7 +47,7 @@ class VentasModelo
                 $stmt->bindParam(":descuento", $producto[5], PDO::PARAM_STR);
                 $stmt->bindParam(":total_venta", $producto[6], PDO::PARAM_STR);
                 $stmt->bindParam(":fecha_venta", $fecha_venta, PDO::PARAM_STR);
-                $stmt->bindParam(":usuario", $id_usuario, PDO::PARAM_STR);
+                $stmt->bindParam(":usuario", $session_id_usuario, PDO::PARAM_STR);
                 $stmt->bindParam(":precio_compra",  $producto[7], PDO::PARAM_STR);
                 $stmt->bindParam(":tipo_pago",  $producto[8], PDO::PARAM_STR);
                 $stmt->bindParam(":id_cliente",  $producto[9], PDO::PARAM_STR);
@@ -54,7 +56,7 @@ class VentasModelo
                 $stmtCaja->bindParam(":descripcion_producto", $producto[10], PDO::PARAM_STR);
                 $stmtCaja->bindParam(":total_venta", $producto[6], PDO::PARAM_STR);
                 $stmtCaja->bindParam(":fecha", $fecha_venta, PDO::PARAM_STR);
-                $stmtCaja->bindParam(":usuario", $id_usuario, PDO::PARAM_STR);
+                $stmtCaja->bindParam(":usuario", $session_id_usuario, PDO::PARAM_STR);
                 $stmtCaja->bindParam(":tipo_pago",  $producto[8], PDO::PARAM_STR);
 
                 $stmtStock->bindParam(":codigo_producto", $producto[0], PDO::PARAM_STR);
@@ -63,6 +65,9 @@ class VentasModelo
                 $stmt->execute();
                 $stmtCaja->execute();
                 $stmtStock->execute();
+
+                self::verificarStock($conn, $producto[10], $producto[0]);
+
             }
 
             $conn->commit();
@@ -77,15 +82,52 @@ class VentasModelo
         return $resultado;
     }
 
+    public static function verificarStock($conn, $producto, $codigo_producto)
+    {
+        try {
+
+            $stmtVerificarStock = $conn->prepare("SELECT codigo_producto, stock_producto, minimo_stock_producto FROM productos WHERE codigo_producto = :codigo_producto");
+            $stmtVerificarStock->bindParam(':codigo_producto', $codigo_producto, PDO::PARAM_INT);
+    
+            $stmtVerificarStock->execute();
+    
+            // Obtener los resultados
+            $resultadoStock = $stmtVerificarStock->fetch(PDO::FETCH_ASSOC);
+
+            if ($resultadoStock && ($resultadoStock['stock_producto'] == $resultadoStock['minimo_stock_producto'])) {
+
+                $_POST["alertaStock"] = "ALERTA: EL PRODUCTO $producto CON CÓDIGO: $codigo_producto HA ALCANZADO EL MÍNIMO STOCK."
+                    . " EXISTENCIA ACTUAL:  $resultadoStock[stock_producto]";
+                include_once '../vistas/enviar_correo.php';
+            
+            
+                return $_POST["alertaStock"];
+            } elseif($resultadoStock && ($resultadoStock['stock_producto'] == 0)){
+                $_POST["stock0"] = "ALERTA: EL PRODUCTO $producto CON CÓDIGO: $codigo_producto SE HA AGOTADO";
+                include_once '../vistas/enviar_correo.php';
+    
+                return $_POST["stock0"];
+            }
+            else {
+                return;
+            }
+        } catch (PDOException $e) {
+
+            return "Error al verificar el stock: " . $e->getMessage();
+        }
+    }
 
 
     public static function mdlRegistrarVenta0($cantidad, $precio_venta, $descuento, $total, $precio_compra, $id_tipo_pago)
     {
+
+        global $session_id_usuario;
+
+
         date_default_timezone_set('America/Guatemala');
         $fecha_actual = date("Y-m-d");
         $fecha_venta =  date("Y-m-d H:i:s");
-        $id_usuario = $_SESSION["usuario1"]->id_usuario;
-
+        $id_usuario = $session_id_usuario->id_usuario;
         try {
 
             $conexion = Conexion::conectar();
@@ -130,8 +172,8 @@ class VentasModelo
 
     static  public function mdlObtenerDetalleVenta($fecha_venta)
     {
-            
-            $stmt = Conexion::conectar()->prepare("SELECT v.total_venta, 
+
+        $stmt = Conexion::conectar()->prepare("SELECT v.total_venta, 
                                                         v.fecha_venta,
                                                         v.codigo_producto,
                                                         upper(p.descripcion_producto) as descripcion_producto,
@@ -153,14 +195,13 @@ class VentasModelo
                                                 INNER JOIN clientes c on c.id_cliente = v.fk_id_cliente
                                                 WHERE v.fecha_venta = :fecha_venta");
 
-            $stmt->bindParam(":fecha_venta", $fecha_venta, PDO::PARAM_STR);
+        $stmt->bindParam(":fecha_venta", $fecha_venta, PDO::PARAM_STR);
 
 
-            if ($stmt->execute()) {
-                return $stmt->fetchAll();
-            } else {
-                return "error";
-            }
-    
+        if ($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            return "error";
+        }
     }
 }

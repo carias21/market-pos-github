@@ -172,6 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <?php
             include "modulos/navbar.php";
             include "modulos/aside.php";
+            require_once "config.php";
             ?>
 
             <div class="content-wrapper">

@@ -1,22 +1,22 @@
 <?php
 
 require_once "conexion.php";
-session_start();
+require_once "../config.php";
 
 class AdministrarVentasModelo
 {
 
     public $resultado;
-
     static public function mdlListarVentas($fechaDesde, $fechaHasta, $sel_Usuario, $sel_Tipo_Pago)
     {
-        //obtener id usuario que realizo venta
-        $id_usuario = $_SESSION["usuario1"]->id_usuario;
+
+        global $session_id_usuario;
+        $session_id_usuario = $session_id_usuario->id_usuario;
 
 
         try {
 
-            if ($id_usuario == 1) {
+            if ($session_id_usuario == 1) {
 
                 if (!empty($sel_Usuario)  && !empty($sel_Tipo_Pago)) {
                     $stmt = Conexion::conectar()->prepare("SELECT v.id_venta,
@@ -179,7 +179,7 @@ class AdministrarVentasModelo
 
                 $stmt->bindParam(":fechaDesde", $fechaDesde, PDO::PARAM_STR);
                 $stmt->bindParam(":fechaHasta", $fechaHasta, PDO::PARAM_STR);
-                $stmt->bindParam(":usuario", $id_usuario, PDO::PARAM_STR);
+                $stmt->bindParam(":usuario", $session_id_usuario, PDO::PARAM_STR);
 
 
                 $stmt->execute();

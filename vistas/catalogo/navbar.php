@@ -1,0 +1,102 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <a class="navbar-brand font-weight-bold d-flex align-items-center" href="index.php">
+            <img src="../assets/imagenes/default.png" alt="Logo" class="img-fluid rounded" style="max-width: 100px; max-height: 100px;">
+            <span class="ml-2">ARTESANIAS </span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+      
+
+                <input type="text" class="form-control text-center" style="height: 36px;" id="iptBuscarProducto"
+                        name="iptBuscarProducto" placeholder="BUSCAR PRODUCTO" required>
+
+        </div>
+
+    </div>
+</nav>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+ 
+
+        $.ajax({
+            async: true,
+            url: "ajax/catalogo.ajax.php",
+            method: "POST",
+            data: {
+                'accion': 1
+            },
+            dataType: 'json',
+            //una vez que tengamos la "respuesta" de la base de datos
+            success: function (respuesta) {
+                console.log("hola");
+
+                console.log(respuesta);
+
+                //input iptCodigoVenta que lo autocomplete
+                $("#iptBuscarProducto").autocomplete({
+
+
+                    source: respuesta,
+                    //minLength: 3, // Mínimo de 3 caracteres antes de buscar
+                    select: function (event, ui) {
+                        // Obtén el código del producto seleccionado
+                        var selectedCodigo = ui.item.id;
+
+                        // Redirige a la página de detalles del producto pasando el código como parámetro en la URL
+                        window.location.href = 'detalle_producto.php?codigo=' + selectedCodigo;
+                    }
+
+                }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $("<li class ='ui-autocomplete-row'></li>")
+                        .data("item.autocomplete", item)
+                        .append(item.label)
+                        .appendTo(ul);
+                },
+
+                    // Limitar el número de elementos que se muestran en la lista de sugerencias
+                    $("#iptBuscarProducto").autocomplete("instance")._renderMenu = function (ul, items) {
+                        var max = 4; // número máximo de elementos a mostrar
+                        var that = this;
+                        items = items.slice(0, max);
+                        $.each(items, function (index, item) {
+                            that._renderItemData(ul, item);
+                        });
+                        $(ul).addClass("ui-autocomplete-list");
+                    };
+
+
+            }
+        });
+
+        
+
+
+    });
+
+
+
+</script>
+
+
+
+

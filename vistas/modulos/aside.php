@@ -1,5 +1,6 @@
 <?php
-$menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario1"]->id_usuario);
+require_once "config.php";
+$menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($session_id_usuario->id_usuario);
 //var_dump($menuUsuario);
 ?>
 
@@ -10,17 +11,17 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario1"]->
 
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link">
-        <img src="vistas/assets/dist/img/Log_Tecnet_Sin_fondo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="vistas/assets/dist/img/Log_Tecnet_Sin_fond.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">SISTEMA VENTAS</span>
     </a>
-<!-- COLOCAR EL NOMBRE Y APELLIDO DEL USUARIO LOGEDO, O QUE TIENE LA SESION INICIADA. -->
+    <!-- COLOCAR EL NOMBRE Y APELLIDO DEL USUARIO LOGEDO, O QUE TIENE LA SESION INICIADA. -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <img src="vistas/assets/dist/img/user1.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="User Image">
         </div>
         <div class="info">
-        <h6 class="text-warning"><?php echo $_SESSION["usuario1"]->nombre_usuario. ' ' . $_SESSION["usuario1"]->apellido_usuario ?></h6>
-     </div>
+            <h6 class="text-warning"><?php echo $session_id_usuario->nombre_usuario . ' ' . $session_id_usuario->apellido_usuario ?></h6>
+        </div>
     </div>
 
     <!-- Sidebar -->
@@ -38,13 +39,9 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario1"]->
                     <?php foreach ($menuUsuario as $menu) : ?>
                         <li class="nav-item">
 
-                            <a style="cursor: pointer;" 
-                            class="nav-link <?php if($menu->vista_inicio == 1)  : ?>
+                            <a style="cursor: pointer;" class="nav-link <?php if ($menu->vista_inicio == 1) : ?>
                                 <?php echo 'active' ?>
-                                <?php endif; ?>"
-
-                            <?php if (!empty($menu->vista)) : ?> 
-                            onclick="CargarContenido('vistas/<?php echo $menu->vista; ?>','content-wrapper')" <?php endif; ?>>
+                                <?php endif; ?>" <?php if (!empty($menu->vista)) : ?> onclick="CargarContenido('vistas/<?php echo $menu->vista; ?>','content-wrapper')" <?php endif; ?>>
                                 <!-- SE LE ASIGNA EL ICONO QUE ESTA INDICADO EN LA BASE DE DATOS (MODULOS) -->
                                 <i class="nav-icon <?php echo $menu->icon_menu; ?>"></i>
                                 <p>
@@ -57,7 +54,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario1"]->
                             </a>
 
                             <?php if (empty($menu->vista)) : ?>
-                                <?php $subMenuUsuario = UsuarioControlador::ctrObtenerSubMenuUsuario($menu->id,$_SESSION["usuario1"]->id_usuario);
+                                <?php $subMenuUsuario = UsuarioControlador::ctrObtenerSubMenuUsuario($menu->id, $session_id_usuario->id_usuario);
                                 ?>
                                 <ul class="nav nav-treeview">
                                     <?php foreach ($subMenuUsuario as $subMenu) : ?>
@@ -73,7 +70,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($_SESSION["usuario1"]->
                             <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
-                  
+
                     <!-------------------------------------------------------------------------------------------------------------------
                     OPCION MENU PARA CERRAR SESION
                     ----------------------------------------------------------------------------------------------------------------------->

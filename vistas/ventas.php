@@ -303,13 +303,10 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
 </div>
 
 <?php
-// Asegúrate de iniciar la sesión antes de acceder a $_SESSION
 
-
-// Verifica si la variable de sesión está definida antes de acceder a ella
-if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]->apellido_usuario)) {
-    $nombre_usuario = $_SESSION["usuario1"]->nombre_usuario;
-    $apellido_usuario = $_SESSION["usuario1"]->apellido_usuario;
+if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->apellido_usuario)) {
+    $nombre_usuario = $session_id_usuario->nombre_usuario;
+    $apellido_usuario = $session_id_usuario->apellido_usuario;
 
     // Mostrar la notificación con emoji de mano saludando
     echo '<script>';

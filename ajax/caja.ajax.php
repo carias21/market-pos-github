@@ -1,11 +1,9 @@
 <?php
-session_start();
 require_once "../controladores/caja.controlador.php";
 require_once "../modelos/caja.modelo.php";
 
 class AjaxCaja
 {
-
     public $descripcion;
     public $entrada;
     public $salida;
@@ -43,8 +41,10 @@ class AjaxCaja
     public function ajaxEliminarCaja()
     {
 
-        //SETEAMOS LA SESSION PARA QUE SOLO EL ADMIN CON ID 1 PUEDA ELIMINAR LA CAJA
-        $id_usuario = $_SESSION["usuario1"]->id_usuario;
+  global $session_id_usuario;
+
+// SE TEAMOS LA SESSION PARA QUE SOLO EL ADMIN CON ID 1 PUEDA ELIMINAR LA CAJA
+$id_usuario = $session_id_usuario->id_usuario;
 
         if ($id_usuario == 1) {
             $tbl_Caja = "caja";
@@ -60,8 +60,10 @@ class AjaxCaja
     }
     public function ajaxCierreDeCaja()
     {
+
+        global $session_id_usuario;
         //SETEAMOS LA SESSION PARA QUE SOLO EL ADMIN CON ID 1 PUEDA ELIMINAR LA CAJA
-        $id_usuario = $_SESSION["usuario1"]->id_usuario;
+        $id_usuario = $session_id_usuario->id_usuario;
         $tbl_Caja = "caja";
 
         if ($id_usuario == 1) {

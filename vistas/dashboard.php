@@ -379,9 +379,9 @@ $dia_actual = date('d');
 $ultimo_dia_del_mes = date('t'); // Obtiene el último día del mes actual
 
 // Verifica si la variable de sesión está definida antes de acceder a ella
-if (isset($_SESSION["usuario1"]->nombre_usuario) && isset($_SESSION["usuario1"]->apellido_usuario)) {
-    $nombre_usuario = $_SESSION["usuario1"]->nombre_usuario;
-    $apellido_usuario = $_SESSION["usuario1"]->apellido_usuario;
+if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->apellido_usuario)) {
+    $nombre_usuario = $session_id_usuario->nombre_usuario;
+    $apellido_usuario = $session_id_usuario->apellido_usuario;
 
     // Mostrar la notificación con emoji de mano saludando
     echo '<script>';
@@ -828,11 +828,9 @@ if ($dia_actual == $ultimo_dia_del_mes) {
             var fechaActual = new Date();
             sel_Mes = fechaActual.getMonth() + 1; // Sumamos 1 para que el mes esté en el rango 1-12
             selAnio = fechaActual.getFullYear();
-            console.log("hola mundo")
         } else {
             var sel_Mes = $("#sel_Mes").val();
             var selAnio = $("#selAnio").val();
-            console.log("hola masdasdasdundo")
         }
         $.ajax({
             url: 'ajax/dashboard.ajax.php',
@@ -849,7 +847,6 @@ if ($dia_actual == $ultimo_dia_del_mes) {
 
 
                 tableCantidadVenta.rows.add(respuesta).draw();
-                console.log(respuesta);
 
                 var dia = [];
                 var cantidad_venta = [];

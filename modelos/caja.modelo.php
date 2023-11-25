@@ -1,6 +1,7 @@
 <?php
 
 require_once "conexion.php";
+require_once "../config.php";
 
 
 class CajaModelo
@@ -38,7 +39,9 @@ class CajaModelo
     static public function mdlIngresoCaja($descripcion, $entrada)
     {
 
-        $id_usuario = $_SESSION["usuario1"]->id_usuario;
+        global $session_id_usuario;
+
+        $id_usuario = $session_id_usuario->id_usuario;
         date_default_timezone_set('America/Guatemala');
         $fecha_caja = date("Y-m-d H:i:s");
 
@@ -86,8 +89,8 @@ class CajaModelo
     ====================================================================*/
     static public function mdlSalidaCaja($descripcion, $salida)
     {
-
-        $id_usuario = $_SESSION["usuario1"]->id_usuario;
+        global $session_id_usuario;
+        $id_usuario = $session_id_usuario->id_usuario;
         date_default_timezone_set('America/Guatemala');
         $fecha_caja = date("Y-m-d H:i:s");
 
