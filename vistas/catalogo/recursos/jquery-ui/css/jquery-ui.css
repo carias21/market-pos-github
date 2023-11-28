@@ -1313,3 +1313,23 @@ a.ui-button:active,
 	-webkit-box-shadow: 0px 0px 5px #666666;
 	box-shadow: 0px 0px 5px #666666;
 }
+
+
+
+/* Estilo para el botón de navegación izquierdo (anterior) */
+.carousel-control-prev {
+    color: #115151; /* Color del texto del botón */
+}
+
+.carousel-control-prev-icon {
+    background-color: #115151; /* Color de fondo de la flecha izquierda */
+}
+
+/* Estilo para el botón de navegación derecho (siguiente) */
+.carousel-control-next {
+    color: #115151; /* Color del texto del botón */
+}
+
+.carousel-control-next-icon {
+    background-color: #115151; /* Color de fondo de la flecha derecha */
+}
