@@ -294,3 +294,23 @@ FROM ventas
 WHERE DATE_FORMAT(fecha_venta, '%Y-%m') = '2023-10' -- Reemplaza '2023-10' con el año y mes deseados, por ejemplo '2023-10' para octubre de 2023
 GROUP BY dia
 ORDER BY dia;
+
+
+
+
+
+
+
+
+
+insert into modulos(modulo, padre_id, vista, icon_menu, orden)values
+("CATALOGO", 0, "", "fas fa-images", 24 )
+
+insert into modulos(modulo, padre_id, vista, icon_menu, orden)values
+("Administrar Catalogo", 25, "catalogo.php", "far fa-circle", 25 )
+
+
+create table catalogo(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	foto VARCHAR(255),
+	descripcion VARCHAR(255) )

@@ -1,42 +1,38 @@
 <?php
-// Configuración de la base de datos
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "market-pos-github";
 
-// Conexión a la base de datos
-$conn = new mysqli($servername, $username, $password, $dbname);
+require_once  "../catalogo/modelos/conexion.php";
 
-// Verificar la conexión
-if ($conn->connect_error) {
-    die("Error de conexión a la base de datos: " . $conn->connect_error);
-}
+$conn = Conexion::conectar();
 
-// Configuración de la paginación
-$resultados_por_pagina = 20; // Número de productos por página
+
+$resultados_por_pagina = 20;
 $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1; // Página actual, por defecto es la primera
 $inicio = ($pagina_actual - 1) * $resultados_por_pagina; // Índice de inicio para la consulta SQL
 
-// Consulta para obtener los productos del inventario con paginación
 $sql = "SELECT codigo_producto, descripcion_producto, foto, stock_producto FROM productos  ORDER BY RAND() LIMIT $inicio, $resultados_por_pagina";
 $result = $conn->query($sql);
 
-// Consulta para contar el número total de productos
 $sql_contar = "SELECT COUNT(*) AS total FROM productos";
 $result_contar = $conn->query($sql_contar);
-$total_productos = $result_contar->fetch_assoc()['total'];
+$total_productos = $result_contar->fetch(PDO::FETCH_ASSOC)['total'];
 
-// Calcular el número total de páginas
+
 $total_paginas = ceil($total_productos / $resultados_por_pagina);
 
 $productos = [];
-while ($row = $result->fetch_assoc()) {
+while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+
     $productos[] = $row;
 }
 
-// Cerrar la conexión a la base de datos
-$conn->close();
+
+$sqlSlider = "SELECT foto, descripcion FROM catalogo  ORDER BY RAND()";
+$resultadoSqlSlider = $conn->query($sqlSlider);
+
+$productosSlider = [];
+while ($row = $resultadoSqlSlider->fetch(PDO::FETCH_ASSOC)) {
+    $productosSlider[] = $row;
+}
 ?>
 
 
@@ -51,6 +47,7 @@ $conn->close();
     <title>CATALOGO</title>
     <!-- Enlace a Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Domine:wght@400;700&display=swap">
 </head>
 
 <body>
@@ -59,25 +56,29 @@ $conn->close();
     require_once  "./navbar.php";
 
     ?>
-
-    <div class="container" style="background-color: #f0f0f0;">
-        <div class="row justify-content-center ">
+    <div class="container mt-3" style="background-color: #f0f0f0; border: 1px solid #ddd; border-radius: 10px; padding: 15px;">
+        <div class="row justify-content-center">
             <div id="carouselExample" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <?php
                     $activeClass = 'active'; // Para la primera imagen
 
-                    foreach ($productos as $producto) {
+                    foreach ($productosSlider as $productoSlider) {
                     ?>
-                        <div class="carousel-item <?= $activeClass ?>">
-                            <img src="../assets/imagenes/<?= $producto['foto'] ?>" class="d-block mx-auto img-thumbnail" alt="<?= $producto['descripcion_producto'] ?>" style="max-width: 300px; max-height: 200px;">
-
+                        <div class="carousel-item <?= $activeClass ?> text-center">
+                            <img src="../assets/imagenes/slider/<?= $productoSlider['foto'] ?>" class="d-block mx-auto img-thumbnail rounded shadow" alt="<?= $productoSlider['descripcion'] ?>" style="max-width: 500px; max-height: 400px;">
+                            <br>
+                            <div><br><br><br><br><br><br><br></div>
+                            <div class="carousel-caption mt-3">
+                                <h5 class="textoSlider"><?= $productoSlider['descripcion'] ?></h5>
+                            </div>
                         </div>
                     <?php
                         $activeClass = ''; // Desactivar la clase 'active' después de la primera imagen
                     }
                     ?>
                 </div>
+
 
                 <!-- Botones de Navegación -->
                 <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
@@ -93,13 +94,11 @@ $conn->close();
     </div>
 
 
-
-
     <br>
     <div class="container">
-    <div class="card card-info text-center border-info border-3">
-    <h1 class="text-center">PRODUCTOS</h1>
-</div>
+        <div class="card card-info text-center border-info border-3">
+            <h1 class="text-center">PRODUCTOS</h1>
+        </div>
 
 
         <br>
@@ -153,4 +152,5 @@ $conn->close();
 
 
 <link rel="stylesheet" href="./recursos/jquery-ui/css/jquery-ui.css">
+<link rel="stylesheet" href="./recursos/jquery-ui/css/misestilos.css">
 <script src="./recursos/jquery-ui/js/jquery-ui.js"></script>
