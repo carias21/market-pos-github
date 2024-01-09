@@ -70,4 +70,14 @@ class ReportesControlador
 
         return $VentasPorSemana;
     }
+
+
+
+    static public function ctrCantidadVentasMesAnio( $anio){
+    
+        $cantidadVentasMesAnio = ReportesModelo::mdlCantidadVentasMesAnio($anio);
+    
+        return $cantidadVentasMesAnio;
+    
+    }
 }

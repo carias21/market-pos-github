@@ -35,25 +35,49 @@
 
                      <div class="card-header">
 
-                         <h3 class="card-title" id="title-header"> TOTAL VENTAS POR MES</h3>
 
-                         <h3 class="card-title" id="idineCharVentasMes"></h3>
 
-                         <div class="card-tools">
 
-                             <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
-                                con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
-                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                 <i class="fas fa-minus"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                 <i class="fas fa-times"></i>
-                             </button>
-                             <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                                 <i class="fas fa-expand"></i>
-                             </button>
 
-                         </div> <!-- ./ end card-tools -->
+                         <div class="row">
+                             <div class="col-md-3 text-centered">
+                                 <h3 class="card-title" id="title-header"> TOTAL VENTAS POR MES</h3>
+                                 <br>
+                             </div>
+
+
+                             <div class="col-md-2 text-left">
+                                 <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="selAnio">
+                                     <option value="0">AÑO ACTUAL</option>
+                                     <option value="2022">2022</option>
+                                     <option value="2023">2023</option>
+                                     <option value="2024">2024</option>
+                                 </select>
+                             </div>
+
+
+                             <div class="col-md text-right">
+                                 <div class="card-tools">
+
+                                     <!-- el siguiente codigo agrega dos botones a la pesta;a de ventas del mes
+                 con el fin de que el usuario pueda minimizar la pesta;a o eliminarla-->
+                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                         <i class="fas fa-minus"></i>
+                                     </button>
+                                     <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                         <i class="fas fa-times"></i>
+                                     </button>
+                                     <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                         <i class="fas fa-expand"></i>
+                                     </button>
+
+                                 </div> <!-- ./ end card-tools -->
+
+
+                             </div>
+                         </div>
+
+
 
                      </div> <!-- ./ end card-header -->
 
@@ -354,77 +378,6 @@
 
 
          <!-------------------------------------------------------------------------------------------
-            BUSQUEDA POR RANGO DE FECHAS VENTAS DEL MES
-         -------------------------------------------------------------------------------------------->
-         <div class="row">
-
-             <div class="col-12">
-
-                 <div class="card card-info ">
-
-                     <div class="card-header ">
-
-                         <h3 class="card-title" id="ventas_Del_Mes"></h3>
-
-
-                         <div class="row">
-                             <div class="col-md-4 text-left">
-                                 <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="sel_Mes">
-                                     <option value="1">Enero</option>
-                                     <option value="2">Febrero</option>
-                                     <option value="3">Marzo</option>
-                                     <option value="4">Abril</option>
-                                     <option value="5">Mayo</option>
-                                     <option value="6">Junio</option>
-                                     <option value="7">Julio</option>
-                                     <option value="8">Agosto</option>
-                                     <option value="9">Septiembre</option>
-                                     <option value="10">Octubre</option>
-                                     <option value="11">Noviembre</option>
-                                     <option value="12">Diciembre</option>
-                                 </select>
-
-                             </div>
-
-                             <div class="col-md-8 text-right">
-                                 <div class="card-tools ml-auto">
-                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                         <i class="fas fa-minus"></i>
-                                     </button>
-                                     <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                         <i class="fas fa-times"></i>
-                                     </button>
-                                     <button type="button" class="btn btn-tool" data-card-widget="maximize">
-                                         <i class="fas fa-expand"></i>
-                                     </button>
-                                 </div> <!-- ./ end card-tools -->
-                             </div>
-                         </div>
-
-
-                     </div> <!-- ./ end card-header -->
-
-
-                     <div class="card-body">
-
-                         <div class="chart">
-
-                             <canvas id="barChart_Ventas_Del_Mes" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;">
-
-                             </canvas>
-
-                         </div>
-
-                     </div> <!-- ./ end card-body -->
-
-                 </div>
-
-             </div>
-
-         </div>
-
-
-         <!-------------------------------------------------------------------------------------------
             BUSQUEDA PROMEDIOS DE VENTAS
          -------------------------------------------------------------------------------------------->
          <div class="row">
@@ -583,10 +536,6 @@
                      }
 
                      total_venta.push(0);
-                     //console.log(total_ventas_mes);
-
-                     //indicamos en la clase card-title que coloque el dato de la conexion de total_ventas_mes de la base datos
-
 
                      var barChartCanvas = $("#barChart_Ventas_Del_Mes").get(0).getContext('2d');
 
@@ -752,6 +701,13 @@
          $("#fecha_hasta").val(moment().format('DD/MM/YYYY'));
 
 
+
+
+         var selAnio = $("#selAnio");
+
+         selAnio.on('change', function() {
+             obtenerGraficoVentasAnio();
+         });
 
 
 
@@ -1259,6 +1215,82 @@
              }
          });
 
+
+
+     }
+
+
+
+
+
+     function obtenerGraficoVentasAnio() {
+         var selAnio = $("#selAnio").val();
+
+         if (selAnio === "0") {
+
+             selAnio = fechaActual.getFullYear();
+         } else {
+             var selAnio = $("#selAnio").val();
+         }
+         $.ajax({
+             url: 'ajax/reportes.ajax.php',
+             type: 'POST',
+             dataType: 'json',
+             data: {
+                 'accion': 12,
+                 'anio': selAnio,
+             },
+             success: function(respuesta) {
+
+                 var Mes = [];
+                 var Total_Venta = [];
+
+                 for (let i = 0; i < respuesta.length; i++) {
+
+                     Mes.push(respuesta[i]['Mes']);
+                     Total_Venta.push(respuesta[i]['Total_Venta']);
+                 }
+                 Total_Venta.push(0);
+
+                 $("#Total_Ventas_Mes_Año").html('TOTAL VENTAS POR MES');
+
+
+                 var areaChartData = {
+                     labels: Mes,
+                     datasets: [{
+                         label: 'Total ventas Mes',
+                         //color de las barras'rgba(60,141,188,0.9)',
+                         backgroundColor: 'rgb(196, 230, 0)',
+                         data: Total_Venta
+                     }]
+                 }
+
+                 var barChartData = $.extend(true, {}, areaChartData);
+
+                 var temp0 = areaChartData.datasets[0];
+
+                 barChartData.datasets[0] = temp0;
+
+                 // Configuración del gráfico
+                 var options = {
+                     scales: {
+                         y: {
+                             beginAtZero: true
+                         }
+                     }
+                 };
+
+
+                 // Crear el gráfico de líneas
+                 var ctx = document.getElementById('lineChart').getContext('2d');
+                 var lineChart = new Chart(ctx, {
+                     type: 'line',
+                     data: areaChartData,
+                     options: options
+                 });
+             }
+
+         });
 
 
      }

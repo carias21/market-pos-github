@@ -300,6 +300,8 @@ ORDER BY dia;
 
 
 
+UPDATE productos
+SET fk_id_proveedor = 1
 
 
 

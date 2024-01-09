@@ -74,6 +74,16 @@ class AjaxReportes
     }
 
 
+    
+    public function ajaxCantidadVentasMesAnio( $anio){
+    
+        $cantidadVentasMesAnio = ReportesControlador::ctrCantidadVentasMesAnio( $anio);
+    
+        echo json_encode($cantidadVentasMesAnio);
+    
+    }
+
+
 }
 
 
@@ -104,4 +114,8 @@ if (isset($_POST['accion']) && $_POST['accion'] == 4) { //Ejecutar function cant
 }else if(isset($_POST['accion'])&& $_POST['accion'] == 11){
     $VentasPorSemana = new AjaxReportes();
     $VentasPorSemana->getVentasPorSemana();
+}else if(isset($_POST['accion']) && $_POST['accion'] == 12){ //obtener listado de ventas por mes del anio seleccionado
+    $cantidadVentasMesAnio = new AjaxReportes();
+    $cantidadVentasMesAnio->ajaxCantidadVentasMesAnio($_POST["anio"]);
+
 }

@@ -153,6 +153,34 @@ class ReportesModelo
 
         return $stmt->fetchAll();
     }
+
+
+
+    static public function mdlCantidadVentasMesAnio($anio)
+    {
+        try {
+    
+            $anioFormateado = sprintf("%04d", $anio);
+    
+            $stmt = Conexion::conectar()->prepare("SELECT 
+                MONTHNAME(v.fecha_venta) AS Mes,
+                SUM(round(v.total_venta,2)) AS Total_Venta
+            FROM ventas v
+            WHERE YEAR(v.fecha_venta) = :anio
+            GROUP BY MONTH(v.fecha_venta)
+            ORDER BY MONTH(v.fecha_venta) DESC");
+    
+            $stmt->bindParam(":anio", $anioFormateado, PDO::PARAM_STR);
+    
+            $stmt->execute();
+    
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            return 'Excepción capturada: ' . $e->getMessage() . "\n";
+        }
+    }
+    
+    
 }
 
 

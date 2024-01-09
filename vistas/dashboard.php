@@ -137,12 +137,13 @@
 
                         <div class="row">
 
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <h1 class="card-title " id="title-header"></h1>
                                 </div>
                             </div>
                             <br>
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -151,6 +152,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -159,6 +161,21 @@
                                     </div>
                                 </div>
                             </div>
+
+                            
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text"> <i class="fas fa-chart-pie"></i></span></div>
+                                        <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="selGrafico">
+                                            <option value="0">GRAFICO</option>
+                                            <option value="bar">BAR</option>
+                                            <option value="line">LINE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div> <!-- ./ end card-header -->
                     <div class="card-body">
@@ -424,7 +441,7 @@ if ($dia_actual == $ultimo_dia_del_mes) {
         $("#fecha_hasta").val(moment().format('DD/MM/YYYY'));
 
 
-        fecha_desde.on('change', function() {
+         fecha_desde.on('change', function() {
             actualizarFechasSeleccionadas();
         });
 
@@ -436,7 +453,6 @@ if ($dia_actual == $ultimo_dia_del_mes) {
 
             var div = document.getElementById("curveChart");
 
-            // Verifica si el elemento div existe antes de intentar mostrarlo
             if (div) {
                 // Muestra el elemento div cambiando su estilo
                 div.style.display = "block";
@@ -476,6 +492,8 @@ if ($dia_actual == $ultimo_dia_del_mes) {
                     },
                     dataType: 'json',
                     success: function(respuesta) {
+
+                        console.log(respuesta);
                         var fecha_venta = [];
                         var total_venta = [];
 
@@ -509,7 +527,6 @@ if ($dia_actual == $ultimo_dia_del_mes) {
 
                         var options = {
 
-                            title: 'ESTADISTICA GENERAL',
                             curveType: 'function',
                             legend: {
                                 position: 'bottom'
@@ -560,6 +577,137 @@ if ($dia_actual == $ultimo_dia_del_mes) {
 
 
         };
+
+
+
+
+        function ObtenerGraficoBarras() {
+
+            var divCurve = document.getElementById("curveChart");
+            var divBar = document.getElementById("barChart");
+
+
+            if (divCurve) {
+                divCurve.style.display = "none";
+            }
+
+
+            if (divBar) {
+                divBar.style.display = "block";
+            }
+            var fecha_desde = $("#fecha_desde").val();
+            var fecha_hasta = $("#fecha_hasta").val();
+
+            fecha_desde = fecha_desde.substr(6, 4) + '-' + fecha_desde.substr(3, 2) + '-' + fecha_desde.substr(0, 2);
+            fecha_hasta = fecha_hasta.substr(6, 4) + '-' + fecha_hasta.substr(3, 2) + '-' + fecha_hasta.substr(0, 2);
+
+
+            $.ajax({
+                url: "ajax/dashboard.ajax.php",
+                method: 'POST',
+                data: {
+                    'accion': 4,
+                    'fechaDesde': fecha_desde,
+                    'fechaHasta': fecha_hasta,
+                },
+                dataType: 'json',
+                success: function(respuesta) {
+
+                    console.log(respuesta);
+
+                    var fecha_venta = [];
+                    var total_venta = [];
+
+                    var mes_actual = new Date();
+                    var total_ventas_mes = 0;
+
+                    for (let i = 0; i < respuesta.length; i++) {
+
+                        fecha_venta.push(respuesta[i]['fecha_venta']);
+                        total_venta.push(respuesta[i]['total_venta']);
+
+                        total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i]['total_venta']);
+                    }
+
+                    total_venta.push(0);
+
+                    var barChartCanvas = $("#barChart").get(0).getContext('2d');
+
+                    var areaChartData = {
+                        labels: fecha_venta,
+
+                        datasets: [{
+                            label: 'VENTAS',
+                            backgroundColor: 'rgba(128, 0, 128, 0.9)',
+                            borderColor: 'rgb(128, 0, 128)',
+
+                            borderWidth: 5,
+                            data: total_venta
+                        }]
+                    }
+
+                    var barChartData = $.extend(true, {}, areaChartData);
+
+                    var temp0 = areaChartData.datasets[0];
+
+                    barChartData.datasets[0] = temp0;
+
+                    $("#title-header").html('TOTAL VENTA: Q. ' + total_ventas_mes.toFixed(2).toString().replace(
+                        /\d(?=(\d{3})+\.)/g, "$&,"));
+
+                    var barChartOptions = {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        events: false,
+                        legend: {
+                            display: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                stacked: true,
+                            }],
+                            yAxes: [{
+                                stacked: true
+                            }]
+                        },
+                        animation: {
+                            duration: 500,
+                            easing: "easeOutQuart",
+                            onComplete: function() {
+                                var ctx = this.chart.ctx;
+                                ctx.font = Chart.helpers.fontString(Chart.defaults.global
+                                    .defaultFontFamily, 'normal',
+                                    Chart.defaults.global.defaultFontFamily);
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'bottom';
+
+                                this.data.datasets.forEach(function(dataset) {
+                                    for (var i = 0; i < dataset.data.length; i++) {
+                                        var model = dataset._meta[Object.keys(dataset
+                                                ._meta)[0]].data[i]._model,
+                                            scale_max = dataset._meta[Object.keys(dataset
+                                                ._meta)[0]].data[i]._yScale.maxHeight;
+                                        ctx.fillStyle = '#444';
+                                        var y_pos = model.y - 5;
+                                        if ((scale_max - model.y) / scale_max >= 0.93)
+                                            y_pos = model.y + 20;
+                                        ctx.fillText(dataset.data[i], model.x, y_pos);
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    new Chart(barChartCanvas, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: barChartOptions
+                    })
+                }
+
+            });
+        };
+
 
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -798,7 +946,18 @@ if ($dia_actual == $ultimo_dia_del_mes) {
 
         });
 
+        var selGrafico = $("#selGrafico");
 
+        selGrafico.on('change', function() {
+            console.log(selGrafico.val());
+            if (selGrafico.val() == "line") {
+                actualizarFechasSeleccionadas();
+            } else if (selGrafico.val() == "bar") {
+
+                ObtenerGraficoBarras()
+            }
+
+        });
 
 
 
@@ -997,23 +1156,21 @@ if ($dia_actual == $ultimo_dia_del_mes) {
 
                 var areaChartData = {
                     labels: fecha_venta,
-                    datasets: [
-                        {
-                            label: 'Ventas del Mes Actual',
-                            //color de las barras'rgba(60,141,188,0.9)',
-                            backgroundColor: 'rgb(142, 255, 0, 0.8)',
-                            borderColor: 'rgb(142, 255, 0)',
-                            borderWidth: 5, // ancho del borde en píxeles
-                            data: total_venta
-                        },{
-                            label: 'Ventas del mes anterior',
-                            //color de las barras
-                            backgroundColor: 'rgb(255, 171, 0, 0.8)',
-                            borderColor: 'rgb(255, 171, 0)',
-                            borderWidth: 5, // ancho del borde en píxeles
-                            data: total_venta_ant
-                        }
-                    ]
+                    datasets: [{
+                        label: 'Ventas del Mes Actual',
+                        //color de las barras'rgba(60,141,188,0.9)',
+                        backgroundColor: 'rgb(142, 255, 0, 0.8)',
+                        borderColor: 'rgb(142, 255, 0)',
+                        borderWidth: 5, // ancho del borde en píxeles
+                        data: total_venta
+                    }, {
+                        label: 'Ventas del mes anterior',
+                        //color de las barras
+                        backgroundColor: 'rgb(255, 171, 0, 0.8)',
+                        borderColor: 'rgb(255, 171, 0)',
+                        borderWidth: 5, // ancho del borde en píxeles
+                        data: total_venta_ant
+                    }]
                 }
 
                 var barChartData = $.extend(true, {}, areaChartData);
