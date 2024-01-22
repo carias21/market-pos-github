@@ -130,21 +130,21 @@
         -------------------------------------------------------------------------------------------->
         <!-- row Grafico de barras -->
         <div class="row">
-            <div class="col-12">
+            <div class="col-lg-9">
                 <div class="card card-info">
 
                     <div class="card-header ">
 
                         <div class="row">
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <h1 class="card-title " id="title-header"></h1>
                                 </div>
                             </div>
                             <br>
 
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
@@ -153,7 +153,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
@@ -162,7 +162,7 @@
                                 </div>
                             </div>
 
-                            
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -189,6 +189,41 @@
                     </div> <!-- ./ end card-body -->
                 </div>
             </div>
+
+            <div class="col-lg-3">
+                <div class="card card-warning ">
+                    <div class="card-header">
+                        <h3 class="card-title">ULTIMAS VENTAS</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="maximize">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div> <!-- ./ end card-tools -->
+                    </div> <!-- ./ end card-header -->
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="tbl_ultimas_ventas">
+                                <thead>
+                                    <tr class="text-nowrap">
+                                        <th>CODIGO</th>
+                                        <th>PRODUCTO</th>
+                                        <th>CANTIDAD</th>
+                                        <th>FECHA</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div> <!-- ./ end card-body -->
+                </div>
+            </div>
+
         </div> <!-- ./row Grafico de barras -->
 
 
@@ -203,14 +238,17 @@
 
             <div class="col-lg-9">
 
-                <div class="card mi_card ">
+                <div class="card card-info ">
 
                     <div class="card-header ">
 
-                        <h3 class="card-title" id="ventas_Del_Mes"></h3>
-
-
                         <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <h3 class="card-title">CANTIDAD VENTAS</h3>
+                                </div>
+                            </div>
 
                             <div class="col-md-3 text-left">
                                 <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="selAnio">
@@ -240,7 +278,7 @@
 
 
 
-                            <div class="col-md-6 text-right">
+                            <div class="col-md-3 text-right">
                                 <div class="card-tools ml-auto">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                         <i class="fas fa-minus"></i>
@@ -275,28 +313,20 @@
 
             </div>
 
-
-
-
-
             <div class="col-lg-3">
                 <div class="card mi_card ">
-
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table display nowrap table-bordered w-100 rounded" id="tbl_cantidad_ventas">
                                 <thead>
-                                    <tr class="text-nowrap">
+                                    <tr >
                                         <th>DIA</th>
                                         <th>CANTIDAD</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-
-                                </tbody>
                             </table>
                         </div>
-                    </div> <!-- ./ end card-body -->
+                    </div> 
                 </div>
             </div>
 
@@ -427,6 +457,8 @@ if ($dia_actual == $ultimo_dia_del_mes) {
         graficoDeBarras();
         ajustarHeadersDataTables($('#tbl_productos_poco_stock'));
         ajustarHeadersDataTables($('#tbl_productos_mas_vendidos'));
+        ajustarHeadersDataTables($('#tbl_ultimas_ventas'));
+        ajustarHeadersDataTables($('#tbl_cantidad_ventas'));
 
 
         var fecha_desde = $("#fecha_desde");
@@ -441,7 +473,7 @@ if ($dia_actual == $ultimo_dia_del_mes) {
         $("#fecha_hasta").val(moment().format('DD/MM/YYYY'));
 
 
-         fecha_desde.on('change', function() {
+        fecha_desde.on('change', function() {
             actualizarFechasSeleccionadas();
         });
 
@@ -930,6 +962,27 @@ if ($dia_actual == $ultimo_dia_del_mes) {
         });
 
 
+        //-------------AJAX ULTIMAS VENTAS------------------------------
+
+        tableUltimasVentas = $("#tbl_ultimas_ventas").DataTable({
+            searching: false,
+            dom: 'Bfrtip', // Se colocan los botones, copiar, Excel, CSV y print en el inventario
+            scrollX: true,
+            buttons: [],
+            paging: false,
+            order: [
+                [3, "desc"]
+            ],
+            ajax: {
+                url: "ajax/dashboard.ajax.php",
+                dataSrc: '',
+                type: "POST",
+                data: {
+                    'accion': 6
+                },
+            },
+        });
+
         tableCantidadVenta = $("#tbl_cantidad_ventas").DataTable({
             searching: false,
             dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
@@ -1190,6 +1243,7 @@ if ($dia_actual == $ultimo_dia_del_mes) {
                         xAxes: [{
                             stacked: false, // Establece stacked en false
                         }],
+
                         yAxes: [{
                             stacked: false, // Establece stacked en false
                         }]

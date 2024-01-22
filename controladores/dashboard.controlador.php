@@ -32,6 +32,14 @@ class DashboardControlador{
     
     }
 
+    static public function ctrGetUltimasVentas(){
+    
+        $ultimasVentas = DashboardModelo::mdlGetUltimasVentas();
+    
+        return $ultimasVentas;
+    
+    }
+
     static public function ctrFiltrarGraficoBarras($fechaDesde, $fechaHasta){
     
         $filtrarGraficoBarras = DashboardModelo::mdlFiltrarGraficoBarras($fechaDesde, $fechaHasta);

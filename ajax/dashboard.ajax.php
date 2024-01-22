@@ -32,6 +32,14 @@ class AjaxDashboard{
     
     }
 
+    public function getUltimasVentas(){
+    
+        $ultimasVentas = DashboardControlador::ctrGetUltimasVentas();
+    
+        echo json_encode($ultimasVentas);
+    
+    }
+
     public function ajaxFiltrarGraficoBarras($fechaDesde, $fechaHasta){
     
         $filtrarGraficoBarras = DashboardControlador::ctrFiltrarGraficoBarras($fechaDesde, $fechaHasta);
@@ -73,6 +81,10 @@ if(isset($_POST['accion']) && $_POST['accion'] == 1){ //Ejecutar function ventas
 }else if(isset($_POST['accion']) && $_POST['accion'] == 5){ //ObtenerCantidadVentas
     $cantidadVentas = new AjaxDashboard();
     $cantidadVentas->ajaxCantidadVentas($_POST["mes"], $_POST["anio"]);
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 6){ //ObtenerCantidadVentas
+    $ultimasVentas = new AjaxDashboard();
+    $ultimasVentas->getUltimasVentas();
 
 }else{
     //tarjetas informativas
