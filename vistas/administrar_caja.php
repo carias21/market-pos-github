@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card card-info">
-                    <div class="card-header">
+                    <div class="card-header mi_card_info">
                         <h3 class="card-title">FLUJO DE CAJA</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -91,7 +91,7 @@
                 </div>
                 <div class="card-body">
                     <table id="tbl_Caja" class="display nowrap table-striped w-100 shadow rounded">
-                        <thead class="bg-info text-left">
+                        <thead class="mi_card_info text-left">
                             <th>id</th>
                             <th>Codigo</th>
                             <th>Fecha</th>

@@ -28,7 +28,7 @@
                 </div>
                 <div class="card-body">
                     <table id="tbl_Usuarios" class="display nowrap table-striped w-100 shadow rounded">
-                        <thead class="bg-info text-left">
+                        <thead class="mi_card_info text-left">
                             <th>id</th>
                             <th>Nombre U.</th>
                             <th>Apellido U.</th>
@@ -48,7 +48,7 @@
         <!--FORMULARIO PARA EL REGISTRO Y EDICION -->
         <div class="col-md-4">
             <div class="card card-info card-outline shadow">
-                <div class="card-header">
+                <div class="card-header mi_card_info ">
                     <h3 class="card-title"><i class="fas fa-edit"></i> Registro de Usuarios </h3>
                 </div>
 

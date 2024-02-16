@@ -62,7 +62,7 @@
 
                                 <table id="tblPerfiles" class="display nowrap table-striped shadow rounded" style="width:100%">
 
-                                    <thead class="bg-info text-left">
+                                    <thead class="mi_card_info text-left">
 
                                         <th>id perfil</th>
                                         <th>Descripción</th>
@@ -362,7 +362,7 @@
                             <div class="card-body">
                                 <table id="tbl_perfiles_asignar" class="display nowrap table-striped w-100 shadow rounded">
 
-                                    <thead class="bg-info text-left">
+                                    <thead class="mi_card_info text-left">
                                         <th>id Perfil</th>
                                         <th>Perfil</th>
                                         <th>Estado</th>

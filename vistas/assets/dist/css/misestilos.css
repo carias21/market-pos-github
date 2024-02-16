@@ -70,3 +70,32 @@ html.dark div.dtfc-right-top-blocker {
 .mi_card {
   background-color: rgb(94, 0, 0);
 }
+
+
+
+
+/* Estilos específicos para ciertos elementos en el modo oscuro */
+.dark-mode .navbar {
+  background-color: #003547; /* Cambia el color de fondo de la barra de navegación a un tono oscuro */
+  color: #ffffff; /* Cambia el color del texto en la barra de navegación a blanco */
+}
+
+/* Estilos específicos para ciertos elementos en el modo oscuro */
+.mi_card_info {
+  background-color: #17a2b8 !important; /* Cambia el color de fondo del encabezado de la tarjeta a un tono oscuro */
+  color: #ffffff !important; /* Cambia el color del texto del encabezado de la tarjeta a blanco */
+}
+
+.dark-mode .mi_card_info {
+  background-color: #003547 !important;  /* Cambia el color de fondo a un tono oscuro en modo oscuro */
+  color: #ffffff !important;  /* Cambia el color del texto a blanco en modo oscuro */
+}
+
+.dark-mode .btn {
+
+  color: #ffffff !important;  /* Cambia el color del texto a blanco en modo oscuro */
+}
+
+
+
+

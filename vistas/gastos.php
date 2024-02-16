@@ -26,7 +26,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-info">
-                <div class="card-header">
+                <div class="card-header mi_card_info">
                     <h3 class="card-title">Criterios de Busqueda</h3>
                     <div class="card-tools"><button class="btn btn-tool" type="button" data-card-widget="collapse"><i class="fas fa-minus"></i></button></div>
                 </div>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="card-body">
                     <table id="tblGastosOp" class="display nowrap table-striped w-100 shadow rounded">
-                        <thead class="bg-info text-left">
+                        <thead class="mi_card_info text-left">
                             <th>ID</th>
                             <th>TIPO GASTO</th>
                             <th>DESCRIPCION</th>
@@ -101,7 +101,7 @@
 
         <div class="modal-content ">
 
-            <div class="modal-header bg-info py-3">
+            <div class="modal-header mi_card_info py-3">
                 <h4 class="modal-title text-white">REGISTRO GASTOS</h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -175,7 +175,7 @@
         tblGastosOp = $("#tblGastosOp").DataTable({
             dom: 'Bfrtip', //se colocan los botones, copiar, Excel, CSV y print en el inventario
             buttons: [{
-                    className: 'bg-info',
+                    className: 'mi_card_info',
                     text: 'AGREGAR NUEVO GASTO',
                     action: function(e, dt, node, config) {
                         $("#mdlAgregarNuevoGasto").modal('show');
@@ -386,7 +386,7 @@
                 scrollX: true,
                 dom: 'Bfrtip',
                 buttons: [{
-                        className: 'bg-info',
+                        className: 'mi_card_info',
                         text: 'AGREGAR NUEVO GASTO',
                         action: function(e, dt, node, config) {
                             $("#mdlAgregarNuevoGasto").modal('show');

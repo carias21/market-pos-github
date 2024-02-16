@@ -27,7 +27,7 @@
             <div class="col-lg-12">
 
                 <div class="card card-info">
-                    <div class="card-header">
+                    <div class="card-header mi_card_info">
                         <h3 class="card-title">CRITERIOS DE BÚSQUEDA</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -114,7 +114,7 @@
                 <!--*******************    //TIPOS DE TABLAS *******************-->
                 <!--  Tabla original:   <table id="tbl_productos" class="table table-striped w-100 shadow">-->
                 <table id="tbl_productos" class="display nowrap  table-bordered  w-100 shadow rounded">
-                    <thead class="bg-info">
+                    <thead class="mi_card_info">
                         <tr style="font-size: 15px;">
                             <th></th>
                             <th>id</th>
@@ -158,7 +158,7 @@
         <div class="modal-content ">
 
             <!-- cabecera del modal -->
-            <div class="modal-header bg-info py-3">
+            <div class="modal-header bg-dark py-3">
                 <h4 class="modal-title text-white">AGREGAR PRODUCTO</h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -571,7 +571,7 @@
                     'data': 'stock',
                     createdCell: function(td, cellData, rowData, row, col) {
                         if (parseFloat(rowData[9]) <= parseFloat(rowData[10])) {
-                            $(td).parent().css('background', '#ffa500')
+                            $(td).parent().css('background', '#c38500');
                         }
                     }
                 },

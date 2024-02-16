@@ -30,7 +30,7 @@
                 </div>
                 <div class="card-body">
                     <table id="tbl_Catalogo" class="display nowrap table-striped w-100 shadow rounded">
-                        <thead class="bg-info text-left">
+                        <thead class="mi_card_info text-left">
                             <th>id</th>
                             <th>Foto</th>
                             <th>Descripcion</th>
@@ -58,7 +58,7 @@
         <div class="modal-content ">
 
             <!-- cabecera del modal -->
-            <div class="modal-header bg-info py-1 text-center">
+            <div class="modal-header mi_card_info py-1 text-center">
                 <h5 class="text-center fw-bold">NUEVO SLIDER</h5>
                 <button type="button" class="btn btn-outline-light fs-5" data-bs-dismiss="modal" id="btnCerrarModal">
                     <i class="far fa-times-circle"></i>

@@ -55,6 +55,53 @@ class DashboardControlador{
         return $cantidadVentas;
     
     }
+
+    static public function ctrTopProductoPeriodo(){
+    
+        $topProductoPeriodo = DashboardModelo::mdlTopProductoPeriodo();
+    
+        return $topProductoPeriodo;
+    
+    }
+
+    static public function ctrgetBarraDeProgreso(){
+    
+        $BarraDeProgreso = DashboardModelo::mdlGetBarraDeProgreso();
+    
+        return $BarraDeProgreso;
+    
+    }
+    
+
+    
+    static public function ctrgetMetas(){
+    
+        $metas = DashboardModelo::mdlgetMetas();
+    
+        return $metas;
+    
+    }
+    
+
+     
+    static public function ctrRecursosMeta(){
+    
+        $RecursosMeta = DashboardModelo::mdlRecursosMeta();
+    
+        return $RecursosMeta;
+    
+    }
+
+
+    static public function ctrEditarMetas($id, $valorMeta){
+    
+        $editarMetas = DashboardModelo::mdlEditarMetas($id, $valorMeta);
+    
+        return $editarMetas;
+    
+    }
+
+    
     
    
 }

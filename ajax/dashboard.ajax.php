@@ -55,6 +55,46 @@ class AjaxDashboard{
         echo json_encode($cantidadVentas);
     
     }
+
+    public function getTopProductoPeriodo(){
+    
+        $topProductoPeriodo = DashboardControlador::ctrTopProductoPeriodo();
+    
+        echo json_encode($topProductoPeriodo);
+    
+    }
+    public function getBarraDeProgreso(){
+    
+        $BarraDeProgreso = DashboardControlador::ctrgetBarraDeProgreso();
+    
+        echo json_encode($BarraDeProgreso);
+    
+    }
+
+    public function getMetas(){
+    
+        $metas = DashboardControlador::ctrgetMetas();
+    
+        echo json_encode($metas);
+    
+    }
+
+    public function getRecursosMeta(){
+    
+        $RecursosMeta = DashboardControlador::ctrRecursosMeta();
+    
+        echo json_encode($RecursosMeta);
+    
+    }
+
+
+    public function ajaxEditarMetas($id, $valorMeta){
+    
+        $editarMetas = DashboardControlador::ctrEditarMetas($id, $valorMeta);
+    
+        echo json_encode($editarMetas);
+    
+    }
 }
 
 
@@ -85,6 +125,26 @@ if(isset($_POST['accion']) && $_POST['accion'] == 1){ //Ejecutar function ventas
 }else if(isset($_POST['accion']) && $_POST['accion'] == 6){ //ObtenerCantidadVentas
     $ultimasVentas = new AjaxDashboard();
     $ultimasVentas->getUltimasVentas();
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 7){ //Obtener top producto por periodo
+    $topProductoPeriodo = new AjaxDashboard();
+    $topProductoPeriodo->getTopProductoPeriodo();
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 8){ //Obtener top producto por periodo
+    $BarraDeProgreso = new AjaxDashboard();
+    $BarraDeProgreso->getBarraDeProgreso();
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 9){ //obtener datos metas
+    $metas = new AjaxDashboard();
+    $metas->getMetas();
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 10){ //obtener tabla recursos para editar metas
+    $RecursosMeta = new AjaxDashboard();
+    $RecursosMeta->getRecursosMeta();
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 11){ //editar metas
+    $editarMetas = new AjaxDashboard();
+    $editarMetas->ajaxEditarMetas($_POST["id"], $_POST["valorMeta"]);
 
 }else{
     //tarjetas informativas

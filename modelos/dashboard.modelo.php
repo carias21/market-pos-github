@@ -100,5 +100,71 @@ class DashboardModelo
             return 'Excepción capturada: ' . $e->getMessage() . "\n";
         }
     }
+
+    static public function mdlTopProductoPeriodo()
+    {
+
+        $stmt = Conexion::conectar()->prepare('call prc_productos_mas_vendidos_periodo');
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    static public function mdlGetBarraDeProgreso()
+    {
+
+        $stmt = Conexion::conectar()->prepare('call prc_Metas');
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    
+    static public function mdlgetMetas()
+    {
+
+        $stmt = Conexion::conectar()->prepare('call prc_Metas');
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+
+        
+    static public function mdlRecursosMeta()
+    {
+
+        $stmt = Conexion::conectar()->prepare('SELECT id, metas FROM recursos ');
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+
+        
+    static public function mdlEditarMetas($id, $valorMeta)
+    {
+
+        $stmt = Conexion::conectar()->prepare('UPDATE recursos SET metas = :metas WHERE id = :id');
+
+
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->bindParam(":metas", $valorMeta, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+
+
+
+
+    
+    
     
 }

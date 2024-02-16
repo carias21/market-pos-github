@@ -33,7 +33,7 @@
 
                  <div class="card card-info">
 
-                     <div class="card-header">
+                     <div class="card-header mi_card_info">
 
 
 
@@ -79,7 +79,7 @@
 
 
 
-                     </div> <!-- ./ end card-header -->
+                     </div> <!-- ./ end card-header mi_card_info -->
 
 
                      <div class="card-body">
@@ -111,7 +111,7 @@
 
                  <div class="card card-info">
 
-                     <div class="card-header">
+                     <div class="card-header mi_card_info">
 
                          <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
 
@@ -129,7 +129,7 @@
 
                          </div> <!-- ./ end card-tools -->
 
-                     </div> <!-- ./ end card-header -->
+                     </div> <!-- ./ end card-header mi_card_info -->
 
 
                      <div class="card-body">
@@ -153,7 +153,7 @@
 
                  <div class="card card-info">
 
-                     <div class="card-header">
+                     <div class="card-header mi_card_info">
 
                          <h3 class="card-title" id="title-header">MAYOR VENTA DIA-SEMANA</h3>
 
@@ -171,7 +171,7 @@
 
                          </div> <!-- ./ end card-tools -->
 
-                     </div> <!-- ./ end card-header -->
+                     </div> <!-- ./ end card-header mi_card_info -->
 
 
                      <div class="card-body">
@@ -199,7 +199,7 @@
 
                  <div class="card card-info">
 
-                     <div class="card-header">
+                     <div class="card-header mi_card_info">
 
                          <h3 class="card-title" id="Ventas_Por_Usuario"></h3>
 
@@ -219,7 +219,7 @@
 
                          </div> <!-- ./ end card-tools -->
 
-                     </div> <!-- ./ end card-header -->
+                     </div> <!-- ./ end card-header mi_card_info -->
 
 
                      <div class="card-body">
@@ -246,7 +246,7 @@
          <div class="row">
              <div class="col-lg-6">
                  <div class="card card-info ">
-                     <div class="card-header">
+                     <div class="card-header mi_card_info">
                          <h3 class="card-title">GANANCIA NETA POR MES</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -259,7 +259,7 @@
                                  <i class="fas fa-expand"></i>
                              </button>
                          </div> <!-- ./ end card-tools -->
-                     </div> <!-- ./ end card-header -->
+                     </div> <!-- ./ end card-header mi_card_info -->
 
                      <div class="card-body">
                          <div class="table-responsive">
@@ -288,7 +288,7 @@
         -------------------------------------------------------------------------------------------->
              <div class="col-lg-6">
                  <div class="card card-info ">
-                     <div class="card-header">
+                     <div class="card-header mi_card_info">
                          <h3 class="card-title">GANANCIA BRUTA POR MES</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -301,7 +301,7 @@
                                  <i class="fas fa-expand"></i>
                              </button>
                          </div> <!-- ./ end card-tools -->
-                     </div> <!-- ./ end card-header -->
+                     </div> <!-- ./ end card-header mi_card_info -->
 
                      <div class="card-body">
                          <div class="table-responsive">
@@ -334,7 +334,7 @@
 
                  <div class="card card-info ">
 
-                     <div class="card-header ">
+                     <div class="card-header mi_card_info ">
 
                          <h3 class="card-title" id="Productos_vendidos"></h3>
 
@@ -355,7 +355,7 @@
 
                          </div> <!-- ./ end card-tools -->
 
-                     </div> <!-- ./ end card-header -->
+                     </div> <!-- ./ end card-header mi_card_info -->
 
 
                      <div class="card-body">
@@ -386,7 +386,7 @@
 
                  <div class="card card-info ">
 
-                     <div class="card-header ">
+                     <div class="card-header mi_card_info ">
 
                          <h3 class="card-title" id="promedio_ventas"></h3>
 
@@ -448,7 +448,7 @@
                          </div>
 
 
-                     </div> <!-- ./ end card-header -->
+                     </div> <!-- ./ end card-header mi_card_info -->
 
 
                      <div class="card-body">
@@ -765,8 +765,10 @@
                  },
                  legend: {
                      position: 'top'
-                 } // Cambia la posición de la leyenda a la parte superior
+                 },
+                 backgroundColor: 'transparent' 
              };
+
 
              var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
              chart.draw(data, options);
@@ -1205,10 +1207,10 @@
                              height: '80%'
                          }, // Ajusta el área del gráfico
                          legend: {
-                             position: 'top'
-                         } // Cambia la posición de la leyenda
-                     };
-
+                     position: 'top'
+                 },
+                 backgroundColor: 'transparent' 
+             };
                      var chart = new google.visualization.PieChart(document.getElementById('charVentasDiaSemana'));
                      chart.draw(data, options);
                  }

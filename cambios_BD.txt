@@ -316,3 +316,46 @@ create table catalogo(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	foto VARCHAR(255),
 	descripcion VARCHAR(255) )
+
+
+
+
+
+
+
+    -------------------------------------------------
+
+    CREATE TABLE recursos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    metas INT
+);
+
+SELECT 
+    'semana' AS periodo,
+    SUM(v.total_venta) AS total_venta,
+    (SELECT metas FROM recursos where id = 1) AS meta
+FROM ventas v
+WHERE YEAR(v.fecha_venta) = YEAR(CURDATE()) AND WEEK(v.fecha_venta) = WEEK(CURDATE())
+
+UNION
+
+SELECT 
+    'mes' AS periodo,
+    SUM(v.total_venta) AS total_venta,
+     (SELECT metas FROM recursos where id = 2) AS meta
+FROM ventas v
+WHERE YEAR(v.fecha_venta) = YEAR(CURDATE()) AND MONTH(v.fecha_venta) = MONTH(CURDATE())
+
+UNION
+
+SELECT 
+    'anio' AS periodo,
+    SUM(v.total_venta) AS total_venta,
+  (SELECT metas FROM recursos where id = 3) AS meta
+FROM ventas v
+WHERE YEAR(v.fecha_venta) = YEAR(CURDATE())
+
+
+
+
+insert into recursos (metas) values(100),(100),(100)

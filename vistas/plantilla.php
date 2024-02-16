@@ -37,6 +37,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#003547  ">
     <title>TECNET</title>
 
     <link rel="shortcut icon" href="vistas/assets/dist/img/log_tecnet_sin_fondo.png" type="image/x-icon">
@@ -166,7 +167,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <?php if (isset($_SESSION["usuario1"])) : ?>
 
-    <body class="hold-transition sidebar-mini">
+    <body class="hold-transition sidebar-mini ">
         <div class="wrapper">
 
             <?php
@@ -188,7 +189,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </script>
 
     </body>
-    <!--SI LA SESION NO EXISTE ME DIRECCIONA NUEVAMENTE AL LOGIN -------
     
     <?php else : ?>
 
@@ -200,3 +200,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 </html>
+
+<script>
+document.getElementById("toggleColorButton").addEventListener("click", function() {
+        toggleColorMode();
+    });
+
+    function toggleColorMode() {
+        var body = document.body;
+        if (body.classList.contains("colorPlantilla")) {
+            body.classList.remove("colorPlantilla");
+        } else {
+            body.classList.add("colorPlantilla");
+        }
+    }
+
+
+
+
+</script>
+

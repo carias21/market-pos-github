@@ -23,7 +23,7 @@
          <div class="row">
              <div class="col-md-12">
                  <div class="card card-info">
-                     <div class="card-header">
+                     <div class="card-header mi_card_info">
                          <h3 class="card-title">Criterios de Busqueda</h3>
                          <div class="card-tools"><button class="btn btn-tool" type="button" data-card-widget="collapse"><i class="fas fa-minus"></i></button></div>
                      </div>
@@ -84,7 +84,7 @@
                          </div>
                          <div class="card-body">
                              <table id="lstCompras" class="display nowrap table-striped w-100 shadow rounded">
-                                 <thead class="bg-info text-left">
+                                 <thead class="mi_card_info text-left">
                                      <th>id</th>
                                      <th>Codigo</th>
                                      <th>Categoría</th>

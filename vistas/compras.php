@@ -68,7 +68,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-info">
-                    <div class="card-header">
+                    <div class="card-header mi_card_info">
                         <h3 class="card-title">DATOS DEL PRODUCTO</h3>
                         <div class="card-tools"><button class="btn btn-tool" type="button" data-card-widget="collapse"><i class="fas fa-minus"></i></button></div>
                     </div>
@@ -141,7 +141,7 @@
                     <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA COMPRA -->
                     <div class="col-md-12">
                         <table id="lstProductosCompra" class="display nowrap table-striped w-100 shadow">
-                            <thead class="bg-info text-left fs-6">
+                            <thead class="mi_card_info text-left fs-6">
                                 <tr>
                                     <th>Item</th>
                                     <th>Id</th>

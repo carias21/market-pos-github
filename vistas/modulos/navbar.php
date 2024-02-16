@@ -12,25 +12,15 @@
     </div>
     <div class="col-md-2 text-right">
 
-        <button id="notifications-button" class="btn btn-warning ml-auto" data-toggle="dropdown">
-            <i class="fas fa-bell"></i>
-            <span class="badge badge-danger">5</span>
-        </button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifications-button">
-            <!-- Lista de notificaciones -->
-            <ul class="list-unstyled">
-                <li><a href="#">Notificación 1</a></li>
-                <li><a href="#">Notificación 2</a></li>
-                <li><a href="#">Notificación 3</a></li>
-                <!-- Agrega más elementos de notificación aquí -->
-            </ul>
-        </div>
-
+    
 
         <!-- Botón de pantalla completa (a la derecha) -->
         <button class="btn btn-info ml-auto" id="fullscreen-btn">
             <i class="fas fa-expand"></i>
         </button>
+
+        <button id="toggleDarkModeButton" class="btn btn-primary">v</button>
+
 
     </div>
 </nav>
@@ -43,52 +33,45 @@
 </div>
 
 <script>
-    const fullscreenBtn = document.getElementById("fullscreen-btn");
 
-    // Función para alternar el modo de pantalla completa
-    function toggleFullScreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
-        }
+document.addEventListener("DOMContentLoaded", function() {
+    var darkModeButton = document.getElementById("toggleDarkModeButton");
+    var isDarkMode = true; // Estado inicial: modo oscuro activado
+
+
+    // Cambiar entre modo claro y oscuro
+    function toggleDarkMode() {
+        var htmlElement = document.querySelector("html");
+        htmlElement.classList.toggle("dark-mode");
+        isDarkMode = !isDarkMode;
+        updateButtonText();
     }
 
-    // Agregar un evento click al botón para activar/desactivar la pantalla completa
-    fullscreenBtn.addEventListener("click", toggleFullScreen);
+    // Agregar evento de clic al botón
+    darkModeButton.addEventListener("click", function() {
+        toggleDarkMode();
+    });
+
+    // Actualizar el texto del botón al cargar la página
+    updateButtonText();
+});
 
 
 
 
+const fullscreenBtn = document.getElementById("fullscreen-btn");
 
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
 
-  // Simulación de notificaciones
-  var notificationCount = 5;
-
-  // Función para actualizar el contador de notificaciones
-  function updateNotificationCount() {
-    $('#notifications-button .badge').text(notificationCount);
-  }
-
-  // Función para mostrar una notificación
-  function showNotification(message) {
-    $('#notifications-button + .dropdown-menu ul').prepend('<li><a href="#">' + message + '</a></li>');
-    notificationCount++;
-    updateNotificationCount();
-  }
-
-  // Simulación de nuevas notificaciones
-  // Esto es solo un ejemplo; en una aplicación real, las notificaciones se mostrarían en respuesta a eventos reales.
-  $(document).ready(function () {
-    updateNotificationCount();
-
-    // Simular una nueva notificación cada 5 segundos
-    setInterval(function () {
-      showNotification('Nueva notificación');
-    }, 5000);
-  });
+fullscreenBtn.addEventListener("click", toggleFullScreen);
 
 
 </script>

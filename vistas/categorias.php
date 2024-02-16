@@ -28,7 +28,7 @@
                 </div>
                 <div class="card-body">
                     <table id="lstCategorias" class="display nowrap table-striped w-100 shadow rounded">
-                        <thead class="bg-info text-left">
+                        <thead class="mi_card_info text-left">
                             <th>id</th>
                             <th>Categoría</th>
                             <th>Medida</th>

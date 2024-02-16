@@ -83,7 +83,7 @@
             <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA VENTA -->
             <div class="col-md-12">
                 <table id="lstProductosVenta" class="display nowrap table-striped w-100 shadow">
-                    <thead class="bg-info text-left fs-6">
+                    <thead class="mi_card_info text-left fs-6">
                         <tr>
                             <th>Item</th>
                             <th>Id</th>
@@ -505,6 +505,10 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                         });
                         $(ul).addClass("ui-autocomplete-list");
                     };
+
+             
+                    $("#iptCodigoVenta").autocomplete("widget").css("background", "#CCCCCC"); // Ejemplo con gris claro
+
 
 
             }
