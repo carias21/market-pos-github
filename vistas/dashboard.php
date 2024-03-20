@@ -25,7 +25,7 @@
                 <div class="row">
 
                     <div class="col-lg-3">
-                        <div class="card card-info">
+                    <div class="card card-info">
                             <div class="card-header mi_card_info">
                                 <h3 class="card-title">TOP PRODUCTO PERIODO </h3>
                                 <div class="card-tools">
@@ -927,45 +927,28 @@
             SOLICITUD AJAX TARJETAS INFORMATIVAS
             =======================================================*/
             $.ajax({
-                url: "ajax/dashboard.ajax.php",
-                method: 'POST',
-                dataType: 'json',
-                success: function(respuesta) {
-                    //     console.log("respuesta", respuesta);
-                    $("#totalProductos").html(respuesta[0]['totalProductos']);
-                    $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toLocaleString('en'))
-                    //otras opciones de mostrar las cantidades: .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}))
-                    $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toLocaleString('en'))
-                    //  console.log(totalVentas);
-                    $("#totalGanancias").html('Q.' + respuesta[0]['ganancias'].toLocaleString('en'))
-                    $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'].toLocaleString('en'))
-                    $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toLocaleString('en'))
-                }
-            });
+    url: "ajax/dashboard.ajax.php",
+    method: 'POST',
+    dataType: 'json',
+    success: function(respuesta) {
+        console.log("respuesta", respuesta);
 
+        // Redondear los valores a dos decimales antes de mostrarlos
+        var totalCompras = parseFloat(respuesta[0]['totalCompras']).toFixed(2);
+        var totalVentas = parseFloat(respuesta[0]['totalVentas']).toFixed(2);
+        var ganancias = parseFloat(respuesta[0]['ganancias']).toFixed(2);
+        var ventasHoy = parseFloat(respuesta[0]['ventasHoy']).toFixed(2);
 
-            /*SetInterval siver para que cada 10 segundos se actualicen las tarjetas
-            10000 = 10segundos */
+        $("#totalProductos").html(respuesta[0]['totalProductos']);
+        $("#totalCompras").html('Q.' + totalCompras);
+        $("#totalVentas").html('Q.' + totalVentas);
+        $("#totalGanancias").html('Q.' + ganancias);
+        $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock']);
+        $("#totalVentasHoy").html('Q.' + ventasHoy);
+    }
+});
 
-            setInterval(() => {
-                $.ajax({
-                    url: "ajax/dashboard.ajax.php",
-                    method: 'POST',
-                    dataType: 'json',
-                    success: function(respuesta) {
-
-                        $("#totalProductos").html(respuesta[0]['totalProductos']);
-                        $("#totalCompras").html('Q.' + respuesta[0]['totalCompras'].toLocaleString('en'))
-                        $("#totalVentas").html('Q.' + respuesta[0]['totalVentas'].toLocaleString('en'))
-                        $("#totalGancias").html('Q.' + respuesta[0]['ganancias'].toLocaleString('en'))
-                        $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock'].toLocaleString('en'))
-                        $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toLocaleString('en'))
-                        //console.log("respuesta", respuesta);
-                    }
-                });
-                /* 10000 = 10segundos */
-            }, 15000);
-
+ 
 
 
 

@@ -70,15 +70,30 @@
 </div>
 
 <div class="card card-info">
-    <div class="col-md-12 mb-3 text-center">
-        <h3 style="font-weight: bold; display: inline-block;">Total Caja: Q.<span id="total_Caja" style="font-weight: bold;">0.00</span></h4>
+    <div class="row">
+        <div class="col-md-10 mb-3 text-center">
+            <h3 style="font-weight: bold;">Total Caja: Q.<span id="total_Caja" style="font-weight: bold;">0.00</span></h3>
             <p></p>
-            <h4 style="display: inline-block;">Efectivo: Q.<span id="efectivo" style="font-weight: bold;">0.00</span> / </h5>
-                <h4 style="display: inline-block;">Tarjeta: Q.<span id="tarjeta" style="font-weight: bold;">0.00</span> / </h5>
-                    <h4 style="display: inline-block;">Transferencia: Q.<span id="transferencia" style="font-weight: bold;">0.00</span> / </h5>
-                        <h4 style="display: inline-block;">Otro: Q.<span id="otro" style="font-weight: bold;">0.00</span></h5>
+            <h4 style="display: inline-block;">Efectivo: Q.<span id="efectivo" style="font-weight: bold;">0.00</span> / </h4>
+            <h4 style="display: inline-block;">Tarjeta: Q.<span id="tarjeta" style="font-weight: bold;">0.00</span> / </h4>
+            <h4 style="display: inline-block;">Transferencia: Q.<span id="transferencia" style="font-weight: bold;">0.00</span> / </h4>
+            <h4 style="display: inline-block;">Otro: Q.<span id="otro" style="font-weight: bold;">0.00</span></h4>
+        </div>
+        <div class="col-md-2 mb-12 text-center">
+            <div class="card">
+                <div class="card-header mi_card_info">
+                    <h6 class="modal-title text-white">VENTAS DEL DIA</h6>
+                </div>
+
+                <div class="card-body">
+                    <h6 id="totalVentasHoy">Q.0.00</h6>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
+
 
 <!-- Main content -->
 <div class="content pb-2">
@@ -629,6 +644,20 @@ YA QUE NO SE MUESTRA -->
         });
 
 
+        /* =======================================================
+            SOLICITUD AJAX VENTAS DE DIA
+            =======================================================*/
+        $.ajax({
+            url: "ajax/dashboard.ajax.php",
+            method: 'POST',
+            dataType: 'json',
+            success: function(respuesta) {
+                $("#totalVentasHoy").html('Q.' + respuesta[0]['ventasHoy'].toFixed(2).toLocaleString('en'));
+            }
+        });
+
+
+
     })
 
 
@@ -641,22 +670,22 @@ YA QUE NO SE MUESTRA -->
     /* =======================================================
        SOLICITUD AJAX TOTAL_CAJA
        =======================================================*/
+       function Ajax_Total_Caja() {
+    $.ajax({
+        url: "ajax/caja.ajax.php",
+        method: 'POST',
+        dataType: 'json',
+        success: function(respuesta) {
+            // Redondear y mostrar los valores
+            $("#total_Caja").html(parseFloat(respuesta[0]['total_Caja']).toFixed(2));
+            $("#efectivo").html(parseFloat(respuesta[0]['efectivo']).toFixed(2));
+            $("#tarjeta").html(parseFloat(respuesta[0]['tarjeta']).toFixed(2));
+            $("#transferencia").html(parseFloat(respuesta[0]['transferencia']).toFixed(2));
+            $("#otro").html(parseFloat(respuesta[0]['otro']).toFixed(2));
+        }
+    });
+}
 
-    function Ajax_Total_Caja() {
-        $.ajax({
-            url: "ajax/caja.ajax.php",
-            method: 'POST',
-            dataType: 'json',
-            success: function(respuesta) {
-                $("#total_Caja").html(respuesta[0]['total_Caja']);
-                $("#efectivo").html(respuesta[0]['efectivo']);
-                $("#tarjeta").html(respuesta[0]['tarjeta']);
-                $("#transferencia").html(respuesta[0]['transferencia']);
-                $("#otro").html(respuesta[0]['otro']);
-            }
-        });
-
-    }
 
 
     /*===================================================================

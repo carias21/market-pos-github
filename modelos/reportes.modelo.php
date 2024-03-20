@@ -168,7 +168,7 @@ class ReportesModelo
             FROM ventas v
             WHERE YEAR(v.fecha_venta) = :anio
             GROUP BY MONTH(v.fecha_venta)
-            ORDER BY MONTH(v.fecha_venta) DESC");
+            ORDER BY MONTH(v.fecha_venta) ASC");
     
             $stmt->bindParam(":anio", $anioFormateado, PDO::PARAM_STR);
     

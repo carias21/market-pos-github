@@ -85,8 +85,7 @@
                      <div class="card-body">
 
                          <div class="lineChart">
-
-                             <canvas id="lineChart" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></canvas>
+                             <div id="curve_chart_Google" style="width: 100%; height: 100%;"></div>
 
 
                          </div>
@@ -498,7 +497,6 @@
          cargarListadoGananciaNeta();
          cargarListadoGananciaBruta();
          cargarGraficoTotalVentasUsuario();
-         cargarVentasMesAño();
          cargarVentasSemana();
 
          var sel_Mes = $("#sel_Mes");
@@ -766,7 +764,7 @@
                  legend: {
                      position: 'top'
                  },
-                 backgroundColor: 'transparent' 
+                 backgroundColor: 'transparent'
              };
 
 
@@ -897,11 +895,14 @@
 
      }
 
-     function cargarGraficoVentasPorMes() {
 
-         /* =======================================================
-         SOLICITUD AJAX GRAFICO DE BARRAS TOTAL VENTAS MES POR AÑO
-         =======================================================*/
+
+     google.charts.load('current', {
+         'packages': ['corechart']
+     });
+     google.charts.setOnLoadCallback(cargarGraficoVentasPorMes);
+
+     function cargarGraficoVentasPorMes() {
          $.ajax({
              url: "ajax/reportes.ajax.php",
              method: 'POST',
@@ -910,67 +911,71 @@
              },
              dataType: 'json',
              success: function(respuesta) {
-
-                 var Mes = [];
-                 var Total_Venta = [];
+                 var data = new google.visualization.DataTable();
+                 data.addColumn('string', 'Mes');
+                 data.addColumn('number', 'Total Venta');
+                 data.addColumn({
+                     type: 'string',
+                     role: 'annotation'
+                 });
 
                  for (let i = 0; i < respuesta.length; i++) {
-
-                     Mes.push(respuesta[i]['Mes']);
-                     Total_Venta.push(respuesta[i]['Total_Venta']);
-                 }
-                 Total_Venta.push(0);
-
-                 $("#Total_Ventas_Mes_Año").html('TOTAL VENTAS POR MES');
-
-                 var areaChartData = {
-                     labels: Mes,
-                     datasets: [{
-                         label: 'Total ventas Mes',
-                         borderColor: 'rgb(196, 230, 0)',
-                         borderWidth: 2,
-                         pointRadius: 20, // Ajusta el tamaño de los puntos
-                         data: Total_Venta,
-                         pointLabel: Total_Venta, // Etiquetas para los puntos
-                         pointHoverBackgroundColor: 'rgb(196, 230, 0)',
-                         pointHoverBorderColor: 'rgb(0,0,0)',
-                         pointHoverBorderWidth: 2,
-                     }]
+                     var totalVenta = " Q." + respuesta[i]['Total_Venta'];
+                     data.addRow([respuesta[i]['Mes'], parseFloat(respuesta[i]['Total_Venta']), totalVenta]);
                  }
 
-                 var barChartData = $.extend(true, {}, areaChartData);
-
-                 var temp0 = areaChartData.datasets[0];
-
-                 barChartData.datasets[0] = temp0;
-
-                 // Configuración del gráfico
                  var options = {
-                     scales: {
-                         y: {
-                             beginAtZero: true
+
+                     curveType: 'function',
+                     legend: {
+                         position: 'bottom'
+                     },
+                     backgroundColor: 'transparent', // Establecer el color de fondo del gráfico en transparente
+                     chartArea: {
+                         backgroundColor: 'transparent' // Establecer el color de fondo del área del gráfico en transparente
+                     },
+                     annotations: {
+                         textStyle: {
+                             fontSize: 12,
+                             color: 'black',
+                             auraColor: 'none',
+                             bold: true // Hacer que el texto esté en negrita
                          }
                      },
-                     responsive: true, // Hacer el gráfico responsive
-                     maintainAspectRatio: false, // Desactivar el aspect ratio para mejor ajuste
-                     plugins: {
-                         legend: {
-                             position: 'top', // Puedes ajustar la posición de la leyenda si es necesario
-                         }
-                     }
+                     chartArea: {
+                         width: '90%',
+                         height: '65%'
+                     }, // Ajusta el área del gráfico
+                     series: {
+                         0: { // Define opciones específicas para la serie (en este caso, la primera serie)
+                             pointSize: 10 // Tamaño de los puntos
+                         },
+                         0: {
+                             pointSize: 12, // Tamaño de los puntos
+                             lineWidth: 4, // Grosor de la línea
+                             color: '#0C4A76' // Color de la línea
+                         },
+                     },
+                     animation: {
+        duration: 1000, // Duración de la animación en milisegundos
+        startup: true // Habilita la animación al cargar el gráfico por primera vez
+    }
                  };
 
-
-                 // Crear el gráfico de líneas
-                 var ctx = document.getElementById('lineChart').getContext('2d');
-                 var lineChart = new Chart(ctx, {
-                     type: 'line',
-                     data: areaChartData,
-                     options: options
-                 });
+                 var chart = new google.visualization.LineChart(document.getElementById('curve_chart_Google'));
+                 chart.draw(data, options);
              }
          });
      }
+
+
+
+
+
+     /* =======================================================
+     SOLICITUD AJAX GRAFICO DE BARRAS TOTAL VENTAS MES POR AÑO
+     =======================================================*/
+
 
      function cargarGraficoTotalVentasUsuario() {
          /* =======================================================
@@ -1108,65 +1113,6 @@
      }
 
 
-     function cargarVentasMesAño() {
-         $.ajax({
-             url: "ajax/reportes.ajax.php",
-             method: 'POST',
-             data: {
-                 'accion': 1 //parametro para obtener TOTALES DE VENTAS DE MES POR AÑO
-             },
-             dataType: 'json',
-             success: function(respuesta) {
-
-                 var Mes = [];
-                 var Total_Venta = [];
-
-                 for (let i = 0; i < respuesta.length; i++) {
-
-                     Mes.push(respuesta[i]['Mes']);
-                     Total_Venta.push(respuesta[i]['Total_Venta']);
-                 }
-                 Total_Venta.push(0);
-
-                 $("#Total_Ventas_Mes_Año").html('TOTAL VENTAS POR MES');
-
-
-                 var areaChartData = {
-                     labels: Mes,
-                     datasets: [{
-                         label: 'Total ventas Mes',
-                         //color de las barras'rgba(60,141,188,0.9)',
-                         backgroundColor: 'rgb(196, 230, 0)',
-                         data: Total_Venta
-                     }]
-                 }
-
-                 var barChartData = $.extend(true, {}, areaChartData);
-
-                 var temp0 = areaChartData.datasets[0];
-
-                 barChartData.datasets[0] = temp0;
-
-                 // Configuración del gráfico
-                 var options = {
-                     scales: {
-                         y: {
-                             beginAtZero: true
-                         }
-                     }
-                 };
-
-
-                 // Crear el gráfico de líneas
-                 var ctx = document.getElementById('lineChart').getContext('2d');
-                 var lineChart = new Chart(ctx, {
-                     type: 'line',
-                     data: areaChartData,
-                     options: options
-                 });
-             }
-         });
-     }
 
 
      /* =======================================================
@@ -1207,10 +1153,10 @@
                              height: '80%'
                          }, // Ajusta el área del gráfico
                          legend: {
-                     position: 'top'
-                 },
-                 backgroundColor: 'transparent' 
-             };
+                             position: 'top'
+                         },
+                         backgroundColor: 'transparent'
+                     };
                      var chart = new google.visualization.PieChart(document.getElementById('charVentasDiaSemana'));
                      chart.draw(data, options);
                  }
@@ -1222,6 +1168,10 @@
      }
 
 
+// Volver a dibujar el gráfico cuando cambia el tamaño de la ventana
+window.addEventListener('resize', function() {
+    cargarGraficoVentasPorMes();
+});
 
 
 
@@ -1243,53 +1193,59 @@
                  'anio': selAnio,
              },
              success: function(respuesta) {
+                var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Mes');
+            data.addColumn('number', 'Total Venta');
+            data.addColumn({
+                type: 'string',
+                role: 'annotation'
+            });
 
-                 var Mes = [];
-                 var Total_Venta = [];
+            for (let i = 0; i < respuesta.length; i++) {
+                var totalVenta = " Q." + respuesta[i]['Total_Venta'];
+                data.addRow([respuesta[i]['Mes'], parseFloat(respuesta[i]['Total_Venta']), totalVenta]);
+            }
 
-                 for (let i = 0; i < respuesta.length; i++) {
+            var options = {
 
-                     Mes.push(respuesta[i]['Mes']);
-                     Total_Venta.push(respuesta[i]['Total_Venta']);
-                 }
-                 Total_Venta.push(0);
+                curveType: 'function',
+                legend: {
+                    position: 'bottom'
+                },
+                backgroundColor: 'transparent', // Establecer el color de fondo del gráfico en transparente
+                chartArea: {
+                    backgroundColor: 'transparent' // Establecer el color de fondo del área del gráfico en transparente
+                },
+                annotations: {
+                    textStyle: {
+                        fontSize: 12,
+                        color: 'black',
+                        auraColor: 'none',
+                        bold: true // Hacer que el texto esté en negrita
+                    }
+                },
+                chartArea: {
+                    width: '90%',
+                    height: '65%'
+                }, // Ajusta el área del gráfico
+                series: {
+                    0: { // Define opciones específicas para la serie (en este caso, la primera serie)
+                        pointSize: 10 // Tamaño de los puntos
+                    },
+                    0: {
+                        pointSize: 12, // Tamaño de los puntos
+                        lineWidth: 4, // Grosor de la línea
+                        color: '#0C4A76' // Color de la línea
+                    },
+                },
+                animation: {
+        duration: 1000, // Duración de la animación en milisegundos
+        startup: true // Habilita la animación al cargar el gráfico por primera vez
+    }
+            };
 
-                 $("#Total_Ventas_Mes_Año").html('TOTAL VENTAS POR MES');
-
-
-                 var areaChartData = {
-                     labels: Mes,
-                     datasets: [{
-                         label: 'Total ventas Mes',
-                         //color de las barras'rgba(60,141,188,0.9)',
-                         backgroundColor: 'rgb(196, 230, 0)',
-                         data: Total_Venta
-                     }]
-                 }
-
-                 var barChartData = $.extend(true, {}, areaChartData);
-
-                 var temp0 = areaChartData.datasets[0];
-
-                 barChartData.datasets[0] = temp0;
-
-                 // Configuración del gráfico
-                 var options = {
-                     scales: {
-                         y: {
-                             beginAtZero: true
-                         }
-                     }
-                 };
-
-
-                 // Crear el gráfico de líneas
-                 var ctx = document.getElementById('lineChart').getContext('2d');
-                 var lineChart = new Chart(ctx, {
-                     type: 'line',
-                     data: areaChartData,
-                     options: options
-                 });
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart_Google'));
+            chart.draw(data, options);
              }
 
          });

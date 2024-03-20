@@ -3,8 +3,7 @@
     font-size: 4vw; /* Tamaño relativo al ancho de la pantalla */
     font-weight: bold;
     color: #333;
+    text-align: center; /* Centrar el texto horizontalmente */
     /* Otros estilos si es necesario */
-
-
 }
 

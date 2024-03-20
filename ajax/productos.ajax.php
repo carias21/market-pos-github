@@ -12,6 +12,8 @@ class ajaxProductos
     public $name;
     public $img;
     public $codigo_producto;
+
+    public $foto;
     public $id_categoria_producto;
     public $descripcion_producto;
     public $precio_compra_producto;
@@ -95,6 +97,7 @@ class ajaxProductos
 
     public function ajaxActualizarProducto($data)
     {
+
         //datos para la tabla
         $table = "productos";
         $id = $_POST["codigo_producto"];
@@ -118,6 +121,41 @@ class ajaxProductos
         } else if ($_POST['foto_actual'] != $_POST['foto_delete']) {
 
             $respuesta = ProductosControlador::ctrActualizarProducto($table, $data, $id, $nameId);
+            echo json_encode($respuesta);
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $destino);
+            // echo json_encode("entro foto actual");
+        } else {
+            echo json_encode("no pasaron los datos");
+        }
+    }
+
+
+
+
+    public function ajaxActualizarInventarioActual($foto)
+    {
+
+        $codigo_producto = $_POST["codigo_producto"];
+
+        //datos para cambiar nueva imagen al momento de editarla
+        $img = $_FILES['imagen'];
+        $name = $img['name'];
+        $destino = $_SERVER['DOCUMENT_ROOT'] . '/market-pos-github/vistas/assets/imagenes/' . $name;
+
+        //si el usuario quita la imagen, por defecto seria default.png
+        if (empty($name)) {
+            $foto = "default.png";
+
+        }
+
+        if (!empty($_POST['foto_delete'])) {
+            $foto = ($_POST['foto_actual']);
+            $respuesta = ProductosControlador::ctrActualizarInventarioActual($codigo_producto, $foto);
+            echo json_encode($respuesta);
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $destino);
+        } else if ($_POST['foto_actual'] != $_POST['foto_delete']) {
+
+            $respuesta = ProductosControlador::ctrActualizarInventarioActual($codigo_producto,$foto);
             echo json_encode($respuesta);
             move_uploaded_file($_FILES['imagen']['tmp_name'], $destino);
             // echo json_encode("entro foto actual");
@@ -248,6 +286,19 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
 
     $inventario_actual = new ajaxProductos();
     $inventario_actual->ajaxInventarioActual();
+}else if (isset($_POST['accion']) && $_POST['accion'] == 11) { //ACCION ACTUALIZAR PRODUCTO INVENTARIO ACTUAL
+
+    $actualizarInventarioActual = new ajaxProductos();
+
+    $img = $_FILES['imagen'];
+
+    $actualizarInventarioActual->codigo_producto = $_POST["codigo_producto"];
+    $actualizarInventarioActual->foto =   $img['name'];
+
+    $foto = $img['name'];
+
+$actualizarInventarioActual->ajaxActualizarInventarioActual($foto);
+
 } else if (isset($_FILES)) {
     $archivo_productos = new ajaxProductos();
     $archivo_productos->fileProductos = $_FILES['fileProductos'];

@@ -57,6 +57,14 @@ $precio_venta_producto,$utilidad,$stock_producto,$minimo_stock_producto,$ventas_
         return $respuesta;
     }
 
+    static public function ctrActualizarInventarioActual($codigo_producto, $foto)
+    {
+
+        $respuesta = ProductosModelo::mdlActualizarInventarioActual($codigo_producto, $foto);
+
+        return $respuesta;
+    }
+
     static public function ctrEliminarProducto($table, $id, $nameId)
     {
         $respuesta = ProductosModelo::mdlEliminarInformacion($table, $id, $nameId);

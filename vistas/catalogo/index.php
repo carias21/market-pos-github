@@ -52,46 +52,62 @@ while ($row = $resultadoSqlSlider->fetch(PDO::FETCH_ASSOC)) {
 
 <body>
 
+
+
     <?php
     require_once  "./navbar.php";
 
     ?>
-    <div class="container mt-3" style="background-color: #f0f0f0; border: 1px solid #ddd; border-radius: 10px; padding: 15px;">
-        <div class="row justify-content-center">
-            <div id="carouselExample" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <?php
-                    $activeClass = 'active'; // Para la primera imagen
 
-                    foreach ($productosSlider as $productoSlider) {
-                    ?>
-                        <div class="carousel-item <?= $activeClass ?> text-center">
-                            <img src="../assets/imagenes/slider/<?= $productoSlider['foto'] ?>" class="d-block mx-auto img-thumbnail rounded shadow" alt="<?= $productoSlider['descripcion'] ?>" style="max-width: 500px; max-height: 400px;">
-                            <br>
-                            <div><br><br><br><br><br><br><br></div>
-                            <div class="carousel-caption mt-3">
-                                <h5 class="textoSlider"><?= $productoSlider['descripcion'] ?></h5>
-                            </div>
+<div id="carouselExample" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+
+        <?php
+        foreach ($productosSlider as $index => $productoSlider) {
+            $activeClass = ($index == 0) ? 'active' : '';
+            $textoPresente = !empty($productoSlider['descripcion']);
+        ?>
+
+            <div class="carousel-item <?= $activeClass ?>">
+                <div class="row">
+                    <?php if ($textoPresente) { ?>
+                    <div class="col-md-4 col-sm-12">
+                    <?php } else { ?>
+                    <div class="col-12">
+                    <?php } ?>
+                        <img src="../assets/imagenes/slider/<?= $productoSlider['foto'] ?>" class="d-block mx-auto img-thumbnail rounded shadow" alt="<?= $productoSlider['descripcion'] ?>" style="max-width: 400px; max-height: 400px;">
+                    </div>
+                    <?php if ($textoPresente) { ?>
+                    <div class="col-md-8 col-sm-12">
+                        <!-- En dispositivos medianos y grandes, el texto se muestra al lado de la imagen -->
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 class="textoSlider text-center mt-3"><?= $productoSlider['descripcion'] ?></h5>
                         </div>
-                    <?php
-                        $activeClass = ''; // Desactivar la clase 'active' después de la primera imagen
-                    }
-                    ?>
+                        <!-- En dispositivos pequeños, el texto se muestra debajo de la imagen -->
+                        <div class="d-md-none">
+                            <h5 class="textoSlider text-center mt-3"><?= $productoSlider['descripcion'] ?></h5>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
-
-
-                <!-- Botones de Navegación -->
-                <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
             </div>
-        </div>
+
+        <?php
+        }
+        ?>
+
     </div>
+    <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+
 
 
     <br>
@@ -124,15 +140,54 @@ while ($row = $resultadoSqlSlider->fetch(PDO::FETCH_ASSOC)) {
             <?php endforeach; ?>
         </div>
         <!-- Paginación -->
+
+
+
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
-                <?php for ($i = 1; $i <= $total_paginas; $i++) : ?>
-                    <li class="page-item <?= ($i == $pagina_actual) ? 'active' : '' ?>">
+
+                <!-- Botón para ir a la página anterior -->
+                <li class="page-item <?= ($pagina_actual <= 1) ? 'disabled' : '' ?>">
+                    <a class="page-link" href="?pagina=<?= $pagina_actual - 1 ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
+                <!-- Mostrar páginas anteriores a la actual -->
+                <?php for ($i = max(1, $pagina_actual - 2); $i < $pagina_actual; $i++) : ?>
+                    <li class="page-item">
                         <a class="page-link" href="?pagina=<?= $i ?>"><?= $i ?></a>
                     </li>
                 <?php endfor; ?>
+
+                <!-- Mostrar página actual -->
+                <li class="page-item active">
+                    <a class="page-link" href="?pagina=<?= $pagina_actual ?>"><?= $pagina_actual ?></a>
+                </li>
+
+                <!-- Mostrar páginas siguientes a la actual -->
+                <?php for ($i = $pagina_actual + 1; $i <= min($total_paginas, $pagina_actual + 2); $i++) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?pagina=<?= $i ?>"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <!-- Si hay más de 5 páginas, mostrar el botón "Siguiente" -->
+                <?php if ($pagina_actual < $total_paginas) : ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?pagina=<?= $pagina_actual + 1 ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </nav>
+
+
+
+
     </div>
 
     <!-- Enlace a Bootstrap JS y Popper.js -->

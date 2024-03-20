@@ -216,6 +216,7 @@ class ProductosModelo
     static public function mdlActualizarInformacion($table, $data, $id, $nameId)
     {
 
+
         $set = "";
 
         foreach ($data as $key => $value) {
@@ -242,6 +243,32 @@ class ProductosModelo
             return Conexion::conectar()->errorInfo();
         }
     }
+
+
+    
+    /*===================================================================
+    ACTUALIZAR INVENTARIO ACTUAL FOTO
+    ====================================================================*/
+    static public function mdlActualizarInventarioActual($codigo_producto, $foto)
+    {
+
+
+        try {
+            $stmt = Conexion::conectar()->prepare("UPDATE productos SET foto = :foto WHERE codigo_producto = :codigo_producto");
+            
+            $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_INT);
+            $stmt->bindParam(":foto", $foto, PDO::PARAM_STR);
+    
+            if ($stmt->execute()) {
+                return "ok";
+            } else {
+                return "error";
+            }
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+    
 
     /*=============================================
     Peticion DELETE para eliminar datos
