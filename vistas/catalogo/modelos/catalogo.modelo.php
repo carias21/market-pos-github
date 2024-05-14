@@ -11,6 +11,31 @@ class CatalogoModelo
 
 
 
+    static public function mdlListarCategoriaId($id_categoria)
+    {
+
+        $stmt = Conexion::conectar()->prepare("SELECT 
+        p.codigo_producto,
+        p.id_categoria_producto,
+        c.nombre_categoria,
+        p.descripcion_producto,
+        p.precio_venta_producto,
+        p.stock_producto,
+        p.foto
+    FROM productos p
+    INNER JOIN categorias c ON c.id_categoria = p.id_categoria_producto
+    WHERE p.id_categoria_producto = :id_categoria
+    order BY nombre_categoria ASC
+    ");
+
+        $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $producto = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $producto;
+    }
+
 
     static public function mdlListarProductos($codigoProducto)
     {
@@ -73,5 +98,34 @@ class CatalogoModelo
             array_push($productData, $data);
         }
         return $productData;
+    }
+
+
+
+
+    static public function mdlListarCategorias()
+    {
+
+        $stmt = Conexion::conectar()->prepare("SELECT  id_categoria, nombre_categoria, aplica_peso as medida,
+                                                date(fecha_creacion_categoria) as fecha_creacion_categoria,
+                                                fecha_actualizacion_categoria,
+        '' as opciones
+         FROM categorias c order BY nombre_categoria ASC");
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    static public function mdlListarNombreProductosSlick()
+    {
+
+        $stmt = Conexion::conectar()->prepare("SELECT  codigo_producto, descripcion_producto, foto
+                                        
+         FROM productos ORDER BY  RAND()  LIMIT 15");
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

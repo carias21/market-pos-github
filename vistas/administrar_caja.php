@@ -111,6 +111,7 @@
                             <th>Codigo</th>
                             <th>Fecha</th>
                             <th>Descripcion</th>
+                            <th>Cantidad</th>
                             <th>Entrada</th>
                             <th>Salida</th>
                             <th>Saldo Actual</th>
@@ -767,29 +768,33 @@ YA QUE NO SE MUESTRA -->
                 },
                 {
                     targets: 4,
-                    'data': 'entrada',
+                    'data': 'cantidad',
                 },
                 {
                     targets: 5,
-                    'data': 'salida',
+                    'data': 'entrada',
                 },
                 {
                     targets: 6,
+                    'data': 'salida',
+                },
+                {
+                    targets: 7,
                     'data': 'saldo_actual',
                     visible: false
                 },
                 {
-                    targets: 7,
+                    targets: 8,
                     'data': 'usuario',
 
                 },
                 {
-                    targets: 8,
+                    targets: 9,
                     'data': 'tipo_pago',
 
                 },
                 {
-                    targets: 9,
+                    targets: 10,
                     'data': 'opciones',
                     render: function(td, cellData, rowData, row, col) {
                         if (parseFloat(rowData[1]) == 0) {
@@ -831,10 +836,6 @@ YA QUE NO SE MUESTRA -->
                     }
                 });
             },
-
-            language: {
-                "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
-            }
         });
     }
 

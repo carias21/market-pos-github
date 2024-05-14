@@ -982,8 +982,14 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             var row = table.row(index);
             var data = row.data();
 
+
             //si el codigo del producto es igual a 1 de los codigos ingresados anteriormente en la data table realiza lo sifuiente
             if (parseInt(codigo_producto) == data['codigo_producto']) { //si el codigo ya existe...
+
+
+                
+            console.log( codigo_producto, "entro al codigo ya existente");
+
 
                 producto_repetido = 1;
                 //  codigo_repetido = parseInt(data['codigo_producto']); //obtenemos el valor del codigo

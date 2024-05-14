@@ -359,3 +359,16 @@ WHERE YEAR(v.fecha_venta) = YEAR(CURDATE())
 
 
 insert into recursos (metas) values(100),(100),(100)
+
+
+
+
+
+
+
+cambios 01/04/2024
+
+
+ALTER TABLE caja
+ADD cantidad float not null
+AFTER descripcion;

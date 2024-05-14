@@ -1,6 +1,7 @@
 <?php
 
-require_once  "../catalogo/modelos/conexion.php";
+
+require_once "./modelos/conexion.php";
 
 $conn = Conexion::conectar();
 
@@ -51,12 +52,8 @@ while ($row = $resultadoSqlSlider->fetch(PDO::FETCH_ASSOC)) {
 </head>
 
 <body>
-
-
-
     <?php
     require_once  "./navbar.php";
-
     ?>
 
 <div id="carouselExample" class="carousel slide" data-ride="carousel">
@@ -123,9 +120,10 @@ while ($row = $resultadoSqlSlider->fetch(PDO::FETCH_ASSOC)) {
             <?php foreach ($productos as $producto) : ?>
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                     <div class="card card-info text-center">
-                        <img src="../assets/imagenes/<?= $producto['foto'] ?>" class="card-img-top mx-auto img-fluid rounded shadow img-thumbnail" alt="<?= $producto['descripcion_producto'] ?>" style="max-height: 150px; max-width: 150px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">
+                        <img class="mimg" src="../assets/imagenes/<?= $producto['foto'] ?>" class="card-img-top mx-auto img-fluid rounded shadow img-thumbnail" alt="<?= $producto['descripcion_producto'] ?>" style="max-height: 150px; max-width: 150px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">
                         <div class="card-body">
-                            <h5 class="card-title"><?= $producto['descripcion_producto'] ?></h5>
+                        <h5 class="descripcion-producto"><?= $producto['descripcion_producto'] ?></h5>
+
 
                             <?php if ($producto['stock_producto'] == 0) : ?>
                                 <p><span class="text-danger">&#10008;<strong>Agotado</strong> <span style="font-weight:bold;color:red;"></span></span></p>

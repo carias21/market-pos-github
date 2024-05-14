@@ -145,8 +145,6 @@
                 </div>
                 <!--/.row -->
             </div>
-
-
             <!--------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
             <!--============================================================================================================================================
@@ -517,12 +515,9 @@
                     },
                     dataType: 'json',
                     success: function(respuesta) {
-                        console.log(respuesta, 'seleccionarModulosPerfil');
-
-                        //VD 28 MIN 20:35
+     
                         modulos_usuario = respuesta;
 
-                        //VD 28 MIN 28.24
                         seleccionarModulosPerfil(idPerfil);
 
                     }
@@ -1099,6 +1094,8 @@
         //desmarcar los checks de los modulos
         $('#modulos').jstree('deselect_all');
         //  console.log("pin_idPerfil", pin_idPerfil);
+
+
 
         for (let i = 0; i < modulos_sistema.length; i++) {
 

@@ -31,6 +31,7 @@
                         <thead class="mi_card_info text-left">
                             <th>CODIGO PRODUCTO</th>
                             <th>IMAGEN</th>
+                            <th>CATEGORIA</th>
                             <th>NOMBRE</th>
                             <th>EXISTENCIA ACTUAL</th>
                             <th>PRECIO VENTA</th>
@@ -297,16 +298,21 @@
 
                 {
                     targets: 2,
-                    'data': 'descripcion_producto',
+                    'data': 'nombre_categoria',
                     "className": "dt-center",
                 },
                 {
                     targets: 3,
-                    'data': 'stock_producto',
+                    'data': 'descripcion_producto',
                     "className": "dt-center",
                 },
                 {
                     targets: 4,
+                    'data': 'stock_producto',
+                    "className": "dt-center",
+                },
+                {
+                    targets: 5,
                     'data': 'precio_venta_producto',
                     "className": "dt-center",
                 },

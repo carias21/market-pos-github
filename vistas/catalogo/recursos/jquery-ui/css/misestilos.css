@@ -1,9 +1,79 @@
 .textoSlider {
     font-family: 'Domine', serif;
-    font-size: 4vw; /* Tamaño relativo al ancho de la pantalla */
+    font-size: 4vw;
+    /* Tamaño relativo al ancho de la pantalla */
     font-weight: bold;
     color: #333;
-    text-align: center; /* Centrar el texto horizontalmente */
+    text-align: center;
+    /* Centrar el texto horizontalmente */
     /* Otros estilos si es necesario */
 }
 
+
+.mimg {
+    width: 120px;
+
+    height: 120px;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.descripcion-producto {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+
+.navbar-fixed-top {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.slick-item img {
+    width: 180px;
+    height: 130px;
+    display: block; /* Para que funcione margin: auto */
+    margin: auto; /* Centra horizontalmente */
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    padding: 0.25rem;
+    border: 1px solid #dee2e6;
+    transition: transform 0.3s ease;
+}
+
+
+.slick-item img:hover {
+    transform: scale(1.1);
+    /* Escala de 1.3 al hacer hover */
+}
+
+
+.btn-info {
+    margin-top: 10px;
+    /* Espacio opcional por encima del botón */
+}
+
+
+
+/* Estilos CSS para la línea divisora entre las imágenes */
+.slick-item {
+    border-right: 5px solid #ffffff;
+
+    padding-right: 10px;
+
+
+ 
+}
+
+
+
+.small-text {
+    font-size: 0.7rem; /*texto de descripcion_producto del slick */
+    color: #333;
+}

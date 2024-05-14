@@ -391,17 +391,19 @@ class ProductosModelo
     ====================================================================*/
     static public function mdlInventarioActual()
     {
-
-        $stmt = Conexion::conectar()->prepare(" SELECT
-        codigo_producto,
-        foto,
-        descripcion_producto,
-        stock_producto,
-        CONCAT('Q.', ROUND(precio_venta_producto, 2)) as precio_venta_producto FROM productos;
-     ");
-
+        $stmt = Conexion::conectar()->prepare("SELECT
+            codigo_producto,
+            foto,
+            c.nombre_categoria,
+            descripcion_producto,
+            stock_producto,
+            CONCAT('Q.', ROUND(precio_venta_producto, 2)) as precio_venta_producto 
+            FROM productos
+            INNER JOIN categorias c ON c.id_categoria = id_categoria_producto;");
+    
         $stmt->execute();
-
+    
         return $stmt->fetchAll();
     }
+    
 }
