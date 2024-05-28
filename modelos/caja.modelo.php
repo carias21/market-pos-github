@@ -169,7 +169,7 @@ class CajaModelo
         $stmt = Conexion::conectar()->prepare("DELETE FROM $tbl_Caja");
         
          if ($stmt->execute()) {
-            return "ok";
+            return "caja_eliminada";
         } else {
             return Conexion::conectar()->errorInfo();
         }

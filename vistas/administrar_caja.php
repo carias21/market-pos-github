@@ -378,7 +378,6 @@ YA QUE NO SE MUESTRA -->
                         dataType: 'json',
                         success: function(respuesta, error) {
 
-
                             if (respuesta == "ok") {
                                 mensajeToast('success', 'SE ELIMINÓ EL REGISTRO CORRECTAMENTE');
                                 tbl_Caja.ajax.reload();
@@ -452,10 +451,25 @@ YA QUE NO SE MUESTRA -->
                         dataType: 'json',
                         success: function(respuesta) {
 
-                            if (respuesta == "ok") {
+                            if (respuesta == "caja_eliminada") {
                                 mensajeToast('success', 'SE ELIMINÓ EL REGISTRO CORRECTAMENTE');
                                 Ajax_Total_Caja();
                                 tbl_Caja.ajax.reload();
+
+                                $.ajax({
+                                    url: "vistas/enviar_correo.php",
+                                    type: "POST",
+                                    data: {
+                                        respuestaCierreCaja: respuesta
+                                    },
+                                    success: function(respuestaCierreCaja) {
+                                        console.log("Correo enviado correctamente.");
+                                    },
+                                    error: function() {
+                                        console.log("Error al enviar el correo.");
+                                    }
+                                });
+
 
                             } else if (respuesta == "permiso_denegado") {
                                 mensajeToast('info', 'SOLO EL ADMIN PUEDE REALIZAR ESTA ACCIÓN');
@@ -671,21 +685,21 @@ YA QUE NO SE MUESTRA -->
     /* =======================================================
        SOLICITUD AJAX TOTAL_CAJA
        =======================================================*/
-       function Ajax_Total_Caja() {
-    $.ajax({
-        url: "ajax/caja.ajax.php",
-        method: 'POST',
-        dataType: 'json',
-        success: function(respuesta) {
-            // Redondear y mostrar los valores
-            $("#total_Caja").html(parseFloat(respuesta[0]['total_Caja']).toFixed(2));
-            $("#efectivo").html(parseFloat(respuesta[0]['efectivo']).toFixed(2));
-            $("#tarjeta").html(parseFloat(respuesta[0]['tarjeta']).toFixed(2));
-            $("#transferencia").html(parseFloat(respuesta[0]['transferencia']).toFixed(2));
-            $("#otro").html(parseFloat(respuesta[0]['otro']).toFixed(2));
-        }
-    });
-}
+    function Ajax_Total_Caja() {
+        $.ajax({
+            url: "ajax/caja.ajax.php",
+            method: 'POST',
+            dataType: 'json',
+            success: function(respuesta) {
+                // Redondear y mostrar los valores
+                $("#total_Caja").html(parseFloat(respuesta[0]['total_Caja']).toFixed(2));
+                $("#efectivo").html(parseFloat(respuesta[0]['efectivo']).toFixed(2));
+                $("#tarjeta").html(parseFloat(respuesta[0]['tarjeta']).toFixed(2));
+                $("#transferencia").html(parseFloat(respuesta[0]['transferencia']).toFixed(2));
+                $("#otro").html(parseFloat(respuesta[0]['otro']).toFixed(2));
+            }
+        });
+    }
 
 
 

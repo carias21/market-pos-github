@@ -80,7 +80,7 @@ class AdministrarComprasModelo
 
             // Eliminar la compra
             $stmtDeleteCompra = $conn->prepare("DELETE FROM $tableCompras WHERE $nameId = :$nameId");
-            $stmtDeleteCompra->bindParam(":" . $nameId, $id_compra, PDO::PARAM_INT);
+            $stmtDeleteCompra->bindParam(":" . $nameId, $id_compra, PDO::PARAM_STR);
             $stmtDeleteCompra->execute();
 
             // Actualizar la cantidad de productos

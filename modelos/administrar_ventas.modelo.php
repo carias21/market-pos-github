@@ -204,7 +204,7 @@ class AdministrarVentasModelo
 
             // Eliminar la venta
             $stmtEliminarVenta = $conn->prepare("DELETE FROM $tableVentas WHERE $nameId = :$nameId");
-            $stmtEliminarVenta->bindParam(":" . $nameId, $id_venta, PDO::PARAM_INT);
+            $stmtEliminarVenta->bindParam(":" . $nameId, $id_venta, PDO::PARAM_STR);
             $stmtEliminarVenta->execute();
 
             // Actualizar el stock de productos y ventas

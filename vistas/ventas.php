@@ -481,9 +481,11 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                 $("#iptCodigoVenta").autocomplete({
 
                         source: respuesta,
+
+                   
                         //minLength: 3, // Mínimo de 3 caracteres antes de buscar
                         select: function(event, ui) {
-
+        
                             CargarProductos(ui.item.value);
 
                             return false;
@@ -506,8 +508,8 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                         $(ul).addClass("ui-autocomplete-list");
                     };
 
-             
-                    $("#iptCodigoVenta").autocomplete("widget").css("background", "#CCCCCC"); // Ejemplo con gris claro
+
+                $("#iptCodigoVenta").autocomplete("widget").css("background", "#CCCCCC"); // Ejemplo con gris claro
 
 
 
@@ -962,6 +964,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 
     function CargarProductos(producto = "") {
 
+
         if (producto != "") {
             var codigo_producto = producto;
 
@@ -969,6 +972,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             var codigo_producto = $("#iptCodigoVenta").val();
         }
 
+        
         //console.log("🚀 ~ file: ventas.php ~ line 335 ~ CargarProductos ~ codigo_producto", codigo_producto)
 
         var producto_repetido = 0;
@@ -982,20 +986,16 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             var row = table.row(index);
             var data = row.data();
 
+            var codigo_producto_primero = codigo_producto.split(' ')[0]; 
+        
+            console.log(codigo_producto_primero, "asaasasas")
+            
 
-            //si el codigo del producto es igual a 1 de los codigos ingresados anteriormente en la data table realiza lo sifuiente
-            if (parseInt(codigo_producto) == data['codigo_producto']) { //si el codigo ya existe...
-
-
-                
-            console.log( codigo_producto, "entro al codigo ya existente");
+            if ( codigo_producto_primero == data['codigo_producto']) { //si el codigo ya existe...
 
 
                 producto_repetido = 1;
-                //  codigo_repetido = parseInt(data['codigo_producto']); //obtenemos el valor del codigo
 
-                /*antes de aumentar la cantidad de venta del mismo producto se procede mediante ajax, ver si 
-                el producto cuenta con stock */
                 $.ajax({
                     async: false,
                     url: "ajax/productos.ajax.php",
@@ -1008,30 +1008,29 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                     dataType: 'json',
                     success: function(respuesta) {
 
+                        console.log(respuesta, "estok")
+
                         //si la respuesta del stock es 0 es porque ya no hay productos en existencia
                         if (parseInt(respuesta['existe']) == 0) {
 
                             mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA NO TIENE EXISTENCIA');
 
                             $("#iptCodigoVenta").val("");
-                            //   $("#iptCodigoVenta").focus();
-
-                            // RECALCULAMOS TOTALES
+            
                             recalcularTotales();
 
                         } else {
 
-                            // AQUI AUMENTA LA CANTIDAD DEL STOCK A 1
+       
                             table.cell(index, 7).data(parseFloat(data['cantidad']) + 1 + ' Und(s)').draw();
 
-                            // ACTUALIZAR EL NUEVO PRECIO DEL ITEM DEL LISTADO DE VENTA
+ 
                             NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
                             NuevoPrecio = "Q. " + NuevoPrecio;
                             table.cell(index, 10).data(NuevoPrecio).draw();
-                            //al momento de realizar la acción de AUMENTAR el stock y ya se habia agregado el descuento del producto. 
+             
                             table.cell(index, 9).data("");
 
-                            // RECALCULAMOS TOTALES
                             recalcularTotales();
                         }
                     }
@@ -1056,6 +1055,8 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             },
             dataType: 'json',
             success: function(respuesta) {
+
+                console.log(respuesta);
 
                 /*===================================================================*/
                 //SI LA RESPUESTA ES VERDADERO, TRAE ALGUN DATO
@@ -1085,17 +1086,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                 "<span class='btnEliminarproducto text-danger px-1'style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Eliminar producto'> " +
                                 "<i class='fas fa-trash fs-5'> </i> " +
                                 "</span>" +
-                                /*   "<div class='btn-group'>" +
-                                       "<button type='button' class=' p-0 btn btn-primary transparentbar dropdown-toggle btn-sm' data-bs-toggle='dropdown' aria-expanded='false'>" +
-                                       "<i class='fas fa-cog text-primary fs-5'></i> <i class='fas fa-chevron-down text-primary'></i>" +
-                                       "</button>" +
-
-                                       "<ul class='dropdown-menu'>" +
-                                           "<li><a class='dropdown-item' codigo = '" + respuesta['codigo_producto'] + "' precio=' " + respuesta['precio_venta_producto'] + "' style='cursor:pointer; font-size:14px;'>Normal (" + respuesta['precio_venta_producto'] + ")</a></li>" +
-                                           "<li><a class='dropdown-item' codigo = '" + respuesta['codigo_producto'] + "' precio=' " + respuesta['precio_mayor_producto'] + "' style='cursor:pointer; font-size:14px;'>Por Mayor (S./ " + parseFloat(respuesta['precio_mayor_producto']).toFixed(2) + ")</a></li>" +
-                                           "<li><a class='dropdown-item' codigo = '" + respuesta['codigo_producto'] + "' precio=' " + respuesta['precio_oferta_producto'] + "' style='cursor:pointer; font-size:14px;'>Oferta (S./ " + parseFloat(respuesta['precio_oferta_producto']).toFixed(2) + ")</a></li>" +
-                                       "</ul>" +
-                                   "</div>" + */
+                          
                                 "</center>",
                             'aplica_peso': respuesta['aplica_peso'],
                             'precio_compra_producto': respuesta['precio_compra_producto'],
@@ -1135,17 +1126,6 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                 "</span>" +
 
 
-                                /* "<div class='btn-group'>" +
-                                     "<button type='button' class=' p-0 btn btn-primary transparentbar dropdown-toggle btn-sm' data-bs-toggle='dropdown' aria-expanded='false'>" +
-                                     "<i class='fas fa-cog text-primary fs-5'></i> <i class='fas fa-chevron-down text-primary'></i>" +
-                                     "</button>" +
-
-                                     "<ul class='dropdown-menu'>" +
-                                         "<li><a class='dropdown-item' codigo = '" + respuesta['codigo_producto'] + "' precio=' " + respuesta['precio_venta_producto'] + "' style='cursor:pointer; font-size:14px;'>Normal (" + respuesta['precio_venta_producto'] + ")</a></li>" +
-                                         "<li><a class='dropdown-item' codigo = '" + respuesta['codigo_producto'] + "' precio=' " + respuesta['precio_mayor_producto'] + "' style='cursor:pointer; font-size:14px;'>Por Mayor (S./ " + parseFloat(respuesta['precio_mayor_producto']).toFixed(2) + ")</a></li>" +
-                                         "<li><a class='dropdown-item' codigo = '" + respuesta['codigo_producto'] + "' precio=' " + respuesta['precio_oferta_producto'] + "' style='cursor:pointer; font-size:14px;'>Oferta (S./ " + parseFloat(respuesta['precio_oferta_producto']).toFixed(2) + ")</a></li>" +
-                                     "</ul>" +
-                                 "</div>" +  */
                                 "</center>",
                             'aplica_peso': respuesta['aplica_peso'],
                             'precio_compra_producto': respuesta['precio_compra_producto'],
@@ -1176,6 +1156,8 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
         });
 
     } /* FIN CargarProductos */
+
+
 
 
     function CargarCliente(cliente = "") {

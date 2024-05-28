@@ -181,7 +181,7 @@
                                     <span class="small">CODIGO DEL PRODUCTO</span><span class="text-danger">*</span>
                                 </label>
 
-                                <input type="number" style="border: 1px solid #66B3FF" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
+                                <input type="text" style="border: 1px solid #66B3FF" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
                                 <div class="invalid-feedback">Debe ingresar el codigo de barras</div>
                             </div>
                         </div>
@@ -1141,16 +1141,13 @@
     /*===================================================================*/
     document.getElementById("btnGuardarProducto").addEventListener("click", function() {
 
-        /*se definen estas variables para enviar el parametro $name, para que en el llamado .ajax, 
-        se reconozca y se pueda realizar la condicion if si no se agrega imagen, igual al momento de editar */
         $img = $("#imagen");
         $name = $('name');
 
         console.log($name, "pruebas");
 
-        // Get the forms we want to add validation styles to
         var forms = document.getElementsByClassName('needs-validation');
-        // Loop over them and prevent submission
+
         var validation = Array.prototype.filter.call(forms, function(form) {
 
             if (form.checkValidity() === true) {

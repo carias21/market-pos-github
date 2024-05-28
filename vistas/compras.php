@@ -651,8 +651,10 @@
         table.rows().eq(0).each(function(index) {
             var row = table.row(index);
             var data = row.data();
-            console.log("🚀 ~ file: compras.php:829 ~ table.rows ~ data", $.parseHTML(data['cantidad'])[0]['value'])
-            if (codigo_producto == data['codigo_producto']) {
+
+            var codigo_producto_primero = codigo_producto.split(' ')[0]; 
+   
+            if (codigo_producto_primero == data['codigo_producto']) {
                 producto_repetido = 1;
                 //  cantidad_a_comprar = parseFloat($.parseHTML(data['cantidad'])[0]['value'])
                 mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA ESTA EN EL LISTADO');

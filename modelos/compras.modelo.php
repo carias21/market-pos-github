@@ -67,6 +67,8 @@ class ComprasModelo
     static public function mdlGetDatosProducto($codigoProducto)
     {
 
+        $codigoProducto = explode(' / ', $codigoProducto)[0];
+
         $stmt = Conexion::conectar()->prepare("SELECT   '' as id_Item,
                                                         id,
                                                         p.codigo_producto,
@@ -84,7 +86,7 @@ class ComprasModelo
             FROM productos p inner join categorias c on p.id_categoria_producto = c.id_categoria
             WHERE p.codigo_producto = :codigoProducto");
 
-        $stmt->bindParam(":codigoProducto", $codigoProducto, PDO::PARAM_INT);
+        $stmt->bindParam(":codigoProducto", $codigoProducto, PDO::PARAM_STR);
 
         $stmt->execute();
 

@@ -372,3 +372,41 @@ cambios 01/04/2024
 ALTER TABLE caja
 ADD cantidad float not null
 AFTER descripcion;
+
+
+
+
+
+
+
+
+
+
+
+ALTER TABLE caja
+MODIFY COLUMN codigo_producto VARCHAR(20) null;
+
+
+
+
+
+ALTER TABLE ventas
+MODIFY COLUMN codigo_producto VARCHAR(20) null;
+
+
+ALTER TABLE compras
+MODIFY COLUMN codigo_producto VARCHAR(20) NOT null;
+
+
+
+
+BEGIN
+ 
+
+select cast(sum(vd.total_venta)  AS DECIMAL(8,2)) as y, c.nombre_categoria as label
+    from ventas vd inner join productos p on p.id = vd.fk_id_producto
+                        inner join categorias c on c.id_categoria = vd.fk_id_categoria
+    group by c.nombre_categoria
+    LIMIT 10;
+
+END

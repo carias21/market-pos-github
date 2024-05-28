@@ -191,7 +191,7 @@ class VentasModelo
                                                         c.direccion
 
                                                 FROM ventas v 
-                                                INNER JOIN productos p ON p.codigo_producto = v.codigo_producto
+                                                INNER JOIN productos p ON p.id = v.fk_id_producto
                                                 INNER JOIN usuarios u on u.id_usuario = v.usuario
                                                 INNER JOIN clientes c on c.id_cliente = v.fk_id_cliente
                                                 WHERE v.fecha_venta = :fecha_venta");

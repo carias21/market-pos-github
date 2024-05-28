@@ -74,7 +74,7 @@
                         <span class="small">CODIGO DEL PRODUCTO</span><span class="text-danger">*</span>
                     </label>
 
-                    <input type="number" style="border: 1px solid #66B3FF" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
+                    <input type="text" style="border: 1px solid #66B3FF" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
                     <div class="invalid-feedback">Debe ingresar el codigo de barras</div>
                 </div>
             </div>

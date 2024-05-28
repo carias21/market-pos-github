@@ -151,7 +151,18 @@ class ProductosModelo
     /*===================================================================
     REGISTRAR PRODUCTOS UNO A UNO DESDE EL FORMULARIO DEL INVENTARIO
     ====================================================================*/
-    static public function mdlRegistrarProducto($codigo_producto,$id_categoria_producto,$descripcion_producto, $id_proveedor,$precio_compra_producto,$precio_venta_producto,$utilidad,$stock_producto,$minimo_stock_producto,$ventas_producto,$name
+    static public function mdlRegistrarProducto(
+        $codigo_producto,
+        $id_categoria_producto,
+        $descripcion_producto,
+        $id_proveedor,
+        $precio_compra_producto,
+        $precio_venta_producto,
+        $utilidad,
+        $stock_producto,
+        $minimo_stock_producto,
+        $ventas_producto,
+        $name
     ) {
 
         try {
@@ -233,7 +244,7 @@ class ProductosModelo
             $stmt->bindParam(":" . $key, $data[$key], PDO::PARAM_STR);
         }
 
-        $stmt->bindParam(":" . $nameId, $id, PDO::PARAM_INT);
+        $stmt->bindParam(":" . $nameId, $id, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
 
@@ -245,7 +256,7 @@ class ProductosModelo
     }
 
 
-    
+
     /*===================================================================
     ACTUALIZAR INVENTARIO ACTUAL FOTO
     ====================================================================*/
@@ -253,12 +264,13 @@ class ProductosModelo
     {
 
 
+
         try {
             $stmt = Conexion::conectar()->prepare("UPDATE productos SET foto = :foto WHERE codigo_producto = :codigo_producto");
-            
-            $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_INT);
+
+            $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
             $stmt->bindParam(":foto", $foto, PDO::PARAM_STR);
-    
+
             if ($stmt->execute()) {
                 return "ok";
             } else {
@@ -268,7 +280,7 @@ class ProductosModelo
             return $e->getMessage();
         }
     }
-    
+
 
     /*=============================================
     Peticion DELETE para eliminar datos
@@ -279,7 +291,7 @@ class ProductosModelo
 
         $stmt = Conexion::conectar()->prepare("DELETE FROM $table WHERE $nameId = :$nameId");
 
-        $stmt->bindParam(":" . $nameId, $id, PDO::PARAM_INT);
+        $stmt->bindParam(":" . $nameId, $id, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
 
@@ -296,8 +308,8 @@ class ProductosModelo
     ====================================================================*/
     static public function mdlListarNombreProductos()
     {
-        
-        
+
+
         $stmt = Conexion::conectar()->prepare("SELECT  codigo_producto,
                                             c.nombre_categoria,
                                             descripcion_producto,
@@ -344,6 +356,7 @@ class ProductosModelo
     ====================================================================*/
     static public function mdlGetDatosProducto($codigoProducto)
     {
+        $codigoProducto = explode(' / ', $codigoProducto)[0];
 
         $stmt = Conexion::conectar()->prepare("SELECT   '' as id_Item,
                                                         id, 
@@ -363,12 +376,16 @@ class ProductosModelo
                                             WHERE codigo_producto = :codigoProducto
                                                 AND p.stock_producto > 0");
 
-        $stmt->bindParam(":codigoProducto", $codigoProducto, PDO::PARAM_INT);
+        $stmt->bindParam(":codigoProducto", $codigoProducto, PDO::PARAM_STR);
 
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
+
+
+
+
 
     static public function mdlVerificaStockProducto($codigo_producto, $cantidad_a_comprar)
     {
@@ -400,10 +417,9 @@ class ProductosModelo
             CONCAT('Q.', ROUND(precio_venta_producto, 2)) as precio_venta_producto 
             FROM productos
             INNER JOIN categorias c ON c.id_categoria = id_categoria_producto;");
-    
+
         $stmt->execute();
-    
+
         return $stmt->fetchAll();
     }
-    
 }
