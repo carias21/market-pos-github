@@ -128,4 +128,59 @@ class CatalogoModelo
 
         return $stmt->fetchAll();
     }
+
+
+    static public function mdlobtenerDatoMostrarOcultarPrecio_Existencia()
+    {
+
+        $stmt = Conexion::conectar()->prepare("SELECT 
+    (SELECT dato FROM recursos WHERE id = 'CATA-PRECIO') AS datoPrecio, 
+    (SELECT dato FROM recursos WHERE id = 'CATA2-EXIST') AS datoExistencia
+FROM dual
+WHERE EXISTS (SELECT 1 FROM recursos WHERE id = 'CATA-PRECIO')
+  AND EXISTS (SELECT 1 FROM recursos WHERE id = 'CATA2-EXIST')");
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+
+
+    static public function mdlbusquedaGeneral($busquedaGeneral)
+    {
+        $palabras = explode(" ", $busquedaGeneral);
+    
+        $whereClauses = [];
+        $params = [];
+    
+        foreach ($palabras as $index => $palabra) {
+
+            $whereClauses[] = "(nombre_categoria LIKE :param{$index} OR descripcion_producto LIKE :param{$index})";
+
+            $params[":param{$index}"] = "%{$palabra}%";
+        }
+ 
+        $where = implode(" AND ", $whereClauses);
+        
+        $sql = "SELECT codigo_producto, c.nombre_categoria, descripcion_producto, foto, stock_producto, precio_venta_producto
+                FROM productos
+                INNER JOIN categorias c ON c.id_categoria = id_categoria_producto
+                WHERE {$where}";
+        
+        $stmt = Conexion::conectar()->prepare($sql);
+
+        foreach ($params as $param => $value) {
+            $stmt->bindValue($param, $value);
+        }
+    
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
+    
+    
+    
 }

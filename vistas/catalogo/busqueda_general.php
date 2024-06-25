@@ -19,23 +19,23 @@
     require_once "./controladores/catalogo.controlador.php";
     require_once "./modelos/catalogo.modelo.php";
 
-    if (isset($_GET['id'])) {
-        $id_categoria = $_GET['id'];
+    if (isset($_GET['dato'])) {
+
+        $busquedaGeneral = $_GET['dato'];
 
         
         $obtenerDatoMostrarOcultarPrecio_Existencia = CatalogoControlador::ctrobtenerDatoMostrarOcultarPrecio_Existencia();
 
-        $productos = CatalogoControlador::ctrListarCategoriaId($id_categoria); // Corrección aquí
+        $productos  = CatalogoControlador::ctrbusquedaGeneral($busquedaGeneral);
         if ($productos) {
     ?>
         <br>
             <div class="container">
-                <div class="card card-info text-center border-info border-3">
-                    <?php if (!empty($productos)) : ?>
-                        <h2 class="text-center" id="txtCategoria"><?= $productos[0]['nombre_categoria'] ?></h2>
-                    <?php endif; ?>
-                </div>
-                <br>
+
+            <h1 style="font-weight: bold; color: #003366; font-size: 25px;">Resultados para: <span style="font-size: 30px;"><?= $busquedaGeneral ?></span></h1>
+
+
+            
 
                 <div class="row">
                     <?php foreach ($productos as $producto) : ?>

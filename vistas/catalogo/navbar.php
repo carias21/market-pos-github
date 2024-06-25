@@ -12,7 +12,7 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
 
-            <input type="text" class="form-control text-center" style="height: 36px;" id="iptBuscarProducto" name="iptBuscarProducto" placeholder="BUSCAR PRODUCTO" required>
+            <input type="search" class="form-control text-center" style="height: 36px;" id="iptBuscarProducto" name="iptBuscarProducto" placeholder="BUSCAR PRODUCTO" required>
 
             <select name="filtroCategoria" id="filtroCategoria" class="form-control text-center "></select>
 
@@ -44,6 +44,19 @@
 
 
 
+        $("#iptBuscarProducto").on('keypress', function(e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                var BusquedaGeneral = $(this).val();
+
+                // Verificar si la longitud de la cadena es al menos 3
+                if (BusquedaGeneral.trim().length >= 3) {
+                    window.location.href = "busqueda_general.php?dato=" + BusquedaGeneral;
+                }
+            }
+        });
+
+
         $.ajax({
             async: true,
             url: "ajax/catalogo.ajax.php",
@@ -52,11 +65,9 @@
                 'accion': 1
             },
             dataType: 'json',
-            //una vez que tengamos la "respuesta" de la base de datos
+
             success: function(respuesta) {
 
-
-                //input iptCodigoVenta que lo autocomplete
                 $("#iptBuscarProducto").autocomplete({
 
 
@@ -91,9 +102,6 @@
 
             }
         });
-
-
-
 
 
 

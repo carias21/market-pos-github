@@ -410,3 +410,58 @@ select cast(sum(vd.total_venta)  AS DECIMAL(8,2)) as y, c.nombre_categoria as la
     LIMIT 10;
 
 END
+
+
+
+
+
+
+
+
+
+
+
+
+CAMBIOS 05-06-24
+
+
+
+ALTER TABLE recursos CHANGE id id VARCHAR(12) NOT NULL;
+
+
+ALTER TABLE recursos CHANGE metas dato VARCHAR(12) NOT NULL;
+
+insert into recursos (id, dato) VALUES("CATA-PRECIO", 1)
+
+SELECT 
+    'semana' AS periodo,
+    SUM(v.total_venta) AS total_venta,
+    (SELECT dato FROM recursos WHERE id = "1METAS") AS meta
+FROM ventas v
+WHERE YEAR(v.fecha_venta) = YEAR(CURDATE()) AND WEEK(v.fecha_venta, 1) = WEEK(NOW() - INTERVAL 6 HOUR, 1)
+
+UNION
+
+SELECT 
+    'mes' AS periodo,
+    SUM(v.total_venta) AS total_venta,
+    (SELECT dato FROM recursos WHERE id = "2METAS")AS meta
+FROM ventas v
+WHERE YEAR(v.fecha_venta) = YEAR(CURDATE()) AND MONTH(v.fecha_venta) = MONTH(DATE_SUB(NOW(), INTERVAL 6 HOUR))
+
+UNION
+
+SELECT 
+    'anio' AS periodo,
+    SUM(v.total_venta) AS total_venta,
+    (SELECT dato FROM recursos WHERE  id = "3METAS") AS meta
+FROM ventas v
+WHERE YEAR(v.fecha_venta) = YEAR(CURDATE())
+
+
+ALTER TABLE productos ADD FULLTEXT (descripcion_producto);
+
+
+insert into recursos (id, dato) VALUES("CATA2-EXIST", 0)
+
+ALTER TABLE categorias ADD FULLTEXT(nombre_categoria);

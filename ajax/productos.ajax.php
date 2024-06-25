@@ -178,9 +178,9 @@ class ajaxProductos
 
     /*LISTAR EL NOMBRE DE PRODUCTOS PARA EL INPUT DE AUTO COMPLETADO ----- */
     //VD 15 MIN 26:35
-    public function ajaxListarNombreProductos()
+    public function ajaxListarNombreProductos($valor)
     {
-   $NombreProductos = ProductosControlador::ctrListarNombreProductos();
+   $NombreProductos = ProductosControlador::ctrListarNombreProductos($valor);
         echo json_encode($NombreProductos);
     }
     //BUSCAR PRODUCTO POR SU CODIGO DE BARRAS
@@ -269,7 +269,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
     //VD 15 MIN 25:45
 } else if (isset($_POST["accion"]) && $_POST["accion"] == 6) { //traer listado de productos para el autocompletable del input
     $nombreProductos = new AjaxProductos();
-    $nombreProductos->ajaxListarNombreProductos();
+    $nombreProductos->ajaxListarNombreProductos($_POST["valor"]);
 } else if (isset($_POST["accion"]) && $_POST["accion"] == 7) {
     $listaProducto = new AjaxProductos();
     $listaProducto->codigo_producto = $_POST["codigo_producto"];

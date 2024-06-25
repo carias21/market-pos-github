@@ -74,8 +74,8 @@ $precio_venta_producto,$utilidad,$stock_producto,$minimo_stock_producto,$ventas_
 
     //LISTAR NOMBRE DE PRODUCTOS PARA INPUT DE AUTO COMPLETADO 
     //VD 15 MIN 27:18
-    static public function ctrListarNombreProductos(){
-        $producto = ProductosModelo::mdlListarNombreProductos();
+    static public function ctrListarNombreProductos($valor){
+        $producto = ProductosModelo::mdlListarNombreProductos($valor);
        
         return $producto;
     }

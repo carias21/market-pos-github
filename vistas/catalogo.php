@@ -17,6 +17,55 @@
 </div>
 <!-- /.content-header -->
 
+
+
+<div class="content pb-2">
+    <div class="row justify-content">
+        <div class="col-md-12">
+            <!-- Listado de categorias -->
+            <div class="card card-info card-outline shadow">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="far fa-list-alt"></i> CONFIGURACION</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content">
+                        <div class="col-md-3">
+                            <div class="card card-info card-outline shadow">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-circle"></i> Mostrar/Ocultar Precio</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggleSwitch" onclick="toggleFunction()">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="card card-info card-outline shadow">
+                                <div class="card-header">
+                                    <h3 class="card-title"><i class="fas fa-circle"></i> Mostrar/Ocultar Existecias</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <label class="switch">
+                                        <input type="checkbox" id="toggleSwitchExistencia" onclick="functionExistencias()">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <!-- Main content -->
 <div class="content pb-2">
     <div class="row p-0 m-0">
@@ -46,6 +95,11 @@
 
     </div>
 </div>
+
+
+
+
+
 </div>
 
 
@@ -277,7 +331,43 @@
         });
 
 
-    });
+
+        
+    /*===================================================================
+   VERIDFICAR EL ESTODO DEL BOTON MOSTRAR OCULTAR PRECIO
+    ===================================================================*/
+    $.ajax({
+    url: 'ajax/catalogo.ajax.php',
+    type: 'POST',
+    data: {
+        'accion': 6,
+    },
+    dataType: 'json',
+    success: function(respuesta) {
+        var respuestaPrecio = respuesta.datoPrecio;
+        var respuestaExistencia = respuesta.datoExistencia;
+
+        if (respuestaPrecio === '1') {
+            $('#toggleSwitch').prop('checked', true);
+        } else {
+            $('#toggleSwitch').prop('checked', false);
+        }
+
+        if (respuestaExistencia === '1') {
+            $('#toggleSwitchExistencia').prop('checked', true);
+        } else {
+            $('#toggleSwitchExistencia').prop('checked', false);
+        }
+    },
+    error: function(xhr, status, error) {
+        console.error("Error en la solicitud AJAX: " + status + " - " + error);
+    }
+});
+
+        
+
+
+    }); //FIN DOCUMEN.READY
 
 
 
@@ -379,6 +469,141 @@
         document.getElementById("foto_delete").value = '';
     }
 
+
+
+    //FUNCION PARA HABILITAR O DESHABILITAR PRECIO DEL PRODUCTO 
+    function toggleFunction() {
+
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        if (toggleSwitch.checked) { //MOSTRAR PRECIO
+
+
+            $.ajax({
+                async: false,
+                url: "ajax/catalogo.ajax.php",
+                method: "POST",
+                data: {
+                    'accion': 5,
+                    'dato': 1
+                },
+                dataType: 'json',
+
+                success: function(respuesta) {
+
+
+                    if (respuesta == "ok") {
+                        mensajeToast('success', 'SE REGISTRO CORRECTAMENTE');
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'ERROR AL REGISTRAR',
+                            showConfirmButton: false,
+                            timer: 3500
+                        })
+                    }
+
+                }
+            });
+
+        } else { //OCULTAR PRECIO
+
+            $.ajax({
+                async: false,
+                url: "ajax/catalogo.ajax.php",
+                method: "POST",
+                data: {
+                    'accion': 5,
+                    'dato': 0
+                },
+                dataType: 'json',
+                success: function(respuesta) {
+
+                    console.log(respuesta);
+                    if (respuesta == "ok") {
+                        mensajeToast('success', 'SE REGISTRO CORRECTAMENTE');
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'ERROR AL REGISTRAR',
+                            showConfirmButton: false,
+                            timer: 3500
+                        })
+                    }
+
+                }
+            });
+
+        }
+    }
+
+
+    function functionExistencias() {
+
+        const toggleSwitchExistencia = document.getElementById('toggleSwitchExistencia');
+        if (toggleSwitchExistencia.checked) { //MOSTRAR EXISTENCIAS
+
+
+            $.ajax({
+                async: false,
+                url: "ajax/catalogo.ajax.php",
+                method: "POST",
+                data: {
+                    'accion': 7,
+                    'dato': 1
+                },
+                dataType: 'json',
+
+                success: function(respuesta) {
+
+
+                    if (respuesta == "ok") {
+                        mensajeToast('success', 'SE REGISTRO CORRECTAMENTE');
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'ERROR AL REGISTRAR',
+                            showConfirmButton: false,
+                            timer: 3500
+                        })
+                    }
+
+                }
+            });
+
+        } else { //OCULTAR existencia
+
+            $.ajax({
+                async: false,
+                url: "ajax/catalogo.ajax.php",
+                method: "POST",
+                data: {
+                    'accion': 7,
+                    'dato': 0
+                },
+                dataType: 'json',
+                success: function(respuesta) {
+
+                    console.log(respuesta);
+                    if (respuesta == "ok") {
+                        mensajeToast('success', 'SE REGISTRO CORRECTAMENTE');
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'ERROR AL REGISTRAR',
+                            showConfirmButton: false,
+                            timer: 3500
+                        })
+                    }
+
+                }
+            });
+
+        }
+    }
 
 
 

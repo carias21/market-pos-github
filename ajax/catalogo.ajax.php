@@ -40,7 +40,37 @@ class AjaxCatalogo
         $respuesta = CatalogoControlador::ctrEliminarSlider($tableCatalogo, $id_slider, $nameId);
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
     }
+
+    public function ajaxMostrarOcultarPrecio($dato){
+    
+        $mostrarOcultarPrecio = CatalogoControlador::ctrMostrarOcultarPrecio($dato);
+    
+        echo json_encode($mostrarOcultarPrecio);
+    
+    }
+
+    
+    public function ajaxMostrarOcultareExistencia($dato){
+    
+        $mostrarOcultarExistencia = CatalogoControlador::ctrMostrarOcultareExistencia($dato);
+    
+        echo json_encode($mostrarOcultarExistencia);
+    
+    }
+
+    
+
+    public function ajaxVerificarEstadoPrecioExistencia(){
+    
+        $VerificarEstadoPrecio = CatalogoControlador::ctrVerificarEstadoPrecioExistencia();
+    
+        echo json_encode($VerificarEstadoPrecio);
+    
+    }
 }
+
+
+
 
 if (isset($_POST['accion']) && $_POST['accion'] == 1) {
     $catalogo = new AjaxCatalogo;
@@ -54,6 +84,18 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) {
 } else if(isset($_POST['accion'])&& $_POST['accion']==3){//ELIMINAR
     $eliminarSlider = new AjaxCatalogo();
     $eliminarSlider -> ajaxEliminarSlider();
+}else if(isset($_POST['accion']) && $_POST['accion'] == 5){ //HABILITAR O DESHBAILITAR MOSTRAR PRECIO
+    $mostrarOcultarPrecio = new AjaxCatalogo();
+    $mostrarOcultarPrecio->ajaxMostrarOcultarPrecio($_POST["dato"]);
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 6){ //VERIFICAR EL ESTADO QUE SE MUESTRA O NO EL PRECIO
+    $VerificarEstadoPrecio = new AjaxCatalogo();
+    $VerificarEstadoPrecio->ajaxVerificarEstadoPrecioExistencia();
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 7){ //HABILITAR O DESHBAILITAR MOSTRAR EXISTENCIAS
+    $mostrarOcultarExistencia = new AjaxCatalogo();
+    $mostrarOcultarExistencia->ajaxMostrarOcultareExistencia($_POST["dato"]);
+
 }else {
 
     $catalogo = new AjaxCatalogo();

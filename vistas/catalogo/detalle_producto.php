@@ -24,33 +24,70 @@
     require_once "./modelos/catalogo.modelo.php";
 
     if (isset($_GET['codigo'])) {
+
+        $obtenerDatoMostrarOcultarPrecio_Existencia = CatalogoControlador::ctrobtenerDatoMostrarOcultarPrecio_Existencia();
+
+
         $codigoProducto = $_GET['codigo'];
         $producto = CatalogoControlador::ctrListarProductos($codigoProducto);
 
         if ($producto) {
     ?>
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 mx-auto text-center">
-                        <img src="../assets/imagenes/<?php echo $producto['foto']; ?>" class="img-fluid rounded shadow img-thumbnail" alt="<?php echo $producto['descripcion_producto']; ?>" style="max-height: 350px; max-width: 350px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h1><?php echo $producto['descripcion_producto']; ?></h1>
-                            </div>
-                            <div class="card-body">
-                                <?php if ($producto['stock_producto'] == 0) : ?>
-                                    <p><span class="text-danger">&#10008;<strong>Agotado</strong></span></p>
-                                <?php else : ?>
-                                    <p><span class="text-success">&#10004; <strong>Disponible</strong></span></p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto text-center">
+            <img src="../assets/imagenes/<?php echo $producto['foto']; ?>" class="img-fluid rounded shadow img-thumbnail" alt="<?php echo $producto['descripcion_producto']; ?>" style="max-height: 350px; max-width: 350px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h1><?php echo $producto['descripcion_producto']; ?></h1>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th style="width: 50%;">Precio</th>
+                            <th style="width: 50%;">Existencias</th>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; color: #003366;">
+                                <?php if ($obtenerDatoMostrarOcultarPrecio_Existencia[0]['datoPrecio'] == 1) : ?>
+                                    <?php if ($producto['stock_producto'] == 0) : ?>
+                                        Q.<?= number_format($producto['precio_venta_producto'], 2, '.', ',') ?>
+                                    <?php else : ?>
+                                        Q.<?= number_format($producto['precio_venta_producto'], 2, '.', ',') ?>
+                                    <?php endif; ?>
+                                    <?php else : ?>
+                                        <span class="text-warning"><strong>- Dato no disponible :(</strong></span>
                                 <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
+                            </td>
+                            <td style="font-weight: bold; color: #f59c11;">
+                                <?php if ($obtenerDatoMostrarOcultarPrecio_Existencia[0]['datoExistencia'] == 1) : ?>
+                                    <?php if ($producto['stock_producto'] == 0) : ?>
+                                        <span class="text-danger">&#10008;<strong>Agotado</strong></span>
+                                    <?php else : ?>
+                                        <?= $producto['stock_producto'] ?>
+                                    <?php endif; ?>
+                                    <?php else : ?>
+                                        <span class="text-warning"><strong>- Dato no disponible :( </strong></span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <?php if ($producto['stock_producto'] == 0) : ?>
+                        <p><span class="text-danger">&#10008;<strong>Agotado</strong></span></p>
+                    <?php else : ?>
+                        <p><span class="text-success">&#10004; <strong>Disponible</strong></span></p>
+                    <?php endif; ?>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
 
             <!-- Slider para otros productos -->
             <div class="container mt-5">
@@ -145,7 +182,7 @@
                             '<div class="card-info card-outline shadow">' +
                             '<img class="slick-image" src="../assets/imagenes/' + producto.foto + '" alt="' + producto.descripcion_producto + '">' +
                             '<div class="text-center">' +
-                            '<small class="text-muted small-text">' + producto.descripcion_producto + '</small>' + 
+                            '<small class="text-muted small-text">' + producto.descripcion_producto + '</small>' +
                             '</div>' +
                             '<a href="detalle_producto.php?codigo=' + producto.codigo_producto + '" class="btn form-control btn-info">Ver detalles</a>' +
 
@@ -163,14 +200,11 @@
                 }
             });
         });
-
-
-        
     </script>
 
-    
 
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

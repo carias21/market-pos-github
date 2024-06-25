@@ -58,7 +58,7 @@ class CajaModelo
                fk_usuario,
                fk_tipo_pago)         
                VALUES(
-               '',
+               0,
                :fecha,
                :descripcion,
                0,
@@ -109,7 +109,7 @@ class CajaModelo
                fk_usuario,
                fk_tipo_pago)         
                VALUES(
-               '',
+               0,
                :fecha,
                :descripcion,
                0,

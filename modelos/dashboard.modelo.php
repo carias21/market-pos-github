@@ -137,7 +137,7 @@ class DashboardModelo
     static public function mdlRecursosMeta()
     {
 
-        $stmt = Conexion::conectar()->prepare('SELECT id, metas FROM recursos ');
+        $stmt = Conexion::conectar()->prepare('SELECT id, dato FROM recursos limit 3 ');
 
         $stmt->execute();
 
@@ -149,11 +149,11 @@ class DashboardModelo
     static public function mdlEditarMetas($id, $valorMeta)
     {
 
-        $stmt = Conexion::conectar()->prepare('UPDATE recursos SET metas = :metas WHERE id = :id');
+        $stmt = Conexion::conectar()->prepare('UPDATE recursos SET dato = :metas WHERE id = :id');
 
 
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
-        $stmt->bindParam(":metas", $valorMeta, PDO::PARAM_INT);
+        $stmt->bindParam(":id", $id, PDO::PARAM_STR);
+        $stmt->bindParam(":metas", $valorMeta, PDO::PARAM_STR);
 
         $stmt->execute();
 

@@ -23,10 +23,11 @@ class CatalogoModelo
     }
 
 
-        /*===================================================================
+    /*===================================================================
     REGISTRAR PRODUCTOS UNO A UNO DESDE EL FORMULARIO DEL INVENTARIO
     ====================================================================*/
-    static public function mdlRegistrarSlider($name,$descripcionSlider) {
+    static public function mdlRegistrarSlider($name, $descripcionSlider)
+    {
 
         try {
 
@@ -61,7 +62,7 @@ class CatalogoModelo
 
 
 
-      /*=========================================================================================================================
+    /*=========================================================================================================================
     ELIMINACION DE SLIDER
     ==========================================================================================================================*/
     static public function mdlEliminarSlider($tableCatalogo, $id_slider, $nameId)
@@ -78,4 +79,93 @@ class CatalogoModelo
         }
     }
 
+
+
+    /*=========================================================================================================================
+    HABILITAR O DESHABILITAR MOSTRAR PRECIO CATALOGO
+    ==========================================================================================================================*/
+    static public function mdlMostrarOcultarPrecio($dato)
+    {
+
+        try {
+
+            $stmtMostrarOcultarPrecio = Conexion::conectar()->prepare("UPDATE  recursos set dato = :dato WHERE id = 'CATA-PRECIO'");
+
+            $stmtMostrarOcultarPrecio->bindParam(":dato",  $dato, PDO::PARAM_STR);
+
+
+            if ($stmtMostrarOcultarPrecio->execute()) {
+                $resultado = "ok";
+            } else {
+                $resultado = "error";
+            }
+        } catch (Exception $e) {
+            $resultado = 'Excepción capturada: ' .  $e->getMessage() . "\n";
+        }
+
+        return $resultado;
+
+        $stmtMostrarOcultarPrecio = null;
+    }
+
+    /*=========================================================================================================================
+    HABILITAR O DESHABILITAR MOSTRAR EXISTENCIAS CATALOGO
+    ==========================================================================================================================*/
+    static public function mdlMostrarOcultareExistencia($dato)
+    {
+
+        try {
+
+            $stmtMostrarOcultarExistencia = Conexion::conectar()->prepare("UPDATE  recursos set dato = :dato WHERE id = 'CATA2-EXIST'");
+
+            $stmtMostrarOcultarExistencia->bindParam(":dato",  $dato, PDO::PARAM_STR);
+
+
+            if ($stmtMostrarOcultarExistencia->execute()) {
+                $resultado = "ok";
+            } else {
+                $resultado = "error";
+            }
+        } catch (Exception $e) {
+            $resultado = 'Excepción capturada: ' .  $e->getMessage() . "\n";
+        }
+
+        return $resultado;
+
+        $stmtMostrarOcultarExistencia = null;
+    }
+
+
+
+    static public function mdlVerificarEstadoPrecioExistencia()
+    {
+        try {
+            $conn = Conexion::conectar();
+            $stmt = $conn->prepare("
+            SELECT 
+                (SELECT dato FROM recursos WHERE id = 'CATA-PRECIO') AS datoPrecio, 
+                (SELECT dato FROM recursos WHERE id = 'CATA2-EXIST') AS datoExistencia
+            FROM dual
+            WHERE EXISTS (SELECT 1 FROM recursos WHERE id = 'CATA-PRECIO')
+              AND EXISTS (SELECT 1 FROM recursos WHERE id = 'CATA2-EXIST');
+        ");
+
+            if ($stmt->execute()) {
+                return $stmt->fetch(PDO::FETCH_ASSOC); 
+            } else {
+                return "Error en la ejecución de la consulta.";
+            }
+        } catch (PDOException $e) {
+            return 'Excepción de PDO capturada: ' . $e->getMessage();
+        } catch (Exception $e) {
+            return 'Excepción general capturada: ' . $e->getMessage();
+        } finally {
+            if ($stmt) {
+                $stmt = null; 
+            }
+            if ($conn) {
+                $conn = null; 
+            }
+        }
+    }
 }

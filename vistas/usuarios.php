@@ -112,7 +112,7 @@
                                         <span class="small">Contraseña</span><span class="text-danger">*</span>
                                     </label>
 
-                                    <input type="password" class="form-control form-control-sm" id="ipt_Contraseña" name="ipt_Contraseña" placeholder="Ingrese una contraseña" >
+                                    <input type="password" class="form-control form-control-sm" id="ipt_Contraseña" name="ipt_Contraseña" placeholder="Ingrese una contraseña">
 
                                     <div class="invalid-feedback">Debe ingresar la contraseña</div>
                                 </div>
@@ -286,11 +286,11 @@
 
                         if (result.isConfirmed) {
 
-                                if(id_Usuario == 1 && perfil !=1){
+                            if (id_Usuario == 1 && perfil != 1) {
 
-                                    mensajeToast('error', 'NO PUEDES CAMBIAR EL PERFIL DEL ADMIN');
-                                    return;
-                                }
+                                mensajeToast('error', 'NO PUEDES CAMBIAR EL PERFIL DEL ADMIN');
+                                return;
+                            }
 
                             //  console.log(id_Usuario, nombre_Usuario, apellido_Usuario, usuario, contraseña, perfil, estado_Usuario);
 

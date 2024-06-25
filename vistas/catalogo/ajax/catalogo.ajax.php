@@ -25,6 +25,8 @@ class ajaxCatalogo
         $productosSlick = CatalogoControlador::ctrListarNombreProductosSlick();
         echo json_encode($productosSlick);
     }
+
+    
 }
 
 

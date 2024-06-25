@@ -41,6 +41,25 @@ class CatalogoControlador
         return $productosSlick;
     }
 
+
+    
+    static public function ctrobtenerDatoMostrarOcultarPrecio_Existencia(){
+        $resultado = CatalogoModelo::mdlobtenerDatoMostrarOcultarPrecio_Existencia();
+       
+        return $resultado;
+    }
+
+
+      
+    static public function ctrbusquedaGeneral($busquedaGeneral){
+        $busquedaGeneral = CatalogoModelo::mdlbusquedaGeneral($busquedaGeneral);
+       
+        return $busquedaGeneral;
+    }
+
+
+    
+    
     
 
 

@@ -811,7 +811,7 @@ YA QUE NO SE MUESTRA -->
                     targets: 10,
                     'data': 'opciones',
                     render: function(td, cellData, rowData, row, col) {
-                        if (parseFloat(rowData[1]) == 0) {
+                        if (parseFloat(rowData[1]) == 0 ) {
                             return "<center>" +
                                 //opciones eliminar icono
                                 "<span class='btnEliminarCaja text-danger px-1' style='cursor:pointer;'>" +

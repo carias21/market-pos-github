@@ -1115,11 +1115,11 @@
                 columnDefs: [{
                         targets: 0,
                         data: 'id',
-                        visible: true,
+                        visible: false,
                         orderable: false
                     }, {
                         targets: 1,
-                        data: 'metas',
+                        data: 'dato',
 
                         orderable: false,
                         render: function(data, type, row) {

@@ -466,55 +466,83 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 		TRAER LISTADO DE PRODUCTOS PARA INPUT DE AUTOCOMPLETADO
         VD 15 MIN 22:10
 		======================================================================================*/
-        $.ajax({
-            async: false,
-            url: "ajax/productos.ajax.php",
-            method: "POST",
-            data: {
-                'accion': 6
-            },
-            dataType: 'json',
-            //una vez que tengamos la "respuesta" de la base de datos
-            success: function(respuesta) {
 
-                //input iptCodigoVenta que lo autocomplete
-                $("#iptCodigoVenta").autocomplete({
 
-                        source: respuesta,
+        var timeoutId;
+        $("#iptCodigoVenta").on('input', function() {
+            var codigoVenta = $(this).val();
+            //limitar las llamadas ajax cada vez que se teclee
+            clearTimeout(timeoutId);
 
-                   
-                        //minLength: 3, // Mínimo de 3 caracteres antes de buscar
-                        select: function(event, ui) {
-        
-                            CargarProductos(ui.item.value);
+            if (codigoVenta.length >= 2) {
 
-                            return false;
+                timeoutId = setTimeout(function() {
+
+    
+                    $.ajax({
+                        async: false,
+                        url: "ajax/productos.ajax.php",
+                        method: "POST",
+                        data: {
+                            'accion': 6,
+                            'valor': codigoVenta
+                        },
+                        dataType: 'json',
+                        success: function(respuesta) {
+     
+                            var flexibleResults = respuesta.map(function(item) {
+                                return {
+                                    label: item.label,
+                                    value: item.value,
+                                    keywords: item.label.split(" ").map(function(word) {
+                                        return word.toLowerCase();
+                                    })
+                                };
+                            });
+
+                            $("#iptCodigoVenta").autocomplete({
+                                source: function(request, response) {
+                                    var terms = request.term.toLowerCase().split(" ");
+                                    var filteredResults = flexibleResults.filter(function(item) {
+                                        return terms.every(function(term) {
+                                            return item.keywords.some(function(keyword) {
+                                                return keyword.includes(term);
+                                            });
+                                        });
+                                    });
+                                    response(filteredResults);
+                                },
+                                select: function(event, ui) {
+                                    CargarProductos(ui.item.value);
+                                    return false;
+                                }
+                            }).data("ui-autocomplete")._renderItem = function(ul, item) {
+                                return $("<li class='ui-autocomplete-row'></li>")
+                                    .data("item.autocomplete", item)
+                                    .append(item.label)
+                                    .appendTo(ul);
+                            };
+
+                            // Limitar el número de elementos que se muestran en la lista de sugerencias
+                            $("#iptCodigoVenta").autocomplete("instance")._renderMenu = function(ul, items) {
+                                var max = 4; // número máximo de elementos a mostrar
+                                var that = this;
+                                items = items.slice(0, max);
+                                $.each(items, function(index, item) {
+                                    that._renderItemData(ul, item);
+                                });
+                                $(ul).addClass("ui-autocomplete-list");
+                            };
+
+                            $("#iptCodigoVenta").autocomplete("widget").css("background", "#CCCCCC"); // Ejemplo con gris claro
                         }
-                    }).data("ui-autocomplete")._renderItem = function(ul, item) {
-                        return $("<li class ='ui-autocomplete-row'></li>")
-                            .data("item.autocomplete", item)
-                            .append(item.label)
-                            .appendTo(ul);
-                    },
+                    });
 
-                    // Limitar el número de elementos que se muestran en la lista de sugerencias
-                    $("#iptCodigoVenta").autocomplete("instance")._renderMenu = function(ul, items) {
-                        var max = 4; // número máximo de elementos a mostrar
-                        var that = this;
-                        items = items.slice(0, max);
-                        $.each(items, function(index, item) {
-                            that._renderItemData(ul, item);
-                        });
-                        $(ul).addClass("ui-autocomplete-list");
-                    };
-
-
-                $("#iptCodigoVenta").autocomplete("widget").css("background", "#CCCCCC"); // Ejemplo con gris claro
-
-
+                }, 500);
 
             }
         });
+
 
 
         /* ======================================================================================
@@ -972,7 +1000,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             var codigo_producto = $("#iptCodigoVenta").val();
         }
 
-        
+
         //console.log("🚀 ~ file: ventas.php ~ line 335 ~ CargarProductos ~ codigo_producto", codigo_producto)
 
         var producto_repetido = 0;
@@ -986,12 +1014,10 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             var row = table.row(index);
             var data = row.data();
 
-            var codigo_producto_primero = codigo_producto.split(' ')[0]; 
-        
-            console.log(codigo_producto_primero, "asaasasas")
-            
+            var codigo_producto_primero = codigo_producto.split(' ')[0];
 
-            if ( codigo_producto_primero == data['codigo_producto']) { //si el codigo ya existe...
+
+            if (codigo_producto_primero == data['codigo_producto']) { //si el codigo ya existe...
 
 
                 producto_repetido = 1;
@@ -1016,19 +1042,19 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                             mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA NO TIENE EXISTENCIA');
 
                             $("#iptCodigoVenta").val("");
-            
+
                             recalcularTotales();
 
                         } else {
 
-       
+
                             table.cell(index, 7).data(parseFloat(data['cantidad']) + 1 + ' Und(s)').draw();
 
- 
+
                             NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
                             NuevoPrecio = "Q. " + NuevoPrecio;
                             table.cell(index, 10).data(NuevoPrecio).draw();
-             
+
                             table.cell(index, 9).data("");
 
                             recalcularTotales();
@@ -1086,7 +1112,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                 "<span class='btnEliminarproducto text-danger px-1'style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Eliminar producto'> " +
                                 "<i class='fas fa-trash fs-5'> </i> " +
                                 "</span>" +
-                          
+
                                 "</center>",
                             'aplica_peso': respuesta['aplica_peso'],
                             'precio_compra_producto': respuesta['precio_compra_producto'],

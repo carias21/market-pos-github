@@ -306,49 +306,70 @@ class ProductosModelo
     LISTAR NOMBRE DE PRODUCTOS PARA INPUT DE AUTO COMPLETADO
        //VD 15 MIN 27:50
     ====================================================================*/
-    static public function mdlListarNombreProductos()
+    static public function mdlListarNombreProductos($valor)
     {
-
-
-        $stmt = Conexion::conectar()->prepare("SELECT  codigo_producto,
-                                            c.nombre_categoria,
-                                            descripcion_producto,
-                                            p.precio_venta_producto,
-                                            p.stock_producto,
-                                            foto
-                                        FROM productos p
-                                        INNER JOIN categorias c on p.id_categoria_producto = c.id_categoria
-                                        where p.stock_producto > 0");
-        $stmt->execute();
-        $productos = $stmt->fetchAll();
-
-
-        $productData = array();
-        foreach ($productos as $producto) {
-            $codigo_producto = $producto["codigo_producto"];
-            $nombre_categoria = $producto["nombre_categoria"];
-            $descripcion_producto = $producto["descripcion_producto"];
-            $precio_venta_producto = $producto["precio_venta_producto"];
-            $stock_producto = $producto["stock_producto"];
-
-            $data["id"] = $producto["codigo_producto"];
-            $data["value"] = $codigo_producto . ' / ' . $nombre_categoria . ' / ' . $descripcion_producto . ' / ' .
-                $precio_venta_producto . ' / ' . $stock_producto;
-            $data["label"] = '
-        <a href="javascript:void(0);" class="d-flex" style="width:100% !important;">
-  
-        <img src="vistas/assets/imagenes/' . $producto['foto'] . '" width="70" height="70"/> 
-        <div class="d-flex ml-4 flex-column">
-            <span class="text-sm"><strong>Codigo:</strong> ' . $codigo_producto . '  -  <strong>Producto:</strong> ' . $descripcion_producto . '</span>
-            <span class="text-sm"><strong>Precio:</strong> Q.' . round($precio_venta_producto, 2) . '  -  <strong>Categoría:</strong> ' . $nombre_categoria . '</span>
-            <span class="text-sm">' . '<strong>Stock:</strong>' . $stock_producto . '</span>
-            </div>
-            </a>';
-
-            array_push($productData, $data);
+        $palabras = explode(" ", $valor);
+        $where = "";
+    
+        foreach ($palabras as $palabra) {
+            // Aquí se incluye tanto la búsqueda por código como por descripción
+            $where .= "(codigo_producto LIKE '%" . $palabra . "%' OR descripcion_producto LIKE '%" . $palabra . "%') AND ";
         }
-        return $productData;
+    
+        // Eliminar el último "AND"
+        $where = rtrim($where, "AND ");
+    
+        try {
+            $stmt = Conexion::conectar()->prepare("SELECT 
+                                                        codigo_producto,
+                                                        c.nombre_categoria,
+                                                        p.descripcion_producto,
+                                                        p.precio_venta_producto,
+                                                        p.stock_producto,
+                                                        foto
+                                                    FROM productos p
+                                                    INNER JOIN categorias c on p.id_categoria_producto = c.id_categoria
+                                                    WHERE $where AND p.stock_producto > 0");
+    
+            $stmt->execute();
+            $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            $productData = array();
+            foreach ($productos as $producto) {
+                $codigo_producto = htmlspecialchars($producto["codigo_producto"]);
+                $nombre_categoria = htmlspecialchars($producto["nombre_categoria"]);
+                $descripcion_producto = htmlspecialchars($producto["descripcion_producto"]);
+                $precio_venta_producto = htmlspecialchars($producto["precio_venta_producto"]);
+                $stock_producto = htmlspecialchars($producto["stock_producto"]);
+                $foto = htmlspecialchars($producto['foto']);
+    
+                $data = array(
+                    "id" => $codigo_producto,
+                    "value" => $codigo_producto . ' / ' . $nombre_categoria . ' / ' . $descripcion_producto . ' / ' .
+                               $precio_venta_producto . ' / ' . $stock_producto,
+                    "label" => '
+                    <a href="javascript:void(0);" class="d-flex" style="width:100% !important;">
+                        <img src="vistas/assets/imagenes/' . $foto . '" width="70" height="70"/> 
+                        <div class="d-flex ml-4 flex-column">
+                            <span class="text-sm"><strong>Codigo:</strong> ' . $codigo_producto . '  -  <strong>Producto:</strong> ' . $descripcion_producto . '</span>
+                            <span class="text-sm"><strong>Precio:</strong> Q.' . round($precio_venta_producto, 2) . '  -  <strong>Categoría:</strong> ' . $nombre_categoria . '</span>
+                            <span class="text-sm"><strong>Stock:</strong> ' . $stock_producto . '</span>
+                        </div>
+                    </a>'
+                );
+    
+                array_push($productData, $data);
+            }
+    
+            return $productData;
+        } catch (PDOException $e) {
+            error_log("Error en la consulta: " . $e->getMessage());
+            return array();
+        }
     }
+    
+    
+
 
     /*===================================================================
     BUSCAR PRODUCTO POR SU CODIGO DE BARRAS, AGREGA LISTADO AL DATA TABLE VENTAS

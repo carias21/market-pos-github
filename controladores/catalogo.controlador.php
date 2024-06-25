@@ -23,5 +23,27 @@ class CatalogoControlador
         $respuesta = CatalogoModelo::mdlEliminarSlider($tableCatalogo, $id_slider, $nameId);
         return $respuesta;
     }
+
+
+    static public function ctrMostrarOcultarPrecio($dato){
+        $mostrarOcultarPrecio = CatalogoModelo::mdlMostrarOcultarPrecio($dato);
+        return $mostrarOcultarPrecio;
+    }
+
+    static public function ctrVerificarEstadoPrecioExistencia(){
+        $VerificarEstadoPrecio = CatalogoModelo::mdlVerificarEstadoPrecioExistencia();
+        return $VerificarEstadoPrecio;
+    }
+
+
+    
+    static public function ctrMostrarOcultareExistencia($dato){
+        $mostrarOcultarExistencia = CatalogoModelo::mdlMostrarOcultareExistencia($dato);
+        return $mostrarOcultarExistencia;
+    }
+
+
+    
+    
     
 }
