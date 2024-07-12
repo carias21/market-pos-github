@@ -40,7 +40,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="theme-color" content="#003547  ">
     <title>TECNET</title>
 
-    <link rel="shortcut icon" href="vistas/assets/dist/img/log_tecnet_sin_fondo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="vistas/assets/dist/img/logo.png" type="image/x-icon">
 
     <!-- ============================================================================================================= -->
     <!-- REQUIRED CSS -->

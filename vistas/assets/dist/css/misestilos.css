@@ -106,8 +106,8 @@ html.dark div.dtfc-right-top-blocker {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 50px; /* Reducido de 60px */
+  height: 28px; /* Reducido de 34px */
 }
 
 .switch input {
@@ -123,18 +123,18 @@ html.dark div.dtfc-right-top-blocker {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #b14848;
   transition: .4s;
-  border-radius: 34px;
+  border-radius: 28px; /* Ajustado según el nuevo height */
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 22px; /* Reducido de 26px */
+  width: 22px; /* Reducido de 26px */
+  left: 3px; /* Ajustado según el nuevo tamaño */
+  bottom: 3px; /* Ajustado según el nuevo tamaño */
   background-color: white;
   transition: .4s;
   border-radius: 50%;
@@ -145,5 +145,5 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(26px);
+  transform: translateX(22px); /* Ajustado según el nuevo width */
 }

@@ -27,19 +27,24 @@
                     <h3 class="card-title"><i class="far fa-list-alt"></i> Listado de usuarios</h3>
                 </div>
                 <div class="card-body">
-                    <table id="tbl_Usuarios" class="display nowrap table-striped w-100 shadow rounded">
-                        <thead class="mi_card_info text-left">
-                            <th>id</th>
-                            <th>Nombre U.</th>
-                            <th>Apellido U.</th>
-                            <th>Usuario</th>
-                            <th>Password</th>
-                            <th>Perfil U.</th>
-                            <th>Estado</th>
-                            <th class="text-center">Opciones</th>
 
+                    <table id="tbl_Usuarios" class="table  table-bordered w-100  ">
+                        <thead class="mi_card_info text-left">
+                            <tr>
+                                <th>id</th>
+                                <th>Nombre U.</th>
+                                <th>Apellido U.</th>
+                                <th>Usuario</th>
+                                <th>Password</th>
+                                <th>Id Perfil</th>
+                                <th>Perfil U.</th>
+                                <th>Estado</th>
+                                <th class="text-center">Opciones</th>
+                            </tr>
                         </thead>
-                        <tbody class="small text left"></tbody>
+                        <tbody class="small text-left">
+                            <!-- Tus filas de datos aquí -->
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -234,8 +239,8 @@
                 $("#ipt_Nombre_Usuario").val(data[1]);
                 $("#ipt_Apellido_Usuario").val(data[2]);
                 $("#ipt_Usuario").val(data[3]);
-                $("#sel_Perfil_Usuario").val('descripcion');
-                $("#sel_Estado_Usuario").val(data[6]);
+                $("#sel_Perfil_Usuario").val(data[5]);
+                $("#sel_Estado_Usuario").val(data[7]);
 
 
             }
@@ -404,7 +409,14 @@
         });
 
 
-    })
+
+
+
+
+
+
+
+    }) //FIN DOCUMEN READY
 
 
     /*===================================================================
@@ -459,15 +471,32 @@
                 {
                     targets: 5,
                     'data': 'descripcion',
+                    visible: false,
                 },
                 {
                     targets: 6,
-                    'data': 'estado',
+                    'data': 'descripcion_perfil',
+                },
+                {
+                    targets: 7,
+                    data: 'estado',
+                    render: function(data, type, row, meta) {
+
+                        const checked = row.estado === 1 ? 'checked' : '';
+
+                        return `
+        <div class="card-body text-center">
+            <label class="switch">
+                <input type="checkbox" data-id="${row.id_usuario}" id="toggleSwitch${row.id_usuario}" onclick="toggleFunction(this)" ${checked}>
+                <span class="slider round"></span>
+            </label>
+        </div>`;
+                    }
                 },
                 {
                     //columna 7 OPCIONES
                     //columna 5
-                    targets: 7,
+                    targets: 8,
                     sortable: false,
                     render: function(data, type, full, meta) {
                         return "<center>" +
@@ -545,6 +574,77 @@
 
 
     }
+
+
+
+
+
+    function toggleFunction(element) {
+        var id = $(element).data('id');
+
+        if ($(element).is(':checked')) {
+            $.ajax({
+                async: false,
+                url: "ajax/usuario.ajax.php",
+                method: "POST",
+                data: {
+                    'accion': 5,
+                    'dato': 1,
+                    'id': id // Aquí asegúrate de pasar el ID correcto
+                },
+                dataType: 'json',
+                success: function(respuesta) {
+
+
+                    if (respuesta == "ok") {
+                        mensajeToast('success', 'SE REGISTRO CORRECTAMENTE');
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'ERROR AL REGISTRAR',
+                            showConfirmButton: false,
+                            timer: 3500
+                        })
+                    }
+
+                }
+            });
+
+        } else { //OCULTAR existencia
+
+            $.ajax({
+                async: false,
+                url: "ajax/usuario.ajax.php",
+                method: "POST",
+                data: {
+                    'accion': 5,
+                    'dato': 0,
+                    'id': id // Aquí asegúrate de pasar el ID correcto
+                },
+                dataType: 'json',
+                success: function(respuesta) {
+
+
+                    if (respuesta == "ok") {
+                        mensajeToast('success', 'SE REGISTRO CORRECTAMENTE');
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'ERROR AL REGISTRAR',
+                            showConfirmButton: false,
+                            timer: 3500
+                        })
+                    }
+
+                }
+            });
+
+        }
+    }
+
+
 
     /*
         function decrypt($contraseña, $key)

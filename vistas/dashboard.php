@@ -25,7 +25,7 @@
                 <div class="row">
 
                     <div class="col-lg-3">
-                    <div class="card card-info">
+                        <div class="card card-info">
                             <div class="card-header mi_card_info">
                                 <h3 class="card-title">TOP PRODUCTO PERIODO </h3>
                                 <div class="card-tools">
@@ -571,6 +571,7 @@
 
         echo '</script>';
     }
+
     ?>
 
     <script>
@@ -927,28 +928,28 @@
             SOLICITUD AJAX TARJETAS INFORMATIVAS
             =======================================================*/
             $.ajax({
-    url: "ajax/dashboard.ajax.php",
-    method: 'POST',
-    dataType: 'json',
-    success: function(respuesta) {
-        console.log("respuesta", respuesta);
+                url: "ajax/dashboard.ajax.php",
+                method: 'POST',
+                dataType: 'json',
+                success: function(respuesta) {
+                    console.log("respuesta", respuesta);
 
-        // Redondear los valores a dos decimales antes de mostrarlos
-        var totalCompras = parseFloat(respuesta[0]['totalCompras']).toFixed(2);
-        var totalVentas = parseFloat(respuesta[0]['totalVentas']).toFixed(2);
-        var ganancias = parseFloat(respuesta[0]['ganancias']).toFixed(2);
-        var ventasHoy = parseFloat(respuesta[0]['ventasHoy']).toFixed(2);
+                    // Redondear los valores a dos decimales antes de mostrarlos
+                    var totalCompras = parseFloat(respuesta[0]['totalCompras']).toFixed(2);
+                    var totalVentas = parseFloat(respuesta[0]['totalVentas']).toFixed(2);
+                    var ganancias = parseFloat(respuesta[0]['ganancias']).toFixed(2);
+                    var ventasHoy = parseFloat(respuesta[0]['ventasHoy']).toFixed(2);
 
-        $("#totalProductos").html(respuesta[0]['totalProductos']);
-        $("#totalCompras").html('Q.' + totalCompras);
-        $("#totalVentas").html('Q.' + totalVentas);
-        $("#totalGanancias").html('Q.' + ganancias);
-        $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock']);
-        $("#totalVentasHoy").html('Q.' + ventasHoy);
-    }
-});
+                    $("#totalProductos").html(respuesta[0]['totalProductos']);
+                    $("#totalCompras").html('Q.' + totalCompras);
+                    $("#totalVentas").html('Q.' + totalVentas);
+                    $("#totalGanancias").html('Q.' + ganancias);
+                    $("#totalProductosMinStock").html(respuesta[0]['productosPocoStock']);
+                    $("#totalVentasHoy").html('Q.' + ventasHoy);
+                }
+            });
 
- 
+
 
 
 
@@ -1260,6 +1261,55 @@
                 });
             });
 
+
+
+
+
+
+            //-------------------------------------------------------------------------------------------------------------
+            //------------------------GENERAR REPORTE SI ES ULTIMO DIA DEL MES-------------------------------
+
+            const hoy = new Date();
+
+
+            const año = hoy.getFullYear();
+            const mes = hoy.getMonth();
+
+
+            const primerDiaProximoMes = new Date(año, mes + 1, 1);
+
+            const ultimoDiaMesActual = new Date(primerDiaProximoMes - 1);
+
+            if (hoy.getDate() === ultimoDiaMesActual.getDate()) {
+
+                $.ajax({
+                    async: false,
+                    url: "ajax/dashboard.ajax.php",
+                    method: "POST",
+                    data: {
+                        'accion': 12,
+                        'dato': 1
+                    },
+                    dataType: 'json',
+
+                    success: function(respuesta) {
+
+                        if (respuesta == "ok") {
+                            mensajeToast('success', 'ULTIMO DIA DEL MES');
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'ERROR AL REGISTRAR',
+                                showConfirmButton: false,
+                                timer: 3500
+                            })
+                        }
+
+                    }
+                });
+            } else {
+            }
 
 
 

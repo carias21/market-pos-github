@@ -238,7 +238,7 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
                                 <label class="" for="iptNitCliente"><i class="fas fa-barcode fs-6"></i>
                                     <span class="small">NIT</span>
                                 </label>
-                                <input type="text" pattern="[0-9-C/Fc/f]+" title="Ingrese solo números y guiones" class="form-control form-control-sm" id="iptNitCliente" name="iptNitCliente" placeholder="Nit del Cliente" required>
+                                <input type="text" pattern="[0-9-C/Fc/f]+" title="Ingrese solo números y guiones" class="form-control form-control-sm" id="iptNitCliente" name="iptNitCliente" placeholder="Nit del Cliente" >
                                 <div class="invalid-feedback">Debe ingresar NIT válido</div>
                             </div>
                         </div>
@@ -478,7 +478,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 
                 timeoutId = setTimeout(function() {
 
-    
+
                     $.ajax({
                         async: false,
                         url: "ajax/productos.ajax.php",
@@ -538,7 +538,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                         }
                     });
 
-                }, 500);
+                }, 300);
 
             }
         });
@@ -557,7 +557,9 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             },
             dataType: 'json',
             success: function(respuesta) {
-                //console.log(respuesta, "hay respuesta");
+
+
+              //  console.log(respuesta, "hay respuesta");
                 var itemsClientes = []; // Declara la variable 'items' antes del ciclo for
                 for (let i = 0; i < respuesta.length; i++) {
                     itemsClientes.push(respuesta[i]['descripcion_cliente']);
@@ -1034,7 +1036,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                     dataType: 'json',
                     success: function(respuesta) {
 
-                        console.log(respuesta, "estok")
+                      //  console.log(respuesta, "estok")
 
                         //si la respuesta del stock es 0 es porque ya no hay productos en existencia
                         if (parseInt(respuesta['existe']) == 0) {
@@ -1082,7 +1084,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             dataType: 'json',
             success: function(respuesta) {
 
-                console.log(respuesta);
+           //     console.log(respuesta);
 
                 /*===================================================================*/
                 //SI LA RESPUESTA ES VERDADERO, TRAE ALGUN DATO
@@ -1191,13 +1193,13 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
         var iptNombreClienteModal = $("#iptNombreClienteModal").val(); // Agregar el símbolo "#" antes de "iptNombreClienteModal"
 
         var nit_cliente;
+
+   
         if (cliente != "") {
             nit_cliente = cliente;
         } else {
             nit_cliente = $("#iptBuscarNitCliente").val();
         }
-
-        //console.log("🚀 ~ file: ventas.php ~ line 335 ~ CargarProductos ~ codigo_producto", nit_cliente);
 
         $.ajax({
             url: "ajax/clientes.ajax.php",
@@ -1208,6 +1210,8 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             },
             dataType: 'json',
             success: function(respuesta) {
+
+               // console.log(respuesta);
                 var id_cliente = respuesta['id_cliente'];
                 var iptIdNombreCliente = respuesta['nombre_cliente'];
 

@@ -102,6 +102,18 @@ class DashboardControlador{
     }
 
     
+    static public function ctrSiNoEsUltimoDiaMes($dato){
+    
+        $siNoEsUltimoDiaMes = DashboardModelo::mdlSiNoEsUltimoDiaMes($dato);
+    
+        return $siNoEsUltimoDiaMes;
+    
+    }
+
+
+    
+
+    
     
    
 }

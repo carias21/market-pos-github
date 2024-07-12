@@ -7,33 +7,33 @@ class ClientesModelo
 {
 
     static public function mdlRegistrarCliente($nit_cliente, $nombre_cliente, $telefono, $correo_e, $direccion, $notas)
-{
+    {
 
-    try {
-        $conexion = Conexion::conectar();
-        $stmt = $conexion->prepare("INSERT INTO clientes(nit_cliente, nombre_cliente, numero_tel, correo_electronico, direccion, notas)
+        try {
+            $conexion = Conexion::conectar();
+            $stmt = $conexion->prepare("INSERT INTO clientes(nit_cliente, nombre_cliente, numero_tel, correo_electronico, direccion, notas)
             VALUES(:nit_cliente, :nombre_cliente, :numero_tel, :correo_electronico, :direccion, :notas)");
 
-        $stmt->bindParam(":nit_cliente", $nit_cliente, PDO::PARAM_STR);
-        $stmt->bindParam(":nombre_cliente", $nombre_cliente, PDO::PARAM_STR);
-        $stmt->bindParam(":numero_tel", $telefono, PDO::PARAM_STR);
-        $stmt->bindParam(":correo_electronico", $correo_e, PDO::PARAM_STR);
-        $stmt->bindParam(":direccion", $direccion, PDO::PARAM_STR);
-        $stmt->bindParam(":notas", $notas, PDO::PARAM_STR);
+            $stmt->bindParam(":nit_cliente", $nit_cliente, PDO::PARAM_STR);
+            $stmt->bindParam(":nombre_cliente", $nombre_cliente, PDO::PARAM_STR);
+            $stmt->bindParam(":numero_tel", $telefono, PDO::PARAM_STR);
+            $stmt->bindParam(":correo_electronico", $correo_e, PDO::PARAM_STR);
+            $stmt->bindParam(":direccion", $direccion, PDO::PARAM_STR);
+            $stmt->bindParam(":notas", $notas, PDO::PARAM_STR);
 
-        if ($stmt->execute()) {
+            if ($stmt->execute()) {
 
-            // Obtener el ID del cliente autogenerado utilizando la misma conexión
-            $id_cliente = $conexion->lastInsertId();
+                // Obtener el ID del cliente autogenerado utilizando la misma conexión
+                $id_cliente = $conexion->lastInsertId();
 
-            return $id_cliente;
-        } else {
-            return "error";
+                return $id_cliente;
+            } else {
+                return "error";
+            }
+        } catch (Exception $e) {
+            return 'Excepción capturada: ' .  $e->getMessage() . "\n";
         }
-    } catch (Exception $e) {
-        return 'Excepción capturada: ' .  $e->getMessage() . "\n";
     }
-}
 
 
     static public function mdlListarClientes()
@@ -63,7 +63,7 @@ class ClientesModelo
     {
 
 
-        $stmt = Conexion::conectar()->prepare("SELECT  concat(nit_cliente, ' / ',  nombre_cliente) as descripcion_cliente
+        $stmt = Conexion::conectar()->prepare("SELECT  concat(id_cliente,  ' / ',  nit_cliente, ' / ',  nombre_cliente) as descripcion_cliente
         FROM clientes;");
 
         $stmt->execute();
@@ -76,14 +76,21 @@ class ClientesModelo
     ====================================================================*/
     static public function mdlDatosCliente($nit_cliente)
     {
+
+        list($id) = explode(' / ', $nit_cliente);
+
+
+
+
         try {
 
             $stmt = Conexion::conectar()->prepare("SELECT id_cliente, nit_cliente, nombre_cliente, 
                                                             numero_tel, correo_electronico, direccion, 
                                                             notas
-                                                            from clientes WHERE nit_cliente = :nit_cliente ");
+                                                            from clientes WHERE id_cliente = :id ");
 
-            $stmt->bindParam(":nit_cliente", $nit_cliente, PDO::PARAM_INT);
+            $stmt->bindParam(":id", $id, PDO::PARAM_STR);
+
 
             $stmt->execute();
 
@@ -113,7 +120,7 @@ class ClientesModelo
         }
     }
 
-    
+
 
     static public function mdlEditarCliente($tableClientes, $data, $id, $nameId)
     {

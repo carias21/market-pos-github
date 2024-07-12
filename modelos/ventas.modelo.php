@@ -86,37 +86,32 @@ class VentasModelo
     public static function verificarStock($conn, $producto, $codigo_producto)
     {
         try {
-
             $stmtVerificarStock = $conn->prepare("SELECT codigo_producto, stock_producto, minimo_stock_producto FROM productos WHERE codigo_producto = :codigo_producto");
-            $stmtVerificarStock->bindParam(':codigo_producto', $codigo_producto, PDO::PARAM_INT);
+            $stmtVerificarStock->bindParam(':codigo_producto', $codigo_producto, PDO::PARAM_STR);
     
             $stmtVerificarStock->execute();
     
             // Obtener los resultados
             $resultadoStock = $stmtVerificarStock->fetch(PDO::FETCH_ASSOC);
-
+    
             if ($resultadoStock && ($resultadoStock['stock_producto'] == $resultadoStock['minimo_stock_producto'])) {
-
-                $_POST["alertaStock"] = "ALERTA: EL PRODUCTO $producto CON CÓDIGO: $codigo_producto HA ALCANZADO EL MÍNIMO STOCK."
-                    . " EXISTENCIA ACTUAL:  $resultadoStock[stock_producto]";
-                include_once '../vistas/enviar_correo.php';
-            
-            
-                return $_POST["alertaStock"];
-            } elseif($resultadoStock && ($resultadoStock['stock_producto'] == 0)){
-                $_POST["stock0"] = "ALERTA: EL PRODUCTO $producto CON CÓDIGO: $codigo_producto SE HA AGOTADO";
+                $alertaStock = "ALERTA: EL PRODUCTO {$producto} CON CÓDIGO: {$codigo_producto} HA ALCANZADO EL MÍNIMO STOCK. EXISTENCIA ACTUAL: {$resultadoStock['stock_producto']}";
                 include_once '../vistas/enviar_correo.php';
     
-                return $_POST["stock0"];
+                return $alertaStock;
+            } elseif ($resultadoStock && ($resultadoStock['stock_producto'] == 0)) {
+                $stock0 = "ALERTA: EL PRODUCTO {$producto} CON CÓDIGO: {$codigo_producto} SE HA AGOTADO";
+                include_once '../vistas/enviar_correo.php';
+    
+                return $stock0;
             }
-            else {
-                return;
-            }
+            
+            return null; // Si no se cumplen las condiciones, retorna null
         } catch (PDOException $e) {
-
             return "Error al verificar el stock: " . $e->getMessage();
         }
     }
+    
 
 
     public static function mdlRegistrarVenta0($cantidad, $precio_venta, $descuento, $total, $precio_compra, $id_tipo_pago)

@@ -95,7 +95,17 @@ class AjaxDashboard{
         echo json_encode($editarMetas);
     
     }
+
+    
+    public function ajaxSiNoEsUltimoDiaMes($dato){
+    
+        $siNoEsUltimoDiaMes = DashboardControlador::ctrSiNoEsUltimoDiaMes($dato);
+    
+        echo json_encode($siNoEsUltimoDiaMes);
+    
+    }
 }
+
 
 
 if(isset($_POST['accion']) && $_POST['accion'] == 1){ //Ejecutar function ventas del mes (Grafico de Barras)
@@ -145,6 +155,10 @@ if(isset($_POST['accion']) && $_POST['accion'] == 1){ //Ejecutar function ventas
 }else if(isset($_POST['accion']) && $_POST['accion'] == 11){ //editar metas
     $editarMetas = new AjaxDashboard();
     $editarMetas->ajaxEditarMetas($_POST["id"], $_POST["valorMeta"]);
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 12){ //HABILITAR O DESHBAILITAR MOSTRAR EXISTENCIAS
+    $siNoEsUltimoDiaMes = new AjaxDashboard();
+    $siNoEsUltimoDiaMes->ajaxSiNoEsUltimoDiaMes($_POST["dato"]);
 
 }else{
     //tarjetas informativas

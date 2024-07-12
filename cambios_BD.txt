@@ -465,3 +465,24 @@ ALTER TABLE productos ADD FULLTEXT (descripcion_producto);
 insert into recursos (id, dato) VALUES("CATA2-EXIST", 0)
 
 ALTER TABLE categorias ADD FULLTEXT(nombre_categoria);
+
+
+
+
+
+
+
+
+
+insert into recursos(id, dato)VALUES('ULTIMO_D_M', 0)
+
+
+
+
+
+
+
+
+--cambios 04-07-2024
+
+ALTER TABLE clientes DROP INDEX uq_nit_cliente;

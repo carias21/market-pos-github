@@ -409,11 +409,6 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
 
-                        if (nit_cliente == 0) {
-
-                            mensajeToast('error', 'NO PUEDES EDITAR ESTE CLIENTE');
-                            return;
-                        }
 
                         var datos = new FormData();
 

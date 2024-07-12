@@ -86,15 +86,15 @@ class DashboardModelo
         try {
             $mesFormateado = sprintf("%02d", $mes);
             $anioFormateado = sprintf("%04d", $anio);
-    
+
             $stmt = Conexion::conectar()->prepare("SELECT DATE_FORMAT(fecha_venta, '%m-%d') AS dia, COUNT(DISTINCT fecha_venta) AS ventas_dia
                 FROM ventas
                 WHERE DATE_FORMAT(fecha_venta, '%Y-%m') = '$anioFormateado-$mesFormateado'
                 GROUP BY dia
                 ORDER BY dia;");
-    
+
             $stmt->execute();
-    
+
             return $stmt->fetchAll();
         } catch (Exception $e) {
             return 'Excepción capturada: ' . $e->getMessage() . "\n";
@@ -121,7 +121,7 @@ class DashboardModelo
         return $stmt->fetchAll();
     }
 
-    
+
     static public function mdlgetMetas()
     {
 
@@ -133,7 +133,7 @@ class DashboardModelo
     }
 
 
-        
+
     static public function mdlRecursosMeta()
     {
 
@@ -145,7 +145,7 @@ class DashboardModelo
     }
 
 
-        
+
     static public function mdlEditarMetas($id, $valorMeta)
     {
 
@@ -164,7 +164,69 @@ class DashboardModelo
 
 
 
+    static public function mdlSiNoEsUltimoDiaMes($dato)
+    {
+        try {
+            $conn = Conexion::conectar();
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $conn->beginTransaction();
+
+            $stmt = $conn->prepare('UPDATE recursos SET dato = :siNoMes WHERE id = "ULTIMO_D_M"');
+            $stmt->bindParam(":siNoMes", $dato, PDO::PARAM_STR);
+
+            if ($stmt->execute()) {
+                $conn->commit();
+                $resultado = "ok";
+                self::verificarSiNoUltimoDiaMes($conn);
+            } else {
+                $conn->rollBack();
+                $resultado = "error";
+            }
+        } catch (Exception $e) {
+ 
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            $resultado = 'Excepción capturada: ' . $e->getMessage();
+        } finally {
+
+            $stmt = null;
+            $conn = null;
+        }
+
+        return $resultado;
+    }
+
+    static public function verificarSiNoUltimoDiaMes($conn)
+    {
+
+
+        try {
+            $stmtVerificarDia = $conn->prepare('SELECT dato FROM recursos WHERE id = "ULTIMO_D_M"');
+            $stmtVerificarDia->execute();
+
+            $resultadoDia = $stmtVerificarDia->fetch(PDO::FETCH_ASSOC);
+
+
+
+            if ($resultadoDia) {
+
+
+                if ($resultadoDia['dato'] == 1) {
+                    include_once '../vistas/generar_reportes.php';
+                } else {
     
-    
-    
+                    return "No se encontró el dato.";
+                }
+            } else {
+                echo json_encode("entro verificarsi no asdasdasdasdasddia");
+                return "No se encontró el dato.";
+            }
+        } catch (PDOException $e) {
+            return "Error al verificar el día: " . $e->getMessage();
+        } finally {
+            // Cerrar la conexión y liberar recursos
+            $stmtVerificarDia = null;
+        }
+    }
 }

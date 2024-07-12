@@ -8,27 +8,25 @@ class UsuarioControlador
     ----------------------------------------------------------------*/
     public function login()
     {
-        //VD 25 min 22:05
         if (isset($_POST["loginUsuario"])) {
-            //---------------------------------------------------------------
-            //Realizamos la consulta con los datos del usuario ala base de datos
-            //---------------------------------------------------------------
-           // $contraseña = $_POST['contraseña'];
             $usuario = $_POST["loginUsuario"];
-            //password encriptada abc123....
-            //  $password = crypt($_POST["loginPassword"], '$2y$10$tPpAmr2RMlPrMJrcQZATIOw5SmFk2Op3rScHE1N.J4CJi5nUVS0Za');
-            //password 123456 encrip
             $contraseña = crypt($_POST["loginPassword"], 'contraseña');
-            // $contraseña = password_hash($_POST["loginPassword"], algo:PASSWORD_DEFAULT);
             $respuesta = UsuarioModelo::mdlIniciarSesion($usuario, $contraseña);
-            
-
-
-            //VALIDACION DE LAS CREDENCIALES
-            if (count($respuesta) > 0) {
-                //session se conecta con plantilla.php
+    
+            // VALIDACIÓN DE LAS CREDENCIALES
+            if (isset($respuesta['error'])) {
+                echo '
+                <script>
+                toastr.error(
+                    "' . $respuesta['error'] . '",
+                    "",
+                    "http://localhost/market-pos-github/"
+                );
+                </script>
+                ';
+            } elseif (count($respuesta) > 0) {
                 $_SESSION["usuario1"] = $respuesta[0];
-                echo ' 
+                echo '
                 <script>
                 window.location = "http://localhost/market-pos-github/"
                 </script>';
@@ -45,6 +43,7 @@ class UsuarioControlador
             }
         }
     }
+    
 
     static public function ctrObtenerMenuUsuario($id_usuario)
     {
@@ -72,5 +71,17 @@ class UsuarioControlador
     static public function ctrEliminarUsuario($tbl_Usuarios, $id_Usuario, $nameId){
         $respuesta = UsuarioModelo::mdlEliminarUsuario($tbl_Usuarios, $id_Usuario, $nameId);
         return $respuesta;
+    }
+
+
+    static public function ctrMostrarOcultarUsuario($dato, $id){
+        $mostrarOcultarUsuario = UsuarioModelo::mdlMostrarOcultarUsuario($dato, $id);
+        return $mostrarOcultarUsuario;
+    }
+
+    
+    static public function ctrVerificarEstadoUsuario(){
+        $VerificarEstadoUsuario = UsuarioModelo::mdlVerificarEstadoUsuario();
+        return $VerificarEstadoUsuario;
     }
 }

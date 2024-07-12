@@ -44,7 +44,29 @@ class AjaxUsuarios
         $respuesta = UsuarioControlador::ctrEliminarUsuario($tbl_Usuarios, $id_Usuario, $nameId);
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
     }
+
+    
+    public function ajaxMostrarOcultarUsuario($dato, $id){
+    
+        $mostrarOcultarUsuario = UsuarioControlador::ctrMostrarOcultarUsuario($dato, $id);
+    
+        echo json_encode($mostrarOcultarUsuario);
+    
+    }
+
+
+        
+
+    public function ajaxVerificarEstadoUsuario(){
+    
+        $VerificarEstadoUsuario = UsuarioControlador::ctrVerificarEstadoUsuario();
+    
+        echo json_encode($VerificarEstadoUsuario);
+    
+    }
 }
+
+
 
 if (isset($_POST['accion']) && $_POST['accion'] == 1) {
     $usuarios = new AjaxUsuarios;
@@ -83,7 +105,15 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) {
 } else if (isset($_POST['accion']) && $_POST['accion'] == 3) { //ELIMINAR
     $eliminarUsuario = new AjaxUsuarios();
     $eliminarUsuario->ajaxEliminarUsuario();
-} else {
+} else if(isset($_POST['accion']) && $_POST['accion'] == 5){ //HABILITAR O DESHBAILITAR  USUARIO
+    $mostrarOcultarPrecio = new AjaxUsuarios();
+    $mostrarOcultarPrecio->ajaxMostrarOcultarUsuario($_POST["dato"], $_POST["id"]);
+
+}else if(isset($_POST['accion']) && $_POST['accion'] == 6){ //VERIFICAR EL ESTADO QUE SE MUESTRA O NO EL USUARIO
+    $VerificarEstadoUsuario = new AjaxUsuarios();
+    $VerificarEstadoUsuario->ajaxVerificarEstadoUsuario();
+
+}else {
     $usuarios = new AjaxUsuarios();
     $usuarios->ajaxObtenerUsuarios();
 }
