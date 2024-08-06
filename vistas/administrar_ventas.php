@@ -304,18 +304,23 @@
                                  },
                                  {
                                      targets: 13,
-
                                      render: function(data, type, full, meta) {
-                                         /*retorna un ocono de un lapiz en inventario en opciones, con el style cursor... indicamos que al seleccionar el 
-                                         icono aparezca en el puntero del mause una mano*/
                                          return "<center>" +
-                                             //opciones eliminar icono
+                                             // opciones eliminar icono
                                              "<span class='btnEliminarVenta text-danger px-1' style='cursor:pointer;'>" +
                                              "<i class='fas fa-trash fs-5'></i>" +
                                              "</span>" +
-                                             "</center>"
+        
+                                             "<span class='btnGenerarPDF text-primary px-1' style='cursor:pointer;'>" +
+                                             "<i class='fas fa-file-pdf fs-5'></i>" +
+                                             "</span>" +
+
+                                             "<span class='btnGenerarTicket text-primary px-1' style='cursor:pointer;'>" +
+                                             "<i class='fas fa-clipboard-list'></i>" +
+                                             "</span>" +
+                                             "</center>";
                                      }
-                                 }
+                                 },
                              ],
                              drawCallback: function(settings) {
                                  var api = this.api();
@@ -355,6 +360,12 @@
 
 
                          });
+
+
+
+
+
+
 
                          /*===================================================================*/
                          //EVENTO ELIMINAR UNA VENTA
@@ -667,6 +678,40 @@
                              });
 
                          })
+
+
+
+                         /*===================================================================*/
+                         //EVENTO GENERAR TICKET O PDF CARTA
+                         /*===================================================================*/
+
+                         $(document).on('click', '.btnGenerarPDF', function() {
+                             // Obtén la fila actual
+                             var tr = $(this).closest('tr');
+                             // Obtén los datos de la fila
+                             var rowData = $('#lstVentas').DataTable().row(tr).data();
+                        
+                             respuesta = rowData.fecha_venta;
+
+
+                             window.open('https://pvtecnet.com/tecnet/vistas/generar_pdf.php?fecha_venta=' + respuesta + '&NoEmail=true');
+                         });
+
+                                 $(document).on('click', '.btnGenerarTicket', function() {
+                             // Obtén la fila actual
+                             var tr = $(this).closest('tr');
+                             // Obtén los datos de la fila
+                             var rowData = $('#lstVentas').DataTable().row(tr).data();
+                        
+                             respuesta = rowData.fecha_venta;
+
+
+                             window.open('https://pvtecnet.com/tecnet/vistas/generar_ticket.php?fecha_venta=' + respuesta + '&NoEmail=true');
+                         });
+
+                         
+
+
 
                      }) //FUN DOCUMENT READY
 

@@ -145,6 +145,8 @@
     </div><!-- /.container-fluid -->
 
 </div>
+
+<img src="vistas/assets/dist/img/loading.gif" id="img_carga" class="loader">
 <!-- /.content -->
 
 <!-- Ventana Modal para ingresar o modificar un Productos -->
@@ -1017,6 +1019,7 @@
 
                 if (result.isConfirmed) {
 
+                    mostrarLoading();
                     var datos = new FormData();
 
                     datos.append("accion", accion);
@@ -1046,6 +1049,8 @@
                                     timer: 3500
                                 })
                             }
+
+                            ocultarLoading();
 
                         }
                     });
@@ -1163,6 +1168,7 @@
                 }).then((result) => {
 
                     if (result.isConfirmed) {
+                        mostrarLoading();
 
                         var datos = new FormData();
                         var datos = new FormData($(form_cargar_imagen)[0]);
@@ -1222,6 +1228,8 @@
                                         timer: 3500
                                     })
                                 }
+
+                                ocultarLoading();
 
                             }
                         });

@@ -147,3 +147,16 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(22px); /* Ajustado según el nuevo width */
 }
+
+
+/* GIF DE LOADER CARGAR */
+.loader {
+  display: none; /* Oculto por defecto */
+  position: fixed; /* Posición fija para mantenerla en la pantalla */
+  top: 50%; /* Centrado verticalmente */
+  left: 50%; /* Centrado horizontalmente */
+  transform: translate(-50%, -50%); /* Ajuste para centrar la imagen */
+  z-index: 1000; /* Asegura que esté encima de otros elementos */
+  width: 150px; /* Ajusta el ancho */
+  height: 150px; /* Ajusta la altura */
+}

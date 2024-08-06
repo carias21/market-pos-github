@@ -39,6 +39,11 @@
 
                     </div>
 
+
+                    <img src="vistas/assets/dist/img/loading.gif" id="img_carga" class="loader">
+
+
+
                     <div class="row">
                         <!-- ETIQUETA QUE MUESTRA LA SUMA TOTAL DE LOS PRODUCTOS AGREGADOS AL LISTADO -->
                         <div class="col-md-4 mb-3 rounded-3 mx-auto text-center">
@@ -238,7 +243,7 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
                                 <label class="" for="iptNitCliente"><i class="fas fa-barcode fs-6"></i>
                                     <span class="small">NIT</span>
                                 </label>
-                                <input type="text" pattern="[0-9-C/Fc/f]+" title="Ingrese solo números y guiones" class="form-control form-control-sm" id="iptNitCliente" name="iptNitCliente" placeholder="Nit del Cliente" >
+                                <input type="text" pattern="[0-9-C/Fc/f]+" title="Ingrese solo números y guiones" class="form-control form-control-sm" id="iptNitCliente" name="iptNitCliente" placeholder="Nit del Cliente">
                                 <div class="invalid-feedback">Debe ingresar NIT válido</div>
                             </div>
                         </div>
@@ -317,6 +322,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
     $apellido_usuario = "";
 }
 ?>
+
 
 
 <!--======================================================================================
@@ -475,6 +481,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             clearTimeout(timeoutId);
 
             if (codigoVenta.length >= 2) {
+                mostrarLoading();
 
                 timeoutId = setTimeout(function() {
 
@@ -489,7 +496,15 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                         },
                         dataType: 'json',
                         success: function(respuesta) {
-     
+                            ocultarLoading();
+
+                            if (respuesta.length === 0) {
+                       
+    toastr.warning('- <i class="fa fa-search"></i> SIN RESULTADOS -');
+
+
+                            }
+
                             var flexibleResults = respuesta.map(function(item) {
                                 return {
                                     label: item.label,
@@ -534,12 +549,14 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                 $(ul).addClass("ui-autocomplete-list");
                             };
 
-                            $("#iptCodigoVenta").autocomplete("widget").css("background", "#CCCCCC"); // Ejemplo con gris claro
+                            $("#iptCodigoVenta").autocomplete("widget").css("background", "#fafafa"); // Ejemplo con gris claro
                         }
                     });
 
                 }, 300);
 
+            } else {
+                ocultarLoading();
             }
         });
 
@@ -559,7 +576,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             success: function(respuesta) {
 
 
-              //  console.log(respuesta, "hay respuesta");
+                //  console.log(respuesta, "hay respuesta");
                 var itemsClientes = []; // Declara la variable 'items' antes del ciclo for
                 for (let i = 0; i < respuesta.length; i++) {
                     itemsClientes.push(respuesta[i]['descripcion_cliente']);
@@ -1036,7 +1053,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                     dataType: 'json',
                     success: function(respuesta) {
 
-                      //  console.log(respuesta, "estok")
+                        //  console.log(respuesta, "estok")
 
                         //si la respuesta del stock es 0 es porque ya no hay productos en existencia
                         if (parseInt(respuesta['existe']) == 0) {
@@ -1084,7 +1101,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             dataType: 'json',
             success: function(respuesta) {
 
-           //     console.log(respuesta);
+                //     console.log(respuesta);
 
                 /*===================================================================*/
                 //SI LA RESPUESTA ES VERDADERO, TRAE ALGUN DATO
@@ -1194,7 +1211,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 
         var nit_cliente;
 
-   
+
         if (cliente != "") {
             nit_cliente = cliente;
         } else {
@@ -1211,7 +1228,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             dataType: 'json',
             success: function(respuesta) {
 
-               // console.log(respuesta);
+                // console.log(respuesta);
                 var id_cliente = respuesta['id_cliente'];
                 var iptIdNombreCliente = respuesta['nombre_cliente'];
 
@@ -1361,6 +1378,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                     mensajeToast('warning', 'EL EFECTIVO ES MENOR AL COSTO TOTAL DE LA VENTA');
                     return false;
                 } else {
+
                     // Obtener los formularios a los que queremos agregar estilos de validación
                     var forms = document.getElementsByClassName('needs-validation');
                     // Loop over them and prevent submission
@@ -1368,6 +1386,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 
                         if (form.checkValidity() === true) {
                             btnRealizarVenta.disabled = true;
+                            mostrarLoading();
 
                             //ENVIAMOS LOS VALORES A LA BASE DE DATOS
                             var formData = new FormData();
@@ -1427,7 +1446,31 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                         mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
                                         $(".needs-validation").removeClass("was-validated");
 
-                                        window.open('http://localhost/market-pos-github/vistas/generar_ticket.php?fecha_venta=' + respuesta);
+
+
+                                        Swal.fire({
+                                            title: 'GENERAR DOCUMENTO',
+                                            icon: 'success',
+                                            showCancelButton: true,
+                                            showDenyButton: true, // Muestra el botón Deny
+                                            confirmButtonColor: '#f69a10',
+                                            cancelButtonColor: '#b21807',
+                                            denyButtonColor: '#057581', // Color para el botón Deny
+                                            confirmButtonText: 'Generar PDF',
+                                            cancelButtonText: 'Cancelar',
+                                            denyButtonText: 'Generar Ticket',
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+
+                                                window.open('http://pvtecnet.com/tecnet/vistas/generar_pdf.php?fecha_venta=' + respuesta);
+                                            } else if (result.isDenied) {
+                                                // Acción para generar el Ticket
+                                                window.open('http://pvtecnet.com/tecnet/vistas/generar_ticket.php?fecha_venta=' + respuesta);
+                                            }
+                                        });
+
+
+
 
                                     } else {
                                         $.ajax({
@@ -1459,6 +1502,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                     btnRealizarVenta.disabled = false;
                                     LimpiarInputs();
                                     $("#iptIdNombreCliente").css("display", "none");
+                                    ocultarLoading();
 
 
                                 }
@@ -1482,6 +1526,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 
                     if (form.checkValidity() === true) {
                         btnRealizarVenta.disabled = true;
+                        mostrarLoading();
 
                         //ENVIAMOS LOS VALORES A LA BASE DE DATOS
                         var formData = new FormData();
@@ -1541,7 +1586,32 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                     mensajeToast('success', 'VENTA REGISTRADA CORRECTAMENTE');
                                     $(".needs-validation").removeClass("was-validated");
 
-                                    window.open('http://localhost/market-pos-github/vistas/generar_ticket.php?fecha_venta=' + respuesta);
+
+
+                                    Swal.fire({
+                                        title: 'GENERAR DOCUMENTO',
+                                        icon: 'success',
+                                        showCancelButton: true,
+                                        showDenyButton: true, // Muestra el botón Deny
+                                        confirmButtonColor: '#f69a10',
+                                        cancelButtonColor: '#b21807',
+                                        denyButtonColor: '#057581', // Color para el botón Deny
+                                        confirmButtonText: 'Generar PDF',
+                                        cancelButtonText: 'Cancelar',
+                                        denyButtonText: 'Generar Ticket',
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+
+                                            window.open('http://pvtecnet.com/tecnet/vistas/generar_pdf.php?fecha_venta=' + respuesta);
+                                        } else if (result.isDenied) {
+                                            // Acción para generar el Ticket
+                                            window.open('http://pvtecnet.com/tecnet/vistas/generar_ticket.php?fecha_venta=' + respuesta);
+                                        }
+                                    });
+
+
+
+
 
                                 } else {
                                     $.ajax({
@@ -1573,6 +1643,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                 btnRealizarVenta.disabled = false;
                                 LimpiarInputs();
                                 $("#iptIdNombreCliente").css("display", "none");
+                                ocultarLoading();
 
 
                             }
@@ -1608,6 +1679,8 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                         cancelButtonText: 'Cancelar!',
                     }).then((result) => {
                         if (result.isConfirmed) {
+
+                            mostrarLoading();
                             var accion = 2;
 
                             var cantidad = 0;
@@ -1648,7 +1721,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                             title: 'YA HAY VENTA REGISTRADA :)',
                                             showConfirmButton: false,
                                             timer: 2500
-                                        })
+                                        });
                                     } else {
                                         Swal.fire({
                                             position: 'center',
@@ -1657,13 +1730,14 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                                 ' comunicate con tu administrador',
                                             showConfirmButton: false,
                                             timer: 2500
-                                        })
+                                        });
 
                                     }
 
                                     // Habilitar el botón después de que se complete la acción
                                     btnRealizarVenta.disabled = false;
                                     LimpiarInputs();
+                                    ocultarLoading();
                                     $("#iptIdNombreCliente").css("display", "none");
 
 

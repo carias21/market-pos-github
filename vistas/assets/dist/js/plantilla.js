@@ -192,7 +192,7 @@ function fncSweetAlert(type, text, url) {
 
 			break;
 
-			
+
 
 		/*=============================================
 		Cuando estamos precargando
@@ -279,4 +279,15 @@ function mensajeToast(tipo_mensaje, mensaje) {
 
 
 
+}
+
+
+
+
+function mostrarLoading() {
+	document.getElementById('img_carga').style.display = 'block';
+}
+
+function ocultarLoading() {
+	document.getElementById('img_carga').style.display = 'none';
 }

@@ -4,17 +4,17 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Round;
 
 require_once "../controladores/ventas.controlador.php";
 require_once "../modelos/ventas.modelo.php";
-
 require('../vistas/recursos/fpdf/fpdf.php');
 
 if (isset($_GET['fecha_venta'])) {
-
     $fecha_venta = $_GET['fecha_venta'];
+    
+    // Condición para enviar o no el correo
+    $enviar_correo = !isset($_GET['NoEmail']);
 
     $pdf = new FPDF($orientation = 'P', $unit = 'mm', array(90, 210));
     $pdf->AddPage();
     $pdf->setMargins(10, 10, 10);
-
     $total = 0;
 
     $productos = VentasControlador::ctrObtenerDetalleVenta($fecha_venta);
@@ -24,35 +24,26 @@ if (isset($_GET['fecha_venta'])) {
     }
 
     if (!empty($productos) && isset($productos[0])) {
-
         $nombreUsuario = $productos[0]["nombre_usuario"];
         $apellidoUsuario = $productos[0]["apellido_usuario"];
         $nombreCliente = $productos[0]["nombre_cliente"];
         $nitCliente = $productos[0]["nit_cliente"];
-        $correCliente = $productos[0]["correo_electronico"];
+        $correoCliente = $productos[0]["correo_electronico"];
         $numeroTel = $productos[0]["numero_tel"];
         $descuento = $productos[0]["descuento_venta"];
 
-        // Ruta a la imagen del logo
-        $logoPath = '../vistas/assets/dist/img/logo.png'; // Asegúrate de que esta sea la ruta correcta
-
-        // Obtén las dimensiones de la imagen
+        $logoPath = '../vistas/assets/dist/img/logo.png';
         list($logoWidth, $logoHeight) = getimagesize($logoPath);
-
-        // Calcula las nuevas dimensiones para ajustar el logo en el PDF
-        $maxLogoWidth = 60; // Ancho máximo para el logo
-        $maxLogoHeight = 0; // Altura se calculará automáticamente para mantener la proporción
+        $maxLogoWidth = 60;
+        $maxLogoHeight = 0;
 
         if ($logoWidth > $maxLogoWidth) {
             $ratio = $maxLogoWidth / $logoWidth;
             $maxLogoHeight = $logoHeight * $ratio;
         }
 
-        // Agrega el logo al PDF en la parte superior del espacio en blanco
         $pdf->Image($logoPath, 15, $pdf->GetY(), $maxLogoWidth, $maxLogoHeight);
-        // Añade un espacio en blanco en la parte superior
-        $pdf->Ln(30); // Puedes ajustar el valor 10 según cuánto espacio desees
-
+        $pdf->Ln(30);
         $pdf->Ln();
         $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'TECNET', 0, 0, 'C');
@@ -76,7 +67,7 @@ if (isset($_GET['fecha_venta'])) {
         $pdf->Cell(0, 6, 'Cliente: ' . $nombreCliente, 0, 0, 'C');
         $pdf->Ln();
         $pdf->SetFont('Arial', '', 9);
-        $pdf->Cell(0, 6, 'Email: ' . $correCliente, 0, 0, 'C');
+        $pdf->Cell(0, 6, 'Email: ' . $correoCliente, 0, 0, 'C');
         $pdf->Ln();
         $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'Telefono: ' . $numeroTel, 0, 0, 'C');
@@ -102,7 +93,7 @@ if (isset($_GET['fecha_venta'])) {
 
         foreach ($productos as $pro) {
             $pdf->Cell(25, 4, $pro["codigo_producto"]);
-            $pdf->Cell(22, 4, utf8_decode(strtoupper(substr($pro["descripcion_producto"], 0, 20))));
+            $pdf->MultiCell(0, 4, utf8_decode(strtoupper($pro["descripcion_producto"])));
             $pdf->Ln();
             $pdf->Cell(15, 4, $pro["cantidad"], 0, 0, 'C');
             $pdf->Cell(5, 4, "X", 0, 0, 'C');
@@ -120,86 +111,62 @@ if (isset($_GET['fecha_venta'])) {
         $pdf->Cell(0, 6, utf8_decode('------------------------------------------------------------------------------------------------'), 0, 0, 'C');
         $pdf->Ln();
         $pdf->SetFont('Arial', 'B', 10);
-
-        // Concatena el valor del total al final del texto
         $totalTexto = "TOTAL VENTA: Q. " . number_format($total, 2);
-
-        // Crea una celda con ancho automático que contiene el texto completo
-        $pdf->Cell(0, 4, $totalTexto, 0, 1, 'C'); // Cambiamos a "1" para avanzar a la siguiente línea
-
+        $pdf->Cell(0, 4, $totalTexto, 0, 1, 'C');
         $pdf->Ln();
         $pdf->Ln();
         $imageX = 10;
-        $imageY = $pdf->GetY(); // Obtiene la posición Y actual
+        $imageY = $pdf->GetY();
         $pdf->Ln();
         $pdf->Ln();
         $pdf->SetFont('Arial', 'B', 15);
         $pdf->Cell(0, 6, utf8_decode('¡Gracias por su compra!'), 0, 0, 'C');
 
-        // Ruta del archivo PDF que deseas adjuntar
         $archivo_pdf = '../vistas/recursos/ticket.pdf';
         $pdf->Output($archivo_pdf, 'F');
 
-        // Datos del destinatario
-        $para = $correCliente;
-        $asunto = 'TICKET DE VENTA';
+        if ($enviar_correo) {
+            $para = $correoCliente;
+            $asunto = 'TICKET DE VENTA';
+            $mensaje = 'TICKET DE VENTA.<br><br>';
+            $random_hash = md5(date('r', time()));
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-Type: multipart/mixed; boundary=\"PHP-mixed-" . $random_hash . "\"\r\n";
+            $headers .= "From: sistec@gmail.com\r\n";
+            $headers .= "Reply-To: tecnet@tecnet.com\r\n";
+            $contenido_pdf = chunk_split(base64_encode(file_get_contents($archivo_pdf)));
+            $mensaje .= "--PHP-mixed-" . $random_hash . "\r\n";
+            $mensaje .= "Content-Type: multipart/alternative; boundary=\"PHP-alt-" . $random_hash . "\"\r\n\r\n";
+            $mensaje .= "--PHP-alt-" . $random_hash . "\r\n";
+            $mensaje .= "Content-Type: text/plain; charset=\"iso-8859-1\"\r\n";
+            $mensaje .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+            $mensaje .= "TICKET DE VENTA.\r\n\r\n";
+            $mensaje .= "--PHP-alt-" . $random_hash . "\r\n";
+            $mensaje .= "Content-Type: text/html; charset=\"iso-8859-1\"\r\n";
+            $mensaje .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+            $mensaje .= "<p>TICKET DE VENTA.</p>\r\n\r\n";
+            $mensaje .= "--PHP-mixed-" . $random_hash . "\r\n";
+            $mensaje .= "Content-Type: application/pdf; name=\"archivo.pdf\"\r\n";
+            $mensaje .= "Content-Transfer-Encoding: base64\r\n";
+            $mensaje .= "Content-Disposition: attachment\r\n\r\n";
+            $mensaje .= $contenido_pdf . "\r\n";
 
-        // Contenido del mensaje
-        $mensaje = 'TICKET DE VENTA.<br><br>';
-
-        // Inicialización del hash aleatorio
-        $random_hash = md5(date('r', time()));
-
-        // Encabezados del correo electrónico
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: multipart/mixed; boundary=\"PHP-mixed-" . $random_hash . "\"\r\n";
-        $headers .= "From: remitente@example.com\r\n";
-        $headers .= "Reply-To: remitente@example.com\r\n";
-
-        // Leer el contenido del archivo PDF en base64
-        $contenido_pdf = chunk_split(base64_encode(file_get_contents($archivo_pdf)));
-
-        // Mensaje con el archivo adjunto
-        $mensaje .= "--PHP-mixed-" . $random_hash . "\r\n";
-        $mensaje .= "Content-Type: multipart/alternative; boundary=\"PHP-alt-" . $random_hash . "\"\r\n\r\n";
-
-        // Parte de texto del mensaje
-        $mensaje .= "--PHP-alt-" . $random_hash . "\r\n";
-        $mensaje .= "Content-Type: text/plain; charset=\"iso-8859-1\"\r\n";
-        $mensaje .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-        $mensaje .= "TICKET DE VENTA.\r\n\r\n";
-
-        // Parte HTML del mensaje
-        $mensaje .= "--PHP-alt-" . $random_hash . "\r\n";
-        $mensaje .= "Content-Type: text/html; charset=\"iso-8859-1\"\r\n";
-        $mensaje .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-        $mensaje .= "<p>TICKET DE VENTA.</p>\r\n\r\n";
-
-        // Adjuntar el archivo PDF
-        $mensaje .= "--PHP-mixed-" . $random_hash . "\r\n";
-        $mensaje .= "Content-Type: application/pdf; name=\"archivo.pdf\"\r\n";
-        $mensaje .= "Content-Transfer-Encoding: base64\r\n";
-        $mensaje .= "Content-Disposition: attachment\r\n\r\n";
-        $mensaje .= $contenido_pdf . "\r\n";
-
-        // Enviar el correo y capturar errores
-        try {
-            if (mail($para, $asunto, $mensaje, $headers)) {
-                $pdf->Output();
-                echo 'Correo enviado correctamente.';
-        
-        
-                
-            } else {
-                $pdf->Output();
-                throw new Exception('Hubo un error al enviar el correo.');
+            try {
+                if (mail($para, $asunto, $mensaje, $headers)) {
+                       $pdf->Output();
+              
+                } else {
+                    throw new Exception('Hubo un error al enviar el correo.');
+                }
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                error_log($e->getMessage());
             }
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            error_log($e->getMessage());
+        } else {
+                    $pdf->Output();
+
         }
 
-        // Borrar el archivo temporal del PDF después de enviarlo por correo
         unlink($archivo_pdf);
     } else {
         echo 'No se encontraron productos para la fecha proporcionada.';

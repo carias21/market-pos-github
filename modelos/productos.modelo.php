@@ -286,21 +286,29 @@ class ProductosModelo
     Peticion DELETE para eliminar datos
     =============================================*/
 
+
     static public function mdlEliminarInformacion($table, $id, $nameId)
     {
+        try {
+            $stmt = Conexion::conectar()->prepare("DELETE FROM $table WHERE $nameId = :$nameId");
 
-        $stmt = Conexion::conectar()->prepare("DELETE FROM $table WHERE $nameId = :$nameId");
+            $stmt->bindParam(":" . $nameId, $id, PDO::PARAM_STR);
 
-        $stmt->bindParam(":" . $nameId, $id, PDO::PARAM_STR);
-
-        if ($stmt->execute()) {
-
-            return "ok";;
-        } else {
-
-            return Conexion::conectar()->errorInfo();
+            if ($stmt->execute()) {
+                $stmt->closeCursor(); // Cierra el cursor para liberar recursos
+                return "ok";
+            } else {
+                $stmt->closeCursor(); // Cierra el cursor para liberar recursos
+                return "error";
+            }
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
+
+
 
     /*===================================================================
     LISTAR NOMBRE DE PRODUCTOS PARA INPUT DE AUTO COMPLETADO
@@ -310,15 +318,15 @@ class ProductosModelo
     {
         $palabras = explode(" ", $valor);
         $where = "";
-    
+
         foreach ($palabras as $palabra) {
             // Aquí se incluye tanto la búsqueda por código como por descripción
             $where .= "(codigo_producto LIKE '%" . $palabra . "%' OR descripcion_producto LIKE '%" . $palabra . "%') AND ";
         }
-    
+
         // Eliminar el último "AND"
         $where = rtrim($where, "AND ");
-    
+
         try {
             $stmt = Conexion::conectar()->prepare("SELECT 
                                                         codigo_producto,
@@ -330,10 +338,10 @@ class ProductosModelo
                                                     FROM productos p
                                                     INNER JOIN categorias c on p.id_categoria_producto = c.id_categoria
                                                     WHERE $where AND p.stock_producto > 0");
-    
+
             $stmt->execute();
             $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
             $productData = array();
             foreach ($productos as $producto) {
                 $codigo_producto = htmlspecialchars($producto["codigo_producto"]);
@@ -342,11 +350,11 @@ class ProductosModelo
                 $precio_venta_producto = htmlspecialchars($producto["precio_venta_producto"]);
                 $stock_producto = htmlspecialchars($producto["stock_producto"]);
                 $foto = htmlspecialchars($producto['foto']);
-    
+
                 $data = array(
                     "id" => $codigo_producto,
                     "value" => $codigo_producto . ' / ' . $nombre_categoria . ' / ' . $descripcion_producto . ' / ' .
-                               $precio_venta_producto . ' / ' . $stock_producto,
+                        $precio_venta_producto . ' / ' . $stock_producto,
                     "label" => '
                     <a href="javascript:void(0);" class="d-flex" style="width:100% !important;">
                         <img src="vistas/assets/imagenes/' . $foto . '" width="70" height="70"/> 
@@ -357,18 +365,18 @@ class ProductosModelo
                         </div>
                     </a>'
                 );
-    
+
                 array_push($productData, $data);
             }
-    
+
             return $productData;
         } catch (PDOException $e) {
             error_log("Error en la consulta: " . $e->getMessage());
             return array();
         }
     }
-    
-    
+
+
 
 
     /*===================================================================

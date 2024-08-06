@@ -55,25 +55,33 @@
 
 
 .btn-info {
-    margin-top: 10px;
-    /* Espacio opcional por encima del botón */
+    margin-top: 10px; /* Espacio opcional por encima del botón */
 }
-
-
-
-/* Estilos CSS para la línea divisora entre las imágenes */
-.slick-item {
-    border-right: 5px solid #ffffff;
-
-    padding-right: 10px;
-
-
- 
-}
-
-
 
 .small-text {
-    font-size: 0.7rem; /*texto de descripcion_producto del slick */
+    font-size: 0.7rem; /* Texto de descripcion_producto del slick */
     color: #333;
+}
+
+/* Media queries para ajustar el diseño en pantallas pequeñas */
+@media (max-width: 600px) {
+    .slick-item {
+        margin: 0 3px; /* Espaciado menor en pantallas pequeñas */
+    }
+
+    .slick-item img {
+        max-width: 150px; /* Ajustar el tamaño máximo en pantallas pequeñas */
+        max-height: 110px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 992px) {
+    .slick-item {
+        margin: 0 5px; /* Espaciado más amplio para tablets */
+    }
+
+    .slick-item img {
+        max-width: 170px; /* Ajustar el tamaño máximo en tablets */
+        max-height: 120px;
+    }
 }
