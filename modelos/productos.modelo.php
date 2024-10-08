@@ -13,7 +13,6 @@ class ProductosModelo
     ====================================================================*/
     static public function mdlCargaMasivaProductos($fileProductos)
     {
-
         $nombreArchivo = $fileProductos['tmp_name'];
 
         $documento = IOFactory::load($nombreArchivo);
@@ -69,7 +68,8 @@ class ProductosModelo
                 $minimo_stock_producto = $hojaProductos->getCell("H" . $i);
                 $ventas_producto = $hojaProductos->getCell("I" . $i);
                 $fecha_actualizacion_producto = date('Y-m-d');
-                $foto = $hojaProductos->getCell("L" . $i);
+                $foto = $hojaProductos->getCell("J" . $i);
+                $fk_id_proveedor = $hojaProductos->getCell("K" . $i);
 
                 if (!empty($codigo_producto)) {
                     $stmt = Conexion::conectar()->prepare("INSERT INTO productos(codigo_producto,
@@ -82,7 +82,8 @@ class ProductosModelo
                                                                                 minimo_stock_producto,
                                                                                 ventas_producto,
                                                                                 fecha_actualizacion_producto, 
-                                                                                foto)
+                                                                                foto,
+                                                                                fk_id_proveedor)
                                                                         values(:codigo_producto,
                                                                                 :id_categoria_producto,
                                                                                 :descripcion_producto,
@@ -93,7 +94,8 @@ class ProductosModelo
                                                                                 :minimo_stock_producto,
                                                                                 :ventas_producto,
                                                                                 :fecha_actualizacion_producto,
-                                                                                :foto);");
+                                                                                :foto,
+                                                                                :fk_id_proveedor);");
 
                     $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
                     $stmt->bindParam(":id_categoria_producto", $id_categoria_producto[0], PDO::PARAM_STR);
@@ -106,6 +108,7 @@ class ProductosModelo
                     $stmt->bindParam(":ventas_producto", $ventas_producto, PDO::PARAM_STR);
                     $stmt->bindParam(":fecha_actualizacion_producto", $fecha_actualizacion_producto, PDO::PARAM_STR);
                     $stmt->bindParam(":foto", $foto, PDO::PARAM_STR);
+                    $stmt->bindParam(":fk_id_proveedor", $fk_id_proveedor, PDO::PARAM_STR);
 
                     if ($stmt->execute()) {
                         $productosRegistrados = $productosRegistrados + 1;
@@ -121,6 +124,9 @@ class ProductosModelo
 
         return $respuesta;
     }
+
+
+
 
     /*===================================================================
     BUSCAR EL ID DE UNA CATEGORIA POR EL NOMBRE DE LA CATEGORIA PARA LA CARGA MASIVA
@@ -165,9 +171,11 @@ class ProductosModelo
         $name
     ) {
 
-        try {
 
-            $fecha = date('Y-m-d');
+        date_default_timezone_set('America/Guatemala');
+        $fecha_registro = date("Y-m-d");
+
+        try {
 
             $stmt = Conexion::conectar()->prepare("INSERT INTO productos(codigo_producto, 
                                                                         id_categoria_producto, 
@@ -204,8 +212,8 @@ class ProductosModelo
             $stmt->bindParam(":stock_producto", $stock_producto, PDO::PARAM_STR);
             $stmt->bindParam(":minimo_stock_producto", $minimo_stock_producto, PDO::PARAM_STR);
             $stmt->bindParam(":ventas_producto", $ventas_producto, PDO::PARAM_STR);
-            $stmt->bindParam(":fecha_creacion_producto", $fecha, PDO::PARAM_STR);
-            $stmt->bindParam(":fecha_actualizacion_producto", $fecha, PDO::PARAM_STR);
+            $stmt->bindParam(":fecha_creacion_producto", $fecha_registro, PDO::PARAM_STR);
+            $stmt->bindParam(":fecha_actualizacion_producto", $fecha_registro, PDO::PARAM_STR);
             $stmt->bindParam(":foto",  $name, PDO::PARAM_STR);
             $stmt->bindParam(":fk_id_proveedor", $id_proveedor, PDO::PARAM_INT);
 
@@ -226,6 +234,7 @@ class ProductosModelo
 
     static public function mdlActualizarInformacion($table, $data, $id, $nameId)
     {
+
 
 
         $set = "";
@@ -395,7 +404,7 @@ class ProductosModelo
                                                         descripcion_producto,
                                                         '1' as cantidad,
                                                         CONCAT('Q. ',CONVERT(ROUND(precio_venta_producto,2), CHAR)) as precio_venta_producto,
-                                                        '' as descuento,
+                                                        '0.00' as descuento,
                                                         CONCAT('Q. ',CONVERT(ROUND(1*precio_venta_producto,2), CHAR)) as total,
                                                         '' as acciones,
                                                         c.aplica_peso,
@@ -415,22 +424,45 @@ class ProductosModelo
 
 
 
-
-    static public function mdlVerificaStockProducto($codigo_producto, $cantidad_a_comprar)
+    static public function mdlVerificaStockProducto($codigo_producto, $cantidad_a_comprar, $valor)
     {
 
-        $stmt = Conexion::conectar()->prepare("SELECT   count(*) as existe
-                                                    FROM productos p 
-                                                   WHERE p.codigo_producto = :codigo_producto
-                                                     AND p.stock_producto > :cantidad_a_comprar");
 
-        $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
-        $stmt->bindParam(":cantidad_a_comprar", $cantidad_a_comprar, PDO::PARAM_STR);
+        if (!empty($valor)) {
+ 
 
-        $stmt->execute();
 
-        return $stmt->fetch(PDO::FETCH_OBJ);
+            if ($valor == 2) {
+               
+                $stmt = Conexion::conectar()->prepare("SELECT count(*) as existe
+                                                        FROM productos p 
+                                                       WHERE p.codigo_producto = :codigo_producto
+                                                         AND p.stock_producto >= :cantidad_a_comprar");
+
+                $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
+                $stmt->bindParam(":cantidad_a_comprar", $cantidad_a_comprar, PDO::PARAM_INT);
+
+                $stmt->execute();
+                return $stmt->fetch(PDO::FETCH_OBJ);
+            } elseif ($valor == 3) {
+
+
+                $stmt = Conexion::conectar()->prepare("SELECT count(*) as existe
+                                                        FROM productos p 
+                                                       WHERE p.codigo_producto = :codigo_producto
+                                                         AND p.stock_producto > :cantidad_a_comprar");
+
+                $stmt->bindParam(":codigo_producto", $codigo_producto, PDO::PARAM_STR);
+                $stmt->bindParam(":cantidad_a_comprar", $cantidad_a_comprar, PDO::PARAM_INT);
+
+                $stmt->execute();
+                return $stmt->fetch(PDO::FETCH_OBJ);
+            }
+        }
+
+        return null; // Retorna null si $valor no es 0 ni 1
     }
+
 
     /*===================================================================
     LISTAR INVENTARIO ACTUAL DEL MODULO DE INVENTARIO ACTUAL CAJA

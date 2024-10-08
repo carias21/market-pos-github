@@ -33,7 +33,7 @@
 
                  <div class="card card-info">
 
-                     <div class="card-header mi_card_info">
+                     <div class="card-header color_general">
 
 
 
@@ -79,13 +79,13 @@
 
 
 
-                     </div> <!-- ./ end card-header mi_card_info -->
+                     </div> <!-- ./ end card-header color_general -->
 
 
                      <div class="card-body">
 
                          <div class="lineChart">
-                             <div id="curve_chart_Google" style="width: 100%; height: 100%;"></div>
+                             <div id="curve_chart_Google" style="width: 100%; height: 400px;"></div>
 
 
                          </div>
@@ -110,7 +110,7 @@
 
                  <div class="card card-info">
 
-                     <div class="card-header mi_card_info">
+                     <div class="card-header color_general">
 
                          <h3 class="card-title" id="title-header"> TOP VENTAS POR CATEGORÍA</h3>
 
@@ -128,7 +128,7 @@
 
                          </div> <!-- ./ end card-tools -->
 
-                     </div> <!-- ./ end card-header mi_card_info -->
+                     </div> <!-- ./ end card-header color_general -->
 
 
                      <div class="card-body">
@@ -152,7 +152,7 @@
 
                  <div class="card card-info">
 
-                     <div class="card-header mi_card_info">
+                     <div class="card-header color_general">
 
                          <h3 class="card-title" id="title-header">MAYOR VENTA DIA-SEMANA</h3>
 
@@ -170,7 +170,7 @@
 
                          </div> <!-- ./ end card-tools -->
 
-                     </div> <!-- ./ end card-header mi_card_info -->
+                     </div> <!-- ./ end card-header color_general -->
 
 
                      <div class="card-body">
@@ -198,7 +198,7 @@
 
                  <div class="card card-info">
 
-                     <div class="card-header mi_card_info">
+                     <div class="card-header color_general">
 
                          <h3 class="card-title" id="Ventas_Por_Usuario"></h3>
 
@@ -218,7 +218,7 @@
 
                          </div> <!-- ./ end card-tools -->
 
-                     </div> <!-- ./ end card-header mi_card_info -->
+                     </div> <!-- ./ end card-header color_general -->
 
 
                      <div class="card-body">
@@ -245,7 +245,7 @@
          <div class="row">
              <div class="col-lg-6">
                  <div class="card card-info ">
-                     <div class="card-header mi_card_info">
+                     <div class="card-header color_general">
                          <h3 class="card-title">GANANCIA NETA POR MES</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -258,7 +258,7 @@
                                  <i class="fas fa-expand"></i>
                              </button>
                          </div> <!-- ./ end card-tools -->
-                     </div> <!-- ./ end card-header mi_card_info -->
+                     </div> <!-- ./ end card-header color_general -->
 
                      <div class="card-body">
                          <div class="table-responsive">
@@ -287,7 +287,7 @@
         -------------------------------------------------------------------------------------------->
              <div class="col-lg-6">
                  <div class="card card-info ">
-                     <div class="card-header mi_card_info">
+                     <div class="card-header color_general">
                          <h3 class="card-title">GANANCIA BRUTA POR MES</h3>
                          <div class="card-tools">
                              <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -300,7 +300,7 @@
                                  <i class="fas fa-expand"></i>
                              </button>
                          </div> <!-- ./ end card-tools -->
-                     </div> <!-- ./ end card-header mi_card_info -->
+                     </div> <!-- ./ end card-header color_general -->
 
                      <div class="card-body">
                          <div class="table-responsive">
@@ -334,7 +334,7 @@
 
                  <div class="card card-info ">
 
-                     <div class="card-header mi_card_info ">
+                     <div class="card-header color_general ">
 
                          <h3 class="card-title" id="promedio_ventas"></h3>
 
@@ -396,7 +396,7 @@
                          </div>
 
 
-                     </div> <!-- ./ end card-header mi_card_info -->
+                     </div> <!-- ./ end card-header color_general -->
 
 
                      <div class="card-body">
@@ -851,72 +851,86 @@
      });
      google.charts.setOnLoadCallback(cargarGraficoVentasPorMes);
 
+
+
      function cargarGraficoVentasPorMes() {
          $.ajax({
              url: "ajax/reportes.ajax.php",
              method: 'POST',
              data: {
-                 'accion': 1 //parametro para obtener TOTALES DE VENTAS DE MES POR AÑO
+                 'accion': 1 // Parámetro para obtener TOTALES DE VENTAS DE MES POR AÑO
              },
              dataType: 'json',
              success: function(respuesta) {
                  var data = new google.visualization.DataTable();
                  data.addColumn('string', 'Mes');
-                 data.addColumn('number', 'Total Venta');
+    
+                 data.addColumn('number', 'Año Anterior');
+                 data.addColumn('number', 'Año Actual');
+
                  data.addColumn({
                      type: 'string',
                      role: 'annotation'
                  });
 
+                 var rows = [];
                  for (let i = 0; i < respuesta.length; i++) {
-                     var totalVenta = " Q." + respuesta[i]['Total_Venta'];
-                     data.addRow([respuesta[i]['Mes'], parseFloat(respuesta[i]['Total_Venta']), totalVenta]);
+                    var totalVentaAnterior = respuesta[i]['total_anio_anterior'] ? parseFloat(respuesta[i]['total_anio_anterior']) : 0;
+                     var totalVentaActual = respuesta[i]['total_anio_actual'] ? parseFloat(respuesta[i]['total_anio_actual']) : 0;
+                  
+
+                     var totalVentaAnteriorText = " Q." + totalVentaAnterior.toFixed(2);
+                     var totalVentaActualText = " Q." + totalVentaActual.toFixed(2); // Corrección aquí
+
+                     rows.push([respuesta[i]['Mes'],  totalVentaAnterior, totalVentaActual, totalVentaActualText]);
                  }
+                 data.addRows(rows);
+
 
                  var options = {
-
                      curveType: 'function',
                      legend: {
                          position: 'bottom'
                      },
-                     backgroundColor: 'transparent', // Establecer el color de fondo del gráfico en transparente
+                     backgroundColor: 'transparent',
                      chartArea: {
-                         backgroundColor: 'transparent' // Establecer el color de fondo del área del gráfico en transparente
+                         width: '90%',
+                         height: '65%'
                      },
                      annotations: {
                          textStyle: {
                              fontSize: 12,
                              color: 'black',
                              auraColor: 'none',
-                             bold: true // Hacer que el texto esté en negrita
+                             bold: true
                          }
                      },
-                     chartArea: {
-                         width: '90%',
-                         height: '65%'
-                     }, // Ajusta el área del gráfico
                      series: {
-                         0: { // Define opciones específicas para la serie (en este caso, la primera serie)
-                             pointSize: 10 // Tamaño de los puntos
-                         },
                          0: {
-                             pointSize: 12, // Tamaño de los puntos
-                             lineWidth: 4, // Grosor de la línea
-                             color: '#0C4A76' // Color de la línea
+                            pointSize: 10,
+                            lineWidth: 3,
+                             color: '#FFA500'
                          },
+                         1: {
+                             pointSize: 14,
+                             lineWidth: 4,
+                             color: '#0C4A76' // Color para el año anterior
+                         }
                      },
                      animation: {
-        duration: 1000, // Duración de la animación en milisegundos
-        startup: true // Habilita la animación al cargar el gráfico por primera vez
-    }
+                         duration: 1000,
+                         startup: true
+                     }
                  };
 
                  var chart = new google.visualization.LineChart(document.getElementById('curve_chart_Google'));
                  chart.draw(data, options);
+             },
+             error: function(jqXHR, textStatus, errorThrown) {
+                 console.error('Error al cargar el gráfico: ' + textStatus, errorThrown);
              }
          });
      }
-
 
 
 
@@ -1117,10 +1131,10 @@
      }
 
 
-// Volver a dibujar el gráfico cuando cambia el tamaño de la ventana
-window.addEventListener('resize', function() {
-    cargarGraficoVentasPorMes();
-});
+     // Volver a dibujar el gráfico cuando cambia el tamaño de la ventana
+     window.addEventListener('resize', function() {
+         cargarGraficoVentasPorMes();
+     });
 
 
 
@@ -1142,59 +1156,59 @@ window.addEventListener('resize', function() {
                  'anio': selAnio,
              },
              success: function(respuesta) {
-                var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Mes');
-            data.addColumn('number', 'Total Venta');
-            data.addColumn({
-                type: 'string',
-                role: 'annotation'
-            });
+                 var data = new google.visualization.DataTable();
+                 data.addColumn('string', 'Mes');
+                 data.addColumn('number', 'Total Venta');
+                 data.addColumn({
+                     type: 'string',
+                     role: 'annotation'
+                 });
 
-            for (let i = 0; i < respuesta.length; i++) {
-                var totalVenta = " Q." + respuesta[i]['Total_Venta'];
-                data.addRow([respuesta[i]['Mes'], parseFloat(respuesta[i]['Total_Venta']), totalVenta]);
-            }
+                 for (let i = 0; i < respuesta.length; i++) {
+                     var totalVenta = " Q." + respuesta[i]['Total_Venta'];
+                     data.addRow([respuesta[i]['Mes'], parseFloat(respuesta[i]['Total_Venta']), totalVenta]);
+                 }
 
-            var options = {
+                 var options = {
 
-                curveType: 'function',
-                legend: {
-                    position: 'bottom'
-                },
-                backgroundColor: 'transparent', // Establecer el color de fondo del gráfico en transparente
-                chartArea: {
-                    backgroundColor: 'transparent' // Establecer el color de fondo del área del gráfico en transparente
-                },
-                annotations: {
-                    textStyle: {
-                        fontSize: 12,
-                        color: 'black',
-                        auraColor: 'none',
-                        bold: true // Hacer que el texto esté en negrita
-                    }
-                },
-                chartArea: {
-                    width: '90%',
-                    height: '65%'
-                }, // Ajusta el área del gráfico
-                series: {
-                    0: { // Define opciones específicas para la serie (en este caso, la primera serie)
-                        pointSize: 10 // Tamaño de los puntos
-                    },
-                    0: {
-                        pointSize: 12, // Tamaño de los puntos
-                        lineWidth: 4, // Grosor de la línea
-                        color: '#0C4A76' // Color de la línea
-                    },
-                },
-                animation: {
-        duration: 1000, // Duración de la animación en milisegundos
-        startup: true // Habilita la animación al cargar el gráfico por primera vez
-    }
-            };
+                     curveType: 'function',
+                     legend: {
+                         position: 'bottom'
+                     },
+                     backgroundColor: 'transparent', // Establecer el color de fondo del gráfico en transparente
+                     chartArea: {
+                         backgroundColor: 'transparent' // Establecer el color de fondo del área del gráfico en transparente
+                     },
+                     annotations: {
+                         textStyle: {
+                             fontSize: 12,
+                             color: 'black',
+                             auraColor: 'none',
+                             bold: true // Hacer que el texto esté en negrita
+                         }
+                     },
+                     chartArea: {
+                         width: '90%',
+                         height: '65%'
+                     }, // Ajusta el área del gráfico
+                     series: {
+                         0: { // Define opciones específicas para la serie (en este caso, la primera serie)
+                             pointSize: 10 // Tamaño de los puntos
+                         },
+                         0: {
+                             pointSize: 12, // Tamaño de los puntos
+                             lineWidth: 4, // Grosor de la línea
+                             color: '#0C4A76' // Color de la línea
+                         },
+                     },
+                     animation: {
+                         duration: 1000, // Duración de la animación en milisegundos
+                         startup: true // Habilita la animación al cargar el gráfico por primera vez
+                     }
+                 };
 
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart_Google'));
-            chart.draw(data, options);
+                 var chart = new google.visualization.LineChart(document.getElementById('curve_chart_Google'));
+                 chart.draw(data, options);
              }
 
          });

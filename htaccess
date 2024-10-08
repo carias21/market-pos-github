@@ -1,12 +1,4 @@
-Options All -Indexes
-Options -MultiViews
-
 RewriteEngine On
-
-
-
-
-
 # Reescribir URLs para ocultar .php
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f

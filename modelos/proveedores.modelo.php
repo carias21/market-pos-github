@@ -95,7 +95,7 @@ class ProveedoresModelo
         $stmt->bindParam(":" . $nameId, $id_Proveedores, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            return "ok";;
+            return "ok";
         } else {
             return Conexion::conectar()->errorInfo();
         }

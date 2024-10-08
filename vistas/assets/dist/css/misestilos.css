@@ -97,9 +97,33 @@ html.dark div.dtfc-right-top-blocker {
 }
 
 
+.mi_color {
+  background-color: #055ea7 !important; /* Cambia el color de fondo del encabezado de la tarjeta a un tono oscuro */
+  color: #ffffff !important; /* Cambia el color del texto del encabezado de la tarjeta a blanco */
+}
+
+
+.color_card_dash {
+  background-color: #8d989938 !important; /* Cambia el color de fondo del encabezado de la tarjeta a un tono oscuro */
+  color: #000000 !important; /* Cambia el color del texto del encabezado de la tarjeta a blanco */
+}
+
+.dark-mode .color_card_dash {
+  background-color: #003547 !important;  /* Cambia el color de fondo a un tono oscuro en modo oscuro */
+  color: #ffffff !important;  /* Cambia el color del texto a blanco en modo oscuro */
+}
 
 
 
+.color_general {
+  background-color: #147e8f !important;
+  color:  #ffffff !important;
+}
+
+.color_aside{
+  background-color: #384048 !important;
+  color:  #ffffff !important;
+}
 
 
 /* BOTON DE HABILITAR Y DESHABILITAR O ENCENDER Y APAGAR */
@@ -160,3 +184,14 @@ input:checked + .slider:before {
   width: 150px; /* Ajusta el ancho */
   height: 150px; /* Ajusta la altura */
 }
+
+.chart-container {
+  width: 100%;
+  overflow-x: auto; /* Habilita el scroll horizontal */
+}
+
+#barChart {
+  min-width: 400px; /* Ancho mínimo del gráfico */
+  width: 100%;
+}
+

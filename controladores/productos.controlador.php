@@ -87,9 +87,9 @@ $precio_venta_producto,$utilidad,$stock_producto,$minimo_stock_producto,$ventas_
     }
 
     
-    static public function ctrVerificaStockProducto($codigo_producto,$cantidad_a_comprar){
+    static public function ctrVerificaStockProducto($codigo_producto,$cantidad_a_comprar, $valor){
 
-        $respuesta = ProductosModelo::mdlVerificaStockProducto($codigo_producto, $cantidad_a_comprar);
+        $respuesta = ProductosModelo::mdlVerificaStockProducto($codigo_producto, $cantidad_a_comprar, $valor);
     
         return $respuesta;
     }

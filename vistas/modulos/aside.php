@@ -6,7 +6,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($session_id_usuario->id
 
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-info elevation-4 position-fixed sidebar-scroll">
+<aside class="main-sidebar sidebar-dark-info elevation-4 position-fixed sidebar-scroll color_aside">
 
 
     <!-- Brand Logo -->
@@ -15,12 +15,13 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($session_id_usuario->id
         <span class="brand-text font-weight-light">SISTEMA VENTAS</span>
     </a>
     <!-- COLOCAR EL NOMBRE Y APELLIDO DEL USUARIO LOGEDO, O QUE TIENE LA SESION INICIADA. -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center color_aside">
         <div class="image">
-            <img src="vistas/assets/dist/img/user1.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="User Image">
+            <img src="vistas/assets/dist/img/user.png" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}" alt="User Image">
         </div>
-        <div class="info">
-            <h6 class="text-warning"><?php echo $session_id_usuario->nombre_usuario . ' ' . $session_id_usuario->apellido_usuario ?></h6>
+        <div class="info ml-2">
+            <h6 class=" color_aside m-0"><?php echo $session_id_usuario->nombre_usuario . ' ' . $session_id_usuario->apellido_usuario ?></h6>
+            <small class="bg-info">Activo</small>
         </div>
     </div>
 
@@ -76,7 +77,7 @@ $menuUsuario = UsuarioControlador::ctrObtenerMenuUsuario($session_id_usuario->id
                     ----------------------------------------------------------------------------------------------------------------------->
 
                     <li class="nav-item">
-                        <a href="http://localhost/market-pos-github?cerrar_sesion=1" class="nav-link">
+                        <a href="https://localhost/market-pos-github?cerrar_sesion=1" class="nav-link">
                             <i class="nav-icon fas fa-sign-out-alt"></i>
                             <p>Cerrar Sesión</p>
                         </a>

@@ -486,3 +486,87 @@ insert into recursos(id, dato)VALUES('ULTIMO_D_M', 0)
 --cambios 04-07-2024
 
 ALTER TABLE clientes DROP INDEX uq_nit_cliente;
+
+
+
+
+
+
+--cambios 06-08-2024
+
+-- Modificar la columna para quitar el valor por defecto y la actualización automática
+
+
+ALTER TABLE productos
+MODIFY fecha_creacion_producto DATE NULL;
+
+
+
+ALTER TABLE productos
+MODIFY fecha_actualizacion_producto DATE NULL;
+
+
+prc_ganancia_d_s_m	
+
+SELECT 
+    ROUND(SUM(CASE 
+                 WHEN DATE(fecha_venta - INTERVAL 6 HOUR) = DATE(NOW() - INTERVAL 6 HOUR)
+            THEN ((precio_venta - precio_compra) * cantidad) - descuento_venta 
+                 ELSE 0 
+              END), 2) AS ganancia_dia,
+
+    ROUND(SUM(CASE 
+                 WHEN YEARWEEK(fecha_venta - INTERVAL 6 HOUR, 1) = YEARWEEK(NOW() - INTERVAL 6 HOUR, 1)
+            THEN ((precio_venta - precio_compra) * cantidad) - descuento_venta 
+                 ELSE 0 
+              END), 2) AS ganancia_semana,
+
+    ROUND(SUM(CASE 
+                 WHEN MONTH(fecha_venta - INTERVAL 6 HOUR) = MONTH(NOW() - INTERVAL 6 HOUR)
+                 AND YEAR(fecha_venta - INTERVAL 6 HOUR) = YEAR(NOW() - INTERVAL 6 HOUR)
+            THEN ((precio_venta - precio_compra) * cantidad) - descuento_venta 
+                 ELSE 0 
+              END), 2) AS ganancia_mes
+FROM 
+    ventas
+
+
+prc_ObtenerVentasMesesPorAño
+
+    SELECT 
+    MONTHNAME(v.fecha_venta) AS Mes,
+    SUM(CASE WHEN YEAR(v.fecha_venta) = YEAR(NOW()) THEN ROUND(v.total_venta, 2) ELSE 0 END) AS total_anio_actual,
+    SUM(CASE WHEN YEAR(v.fecha_venta) = YEAR(NOW()) - 1 AND MONTH(v.fecha_venta) <= MONTH(NOW()) THEN ROUND(v.total_venta, 2) ELSE 0 END) AS total_anio_anterior
+FROM ventas v
+WHERE YEAR(v.fecha_venta) IN (YEAR(NOW()), YEAR(NOW()) - 1)
+GROUP BY MONTH(v.fecha_venta)
+ORDER BY MONTH(v.fecha_venta) ASC
+
+
+comparativa_ventas_productos
+
+BEGIN
+    DECLARE sql_query TEXT;
+
+    SET sql_query = CONCAT(
+        'SELECT ',
+        'p.codigo_producto, ',
+        'p.descripcion_producto, ',
+        'COALESCE(SUM(CASE WHEN MONTH(v.fecha_venta) = MONTH(CURRENT_DATE()) AND YEAR(v.fecha_venta) = YEAR(CURRENT_DATE()) THEN v.cantidad ELSE 0 END), 0) AS "', DATE_FORMAT(CURRENT_DATE(), '%M %Y'), '", ',
+        'COALESCE(SUM(CASE WHEN MONTH(v.fecha_venta) = MONTH(CURRENT_DATE() - INTERVAL 1 MONTH) AND YEAR(v.fecha_venta) = YEAR(CURRENT_DATE() - INTERVAL 1 MONTH) THEN v.cantidad ELSE 0 END), 0) AS "', DATE_FORMAT(CURRENT_DATE() - INTERVAL 1 MONTH, '%M %Y'), '", ',
+        'COALESCE(SUM(CASE WHEN MONTH(v.fecha_venta) = MONTH(CURRENT_DATE() - INTERVAL 2 MONTH) AND YEAR(v.fecha_venta) = YEAR(CURRENT_DATE() - INTERVAL 2 MONTH) THEN v.cantidad ELSE 0 END), 0) AS "', DATE_FORMAT(CURRENT_DATE() - INTERVAL 2 MONTH, '%M %Y'), '", ',
+        'COALESCE(SUM(CASE WHEN MONTH(v.fecha_venta) = MONTH(CURRENT_DATE() - INTERVAL 3 MONTH) AND YEAR(v.fecha_venta) = YEAR(CURRENT_DATE() - INTERVAL 3 MONTH) THEN v.cantidad ELSE 0 END), 0) AS "', DATE_FORMAT(CURRENT_DATE() - INTERVAL 3 MONTH, '%M %Y'), '", ',
+        'COALESCE(SUM(CASE WHEN MONTH(v.fecha_venta) = MONTH(CURRENT_DATE() - INTERVAL 4 MONTH) AND YEAR(v.fecha_venta) = YEAR(CURRENT_DATE() - INTERVAL 4 MONTH) THEN v.cantidad ELSE 0 END), 0) AS "', DATE_FORMAT(CURRENT_DATE() - INTERVAL 4 MONTH, '%M %Y'), '", ',
+        'COALESCE(SUM(CASE WHEN MONTH(v.fecha_venta) = MONTH(CURRENT_DATE() - INTERVAL 5 MONTH) AND YEAR(v.fecha_venta) = YEAR(CURRENT_DATE() - INTERVAL 5 MONTH) THEN v.cantidad ELSE 0 END), 0) AS "', DATE_FORMAT(CURRENT_DATE() - INTERVAL 5 MONTH, '%M %Y'), '", ',
+        'COALESCE(SUM(CASE WHEN MONTH(v.fecha_venta) = MONTH(CURRENT_DATE() - INTERVAL 6 MONTH) AND YEAR(v.fecha_venta) = YEAR(CURRENT_DATE() - INTERVAL 6 MONTH) THEN v.cantidad ELSE 0 END), 0) AS "', DATE_FORMAT(CURRENT_DATE() - INTERVAL 6 MONTH, '%M %Y'), '" ',
+        'FROM ventas v ',
+        'INNER JOIN productos p on p.id = v.fk_id_producto ',
+        'GROUP BY p.codigo_producto, p.descripcion_producto ',
+       'ORDER BY `', DATE_FORMAT(CURRENT_DATE(), '%M %Y'), '` DESC ',
+        'LIMIT 150;'
+    );
+
+    PREPARE stmt FROM sql_query;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END

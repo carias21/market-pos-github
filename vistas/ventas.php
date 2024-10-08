@@ -88,11 +88,10 @@
             <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO A LA VENTA -->
             <div class="col-md-12">
                 <table id="lstProductosVenta" class="display nowrap table-striped w-100 shadow">
-                    <thead class="mi_card_info text-left fs-6">
+                    <thead class="color_general text-left fs-6">
                         <tr>
                             <th>Item</th>
                             <th>Id</th>
-
                             <th>Codigo</th>
                             <th>Imagen</th>
                             <th>Id Categoria</th>
@@ -225,7 +224,7 @@ VENTANA MODAL PARA AGREGAR NUEVO CLIENTE
         <div class="modal-content ">
 
             <!-- cabecera del modal -->
-            <div class="modal-header bg-info py-3">
+            <div class="modal-header color_general py-3">
                 <h4 class="modal-title text-white">AGREGAR CLIENTE</h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -318,6 +317,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
     echo 'mensajeToast("info", "HOLA DE NUEVO! ' . $nombre_usuario . ' ' . $apellido_usuario . ' 👋 ");';
     echo '</script>';
 } else {
+
     $nombre_usuario = "";
     $apellido_usuario = "";
 }
@@ -345,7 +345,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 
         $("#iptCodigoVenta").focus();
 
-        ajustarHeadersDataTables($('#lstProductosVenta'));
+
 
         var iptBuscarNitCliente = $("#mdlAgregarCliente").find("#iptBuscarNitCliente");
 
@@ -426,7 +426,14 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                 {
                     targets: 7,
                     "data": "cantidad",
+                    orderable: false,
+                    render: function(data, type, row) {
+                        // Aquí puedes acceder a los datos de la fila y construir tu HTML
+                        return '<input type="number" style="width:80px;" codigo_producto="' + row.codigo_producto + '" class="form-control text-center iptCantidad p-0 m-0" value="' + data + '" step="1" min="0">';
+                    }
                 },
+
+
                 {
                     targets: 8,
                     "data": "precio_venta_producto",
@@ -435,7 +442,11 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                 {
                     targets: 9,
                     "data": "descuento",
-                    orderable: false
+                    orderable: false,
+                    render: function(data, type, row) {
+                        // Aquí puedes acceder a los datos de la fila y construir tu HTML
+                        return '<input type="number" style="width:80px;" codigo_producto="' + row.codigo_producto + '" class="form-control text-center iptDescuento p-0 m-0" value="' + data + '" step="1" min="0">';
+                    }
                 },
                 {
                     targets: 10,
@@ -462,9 +473,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
             "order": [
                 [0, 'desc']
             ],
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
-            }
+
         });
 
 
@@ -499,8 +508,8 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                             ocultarLoading();
 
                             if (respuesta.length === 0) {
-                       
-    toastr.warning('- <i class="fa fa-search"></i> SIN RESULTADOS -');
+
+                                toastr.warning('- <i class="fa fa-search"></i> SIN RESULTADOS -');
 
 
                             }
@@ -553,7 +562,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                         }
                     });
 
-                }, 300);
+                }, 700);
 
             } else {
                 ocultarLoading();
@@ -647,89 +656,80 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
         EVENTO PARA AUMENTAR LA CANTIDAD DE UN PRODUCTO DEL LISTADO
         ====================================================================================== */
         $('#lstProductosVenta tbody').on('click', '.btnAumentarCantidad', function() {
+            let $row = $(this).closest('tr');
+            let data = table.row($row).data();
+            let idx = table.row($row).index();
+            let codigo_producto = data['codigo_producto'];
+            let cantidad = parseInt(data['cantidad'], 10);
 
-            //recuperamos toda la data de la fila
-            var data = table.row($(this).parents('tr')).data(); //Recuperar los datos de la fila
-
-            var idx = table.row($(this).parents('tr')).index(); // Recuperar el Indice de la Fila
-
-            //capturamos el codigo de producto y la cantidad que esta en el listado ACTUAL!!
-            var codigo_producto = data['codigo_producto'];
-            var cantidad = data['cantidad'];
+            const $descuento = $row.find('.iptDescuento');
+            // Reiniciar descuento
+            $descuento.val(0);
+            data['descuento'] = 0;
 
             $.ajax({
-                async: false,
                 url: "ajax/productos.ajax.php",
                 method: "POST",
                 data: {
                     'accion': 8,
                     'codigo_producto': codigo_producto,
-                    'cantidad_a_comprar': cantidad
+                    'cantidad_a_comprar': cantidad,
+                    'valor': 3
                 },
-
                 dataType: 'json',
                 success: function(respuesta) {
+                    let $inputCantidad = $row.find('input[codigo_producto="' + codigo_producto + '"]');
 
-                    if (parseInt(respuesta['existe']) == 0) {
-
+                    if (parseInt(respuesta['existe'], 10) === 0) {
                         mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA NO TIENE EXISTENCIA');
-
                         $("#iptCodigoVenta").val("");
-                        // $("#iptCodigoVenta").focus();
-
                     } else {
-
-                        //si hay stock suma 1 la cantidad a vender
-                        cantidad = parseInt(data['cantidad']) + 1;
-
-                        //columna 5 = cantidad
-                        table.cell(idx, 7).data(cantidad + ' Und(s)').draw();
-
-                        //se procede a cambiar el total de la Venta 
-                        NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
-                        NuevoPrecio = "Q. " + NuevoPrecio;
-                        //columna 9 = Total
-                        table.cell(idx, 10).data(NuevoPrecio).draw();
-
-                        //al momento de realizar la acción de disminuir el stock y ya se habia agregado el descuento del producto. 
-                        table.cell(idx, 9).data("");
-
-                        recalcularTotales();
+                        let nuevaCantidad = cantidad + 1;
+                        $inputCantidad.val(nuevaCantidad);
+                        data['cantidad'] = nuevaCantidad;
                     }
+
+                    let nuevoPrecio = (parseFloat(data['cantidad']) * parseFloat(data['precio_venta_producto'].replace("Q. ", ""))).toFixed(2);
+                    table.cell(idx, 10).data("Q. " + nuevoPrecio);
+                    table.row(idx).data(data).draw(false);
+
+                    recalcularTotales();
                 }
             });
-
         });
 
         /* ======================================================================================
         EVENTO PARA DISMINUIR LA CANTIDAD DE UN PRODUCTO DEL LISTADO
         ======================================================================================*/
         $('#lstProductosVenta tbody').on('click', '.btnDisminuirCantidad', function() {
+            let $row = $(this).closest('tr');
+            let data = table.row($row).data();
+            let idx = table.row($row).index();
+            let codigo_producto = data['codigo_producto'];
 
-            var data = table.row($(this).parents('tr')).data();
+            let $inputCantidad = $row.find('input[codigo_producto="' + codigo_producto + '"]');
+            let cantidad = parseInt($inputCantidad.val(), 10);
 
-            //si la cantidad es mayor a 2 se puede disminuir 
-            if (data['cantidad'].replace('Und(s)', '') >= 2) {
+            const $descuento = $row.find('.iptDescuento');
+            // Reiniciar descuento
+            $descuento.val(0);
+            data['descuento'] = 0;
 
-                cantidad = parseInt(data['cantidad'].replace('Und(s)', '')) - 1;
-
-                var idx = table.row($(this).parents('tr')).index();
-
-                table.cell(idx, 7).data(cantidad + ' Und(s)').draw();
-
-                NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
-                NuevoPrecio = "Q. " + NuevoPrecio;
-
-                table.cell(idx, 10).data(NuevoPrecio).draw();
-
-                //al momento de realizar la acción de disminuir el stock y ya se habia agregado el descuento del producto. 
-                table.cell(idx, 9).data("");
-
+            if (cantidad >= 2) {
+                let nuevaCantidad = cantidad - 1;
+                $inputCantidad.val(nuevaCantidad);
+                data['cantidad'] = nuevaCantidad;
+            } else {
+                mensajeToast('warning', 'YA NO PUEDES DISMINUIR EL STOCK');
             }
 
+            let NuevoPrecio = (parseFloat(data['cantidad']) * parseFloat(data['precio_venta_producto'].replace(/Q\.\s*/, ""))).toFixed(2);
+            table.cell(idx, 10).data("Q. " + NuevoPrecio);
+            table.row(idx).data(data).draw(false);
 
             recalcularTotales();
         });
+
 
         /* ======================================================================================
         EVENTO PARA MODIFICAR EL PRECIO DE VENTA DEL PRODUCTO
@@ -785,36 +785,6 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 
         $("#btnIniciarVenta").on('click', function() {
             realizarVenta();
-        });
-
-        /* ======================================================================================
-        EVENTO PARA COLOCAR DESCUENTO A UN PRODUCTO
-        =========================================================================================*/
-        $("#lstProductosVenta tbody").on('click', '.btnIngresarDescuento', function() {
-            var data = table.row($(this).parents('tr')).data();
-
-            Swal.fire({
-                tile: "",
-                text: "Descuento",
-                input: 'text',
-                width: 300,
-                confirmButtonText: 'Aceptar',
-                showCancelButton: true,
-            }).then((result) => {
-                if (result.value) {
-                    descuento = result.value;
-
-                    var idx = table.row($(this).parents('tr')).index();
-                    table.cell(idx, 9).data('Q. ' + descuento).draw();
-
-                    NuevoPrecio = ((parseFloat(data['cantidad']) * data['precio_venta_producto'].replace("Q.", "")).toFixed(2) - data['descuento'].replace("Q.", ""));
-                    NuevoPrecio = "Q. " + NuevoPrecio.toFixed(2);
-
-                    table.cell(idx, 10).data(NuevoPrecio).draw();
-                    recalcularTotales();
-
-                }
-            });
         });
 
 
@@ -1048,7 +1018,9 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                     data: {
                         'accion': 8,
                         'codigo_producto': data['codigo_producto'],
-                        'cantidad_a_comprar': data['cantidad']
+                        'cantidad_a_comprar': data['cantidad'],
+                        'valor': 2
+
                     },
                     dataType: 'json',
                     success: function(respuesta) {
@@ -1065,17 +1037,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                             recalcularTotales();
 
                         } else {
-
-
-                            table.cell(index, 7).data(parseFloat(data['cantidad']) + 1 + ' Und(s)').draw();
-
-
-                            NuevoPrecio = (parseInt(data['cantidad']) * data['precio_venta_producto'].replace("Q. ", "")).toFixed(2);
-                            NuevoPrecio = "Q. " + NuevoPrecio;
-                            table.cell(index, 10).data(NuevoPrecio).draw();
-
-                            table.cell(index, 9).data("");
-
+                            mensajeToast('info', 'EL PRODUCTO "' + data['descripcion_producto'] + '" YA ESTA EN EL LISTADO');
                             recalcularTotales();
                         }
                     }
@@ -1152,7 +1114,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                             'id_categoria': respuesta['id_categoria'],
                             'nombre_categoria': respuesta['nombre_categoria'],
                             'descripcion_producto': respuesta['descripcion_producto'],
-                            'cantidad': respuesta['cantidad'] + ' Und(s)',
+                            'cantidad': respuesta['cantidad'],
                             'precio_venta_producto': respuesta['precio_venta_producto'],
                             'descuento': respuesta['descuento'],
                             'total': respuesta['total'],
@@ -1163,9 +1125,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                 "<span class='btnDisminuirCantidad text-warning px-1' style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Disminuir Stock'> " +
                                 "<i class='fas fa-cart-arrow-down fs-5'></i> " +
                                 "</span> " +
-                                "<span class='btnIngresarDescuento text-warning px-1' style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Ingresar Descuento'> " +
-                                "<i class='fas fa-minus fs-5'></i> " +
-                                "</span> " +
+
                                 "<span class='btnEliminarproducto text-danger px-1'style='cursor:pointer;' data-bs-toggle='tooltip' data-bs-placement='top' title='Eliminar producto'> " +
                                 "<i class='fas fa-trash fs-5'> </i> " +
                                 "</span>" +
@@ -1199,6 +1159,117 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
 
             }
         });
+
+
+
+
+
+        /* ======================================================================================
+        EVENTO PARA MODIFICAR LA CANTIDAD DE PRODUCTOS A COMPRAR
+        ======================================================================================*/
+        $('#lstProductosVenta tbody').on('change', '.iptCantidad', function() {
+            const $input = $(this);
+            const valor = parseFloat($input.val());
+            const $row = $input.closest('tr');
+            const data = table.row($row).data();
+
+            const precio_actual = parseFloat(data['precio_venta_producto'].replace("Q. ", ""));
+            const $descuento = $row.find('.iptDescuento');
+
+            // Reiniciar descuento
+            $descuento.val(0);
+            data['descuento'] = 0;
+
+            // Validar si el valor es numérico, mayor a 0 y entero positivo
+            if (isNaN(valor) || valor <= 0) {
+                mensajeToast('error', 'INGRESE UN VALOR NUMERICO Y MAYOR A 0');
+                $input.val(1).focus();
+                data['cantidad'] = 1;
+            } else if (valor % 1 !== 0) {
+                mensajeToast('error', 'NO DECIMALES ...');
+                $input.val(1);
+                data['cantidad'] = 1;
+            } else {
+                data['cantidad'] = valor;
+            }
+
+            // Actualizar el precio en la tabla
+            const nuevo_precio = (data['cantidad'] * precio_actual).toFixed(2);
+            table.cell($row, 10).data("Q. " + nuevo_precio).draw();
+
+            // Recalcular totales
+            recalcularTotales();
+
+            // Verificar existencia del producto
+            const codigo_producto = data['codigo_producto'];
+
+            $.ajax({
+                url: "ajax/productos.ajax.php",
+                method: "POST",
+                data: {
+                    accion: 8,
+                    codigo_producto: codigo_producto,
+                    cantidad_a_comprar: data['cantidad'],
+                    valor: 2
+                },
+                dataType: 'json',
+                success: function(respuesta) {
+                    if (parseInt(respuesta['existe']) === 0) {
+                        mensajeToast('warning', 'EL PRODUCTO ' + data['descripcion_producto'] + ' YA NO TIENE EXISTENCIA');
+                        $input.val(1).focus();
+                        data['cantidad'] = 1;
+                    }
+
+                    const nuevo_precio_actualizado = (data['cantidad'] * precio_actual).toFixed(2);
+                    table.cell($row, 10).data("Q. " + nuevo_precio_actualizado).draw();
+                    recalcularTotales(); // Recalcular totales
+                    table.row($row).data(data).invalidate().draw(); // Actualiza y redibuja la fila
+                }
+            });
+        });
+
+
+
+        /* ======================================================================================
+        EVENTO PARA MODIFICAR  EL INPUT DE DESCUENTO
+        ======================================================================================*/
+        $('#lstProductosVenta tbody').on('change', '.iptDescuento', function() {
+            const $input = $(this);
+            const $row = $input.closest('tr');
+            const data = table.row($row).data();
+
+            let cantidad_descuento = parseFloat($input.val());
+            const precio_actual = parseFloat(data['precio_venta_producto'].replace("Q. ", ""));
+            const cantidad_actual = data['cantidad'];
+            const total_venta = precio_actual * cantidad_actual;
+            const precio_columna_index = 10;
+
+            // Validar si el valor es numérico, mayor a 0, y no supera el total de la venta
+            if (isNaN(cantidad_descuento) || cantidad_descuento < 0 || cantidad_descuento > total_venta) {
+                cantidad_descuento = 0;
+                $input.val(0).focus();
+                mensajeToast('error', 'Dato no válido');
+            }
+
+            // Actualizar el descuento y el precio
+            data['descuento'] = cantidad_descuento;
+            let nuevo_precio = (cantidad_actual * precio_actual - cantidad_descuento).toFixed(2);
+
+            // Verificar si el nuevo precio es negativo
+            if (nuevo_precio < 0) {
+                nuevo_precio = (cantidad_actual * precio_actual).toFixed(2);
+                $input.val(0).focus();
+                data['descuento'] = 0;
+                mensajeToast('info', 'No se puede descontar más');
+            }
+
+            // Actualizar el precio en la tabla
+            table.cell($row, precio_columna_index).data("Q. " + nuevo_precio).draw();
+
+            // Recalcular los totales
+            recalcularTotales();
+        });
+
 
     } /* FIN CargarProductos */
 
@@ -1378,33 +1449,24 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                     mensajeToast('warning', 'EL EFECTIVO ES MENOR AL COSTO TOTAL DE LA VENTA');
                     return false;
                 } else {
-
-                    // Obtener los formularios a los que queremos agregar estilos de validación
                     var forms = document.getElementsByClassName('needs-validation');
-                    // Loop over them and prevent submission
+
                     var validation = Array.prototype.filter.call(forms, function(form) {
 
                         if (form.checkValidity() === true) {
                             btnRealizarVenta.disabled = true;
                             mostrarLoading();
 
-                            //ENVIAMOS LOS VALORES A LA BASE DE DATOS
                             var formData = new FormData();
                             var arr = [];
-                            //agregamos datos para almacenar el tipo de pago
+
+                            var datos = new FormData();
                             var datos = new FormData();
 
-                            //capturamos los valores para llevar a la base de datos
-
-                            // $tipo_pago = $("#selTipoPago").val();
-                            var datos = new FormData();
-
-                            //recorremos la tabla
                             table.rows().eq(0).each(function(index) {
 
                                 var row = table.row(index);
                                 var data = row.data();
-                                //agregame a mi array 
 
                                 var tipo_pago = $("#selTipoPago").val();
                                 var id_cliente = $("#iptIdNitCliente").val();
@@ -1413,13 +1475,12 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                     id_cliente = 1;
                                 }
 
-
                                 arr[index] = data['codigo_producto'] + "," +
                                     data['id_categoria'] + "," +
                                     data['id'] + "," +
                                     parseFloat(data['cantidad']) + "," +
                                     data['precio_venta_producto'].replace("Q. ", "") + "," +
-                                    data['descuento'].replace("Q. ", "") + "," +
+                                    parseFloat(data['descuento']) + "," +
                                     data['total'].replace("Q. ", "") + "," +
                                     data['precio_compra_producto'] + "," +
                                     tipo_pago + "," +
@@ -1462,10 +1523,10 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                         }).then((result) => {
                                             if (result.isConfirmed) {
 
-                                                window.open('http://pvtecnet.com/tecnet/vistas/generar_pdf.php?fecha_venta=' + respuesta);
+                                                window.open('https://pvtecnet.com/tecnet/vistas/generar_pdf.php?fecha_venta=' + respuesta);
                                             } else if (result.isDenied) {
                                                 // Acción para generar el Ticket
-                                                window.open('http://pvtecnet.com/tecnet/vistas/generar_ticket.php?fecha_venta=' + respuesta);
+                                                window.open('https://pvtecnet.com/tecnet/vistas/generar_ticket.php?fecha_venta=' + respuesta);
                                             }
                                         });
 
@@ -1559,7 +1620,7 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                 data['id'] + "," +
                                 parseFloat(data['cantidad']) + "," +
                                 data['precio_venta_producto'].replace("Q. ", "") + "," +
-                                data['descuento'].replace("Q. ", "") + "," +
+                                parseFloat(data['descuento']) + "," +
                                 data['total'].replace("Q. ", "") + "," +
                                 data['precio_compra_producto'] + "," +
                                 tipo_pago + "," +
@@ -1602,10 +1663,10 @@ if (isset($session_id_usuario->nombre_usuario) && isset($session_id_usuario->ape
                                     }).then((result) => {
                                         if (result.isConfirmed) {
 
-                                            window.open('http://pvtecnet.com/tecnet/vistas/generar_pdf.php?fecha_venta=' + respuesta);
+                                            window.open('https://pvtecnet.com/tecnet/vistas/generar_pdf.php?fecha_venta=' + respuesta);
                                         } else if (result.isDenied) {
                                             // Acción para generar el Ticket
-                                            window.open('http://pvtecnet.com/tecnet/vistas/generar_ticket.php?fecha_venta=' + respuesta);
+                                            window.open('https://pvtecnet.com/tecnet/vistas/generar_ticket.php?fecha_venta=' + respuesta);
                                         }
                                     });
 

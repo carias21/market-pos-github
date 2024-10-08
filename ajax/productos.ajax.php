@@ -190,13 +190,12 @@ class ajaxProductos
         echo json_encode($producto);
     }
 
-    public function ajaxVerificaStockProducto()
-    {
+    public function ajaxVerificaStockProducto($codigo_producto, $cantidad_a_comprar, $valor)
+{
+    $respuesta = ProductosControlador::ctrVerificaStockProducto($codigo_producto, $cantidad_a_comprar, $valor);
 
-        $respuesta = ProductosControlador::ctrVerificaStockProducto($this->codigo_producto, $this->cantidad_a_comprar);
-
-        echo json_encode($respuesta);
-    }
+    echo json_encode($respuesta);
+}
 
     public function ajaxInventarioActual()
     {
@@ -249,6 +248,10 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
     //obtenemos los valores para 
     $img = $_FILES['imagen'];
 
+    date_default_timezone_set('America/Guatemala');
+    $fecha_actualizacion = date("Y-m-d H:i:s");
+
+
     $data = array(
         "id_categoria_producto" => $_POST["id_categoria_producto"],
         "descripcion_producto" => $_POST["descripcion_producto"],
@@ -257,6 +260,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
         "utilidad" => $_POST["utilidad"],
         "stock_producto" => $_POST["stock_producto"],
         "minimo_stock_producto" => $_POST["minimo_stock_producto"],
+        "fecha_actualizacion_producto" => $fecha_actualizacion,
         "foto" =>  $img['name'],
         "fk_id_proveedor" => $_POST["id_proveedor"],
     );
@@ -278,10 +282,7 @@ if (isset($_POST['accion']) && $_POST['accion'] == 1) { //parametro para listar 
 
     $verificaStock = new AjaxProductos();
 
-    $verificaStock->codigo_producto = $_POST["codigo_producto"];
-    $verificaStock->cantidad_a_comprar = $_POST["cantidad_a_comprar"];
-
-    $verificaStock->ajaxVerificaStockProducto();
+    $verificaStock->ajaxVerificaStockProducto($_POST["codigo_producto"], $_POST["cantidad_a_comprar"], $_POST["valor"] );
 } else if (isset($_POST['accion']) && $_POST['accion'] == 10) { //LISTAR PRODUCTOS DE INVENTARIO ACTUAL DE CAJA
 
     $inventario_actual = new ajaxProductos();

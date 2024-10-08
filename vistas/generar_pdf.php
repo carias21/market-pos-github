@@ -182,7 +182,7 @@ if (isset($_GET['fecha_venta'])) {
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->Cell(3 * $columnWidth + $descripcionWidth, 10, 'TOTAL VENTA', 1);
         $pdf->Cell($columnWidth, 10, "Q. " . number_format($total, 2, ".", ","), 1, 1, 'R');
-        $pdf->Ln(5);
+
 
         // Mensaje de agradecimiento
         $pdf->SetFont('Arial', 'B', 12);

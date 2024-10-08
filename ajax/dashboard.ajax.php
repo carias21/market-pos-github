@@ -63,6 +63,17 @@ class AjaxDashboard{
         echo json_encode($topProductoPeriodo);
     
     }
+
+    
+    public function ajaxObtenerGanancia_d_s_m(){
+    
+        $obtenerGanancia_d_s_m = DashboardControlador::ctrObtenerGanancia_d_s_m();
+    
+        echo json_encode($obtenerGanancia_d_s_m);
+    
+    }
+
+    
     public function getBarraDeProgreso(){
     
         $BarraDeProgreso = DashboardControlador::ctrgetBarraDeProgreso();
@@ -104,6 +115,12 @@ class AjaxDashboard{
         echo json_encode($siNoEsUltimoDiaMes);
     
     }
+
+    
+    public function ajaxObtenerComparativaVentas(){
+        $obtenerComparativaVentas = DashboardControlador::ctrObtenerComparativaVentas();
+        echo json_encode($obtenerComparativaVentas);
+    }
 }
 
 
@@ -140,6 +157,10 @@ if(isset($_POST['accion']) && $_POST['accion'] == 1){ //Ejecutar function ventas
     $topProductoPeriodo = new AjaxDashboard();
     $topProductoPeriodo->getTopProductoPeriodo();
 
+}else if(isset($_POST['accion']) && $_POST['accion'] == 14){ //Obtener ganancia bruta d s m
+    $obtenerGanancia_d_s_m = new AjaxDashboard();
+    $obtenerGanancia_d_s_m->ajaxObtenerGanancia_d_s_m();
+
 }else if(isset($_POST['accion']) && $_POST['accion'] == 8){ //Obtener top producto por periodo
     $BarraDeProgreso = new AjaxDashboard();
     $BarraDeProgreso->getBarraDeProgreso();
@@ -160,6 +181,10 @@ if(isset($_POST['accion']) && $_POST['accion'] == 1){ //Ejecutar function ventas
     $siNoEsUltimoDiaMes = new AjaxDashboard();
     $siNoEsUltimoDiaMes->ajaxSiNoEsUltimoDiaMes($_POST["dato"]);
 
+}else if (isset($_POST['accion']) && $_POST['accion'] == 13) { //LISTADO COMPARATIVA VENTAS PRODUCTOS
+
+    $obtenerComparativaVentas = new AjaxDashboard();
+    $obtenerComparativaVentas->ajaxObtenerComparativaVentas();
 }else{
     //tarjetas informativas
     $datos = new AjaxDashboard();

@@ -133,6 +133,17 @@ class DashboardModelo
     }
 
 
+    static public function mdlObtenerGanancia_d_s_m()
+    {
+
+        $stmt = Conexion::conectar()->prepare('call prc_ganancia_d_s_m');
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+
 
     static public function mdlRecursosMeta()
     {
@@ -183,7 +194,7 @@ class DashboardModelo
                 $resultado = "error";
             }
         } catch (Exception $e) {
- 
+
             if ($conn->inTransaction()) {
                 $conn->rollBack();
             }
@@ -215,7 +226,7 @@ class DashboardModelo
                 if ($resultadoDia['dato'] == 1) {
                     include_once '../vistas/generar_reportes.php';
                 } else {
-    
+
                     return "No se encontró el dato.";
                 }
             } else {
@@ -227,6 +238,21 @@ class DashboardModelo
         } finally {
             // Cerrar la conexión y liberar recursos
             $stmtVerificarDia = null;
+        }
+    }
+
+
+
+
+    static public function mdlObtenerComparativaVentas()
+    {
+        try {
+            $stmt = Conexion::conectar()->prepare('call comparativa_ventas_productos');
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+            return [];
         }
     }
 }

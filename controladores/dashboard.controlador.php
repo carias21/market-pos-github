@@ -64,6 +64,15 @@ class DashboardControlador{
     
     }
 
+    static public function ctrObtenerGanancia_d_s_m(){
+    
+        $obtenerGanancia_d_s_m = DashboardModelo::mdlObtenerGanancia_d_s_m();
+    
+        return $obtenerGanancia_d_s_m;
+    
+    }
+    
+
     static public function ctrgetBarraDeProgreso(){
     
         $BarraDeProgreso = DashboardModelo::mdlGetBarraDeProgreso();
@@ -109,11 +118,14 @@ class DashboardControlador{
         return $siNoEsUltimoDiaMes;
     
     }
-
-
     
-
+    static public function  ctrObtenerComparativaVentas(){
     
+        $obtenerComparativaVentas = DashboardModelo::mdlObtenerComparativaVentas();
+    
+        return $obtenerComparativaVentas;
+    
+    }
     
    
 }

@@ -1,7 +1,5 @@
 <?php
 
-use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Round;
-
 require_once "../controladores/ventas.controlador.php";
 require_once "../modelos/ventas.modelo.php";
 require('../vistas/recursos/fpdf/fpdf.php');
@@ -12,18 +10,37 @@ if (isset($_GET['fecha_venta'])) {
     // Condición para enviar o no el correo
     $enviar_correo = !isset($_GET['NoEmail']);
 
-    $pdf = new FPDF($orientation = 'P', $unit = 'mm', array(90, 210));
-    $pdf->AddPage();
-    $pdf->setMargins(10, 10, 10);
-    $total = 0;
+    // Inicializar FPDF sin definir el tamaño aún
+    $pdf = new FPDF($orientation = 'P', $unit = 'mm');
 
+    // Calcular altura total requerida
+    $totalHeight = 0;
     $productos = VentasControlador::ctrObtenerDetalleVenta($fecha_venta);
 
     if (!$productos) {
         die("Error: No se encontraron detalles de la venta para la fecha proporcionada.");
     }
 
+    // Calcular la altura total
     if (!empty($productos) && isset($productos[0])) {
+        // Datos del encabezado
+        $totalHeight += 40; // Altura para logo y detalles de usuario
+
+        foreach ($productos as $pro) {
+            // Calcular la altura para cada producto
+            $totalHeight += 10; // Ajustar según el contenido
+        }
+
+        // Espacio adicional para el total y el mensaje final
+        $totalHeight += 300;
+
+        // Crear el PDF con la altura dinámica calculada
+        $pdf = new FPDF($orientation = 'P', $unit = 'mm', array(90, $totalHeight));
+        $pdf->AddPage();
+        $pdf->setMargins(10, 10, 10);
+        $total = 0;
+
+        // Encabezado y detalles de la venta
         $nombreUsuario = $productos[0]["nombre_usuario"];
         $apellidoUsuario = $productos[0]["apellido_usuario"];
         $nombreCliente = $productos[0]["nombre_cliente"];
@@ -42,40 +59,34 @@ if (isset($_GET['fecha_venta'])) {
             $maxLogoHeight = $logoHeight * $ratio;
         }
 
+        // Generar el contenido del PDF
         $pdf->Image($logoPath, 15, $pdf->GetY(), $maxLogoWidth, $maxLogoHeight);
         $pdf->Ln(30);
-        $pdf->Ln();
         $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'TECNET', 0, 0, 'C');
         $pdf->Ln();
         $pdf->Cell(0, 6, 'CIUDAD DE GUATEMALA', 0, 0, 'C');
         $pdf->Ln();
-        $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'WHATSSAP: 0000-0000', 0, 0, 'C');
         $pdf->Ln();
         $pdf->Cell(0, 6, utf8_decode('-------------------------------------------------'), 0, 0, 'C');
         $pdf->Ln();
-        $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'Fecha ' . $fecha_venta, 0, 0, 'C');
         $pdf->Ln();
-        $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'Cajero: ' . $nombreUsuario . ' ' . $apellidoUsuario, 0, 0, 'C');
         $pdf->Ln();
         $pdf->Cell(0, 6, utf8_decode('-------------------------------------------------'), 0, 0, 'C');
         $pdf->Ln();
-        $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'Cliente: ' . $nombreCliente, 0, 0, 'C');
         $pdf->Ln();
-        $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'Email: ' . $correoCliente, 0, 0, 'C');
         $pdf->Ln();
-        $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(0, 6, 'Telefono: ' . $numeroTel, 0, 0, 'C');
         $pdf->Ln();
         $pdf->Cell(0, 6, utf8_decode('-------------------------------------------------'), 0, 0, 'C');
         $pdf->Ln();
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(0, 6, utf8_decode('RECIBO DE VENTA'), 0, 0, 'C');
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(0, 6, utf8_decode('COMPROBANTE DE VENTA'), 0, 0, 'C');
         $pdf->SetFont('Arial', '', 10);
         $pdf->Ln();
         $pdf->Cell(0, 6, utf8_decode('---------------------------------------------------------------------------'), 0, 0, 'C');
@@ -114,17 +125,15 @@ if (isset($_GET['fecha_venta'])) {
         $totalTexto = "TOTAL VENTA: Q. " . number_format($total, 2);
         $pdf->Cell(0, 4, $totalTexto, 0, 1, 'C');
         $pdf->Ln();
-        $pdf->Ln();
-        $imageX = 10;
-        $imageY = $pdf->GetY();
-        $pdf->Ln();
-        $pdf->Ln();
+
         $pdf->SetFont('Arial', 'B', 15);
         $pdf->Cell(0, 6, utf8_decode('¡Gracias por su compra!'), 0, 0, 'C');
 
+        // Guardar el PDF en un archivo
         $archivo_pdf = '../vistas/recursos/ticket.pdf';
         $pdf->Output($archivo_pdf, 'F');
 
+        // Enviar el correo si corresponde
         if ($enviar_correo) {
             $para = $correoCliente;
             $asunto = 'TICKET DE VENTA';
@@ -156,7 +165,9 @@ if (isset($_GET['fecha_venta'])) {
                        $pdf->Output();
               
                 } else {
+                    $pdf->Output();
                     throw new Exception('Hubo un error al enviar el correo.');
+               
                 }
             } catch (Exception $e) {
                 echo $e->getMessage();
@@ -167,6 +178,7 @@ if (isset($_GET['fecha_venta'])) {
 
         }
 
+        // Eliminar archivo temporal
         unlink($archivo_pdf);
     } else {
         echo 'No se encontraron productos para la fecha proporcionada.';
@@ -174,4 +186,3 @@ if (isset($_GET['fecha_venta'])) {
 } else {
     echo 'No se proporcionó una fecha de venta.';
 }
-?>

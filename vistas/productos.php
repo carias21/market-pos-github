@@ -27,7 +27,7 @@
             <div class="col-lg-12">
 
                 <div class="card card-info">
-                    <div class="card-header mi_card_info">
+                    <div class="card-header color_general">
                         <h3 class="card-title">CRITERIOS DE BÚSQUEDA</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -113,8 +113,8 @@
             <div class="col-lg-12">
                 <!--*******************    //TIPOS DE TABLAS *******************-->
                 <!--  Tabla original:   <table id="tbl_productos" class="table table-striped w-100 shadow">-->
-                <table id="tbl_productos" class="display nowrap  table-bordered  w-100 shadow rounded">
-                    <thead class="mi_card_info">
+                <table id="tbl_productos" class="table table-striped table-bordered table-hover" style="width:100%">
+                    <thead class="color_general">
                         <tr style="font-size: 15px;">
                             <th></th>
                             <th>id</th>
@@ -183,10 +183,14 @@
                                     <span class="small">CODIGO DEL PRODUCTO</span><span class="text-danger">*</span>
                                 </label>
 
-                                <input type="text" style="border: 1px solid #66B3FF" class="form-control form-control-sm" id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required>
-                                <div class="invalid-feedback">Debe ingresar el codigo de barras</div>
+                                <input type="text" style="border: 1px solid #66B3FF" class="form-control form-control-sm"
+                                    id="iptCodigoReg" name="iptCodigoReg" placeholder="Código de Barras" required
+                                    pattern="[A-Za-z0-9\-]+">
+
+                                <div class="invalid-feedback">Debe ingresar un código válido (solo letras, números y guiones).</div>
                             </div>
                         </div>
+
 
                         <!-- Columna para registro de la categoría del producto -->
                         <div class="col-12  col-lg-6">
@@ -573,7 +577,7 @@
                     'data': 'stock',
                     createdCell: function(td, cellData, rowData, row, col) {
                         if (parseFloat(rowData[9]) <= parseFloat(rowData[10])) {
-                            $(td).parent().css('background', '#c38500');
+                            $(td).parent().css('background', '#ff9900');
                         }
                     }
                 },
@@ -647,7 +651,7 @@
         });
 
 
-        
+
 
         /*===================================================================*/
         // EVENTOS PARA AGRANDAR LA IMAGEN
